@@ -1,0 +1,11 @@
+name: smoke-test
+version: 0.1.0
+type: task
+description: End-to-end smoke
+author: user-2004
+license: MIT
+entry: src/run.py
+schedule: "0 * * * *"
+tags:
+  - smoke
+  - test

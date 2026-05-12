@@ -1,1 +1,21 @@
-[]
+[
+  {
+    "type": "task",
+    "user_id": "user-2004",
+    "slug": "smoke-test",
+    "latest_version": "0.1.0",
+    "versions": [
+      "0.1.0"
+    ],
+    "description": "End-to-end smoke for code-projects publish API",
+    "tags": [
+      "smoke",
+      "test"
+    ],
+    "author": "user-2004",
+    "license": "MIT",
+    "github_url": "https://github.com/Starchild-ai-agent/community-projects/tree/main/projects/tasks/user-2004/smoke-test/0.1.0",
+    "updated_at": "2026-05-12T09:08:11.161Z",
+    "created_at": "2026-05-12T09:08:11.161Z"
+  }
+]
