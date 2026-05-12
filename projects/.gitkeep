@@ -1,0 +1,2 @@
+This directory holds published projects organized as:
+projects/{tasks|previews|services|scripts}/{user_id}/{slug}/{version}/

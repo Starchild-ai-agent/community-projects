@@ -1,0 +1,16 @@
+name: my-preview
+version: 0.1.0
+type: preview
+description: "What this preview shows"
+author: "user-XXXX"
+license: MIT
+entry: src/index.html
+port: 5173
+
+env_required: []
+env_optional: []
+
+sc_proxy:
+  apis: []
+
+tags: []

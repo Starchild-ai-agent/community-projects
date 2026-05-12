@@ -1,0 +1,19 @@
+name: my-service
+version: 0.1.0
+type: service
+description: "What this service does"
+author: "user-XXXX"
+license: MIT
+entry: src/server.py
+port: 8080
+
+runtime:
+  python: ">=3.10"
+
+env_required: []
+env_optional: []
+
+sc_proxy:
+  apis: []
+
+tags: []

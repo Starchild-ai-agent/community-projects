@@ -1,0 +1,21 @@
+name: my-task
+version: 0.1.0
+type: task
+description: "What this task does in one sentence"
+author: "user-XXXX"
+license: MIT
+entry: src/run.py
+
+schedule: "0 * * * *"   # every hour UTC
+
+runtime:
+  python: ">=3.10"
+
+env_required: []
+env_optional: []
+
+sc_proxy:
+  apis: []
+  estimated_credits_per_run: 0
+
+tags: []
