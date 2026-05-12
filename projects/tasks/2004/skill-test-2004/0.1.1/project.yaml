@@ -1,0 +1,13 @@
+name: skill-test-2004
+version: 0.1.1
+type: task
+description: Skill end-to-end test, publishing through community-project-publish
+author: user-2004
+license: MIT
+entry: src/run.py
+schedule: 0 */6 * * *
+env_required: []
+env_optional: []
+tags:
+- smoke
+- skill-e2e
