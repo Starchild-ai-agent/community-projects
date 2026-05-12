@@ -1,0 +1,8 @@
+name: smoke-test
+version: 0.2.0
+type: task
+description: v0.2
+author: user-2004
+license: MIT
+entry: src/run.py
+schedule: "*/30 * * * *"
