@@ -1,0 +1,14 @@
+name: test-publisher-flow
+version: 1.0.1
+type: service
+description: End-to-end test of publisher binding + commit message
+author: user-2004
+license: MIT
+entry: src/index.html
+port: 8765
+publisher:
+  code_slug: test-publisher-flow
+  public_slug: test-publisher-flow
+tags:
+- test
+- internal
