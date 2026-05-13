@@ -1,0 +1,14 @@
+name: minimal-static-page
+slug: minimal-static-page
+type: preview
+version: 1.0.2
+author: user-1463
+description: A minimal static page — zero dependencies, pure HTML + CSS
+tags:
+- static
+- demo
+- html
+entry: src/index.html
+port: 8080
+license: MIT
+env_required: []

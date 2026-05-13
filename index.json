@@ -1,5 +1,27 @@
 [
   {
+    "type": "preview",
+    "user_id": "1463",
+    "slug": "minimal-static-page",
+    "latest_version": "1.0.2",
+    "versions": [
+      "1.0.0",
+      "1.0.1",
+      "1.0.2"
+    ],
+    "description": "A minimal static page — zero dependencies, pure HTML + CSS",
+    "tags": [
+      "static",
+      "demo",
+      "html"
+    ],
+    "author": "user-1463",
+    "license": "MIT",
+    "github_url": "https://github.com/Starchild-ai-agent/community-projects/tree/main/projects/previews/1463/minimal-static-page/1.0.2",
+    "updated_at": "2026-05-13T08:17:10.609Z",
+    "created_at": "2026-05-12T11:38:37.228Z"
+  },
+  {
     "type": "script",
     "user_id": "2004",
     "slug": "hello-opensource-2026",
@@ -18,26 +40,5 @@
     "github_url": "https://github.com/Starchild-ai-agent/community-projects/tree/main/projects/scripts/2004/hello-opensource-2026/1.0.2",
     "updated_at": "2026-05-13T07:12:04.060Z",
     "created_at": "2026-05-13T07:12:04.060Z"
-  },
-  {
-    "type": "preview",
-    "user_id": "1463",
-    "slug": "minimal-static-page",
-    "latest_version": "1.0.1",
-    "versions": [
-      "1.0.0",
-      "1.0.1"
-    ],
-    "description": "A minimal static page — zero dependencies, pure HTML + CSS",
-    "tags": [
-      "static",
-      "demo",
-      "html"
-    ],
-    "author": "user-1463",
-    "license": "MIT",
-    "github_url": "https://github.com/Starchild-ai-agent/community-projects/tree/main/projects/previews/1463/minimal-static-page/1.0.1",
-    "updated_at": "2026-05-13T02:49:17.255Z",
-    "created_at": "2026-05-12T11:38:37.228Z"
   }
 ]
