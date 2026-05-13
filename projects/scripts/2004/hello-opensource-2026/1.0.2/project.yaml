@@ -1,0 +1,12 @@
+name: hello-opensource-2026
+type: script
+version: 1.0.2
+description: A tiny test script verifying the public open-source catalog flow end-to-end
+  after PR
+license: MIT
+entry: main.py
+tags:
+- test
+- smoke
+- opensource-flow
+author: user-2004

@@ -1,5 +1,25 @@
 [
   {
+    "type": "script",
+    "user_id": "2004",
+    "slug": "hello-opensource-2026",
+    "latest_version": "1.0.2",
+    "versions": [
+      "1.0.2"
+    ],
+    "description": "A tiny test script verifying the public open-source catalog flow end-to-end after PR",
+    "tags": [
+      "test",
+      "smoke",
+      "opensource-flow"
+    ],
+    "author": "user-2004",
+    "license": "MIT",
+    "github_url": "https://github.com/Starchild-ai-agent/community-projects/tree/main/projects/scripts/2004/hello-opensource-2026/1.0.2",
+    "updated_at": "2026-05-13T07:12:04.060Z",
+    "created_at": "2026-05-13T07:12:04.060Z"
+  },
+  {
     "type": "preview",
     "user_id": "1463",
     "slug": "minimal-static-page",
