@@ -1,1 +1,20 @@
-[]
+[
+  {
+    "type": "service",
+    "user_id": "1463",
+    "slug": "hello-starchild",
+    "latest_version": "1.0.0",
+    "versions": [
+      "1.0.0"
+    ],
+    "description": "Minimal hello page demo",
+    "tags": [
+      "demo"
+    ],
+    "author": "user-1463",
+    "license": "MIT",
+    "github_url": "https://github.com/Starchild-ai-agent/community-projects/tree/main/projects/services/1463/hello-starchild/1.0.0",
+    "updated_at": "2026-05-13T11:45:31.257Z",
+    "created_at": "2026-05-13T11:45:31.257Z"
+  }
+]

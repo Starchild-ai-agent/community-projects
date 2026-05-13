@@ -1,0 +1,15 @@
+name: hello-starchild
+type: service
+version: 1.0.0
+tags:
+- demo
+description: Minimal hello page demo
+license: MIT
+entry: src/index.html
+port: 9082
+env_required: []
+sc_proxy: false
+publisher:
+  code_slug: hello-starchild
+  public_slug: hello-starchild
+author: user-1463
