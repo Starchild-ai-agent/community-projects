@@ -3,9 +3,10 @@
     "type": "service",
     "user_id": "1463",
     "slug": "hello-starchild",
-    "latest_version": "1.0.0",
+    "latest_version": "1.0.1",
     "versions": [
-      "1.0.0"
+      "1.0.0",
+      "1.0.1"
     ],
     "description": "Minimal hello page demo",
     "tags": [
@@ -13,8 +14,8 @@
     ],
     "author": "user-1463",
     "license": "MIT",
-    "github_url": "https://github.com/Starchild-ai-agent/community-projects/tree/main/projects/services/1463/hello-starchild/1.0.0",
-    "updated_at": "2026-05-13T11:45:31.257Z",
+    "github_url": "https://github.com/Starchild-ai-agent/community-projects/tree/main/projects/services/1463/hello-starchild/1.0.1",
+    "updated_at": "2026-05-13T13:41:33.207Z",
     "created_at": "2026-05-13T11:45:31.257Z"
   }
 ]
