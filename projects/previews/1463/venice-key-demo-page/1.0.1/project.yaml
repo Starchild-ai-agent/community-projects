@@ -1,0 +1,16 @@
+name: venice-key-demo-page
+slug: venice-key-demo-page
+type: preview
+version: 1.0.1
+author: user-1463
+description: Venice API demo page with secure backend proxy (balance, models, chat)
+tags:
+- venice
+- demo
+- preview
+- api
+entry: src/index.html
+port: 8080
+license: MIT
+env_required:
+- VENICE_API_KEY
