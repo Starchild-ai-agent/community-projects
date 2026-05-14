@@ -1,5 +1,23 @@
 [
   {
+    "type": "task",
+    "user_id": "1463",
+    "slug": "openclaw-daily-report-task",
+    "version": "1.0.2",
+    "description": "Daily OpenClaw GitHub analysis report task with JSON-structured push output",
+    "tags": [
+      "openclaw",
+      "github",
+      "daily-report",
+      "monitoring"
+    ],
+    "author": "user-1463",
+    "license": "MIT",
+    "github_url": "https://github.com/Starchild-ai-agent/community-projects/tree/main/projects/1463/openclaw-daily-report-task",
+    "updated_at": "2026-05-14T08:42:30.391Z",
+    "created_at": "2026-05-14T08:42:30.391Z"
+  },
+  {
     "type": "script",
     "user_id": "2004",
     "slug": "hello-world-public-page",
