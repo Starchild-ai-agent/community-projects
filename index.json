@@ -1,1 +1,19 @@
-[]
+[
+  {
+    "type": "script",
+    "user_id": "2004",
+    "slug": "hello-world-public-page",
+    "version": "1.0.0",
+    "description": "Minimal Hello World public preview page for community sharing.",
+    "tags": [
+      "demo",
+      "preview",
+      "hello-world"
+    ],
+    "author": "user-2004",
+    "license": "MIT",
+    "github_url": "https://github.com/Starchild-ai-agent/community-projects/tree/main/projects/scripts/2004/hello-world-public-page",
+    "updated_at": "2026-05-14T03:06:46.657Z",
+    "created_at": "2026-05-14T03:06:46.657Z"
+  }
+]
