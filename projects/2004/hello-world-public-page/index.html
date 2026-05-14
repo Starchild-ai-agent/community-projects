@@ -14,8 +14,8 @@
       --o4:#ffd089;
       --rx:0deg; --ry:0deg;
     }
-    *{box-sizing:border-box;margin:0;padding:0}
-    html,body{height:100%;width:100%;overflow:hidden;background:#000;cursor:none}
+    *{box-sizing:border-box;margin:0;padding:0;cursor:none !important}
+    html,body{height:100%;width:100%;overflow:hidden;background:#000;cursor:none !important}
     body{
       font-family:"Inter","Helvetica Neue",Helvetica,Arial,"PingFang SC","Microsoft YaHei",sans-serif;
       color:var(--ink);
@@ -111,7 +111,7 @@
     @keyframes drop{0%{opacity:0;transform:translate(var(--tx,0px),calc(var(--ty,0px) - 40px)) rotateX(-50deg);filter:blur(8px)}60%{opacity:1;transform:translate(var(--tx,0px),calc(var(--ty,0px) + 6px)) rotateX(8deg);filter:blur(0)}100%{transform:translate(var(--tx,0px),var(--ty,0px)) rotateX(0)}}
 
     @media (hover:none){
-      html,body,.sc{cursor:auto}
+      *,html,body,.sc{cursor:auto !important}
       .ember{display:none}
     }
   </style>

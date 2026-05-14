@@ -1,7 +1,7 @@
 name: hello-world-public-page
 slug: hello-world-public-page
 type: script
-version: 1.2.0
+version: 1.2.1
 author: user-2004
 description: Minimal Hello World public preview page for community sharing.
 tags:
