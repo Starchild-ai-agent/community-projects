@@ -12,6 +12,7 @@
       --o2:#ff7a00;
       --o3:#ff3d00;
       --o4:#ffd089;
+      --rx:0deg; --ry:0deg;
     }
     *{box-sizing:border-box;margin:0;padding:0}
     html,body{height:100%;width:100%;overflow:hidden;background:#000;cursor:none}
@@ -20,17 +21,23 @@
       color:var(--ink);
       background:
         radial-gradient(circle at var(--mx,50%) var(--my,50%),
-          rgba(255,122,0,.32), rgba(255,61,0,.14) 22%, transparent 55%),
+          rgba(255,122,0,.34), rgba(255,61,0,.16) 22%, transparent 55%),
         radial-gradient(1200px 800px at 50% 50%, rgba(255,122,0,.10), transparent 60%),
         radial-gradient(800px 600px at 20% 80%, rgba(255,61,0,.10), transparent 70%),
         radial-gradient(800px 600px at 80% 20%, rgba(255,179,71,.10), transparent 70%),
         var(--bg);
       display:grid;
       place-items:center;
-      perspective:1200px;
+      perspective:1400px;
     }
 
-    /* The only visible element */
+    canvas#fx{
+      position:fixed; inset:0;
+      pointer-events:none;
+      z-index:8;
+      mix-blend-mode:screen;
+    }
+
     .sc{
       position:relative;
       display:inline-flex;
@@ -42,37 +49,31 @@
       color:transparent;
       cursor:none;
       transform-style:preserve-3d;
+      transform:rotateX(var(--rx)) rotateY(var(--ry));
+      transition:transform .15s ease-out;
       animation:breathe 4.6s ease-in-out infinite, jitter 7s ease-in-out infinite;
       filter:drop-shadow(0 0 24px rgba(255,122,0,.45));
       user-select:none;
       -webkit-tap-highlight-color:transparent;
+      will-change:transform;
     }
 
     .sc span{
       display:inline-block;
+      transform:translate(var(--tx,0px), var(--ty,0px));
       background:linear-gradient(100deg,
-        #fff7e8 0%,
-        var(--o4) 18%,
-        var(--o1) 34%,
-        var(--o2) 52%,
-        var(--o3) 70%,
-        var(--o2) 86%,
-        var(--o4) 100%);
+        #fff7e8 0%, var(--o4) 18%, var(--o1) 34%,
+        var(--o2) 52%, var(--o3) 70%, var(--o2) 86%, var(--o4) 100%);
       background-size:300% 100%;
       -webkit-background-clip:text;
       background-clip:text;
       color:transparent;
       animation:flow 5s linear infinite, drop 1.1s cubic-bezier(.2,.9,.2,1.2) backwards;
-      transition:transform .25s cubic-bezier(.2,.9,.2,1.4), filter .25s ease;
-      text-shadow:
-        0 0 18px rgba(255,122,0,.0),
-        0 0 36px rgba(255,61,0,.0);
-      will-change:transform, filter, text-shadow;
+      transition:transform .18s cubic-bezier(.2,.9,.2,1.4), filter .25s ease;
+      will-change:transform, filter;
     }
-
     .sc span.gap{width:.32em;background:none}
 
-    /* Stagger entry per character */
     .sc span:nth-child(1){animation-delay:0s, .00s}
     .sc span:nth-child(2){animation-delay:0s, .06s}
     .sc span:nth-child(3){animation-delay:0s, .12s}
@@ -84,7 +85,6 @@
     .sc span:nth-child(9){animation-delay:0s, .48s}
     .sc span:nth-child(10){animation-delay:0s, .54s}
 
-    /* Hover: lift each char with 3D tilt + intense glow */
     .sc:hover span{
       filter:drop-shadow(0 6px 18px rgba(255,61,0,.55));
       text-shadow:
@@ -92,72 +92,191 @@
         0 0 42px rgba(255,122,0,.65),
         0 0 80px rgba(255,61,0,.45);
     }
-    .sc span:hover{
-      transform:translateY(-10px) rotateX(14deg) rotateY(-10deg) scale(1.18);
-    }
+    .sc.exploding span{ opacity:0; transition:opacity .18s ease-out }
 
-    /* Custom cursor — a glowing ember */
     .ember{
-      position:fixed;
-      left:0;top:0;
-      width:22px;height:22px;
-      border-radius:50%;
+      position:fixed; left:0; top:0;
+      width:22px; height:22px; border-radius:50%;
       background:radial-gradient(circle, #fff5e6 0%, var(--o1) 35%, var(--o3) 70%, transparent 75%);
       mix-blend-mode:screen;
       pointer-events:none;
       transform:translate(-50%,-50%);
       filter:blur(.4px) drop-shadow(0 0 14px rgba(255,122,0,.85));
-      transition:transform .12s ease;
       z-index:9;
     }
 
-    @keyframes flow{
-      0%{background-position:0% 50%}
-      100%{background-position:300% 50%}
-    }
-    @keyframes breathe{
-      0%,100%{transform:scale(1)}
-      50%{transform:scale(1.03)}
-    }
-    @keyframes jitter{
-      0%,100%{translate:0 0}
-      25%{translate:.4px -.4px}
-      50%{translate:-.3px .5px}
-      75%{translate:.5px .2px}
-    }
-    @keyframes drop{
-      0%{opacity:0;transform:translateY(-40px) rotateX(-50deg);filter:blur(8px)}
-      60%{opacity:1;transform:translateY(6px) rotateX(8deg);filter:blur(0)}
-      100%{transform:translateY(0) rotateX(0)}
-    }
+    @keyframes flow{0%{background-position:0% 50%}100%{background-position:300% 50%}}
+    @keyframes breathe{0%,100%{transform:rotateX(var(--rx)) rotateY(var(--ry)) scale(1)}50%{transform:rotateX(var(--rx)) rotateY(var(--ry)) scale(1.03)}}
+    @keyframes jitter{0%,100%{translate:0 0}25%{translate:.4px -.4px}50%{translate:-.3px .5px}75%{translate:.5px .2px}}
+    @keyframes drop{0%{opacity:0;transform:translate(var(--tx,0px),calc(var(--ty,0px) - 40px)) rotateX(-50deg);filter:blur(8px)}60%{opacity:1;transform:translate(var(--tx,0px),calc(var(--ty,0px) + 6px)) rotateX(8deg);filter:blur(0)}100%{transform:translate(var(--tx,0px),var(--ty,0px)) rotateX(0)}}
 
     @media (hover:none){
       html,body,.sc{cursor:auto}
       .ember{display:none}
-      .sc span:active{transform:translateY(-6px) scale(1.1)}
     }
   </style>
 </head>
 <body>
-  <a class="sc" href="https://iamstarchild.com" target="_blank" rel="noopener noreferrer" aria-label="Star Child">
+  <a class="sc" id="sc" href="https://iamstarchild.com" target="_blank" rel="noopener noreferrer" aria-label="Star Child">
     <span>S</span><span>t</span><span>a</span><span>r</span><span class="gap"> </span><span>C</span><span>h</span><span>i</span><span>l</span><span>d</span>
   </a>
   <div class="ember" id="ember" aria-hidden="true"></div>
+  <canvas id="fx"></canvas>
+
   <script>
-    const ember = document.getElementById('ember');
-    const root = document.documentElement;
-    let tx=window.innerWidth/2, ty=window.innerHeight/2, cx=tx, cy=ty;
-    addEventListener('pointermove', e=>{
-      tx=e.clientX; ty=e.clientY;
-      root.style.setProperty('--mx', (tx/window.innerWidth*100)+'%');
-      root.style.setProperty('--my', (ty/window.innerHeight*100)+'%');
+  (() => {
+    const sc      = document.getElementById('sc');
+    const ember   = document.getElementById('ember');
+    const canvas  = document.getElementById('fx');
+    const ctx     = canvas.getContext('2d');
+    const root    = document.documentElement;
+    const letters = [...sc.querySelectorAll('span')].filter(s => !s.classList.contains('gap'));
+
+    let W=0, H=0, dpr=Math.min(window.devicePixelRatio||1, 2);
+    const resize = () => {
+      W = window.innerWidth; H = window.innerHeight;
+      canvas.width  = W*dpr; canvas.height = H*dpr;
+      canvas.style.width = W+'px'; canvas.style.height = H+'px';
+      ctx.setTransform(dpr,0,0,dpr,0,0);
+    };
+    resize();
+    addEventListener('resize', resize);
+
+    // pointer state
+    let mx = W/2, my = H/2, ex = mx, ey = my;
+    addEventListener('pointermove', e => {
+      mx = e.clientX; my = e.clientY;
+      root.style.setProperty('--mx', (mx/W*100)+'%');
+      root.style.setProperty('--my', (my/H*100)+'%');
     });
-    function loop(){
-      cx += (tx-cx)*0.18; cy += (ty-cy)*0.18;
-      ember.style.transform = `translate(${cx}px, ${cy}px) translate(-50%,-50%)`;
-      requestAnimationFrame(loop);
+
+    // ── Particle system ──
+    const parts = [];
+    const ORANGES = ['#fff5e6','#ffd089','#ffb347','#ff7a00','#ff3d00'];
+    const rand = (a,b) => a + Math.random()*(b-a);
+    const pick = a => a[(Math.random()*a.length)|0];
+
+    function spawnSpark(x,y,opts={}){
+      parts.push({
+        x, y,
+        vx:(opts.vx ?? rand(-.4,.4)),
+        vy:(opts.vy ?? rand(-1.6,-.4)),
+        g:(opts.g ?? .015),
+        life:0, max:rand(40, 80),
+        r:rand(1.2, 2.6),
+        c:pick(ORANGES),
+        drag:.992,
+      });
     }
-    loop();
+
+    function letterCenters(){
+      const out=[];
+      for(const s of letters){
+        const r = s.getBoundingClientRect();
+        out.push({el:s, cx:r.left+r.width/2, cy:r.top+r.height/2, w:r.width, h:r.height});
+      }
+      return out;
+    }
+
+    // ── Magnetic pull + parallax ──
+    function applyForces(){
+      const cs = letterCenters();
+      // global parallax tilt from cursor relative to viewport center
+      const nx = (mx/W - .5);
+      const ny = (my/H - .5);
+      root.style.setProperty('--ry', (nx * 14).toFixed(2)+'deg');
+      root.style.setProperty('--rx', (-ny * 10).toFixed(2)+'deg');
+
+      const radius = 240;
+      for(const c of cs){
+        const dx = mx - c.cx, dy = my - c.cy;
+        const dist = Math.hypot(dx,dy);
+        const f = Math.max(0, 1 - dist/radius);
+        const tx = dx * f * .35;
+        const ty = dy * f * .35;
+        c.el.style.setProperty('--tx', tx.toFixed(2)+'px');
+        c.el.style.setProperty('--ty', ty.toFixed(2)+'px');
+      }
+    }
+
+    // ── Continuous spark emitter from random letters ──
+    let sparkAccum = 0;
+    function emitSparks(dt){
+      sparkAccum += dt;
+      const interval = 70; // ms between sparks
+      while(sparkAccum > interval){
+        sparkAccum -= interval;
+        const cs = letterCenters();
+        if(!cs.length) continue;
+        const c = pick(cs);
+        spawnSpark(
+          c.cx + rand(-c.w*.3, c.w*.3),
+          c.cy + rand(-c.h*.05, c.h*.15),
+          { vx: rand(-.6,.6), vy: rand(-1.8,-.6) }
+        );
+      }
+    }
+
+    // ── Click explosion ──
+    sc.addEventListener('click', e => {
+      e.preventDefault();
+      sc.classList.add('exploding');
+      const cs = letterCenters();
+      for(const c of cs){
+        for(let i=0;i<28;i++){
+          const ang = Math.random()*Math.PI*2;
+          const sp  = rand(2.5, 7.5);
+          spawnSpark(c.cx, c.cy, {
+            vx: Math.cos(ang)*sp,
+            vy: Math.sin(ang)*sp - 1.2,
+            g:.04,
+          });
+        }
+      }
+      setTimeout(()=>{ window.open('https://iamstarchild.com','_blank','noopener,noreferrer'); }, 380);
+      setTimeout(()=>{ sc.classList.remove('exploding'); }, 1100);
+    });
+
+    // ── Render loop ──
+    let last = performance.now();
+    function frame(now){
+      const dt = Math.min(50, now - last); last = now;
+
+      // smooth ember to cursor
+      ex += (mx-ex)*.22; ey += (my-ey)*.22;
+      ember.style.transform = `translate(${ex}px, ${ey}px) translate(-50%,-50%)`;
+
+      applyForces();
+      emitSparks(dt);
+
+      ctx.clearRect(0,0,W,H);
+      for(let i=parts.length-1;i>=0;i--){
+        const p = parts[i];
+        p.life++;
+        p.vy += p.g;
+        p.vx *= p.drag;
+        p.vy *= p.drag;
+        p.x  += p.vx;
+        p.y  += p.vy;
+        const a = 1 - p.life/p.max;
+        if(a<=0){ parts.splice(i,1); continue; }
+        ctx.globalAlpha = a;
+        ctx.fillStyle = p.c;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r * (0.6 + a*0.6), 0, Math.PI*2);
+        ctx.fill();
+        // tiny glow tail
+        ctx.globalAlpha = a*.35;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r*3, 0, Math.PI*2);
+        ctx.fill();
+      }
+      ctx.globalAlpha = 1;
+
+      requestAnimationFrame(frame);
+    }
+    requestAnimationFrame(frame);
+  })();
   </script>
 </body>
 </html>
