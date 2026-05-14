@@ -1,13 +1,13 @@
 name: hello-world-public-page
 slug: hello-world-public-page
 type: script
-version: 1.0.0
+version: 1.1.0
 author: user-2004
 description: Minimal Hello World public preview page for community sharing.
 tags:
-  - demo
-  - preview
-  - hello-world
+- demo
+- preview
+- hello-world
 entry: index.html
 license: MIT
 publisher:
