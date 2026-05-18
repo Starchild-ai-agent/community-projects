@@ -1,0 +1,17 @@
+name: 329-mahjong
+type: service
+version: 1.0.0
+description: 中国麻将（Chinese Mahjong）单机网页游戏，包含基础对局与 AI 对手。
+license: MIT
+tags:
+- game
+- mahjong
+- chinese
+entry: src/index.html
+port: 9080
+env_required: []
+sc_proxy: false
+publisher:
+  code_slug: 329-mahjong
+  public_slug: 329-mahjong
+author: user-329

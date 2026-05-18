@@ -1,5 +1,22 @@
 [
   {
+    "type": "service",
+    "user_id": "329",
+    "slug": "329-mahjong",
+    "version": "1.0.0",
+    "description": "中国麻将（Chinese Mahjong）单机网页游戏，包含基础对局与 AI 对手。",
+    "tags": [
+      "game",
+      "mahjong",
+      "chinese"
+    ],
+    "author": "user-329",
+    "license": "MIT",
+    "github_url": "https://github.com/Starchild-ai-agent/community-projects/tree/main/projects/329/329-mahjong",
+    "updated_at": "2026-05-18T11:00:39.216Z",
+    "created_at": "2026-05-18T11:00:39.216Z"
+  },
+  {
     "type": "script",
     "user_id": "2004",
     "slug": "hello-world-public-page",

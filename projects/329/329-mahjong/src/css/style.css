@@ -1,0 +1,123 @@
+* { margin:0; padding:0; box-sizing:border-box; }
+body { background:#0a5c36; font-family:'PingFang SC','Microsoft YaHei',sans-serif; overflow:hidden; height:100vh; color:#fff; user-select:none; }
+
+/* 开始界面 */
+#start-screen { display:flex; flex-direction:column; align-items:center; justify-content:center; height:100vh; gap:40px; }
+.logo-area { text-align:center; }
+.logo-tiles { display:flex; gap:12px; justify-content:center; margin-bottom:20px; }
+.logo-tile { display:inline-flex; align-items:center; justify-content:center; width:64px; height:80px; background:linear-gradient(135deg,#fff9e6,#f5f0d0); color:#333; font-size:28px; font-weight:bold; border-radius:8px; box-shadow:2px 4px 8px rgba(0,0,0,.4); border:2px solid #d4c896; }
+.logo-tile.t-wan { color:#1a5276; }
+.logo-tile.t-tiao { color:#196f3d; }
+.logo-tile.t-tong { font-size:32px; }
+.logo-area h1 { font-size:48px; letter-spacing:12px; text-shadow:2px 4px 8px rgba(0,0,0,.5); color:#ffd700; }
+.subtitle { font-size:16px; color:#aed6a0; margin-top:8px; letter-spacing:4px; }
+.btn-primary { padding:14px 48px; font-size:20px; background:linear-gradient(135deg,#d4a017,#b8860b); color:#fff; border:none; border-radius:8px; cursor:pointer; letter-spacing:4px; box-shadow:0 4px 12px rgba(0,0,0,.3); transition:all .2s; }
+.btn-primary:hover { transform:translateY(-2px); box-shadow:0 6px 16px rgba(0,0,0,.4); background:linear-gradient(135deg,#e6b422,#d4a017); }
+
+/* 游戏界面 */
+#game-screen { height:100vh; position:relative; }
+#info-bar { position:absolute; top:0; left:0; right:0; display:flex; justify-content:center; gap:40px; padding:8px 20px; background:rgba(0,0,0,.3); font-size:14px; z-index:10; }
+#info-bar > div { padding:4px 12px; }
+
+/* 牌桌 */
+#table { width:100vw; height:100vh; position:relative; background:radial-gradient(ellipse at center,#0d7a47 0%,#085c32 60%,#04391f 100%); }
+
+/* 麻将牌 */
+.tile { display:inline-flex; flex-direction:column; align-items:center; justify-content:center; width:42px; height:56px; background:linear-gradient(180deg,#fffef5 0%,#f0ead0 100%); border:1.5px solid #c8b87a; border-radius:5px; margin:1px; cursor:pointer; font-size:12px; color:#333; box-shadow:1px 2px 4px rgba(0,0,0,.3); transition:transform .15s,box-shadow .15s; position:relative; flex-shrink:0; }
+.tile:hover { transform:translateY(-8px); box-shadow:2px 6px 12px rgba(0,0,0,.4); z-index:5; }
+.tile.selected { transform:translateY(-12px); box-shadow:0 8px 16px rgba(255,215,0,.5); border-color:#ffd700; }
+.tile .tile-num { font-size:16px; font-weight:bold; line-height:1; }
+.tile .tile-suit { font-size:11px; line-height:1; margin-top:2px; }
+.tile.suit-wan .tile-num { color:#1a5276; }
+.tile.suit-tiao .tile-num { color:#196f3d; }
+.tile.suit-tong .tile-num { color:#922b21; }
+.tile.suit-feng .tile-num { color:#333; font-size:18px; }
+.tile.suit-jian .tile-num { font-size:18px; }
+.tile.suit-jian[data-value="zhong"] .tile-num { color:#c0392b; }
+.tile.suit-jian[data-value="fa"] .tile-num { color:#196f3d; }
+.tile.suit-jian[data-value="bai"] .tile-num { color:#7f8c8d; }
+
+.tile-back { display:inline-flex; align-items:center; justify-content:center; width:42px; height:56px; background:linear-gradient(135deg,#1a6b3c,#0f4d2a); border:1.5px solid #2d8a56; border-radius:5px; margin:1px; box-shadow:1px 2px 4px rgba(0,0,0,.3); flex-shrink:0; }
+.tile-back::after { content:''; width:26px; height:36px; border:2px solid rgba(255,255,255,.15); border-radius:3px; }
+
+.tile-small { width:32px; height:42px; font-size:10px; margin:1px; cursor:default; }
+.tile-small:hover { transform:none; box-shadow:1px 2px 4px rgba(0,0,0,.3); }
+.tile-small .tile-num { font-size:13px; }
+.tile-small .tile-suit { font-size:9px; }
+
+/* 牌-横向（左右家竖排的背面） */
+.tile-back-h { display:inline-flex; width:56px; height:42px; background:linear-gradient(135deg,#1a6b3c,#0f4d2a); border:1.5px solid #2d8a56; border-radius:5px; margin:1px; box-shadow:1px 2px 4px rgba(0,0,0,.3); align-items:center; justify-content:center; flex-shrink:0; }
+.tile-back-h::after { content:''; width:36px; height:26px; border:2px solid rgba(255,255,255,.15); border-radius:3px; }
+
+/* 玩家区域 */
+.player-area { position:absolute; display:flex; flex-direction:column; align-items:center; }
+
+/* 底部(玩家) */
+.player-bottom { bottom:10px; left:50%; transform:translateX(-50%); width:90%; max-width:800px; }
+.player-bottom .hand { display:flex; justify-content:center; flex-wrap:nowrap; padding:8px 0; }
+.player-bottom .melds { display:flex; justify-content:center; gap:8px; margin-bottom:4px; }
+.player-bottom .discards { position:absolute; bottom:110px; left:50%; transform:translateX(-50%); display:flex; flex-wrap:wrap; justify-content:center; max-width:350px; gap:1px; }
+.player-bottom .player-label { font-size:13px; color:#aed6a0; margin-top:4px; }
+
+/* 上家 */
+.player-top { top:40px; left:50%; transform:translateX(-50%); }
+.player-top .hand { display:flex; justify-content:center; }
+.player-top .discards { position:absolute; top:80px; display:flex; flex-wrap:wrap; justify-content:center; max-width:300px; gap:1px; }
+.player-top .melds { display:flex; gap:6px; margin-top:4px; }
+.player-top .player-label { font-size:12px; color:#aed6a0; margin-bottom:4px; }
+
+/* 左家 */
+.player-left { left:10px; top:50%; transform:translateY(-50%); }
+.player-left .hand { display:flex; flex-direction:column; }
+.player-left .discards { position:absolute; left:80px; top:50%; transform:translateY(-50%); display:flex; flex-wrap:wrap; max-width:180px; gap:1px; }
+.player-left .melds { display:flex; flex-direction:column; gap:4px; margin-left:4px; }
+.player-left .player-label { font-size:12px; color:#aed6a0; }
+
+/* 右家 */
+.player-right { right:10px; top:50%; transform:translateY(-50%); }
+.player-right .hand { display:flex; flex-direction:column; }
+.player-right .discards { position:absolute; right:80px; top:50%; transform:translateY(-50%); display:flex; flex-wrap:wrap; max-width:180px; gap:1px; }
+.player-right .melds { display:flex; flex-direction:column; gap:4px; margin-right:4px; }
+.player-right .player-label { font-size:12px; color:#aed6a0; }
+
+/* 中央 */
+#center-area { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); z-index:20; }
+#action-panel { display:flex; gap:10px; background:rgba(0,0,0,.6); padding:12px 20px; border-radius:12px; backdrop-filter:blur(4px); }
+.btn-action { padding:10px 24px; font-size:16px; border:none; border-radius:6px; cursor:pointer; font-weight:bold; letter-spacing:2px; transition:all .15s; }
+.btn-hu { background:linear-gradient(135deg,#e74c3c,#c0392b); color:#fff; }
+.btn-gang { background:linear-gradient(135deg,#e67e22,#d35400); color:#fff; }
+.btn-peng { background:linear-gradient(135deg,#2ecc71,#27ae60); color:#fff; }
+.btn-chi { background:linear-gradient(135deg,#3498db,#2980b9); color:#fff; }
+.btn-pass { background:linear-gradient(135deg,#95a5a6,#7f8c8d); color:#fff; }
+.btn-action:hover { transform:scale(1.08); filter:brightness(1.1); }
+
+/* Meld 组合 */
+.meld-group { display:inline-flex; gap:1px; padding:2px; background:rgba(0,0,0,.15); border-radius:4px; }
+
+/* 高亮最后打出的牌 */
+.tile.last-discard { animation:pulse 1s ease-in-out infinite; border-color:#ffd700; box-shadow:0 0 12px rgba(255,215,0,.6); }
+@keyframes pulse { 0%,100%{ box-shadow:0 0 8px rgba(255,215,0,.4); } 50%{ box-shadow:0 0 16px rgba(255,215,0,.8); } }
+
+/* 新摸的牌 */
+.tile.drawn-tile { margin-left:12px !important; border-color:#5dade2; }
+
+/* 结果弹窗 */
+#result-modal { position:fixed; inset:0; background:rgba(0,0,0,.7); display:flex; align-items:center; justify-content:center; z-index:100; backdrop-filter:blur(4px); }
+.modal-content { background:linear-gradient(135deg,#1a3a2a,#0d2818); border:2px solid #d4a017; border-radius:16px; padding:40px 60px; text-align:center; min-width:320px; }
+.modal-content h2 { font-size:36px; color:#ffd700; margin-bottom:16px; }
+#result-detail { font-size:16px; color:#ccc; margin-bottom:24px; line-height:1.8; }
+
+/* 动画 */
+.tile-enter { animation:tileIn .3s ease-out; }
+@keyframes tileIn { from { opacity:0; transform:scale(.7) translateY(20px); } to { opacity:1; transform:scale(1) translateY(0); } }
+
+/* AI tag */
+.ai-tag { font-size:10px; background:rgba(255,255,255,.15); padding:1px 6px; border-radius:8px; }
+
+/* 隐藏手牌(AI) */
+.tiles-hidden .tile { visibility:hidden; }
+
+/* 吃牌选择面板 */
+.chi-options { display:flex; gap:8px; flex-wrap:wrap; justify-content:center; margin-top:8px; }
+.chi-option { display:flex; gap:2px; padding:4px 8px; background:rgba(52,152,219,.3); border:1px solid #3498db; border-radius:6px; cursor:pointer; transition:all .15s; }
+.chi-option:hover { background:rgba(52,152,219,.5); transform:scale(1.05); }

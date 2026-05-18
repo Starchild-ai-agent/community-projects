@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>麻将 - Mahjong</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div id="app">
+  <!-- 开始界面 -->
+  <div id="start-screen">
+    <div class="logo-area">
+      <div class="logo-tiles">
+        <span class="logo-tile t-wan">一</span>
+        <span class="logo-tile t-tiao">发</span>
+        <span class="logo-tile t-tong">🀄</span>
+      </div>
+      <h1>中 国 麻 将</h1>
+      <p class="subtitle">Chinese Mahjong</p>
+    </div>
+    <button id="btn-start" class="btn-primary">开始游戏</button>
+  </div>
+
+  <!-- 游戏界面 -->
+  <div id="game-screen" style="display:none;">
+    <!-- 信息栏 -->
+    <div id="info-bar">
+      <div id="wind-indicator">局：<span id="round-wind">东</span></div>
+      <div id="tiles-left">剩余：<span id="tiles-count">0</span></div>
+      <div id="turn-indicator">当前：<span id="current-turn">东</span></div>
+    </div>
+
+    <!-- 牌桌 -->
+    <div id="table">
+      <!-- 上家 (北) -->
+      <div id="player-top" class="player-area player-top">
+        <div class="player-label">北 <span class="ai-tag">AI</span></div>
+        <div class="hand tiles-horizontal tiles-hidden" id="hand-top"></div>
+        <div class="melds" id="melds-top"></div>
+        <div class="discards" id="discards-top"></div>
+      </div>
+
+      <!-- 左家 (西) -->
+      <div id="player-left" class="player-area player-left">
+        <div class="player-label">西 <span class="ai-tag">AI</span></div>
+        <div class="hand tiles-vertical tiles-hidden" id="hand-left"></div>
+        <div class="melds" id="melds-left"></div>
+        <div class="discards" id="discards-left"></div>
+      </div>
+
+      <!-- 右家 (东) -->
+      <div id="player-right" class="player-area player-right">
+        <div class="player-label">东 <span class="ai-tag">AI</span></div>
+        <div class="hand tiles-vertical tiles-hidden" id="hand-right"></div>
+        <div class="melds" id="melds-right"></div>
+        <div class="discards" id="discards-right"></div>
+      </div>
+
+      <!-- 中央区域 -->
+      <div id="center-area">
+        <div id="action-panel" style="display:none;">
+          <button class="btn-action btn-hu" data-action="hu" style="display:none;">胡</button>
+          <button class="btn-action btn-gang" data-action="gang" style="display:none;">杠</button>
+          <button class="btn-action btn-peng" data-action="peng" style="display:none;">碰</button>
+          <button class="btn-action btn-chi" data-action="chi" style="display:none;">吃</button>
+          <button class="btn-action btn-pass" data-action="pass">过</button>
+        </div>
+      </div>
+
+      <!-- 自己 (南) -->
+      <div id="player-bottom" class="player-area player-bottom">
+        <div class="melds" id="melds-bottom"></div>
+        <div class="hand" id="hand-bottom"></div>
+        <div class="player-label">南 (你)</div>
+        <div class="discards" id="discards-bottom"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 结果弹窗 -->
+  <div id="result-modal" style="display:none;">
+    <div class="modal-content">
+      <h2 id="result-title"></h2>
+      <div id="result-detail"></div>
+      <button id="btn-restart" class="btn-primary">再来一局</button>
+    </div>
+  </div>
+</div>
+
+<script src="js/tiles.js"></script>
+<script src="js/game.js"></script>
+<script src="js/ai.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>
