@@ -1,6 +1,23 @@
 [
   {
     "type": "service",
+    "user_id": "1382",
+    "slug": "1382-alarm",
+    "version": "1.0.0",
+    "description": "简洁的网页闹钟应用，支持多闹钟、重复周期设置与到点响铃提醒。",
+    "tags": [
+      "productivity",
+      "alarm",
+      "webapp"
+    ],
+    "author": "user-1382",
+    "license": "MIT",
+    "github_url": "https://github.com/Starchild-ai-agent/community-projects/tree/main/projects/1382/1382-alarm",
+    "updated_at": "2026-05-18T12:21:33.176Z",
+    "created_at": "2026-05-18T12:21:33.176Z"
+  },
+  {
+    "type": "service",
     "user_id": "329",
     "slug": "329-mahjong",
     "version": "1.0.0",

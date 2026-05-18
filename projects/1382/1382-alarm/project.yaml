@@ -1,0 +1,17 @@
+name: 1382-alarm
+version: 1.0.0
+type: service
+description: 简洁的网页闹钟应用，支持多闹钟、重复周期设置与到点响铃提醒。
+license: MIT
+entry: src/index.html
+port: 9082
+env_required: []
+sc_proxy: []
+tags:
+- productivity
+- alarm
+- webapp
+publisher:
+  code_slug: 1382-alarm
+  public_slug: clock
+author: user-1382

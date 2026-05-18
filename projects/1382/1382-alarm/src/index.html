@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>闹钟</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="clock-section">
+  <div>
+    <span id="current-time">00:00</span><span id="current-seconds">:00</span>
+  </div>
+  <div id="current-date"></div>
+</div>
+
+<div class="main">
+  <div class="add-card">
+    <h2>➕ 添加闹钟</h2>
+    <div class="add-row">
+      <div class="field">
+        <label>时间</label>
+        <input type="time" id="input-time" value="07:00">
+      </div>
+      <div class="field">
+        <label>标签</label>
+        <input type="text" id="input-label" placeholder="起床、会议…" maxlength="20">
+      </div>
+      <div class="field">
+        <label>重复</label>
+        <div class="days-picker" id="days-picker">
+          <button class="day-btn" data-day="0">日</button>
+          <button class="day-btn" data-day="1">一</button>
+          <button class="day-btn" data-day="2">二</button>
+          <button class="day-btn" data-day="3">三</button>
+          <button class="day-btn" data-day="4">四</button>
+          <button class="day-btn" data-day="5">五</button>
+          <button class="day-btn" data-day="6">六</button>
+        </div>
+      </div>
+      <button class="btn-add" onclick="addAlarm()">添加</button>
+    </div>
+  </div>
+
+  <div class="list-card">
+    <div class="list-header">
+      <h2>🔔 我的闹钟</h2>
+      <span class="count-badge" id="count-badge">0 个</span>
+    </div>
+    <ul id="alarm-list"></ul>
+  </div>
+</div>
+
+<div class="overlay" id="modal-overlay">
+  <div class="modal">
+    <div class="modal-bell">🔔</div>
+    <h2 id="modal-time">07:00</h2>
+    <p id="modal-label">时间到了！</p>
+    <button class="btn-dismiss" onclick="dismissAlarm()">关闭闹钟</button>
+  </div>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
