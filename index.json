@@ -1,5 +1,23 @@
 [
   {
+    "type": "service",
+    "user_id": "1892",
+    "slug": "credit-spend",
+    "version": "0.1.0",
+    "description": "A forkable dashboard that breaks down your Starchild credit spend by day, model, task type, and agent. Pulls live from the internal Credit API — scoped to your container, no auth, nothing leaves your machine.",
+    "tags": [
+      "dashboard",
+      "credits",
+      "analytics",
+      "starchild"
+    ],
+    "author": "user-1892",
+    "license": "MIT",
+    "github_url": "https://github.com/Starchild-ai-agent/community-projects/tree/main/projects/1892/credit-spend",
+    "updated_at": "2026-05-20T16:54:41.128Z",
+    "created_at": "2026-05-20T16:54:41.128Z"
+  },
+  {
     "type": "script",
     "user_id": "2004",
     "slug": "hello-world-public-page",

@@ -1,0 +1,22 @@
+name: credit-spend
+slug: credit-spend
+version: 0.1.0
+type: service
+license: MIT
+description: A forkable dashboard that breaks down your Starchild credit spend by
+  day, model, task type, and agent. Pulls live from the internal Credit API — scoped
+  to your container, no auth, nothing leaves your machine.
+tags:
+- dashboard
+- credits
+- analytics
+- starchild
+env_required: []
+sc_proxy: false
+entry: src/server.py
+port: 7821
+runtime:
+  python: '>=3.10'
+publisher:
+  public_slug: credit-spend
+author: user-1892
