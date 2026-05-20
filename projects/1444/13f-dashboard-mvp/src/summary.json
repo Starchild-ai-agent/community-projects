@@ -1,0 +1,233 @@
+{
+  "dataset": {
+    "quarters": [
+      "01jun2025-31aug2025"
+    ],
+    "filings_count": 10799,
+    "holdings_count": 3360306
+  },
+  "top_managers_latest": [
+    {
+      "manager_name": "VANGUARD GROUP INC",
+      "cik": "0000102909",
+      "total_musd": 6178129573.95
+    },
+    {
+      "manager_name": "BlackRock, Inc.",
+      "cik": "0002012383",
+      "total_musd": 5253068841.3
+    },
+    {
+      "manager_name": "STATE STREET CORP",
+      "cik": "0000093751",
+      "total_musd": 2668089320.0
+    },
+    {
+      "manager_name": "FMR LLC",
+      "cik": "0000315066",
+      "total_musd": 1773288838.99
+    },
+    {
+      "manager_name": "MORGAN STANLEY",
+      "cik": "0000895421",
+      "total_musd": 1535086861.39
+    },
+    {
+      "manager_name": "JPMORGAN CHASE & CO",
+      "cik": "0000019617",
+      "total_musd": 1529211332.93
+    },
+    {
+      "manager_name": "GEODE CAPITAL MANAGEMENT, LLC",
+      "cik": "0001214717",
+      "total_musd": 1426680439.6
+    },
+    {
+      "manager_name": "BANK OF AMERICA CORP /DE/",
+      "cik": "0000070858",
+      "total_musd": 1366693775.14
+    },
+    {
+      "manager_name": "GOLDMAN SACHS GROUP INC",
+      "cik": "0000886982",
+      "total_musd": 1353927908.63
+    },
+    {
+      "manager_name": "DEUTSCHE BANK AG\\",
+      "cik": "0000948046",
+      "total_musd": 1209839658.17
+    },
+    {
+      "manager_name": "NORGES BANK",
+      "cik": "0001374170",
+      "total_musd": 801148788.27
+    },
+    {
+      "manager_name": "NORTHERN TRUST CORP",
+      "cik": "0000073124",
+      "total_musd": 727164885.29
+    },
+    {
+      "manager_name": "SUSQUEHANNA INTERNATIONAL GROUP, LLP",
+      "cik": "0001446194",
+      "total_musd": 719810286.65
+    },
+    {
+      "manager_name": "Capital World Investors",
+      "cik": "0001422849",
+      "total_musd": 687946402.17
+    },
+    {
+      "manager_name": "Invesco Ltd.",
+      "cik": "0000914208",
+      "total_musd": 587990224.09
+    },
+    {
+      "manager_name": "Capital International Investors",
+      "cik": "0001562230",
+      "total_musd": 580563961.42
+    },
+    {
+      "manager_name": "CHARLES SCHWAB INVESTMENT MANAGEMENT INC",
+      "cik": "0000884546",
+      "total_musd": 578176067.56
+    },
+    {
+      "manager_name": "UBS Group AG",
+      "cik": "0001610520",
+      "total_musd": 577633314.59
+    },
+    {
+      "manager_name": "CITADEL ADVISORS LLC",
+      "cik": "0001423053",
+      "total_musd": 575955918.67
+    },
+    {
+      "manager_name": "Royal Bank of Canada",
+      "cik": "0001000275",
+      "total_musd": 554862076.0
+    }
+  ],
+  "popular_holdings_latest": [
+    {
+      "issuer": "MICROSOFT CORP",
+      "cusip": "594918104",
+      "fund_count": 5203,
+      "total_musd": 2516885769.59
+    },
+    {
+      "issuer": "APPLE INC",
+      "cusip": "037833100",
+      "fund_count": 5048,
+      "total_musd": 1860131837.77
+    },
+    {
+      "issuer": "AMAZON COM INC",
+      "cusip": "023135106",
+      "fund_count": 4633,
+      "total_musd": 1300991533.13
+    },
+    {
+      "issuer": "NVIDIA CORPORATION",
+      "cusip": "67066G104",
+      "fund_count": 4358,
+      "total_musd": 2225667388.48
+    },
+    {
+      "issuer": "ALPHABET INC",
+      "cusip": "02079K305",
+      "fund_count": 4100,
+      "total_musd": 710078069.73
+    },
+    {
+      "issuer": "META PLATFORMS INC",
+      "cusip": "30303M102",
+      "fund_count": 4005,
+      "total_musd": 1087225486.65
+    },
+    {
+      "issuer": "BERKSHIRE HATHAWAY INC DEL",
+      "cusip": "084670702",
+      "fund_count": 3825,
+      "total_musd": 391358032.76
+    },
+    {
+      "issuer": "ALPHABET INC",
+      "cusip": "02079K107",
+      "fund_count": 3707,
+      "total_musd": 494380702.36
+    },
+    {
+      "issuer": "VISA INC",
+      "cusip": "92826C839",
+      "fund_count": 3668,
+      "total_musd": 466586009.86
+    },
+    {
+      "issuer": "EXXON MOBIL CORP",
+      "cusip": "30231G102",
+      "fund_count": 3668,
+      "total_musd": 290856069.15
+    },
+    {
+      "issuer": "JOHNSON & JOHNSON",
+      "cusip": "478160104",
+      "fund_count": 3561,
+      "total_musd": 260531450.1
+    },
+    {
+      "issuer": "JPMORGAN CHASE & CO.",
+      "cusip": "46625H100",
+      "fund_count": 3546,
+      "total_musd": 502626875.28
+    },
+    {
+      "issuer": "BROADCOM INC",
+      "cusip": "11135F101",
+      "fund_count": 3521,
+      "total_musd": 932872384.41
+    },
+    {
+      "issuer": "HOME DEPOT INC",
+      "cusip": "437076102",
+      "fund_count": 3481,
+      "total_musd": 254335123.07
+    },
+    {
+      "issuer": "SPDR S&P 500 ETF TR",
+      "cusip": "78462F103",
+      "fund_count": 3480,
+      "total_musd": 302704043.57
+    },
+    {
+      "issuer": "WALMART INC",
+      "cusip": "931142103",
+      "fund_count": 3394,
+      "total_musd": 265903233.08
+    },
+    {
+      "issuer": "COSTCO WHSL CORP NEW",
+      "cusip": "22160K105",
+      "fund_count": 3303,
+      "total_musd": 270459532.93
+    },
+    {
+      "issuer": "TESLA INC",
+      "cusip": "88160R101",
+      "fund_count": 3283,
+      "total_musd": 486997917.65
+    },
+    {
+      "issuer": "ABBVIE INC",
+      "cusip": "00287Y109",
+      "fund_count": 3280,
+      "total_musd": 234037409.44
+    },
+    {
+      "issuer": "ORACLE CORP",
+      "cusip": "68389X105",
+      "fund_count": 3145,
+      "total_musd": 260055111.82
+    }
+  ]
+}

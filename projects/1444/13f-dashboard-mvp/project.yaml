@@ -1,0 +1,19 @@
+name: 13f-dashboard-mvp
+version: 0.1.1
+type: service
+title: SEC 13F Dashboard (MVP)
+description: Lightweight single-quarter SEC Form 13F dashboard. Aggregates top institutional
+  managers and most-widely-held holdings from a quarter of 13F filings into a small
+  JSON summary, then renders ECharts bar charts + tables in a single-page Flask app.
+tags:
+- sec
+- 13f
+- finance
+- dashboard
+- flask
+license: MIT
+entry: src/app.py
+env_required: []
+sc_proxy: false
+port: 8787
+author: user-1444

@@ -1,6 +1,25 @@
 [
   {
     "type": "service",
+    "user_id": "1444",
+    "slug": "13f-dashboard-mvp",
+    "version": "0.1.1",
+    "description": "Lightweight single-quarter SEC Form 13F dashboard. Aggregates top institutional managers and most-widely-held holdings from a quarter of 13F filings into a small JSON summary, then renders ECharts bar charts + tables in a single-page Flask app.",
+    "tags": [
+      "sec",
+      "13f",
+      "finance",
+      "dashboard",
+      "flask"
+    ],
+    "author": "user-1444",
+    "license": "MIT",
+    "github_url": "https://github.com/Starchild-ai-agent/community-projects/tree/main/projects/1444/13f-dashboard-mvp",
+    "updated_at": "2026-05-20T03:18:34.320Z",
+    "created_at": "2026-05-20T03:18:34.320Z"
+  },
+  {
+    "type": "service",
     "user_id": "1382",
     "slug": "1382-alarm",
     "version": "1.0.0",
