@@ -1,6 +1,19 @@
 [
   {
     "type": "service",
+    "user_id": "1366",
+    "slug": "run-lab",
+    "version": "0.1.2",
+    "description": "Post-run analysis and recovery planner for runners.",
+    "tags": [],
+    "author": "user-1366",
+    "license": "MIT",
+    "github_url": "https://github.com/Starchild-ai-agent/community-projects/tree/main/projects/1366/run-lab",
+    "updated_at": "2026-05-20T18:03:30.291Z",
+    "created_at": "2026-05-20T18:03:30.291Z"
+  },
+  {
+    "type": "service",
     "user_id": "1892",
     "slug": "credit-spend",
     "version": "0.1.0",

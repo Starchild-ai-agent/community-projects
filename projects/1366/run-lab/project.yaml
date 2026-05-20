@@ -1,0 +1,9 @@
+name: run-lab
+version: 0.1.2
+type: service
+description: Post-run analysis and recovery planner for runners.
+license: MIT
+entry: src/index.html
+port: 9460
+env_required: []
+author: user-1366
