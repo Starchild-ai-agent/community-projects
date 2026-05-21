@@ -3,7 +3,14 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Starchild</title>
+  <title>Starchild — AI Agent Platform</title>
+  <meta name="description" content="Starchild is an AI agent platform for crypto trading, data analysis, and automated workflows. Your intelligent partner in the digital economy." />
+  <meta property="og:title" content="Starchild — AI Agent Platform" />
+  <meta property="og:description" content="Your intelligent partner for crypto trading, data analysis, and automated workflows." />
+  <meta property="og:url" content="https://iamstarchild.com" />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="https://iamstarchild.com/og.png" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='28' font-size='28'>✨</text></svg>" />
   <style>
     :root{
       --bg:#08060a;
@@ -16,6 +23,18 @@
     }
     *{box-sizing:border-box;margin:0;padding:0;cursor:none !important}
     html,body{height:100%;width:100%;overflow:hidden;background:#000;cursor:none !important}
+    @media (prefers-reduced-motion: reduce) {
+      *{cursor:auto !important}
+      html,body{overflow:auto}
+      body{perspective:none;background:var(--bg)}
+      .sc{transform:none!important;transition:none!important}
+      .sc span{transition:none!important}
+      .sc .glow{display:none}
+      canvas#fx{display:none}
+      .ember{display:none}
+      .sc:hover .sc-label{opacity:1}
+      .sc-label{opacity:1;transform:none}
+    }
     body{
       font-family:"Inter","Helvetica Neue",Helvetica,Arial,"PingFang SC","Microsoft YaHei",sans-serif;
       color:var(--ink);
@@ -166,10 +185,10 @@
 </head>
 <body>
   <div class="stack">
-    <a class="sc" id="sc" href="https://iamstarchild.com" target="_blank" rel="noopener noreferrer" aria-label="Starchild">
+    <a class="sc" id="sc" href="https://iamstarchild.com" target="_top" rel="noopener noreferrer" aria-label="Starchild">
       <span>S</span><span>t</span><span>a</span><span>r</span><span>c</span><span>h</span><span>i</span><span>l</span><span>d</span>
     </a>
-    <a class="tag" href="https://iamstarchild.com" target="_blank" rel="noopener noreferrer">iamstarchild.com</a>
+    <a class="tag" href="https://iamstarchild.com" target="_top" rel="noopener noreferrer">iamstarchild.com</a>
   </div>
   <div class="ember" id="ember" aria-hidden="true"></div>
   <canvas id="fx"></canvas>
@@ -268,9 +287,9 @@
       }
     }
 
-    // ── Click explosion ──
+    // ── Click explosion (decorative, doesn't block navigation) ──
     sc.addEventListener('click', e => {
-      e.preventDefault();
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
       sc.classList.add('exploding');
       const cs = letterCenters();
       for(const c of cs){
@@ -284,7 +303,6 @@
           });
         }
       }
-      setTimeout(()=>{ window.open('https://iamstarchild.com','_blank','noopener,noreferrer'); }, 380);
       setTimeout(()=>{ sc.classList.remove('exploding'); }, 1100);
     });
 
