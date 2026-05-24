@@ -1,6 +1,25 @@
 [
   {
     "type": "script",
+    "user_id": "3182",
+    "slug": "x-cleaner",
+    "version": "0.1.0",
+    "description": "Chrome/Edge MV3 extension that collapses x.com / twitter.com posts from\nusers who blocked you, known AI reply bots, and AI-style auto-reply\naccounts. Local hide only — never calls X's block API.\n",
+    "tags": [
+      "chrome-extension",
+      "twitter",
+      "x",
+      "bot-filter",
+      "ai-replies"
+    ],
+    "author": "user-3182",
+    "license": "MIT",
+    "github_url": "https://github.com/Starchild-ai-agent/community-projects/tree/main/projects/3182/x-cleaner",
+    "updated_at": "2026-05-24T07:44:10.774Z",
+    "created_at": "2026-05-24T07:44:10.774Z"
+  },
+  {
+    "type": "script",
     "user_id": "2004",
     "slug": "hello-world-public-page",
     "version": "1.2.4",

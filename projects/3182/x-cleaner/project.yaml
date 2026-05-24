@@ -1,0 +1,20 @@
+name: x-cleaner
+version: 0.1.0
+type: script
+license: MIT
+entry: src/build.py
+description: 'Chrome/Edge MV3 extension that collapses x.com / twitter.com posts from
+
+  users who blocked you, known AI reply bots, and AI-style auto-reply
+
+  accounts. Local hide only — never calls X''s block API.
+
+  '
+tags:
+- chrome-extension
+- twitter
+- x
+- bot-filter
+- ai-replies
+env_required: []
+author: user-3182
