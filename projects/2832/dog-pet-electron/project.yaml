@@ -1,6 +1,6 @@
 name: dog-pet-electron
 type: script
-version: 1.0.3
+version: 1.0.4
 description: macOS 透明狗狗桌宠 Electron 项目（宠物悬浮窗 + 控制面板）
 tags:
 - electron
