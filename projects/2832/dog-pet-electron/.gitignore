@@ -1,0 +1,4 @@
+node_modules/
+.DS_Store
+assets/user-media/*
+!assets/user-media/.gitkeep

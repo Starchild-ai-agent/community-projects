@@ -1,0 +1,294 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>狗狗桌宠</title>
+  <style>
+    :root {
+      --pet-size: 220px;
+      --bubble-bg: rgba(255, 255, 255, 0.92);
+      --bubble-color: #333;
+      --shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      background: transparent;
+      font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Segoe UI', sans-serif;
+      overflow: hidden;
+      user-select: none;
+    }
+
+    .pet-root {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      padding-bottom: 10px;
+      -webkit-app-region: drag;
+      position: relative;
+    }
+
+    .bubble {
+      position: absolute;
+      top: 2px;
+      left: 50%;
+      transform: translateX(-50%);
+      min-width: 120px;
+      max-width: 260px;
+      padding: 10px 14px;
+      border-radius: 14px;
+      background: var(--bubble-bg);
+      color: var(--bubble-color);
+      font-size: 13px;
+      box-shadow: var(--shadow);
+      opacity: 0;
+      transition: all 180ms ease;
+      pointer-events: none;
+      text-align: center;
+      line-height: 1.3;
+    }
+
+    .bubble.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(-4px);
+    }
+
+    .pet-wrap {
+      width: var(--pet-size);
+      height: var(--pet-size);
+      border-radius: 24px;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 200ms ease;
+      -webkit-app-region: no-drag;
+      cursor: pointer;
+    }
+
+    .pet-wrap.bounce {
+      animation: bounce 360ms ease;
+    }
+
+    @keyframes bounce {
+      0%   { transform: translateY(0) scale(1); }
+      30%  { transform: translateY(-8px) scale(1.04); }
+      60%  { transform: translateY(0) scale(0.98); }
+      100% { transform: translateY(0) scale(1); }
+    }
+
+    .pet-media {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      filter: drop-shadow(0 8px 20px rgba(0,0,0,0.25));
+      pointer-events: none;
+    }
+
+    .pet-placeholder {
+      width: 100%;
+      height: 100%;
+      border-radius: 24px;
+      background: linear-gradient(135deg, #ffd99f, #ffb66e);
+      box-shadow: var(--shadow);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      color: #5a320f;
+      font-size: 16px;
+      gap: 6px;
+    }
+
+    .pet-placeholder .emoji {
+      font-size: 52px;
+      line-height: 1;
+    }
+
+    .controls {
+      position: absolute;
+      bottom: calc(var(--pet-size) + 8px);
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 8px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 150ms ease;
+      -webkit-app-region: no-drag;
+      flex-wrap: wrap;
+      justify-content: center;
+      max-width: 320px;
+    }
+
+    .pet-root:hover .controls {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .ctrl-btn {
+      background: rgba(255,255,255,0.92);
+      border: 1px solid rgba(0,0,0,0.1);
+      border-radius: 999px;
+      padding: 6px 10px;
+      font-size: 12px;
+      color: #222;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .quick-actions {
+      position: absolute;
+      right: 6px;
+      top: 6px;
+      display: flex;
+      gap: 6px;
+      -webkit-app-region: no-drag;
+    }
+
+    .icon-btn {
+      width: 26px;
+      height: 26px;
+      border: none;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.85);
+      cursor: pointer;
+      font-size: 14px;
+      line-height: 1;
+    }
+  </style>
+</head>
+<body>
+  <div class="pet-root" id="petRoot">
+    <div class="bubble" id="bubble">汪！</div>
+
+    <div class="quick-actions">
+      <button class="icon-btn" id="openPanelBtn" title="打开控制面板">⚙️</button>
+    </div>
+
+    <div class="controls" id="controls"></div>
+
+    <div class="pet-wrap" id="petWrap" aria-label="dog-pet"></div>
+  </div>
+
+  <script>
+    const petWrap = document.getElementById('petWrap');
+    const controls = document.getElementById('controls');
+    const bubble = document.getElementById('bubble');
+    const root = document.documentElement;
+    const openPanelBtn = document.getElementById('openPanelBtn');
+
+    let config = null;
+    let idleTimer = null;
+
+    function randomPick(arr, fallback = '') {
+      if (!Array.isArray(arr) || arr.length === 0) return fallback;
+      const idx = Math.floor(Math.random() * arr.length);
+      return arr[idx];
+    }
+
+    function showBubble(text) {
+      if (!text) return;
+      bubble.textContent = text;
+      bubble.classList.add('show');
+      clearTimeout(showBubble._timer);
+      showBubble._timer = setTimeout(() => bubble.classList.remove('show'), 2200);
+    }
+
+    function animatePet() {
+      petWrap.classList.remove('bounce');
+      void petWrap.offsetWidth;
+      petWrap.classList.add('bounce');
+    }
+
+    function findCurrentAsset(conf) {
+      return conf.assets.find(a => a.id === conf.currentAssetId) || conf.assets[0];
+    }
+
+    function renderPet(conf) {
+      config = conf;
+      root.style.setProperty('--pet-size', `${Math.max(120, Math.min(600, Number(conf.petSize) || 220))}px`);
+
+      petWrap.innerHTML = '';
+      const current = findCurrentAsset(conf);
+
+      if (!current || !current.path) {
+        const placeholder = document.createElement('div');
+        placeholder.className = 'pet-placeholder';
+        placeholder.innerHTML = '<div class="emoji">🐶</div><div>狗狗待命中</div>';
+        petWrap.appendChild(placeholder);
+      } else if (current.type === 'video') {
+        const video = document.createElement('video');
+        video.className = 'pet-media';
+        video.src = current.path;
+        video.autoplay = true;
+        video.loop = true;
+        video.muted = true;
+        video.playsInline = true;
+        video.preload = 'auto';
+        video.addEventListener('loadeddata', () => video.play().catch(() => {}));
+        petWrap.appendChild(video);
+      } else {
+        const img = document.createElement('img');
+        img.className = 'pet-media';
+        img.src = current.path;
+        img.alt = current.name || 'dog';
+        petWrap.appendChild(img);
+      }
+
+      renderButtons(conf.buttons || []);
+      resetIdleLoop();
+    }
+
+    function renderButtons(buttons) {
+      controls.innerHTML = '';
+      buttons.forEach((txt) => {
+        const btn = document.createElement('button');
+        btn.className = 'ctrl-btn';
+        btn.textContent = txt;
+        btn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          showBubble(randomPick(config.responses, '汪！'));
+          animatePet();
+        });
+        controls.appendChild(btn);
+      });
+    }
+
+    function resetIdleLoop() {
+      clearInterval(idleTimer);
+      idleTimer = setInterval(() => {
+        if (!config) return;
+        showBubble(randomPick(config.idleMessages, '我在这里~'));
+      }, 12000);
+    }
+
+    petWrap.addEventListener('click', () => {
+      if (!config) return;
+      showBubble(randomPick(config.responses, '汪！'));
+      animatePet();
+    });
+
+    openPanelBtn.addEventListener('click', async (e) => {
+      e.stopPropagation();
+      await window.petAPI.openPanel();
+    });
+
+    window.petAPI.onConfigUpdated((next) => {
+      renderPet(next);
+    });
+
+    (async function init() {
+      const conf = await window.petAPI.getConfig();
+      renderPet(conf);
+    })();
+  </script>
+</body>
+</html>

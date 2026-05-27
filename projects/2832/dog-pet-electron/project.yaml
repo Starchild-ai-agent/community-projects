@@ -1,0 +1,13 @@
+name: dog-pet-electron
+type: script
+version: 1.0.1
+description: macOS 透明狗狗桌宠 Electron 项目（宠物悬浮窗 + 控制面板）
+tags:
+- electron
+- desktop-pet
+- macos
+env_required: []
+sc_proxy: false
+license: MIT
+entry: src/main.js
+author: user-2832

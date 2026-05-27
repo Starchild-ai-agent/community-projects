@@ -1,6 +1,23 @@
 [
   {
     "type": "script",
+    "user_id": "2832",
+    "slug": "dog-pet-electron",
+    "version": "1.0.1",
+    "description": "macOS 透明狗狗桌宠 Electron 项目（宠物悬浮窗 + 控制面板）",
+    "tags": [
+      "electron",
+      "desktop-pet",
+      "macos"
+    ],
+    "author": "user-2832",
+    "license": "MIT",
+    "github_url": "https://github.com/Starchild-ai-agent/community-projects/tree/main/projects/2832/dog-pet-electron",
+    "updated_at": "2026-05-27T06:45:41.775Z",
+    "created_at": "2026-05-27T06:45:41.775Z"
+  },
+  {
+    "type": "script",
     "user_id": "3182",
     "slug": "x-cleaner",
     "version": "0.1.0",

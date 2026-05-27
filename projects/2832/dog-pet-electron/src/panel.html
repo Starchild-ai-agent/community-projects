@@ -1,0 +1,365 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>狗狗桌宠控制面板</title>
+  <style>
+    :root {
+      --bg: #f7f8fb;
+      --card: #fff;
+      --line: #e6e8ef;
+      --text: #20232a;
+      --sub: #687082;
+      --accent: #4e7cff;
+      --danger: #ef4444;
+      --ok: #16a34a;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Segoe UI', sans-serif;
+    }
+
+    .wrap {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 18px;
+      display: grid;
+      gap: 14px;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 14px;
+    }
+
+    h1 {
+      font-size: 20px;
+      margin: 0 0 8px;
+    }
+
+    h2 {
+      font-size: 16px;
+      margin: 0 0 10px;
+    }
+
+    p.sub {
+      margin: 0;
+      color: var(--sub);
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+
+    button {
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: #fff;
+      padding: 8px 12px;
+      cursor: pointer;
+      font-size: 13px;
+    }
+
+    .btn-primary {
+      border-color: transparent;
+      background: var(--accent);
+      color: #fff;
+      font-weight: 600;
+    }
+
+    .btn-danger {
+      border-color: #fecaca;
+      color: var(--danger);
+      background: #fff;
+    }
+
+    .list {
+      margin-top: 10px;
+      display: grid;
+      gap: 8px;
+      max-height: 280px;
+      overflow: auto;
+      padding-right: 4px;
+    }
+
+    .asset-item {
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 10px;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 10px;
+      align-items: center;
+      background: #fff;
+    }
+
+    .asset-title {
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .asset-meta {
+      font-size: 12px;
+      color: var(--sub);
+      margin-top: 4px;
+    }
+
+    textarea, input[type="text"], input[type="number"] {
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 10px;
+      font-size: 13px;
+      font-family: inherit;
+      background: #fff;
+      color: var(--text);
+    }
+
+    textarea {
+      min-height: 96px;
+      resize: vertical;
+      line-height: 1.5;
+    }
+
+    .field {
+      display: grid;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .label {
+      font-size: 13px;
+      color: var(--sub);
+      font-weight: 600;
+    }
+
+    .hint {
+      font-size: 12px;
+      color: var(--sub);
+    }
+
+    .range-row {
+      display: grid;
+      grid-template-columns: 1fr 90px;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .status {
+      font-size: 13px;
+      min-height: 20px;
+      color: var(--ok);
+    }
+
+    .status.error {
+      color: var(--danger);
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="card">
+      <h1>狗狗桌宠控制面板</h1>
+      <p class="sub">上传和管理“狗狗素材”，并实时编辑互动文本、回应文案、闲置消息与狗狗大小。</p>
+    </div>
+
+    <div class="card">
+      <h2>狗狗素材</h2>
+      <div class="row">
+        <button class="btn-primary" id="uploadBtn">上传素材</button>
+        <span class="hint">支持：.webp .webm .mp4 .mov .gif</span>
+      </div>
+      <div class="list" id="assetList"></div>
+    </div>
+
+    <div class="card">
+      <h2>互动设置</h2>
+
+      <div class="field">
+        <div class="label">互动按钮文本（每行一个）</div>
+        <textarea id="buttonsInput"></textarea>
+      </div>
+
+      <div class="field">
+        <div class="label">随机回应文案（每行一个）</div>
+        <textarea id="responsesInput"></textarea>
+      </div>
+
+      <div class="field">
+        <div class="label">闲置消息（每行一个）</div>
+        <textarea id="idleInput"></textarea>
+      </div>
+
+      <div class="field">
+        <div class="label">狗狗大小</div>
+        <div class="range-row">
+          <input type="range" id="sizeRange" min="120" max="600" step="1" />
+          <input type="number" id="sizeNumber" min="120" max="600" step="1" />
+        </div>
+      </div>
+
+      <div class="row">
+        <button class="btn-primary" id="saveBtn">保存并实时生效</button>
+      </div>
+      <div class="status" id="status"></div>
+    </div>
+  </div>
+
+  <script>
+    const uploadBtn = document.getElementById('uploadBtn');
+    const assetList = document.getElementById('assetList');
+    const buttonsInput = document.getElementById('buttonsInput');
+    const responsesInput = document.getElementById('responsesInput');
+    const idleInput = document.getElementById('idleInput');
+    const sizeRange = document.getElementById('sizeRange');
+    const sizeNumber = document.getElementById('sizeNumber');
+    const saveBtn = document.getElementById('saveBtn');
+    const statusEl = document.getElementById('status');
+
+    let config = null;
+
+    function linesToArray(text) {
+      return text.split('\n').map(v => v.trim()).filter(Boolean);
+    }
+
+    function setStatus(text, isError = false) {
+      statusEl.textContent = text || '';
+      statusEl.classList.toggle('error', Boolean(isError));
+    }
+
+    function renderForm(conf) {
+      buttonsInput.value = (conf.buttons || []).join('\n');
+      responsesInput.value = (conf.responses || []).join('\n');
+      idleInput.value = (conf.idleMessages || []).join('\n');
+      const size = Number(conf.petSize) || 220;
+      sizeRange.value = size;
+      sizeNumber.value = size;
+    }
+
+    function renderAssets(conf) {
+      assetList.innerHTML = '';
+      if (!conf.assets || !conf.assets.length) {
+        assetList.innerHTML = '<div class="hint">暂无素材</div>';
+        return;
+      }
+
+      conf.assets.forEach((asset) => {
+        const row = document.createElement('div');
+        row.className = 'asset-item';
+
+        const left = document.createElement('div');
+        left.innerHTML = `
+          <div class="asset-title">${asset.name || asset.id}${asset.id === conf.currentAssetId ? '（当前）' : ''}</div>
+          <div class="asset-meta">类型：${asset.type || '-'}${asset.path ? ` ｜ 路径：${asset.path}` : ''}</div>
+        `;
+
+        const right = document.createElement('div');
+        right.className = 'row';
+
+        const useBtn = document.createElement('button');
+        useBtn.textContent = '设为当前';
+        useBtn.disabled = asset.id === conf.currentAssetId;
+        useBtn.addEventListener('click', async () => {
+          const res = await window.petAPI.setCurrentAsset(asset.id);
+          if (res.ok) {
+            config = res.config;
+            renderAll(config);
+            setStatus('已切换当前素材。');
+          }
+        });
+
+        const delBtn = document.createElement('button');
+        delBtn.className = 'btn-danger';
+        delBtn.textContent = '删除';
+        delBtn.disabled = asset.id === 'placeholder-dog';
+        delBtn.addEventListener('click', async () => {
+          const ok = confirm('确定删除这个素材吗？');
+          if (!ok) return;
+          const res = await window.petAPI.deleteAsset(asset.id);
+          if (res.ok) {
+            config = res.config;
+            renderAll(config);
+            setStatus('素材已删除。');
+          }
+        });
+
+        right.appendChild(useBtn);
+        right.appendChild(delBtn);
+
+        row.appendChild(left);
+        row.appendChild(right);
+        assetList.appendChild(row);
+      });
+    }
+
+    function renderAll(conf) {
+      config = conf;
+      renderAssets(conf);
+      renderForm(conf);
+    }
+
+    sizeRange.addEventListener('input', () => {
+      sizeNumber.value = sizeRange.value;
+    });
+
+    sizeNumber.addEventListener('input', () => {
+      let v = Number(sizeNumber.value || 220);
+      v = Math.max(120, Math.min(600, v));
+      sizeRange.value = String(v);
+      sizeNumber.value = String(v);
+    });
+
+    uploadBtn.addEventListener('click', async () => {
+      const res = await window.petAPI.uploadAsset();
+      if (!res.ok) {
+        if (res.reason === 'canceled') return;
+        setStatus('上传失败：文件类型不支持。', true);
+        return;
+      }
+      config = res.config;
+      renderAll(config);
+      setStatus('素材上传成功并已设为当前。');
+    });
+
+    saveBtn.addEventListener('click', async () => {
+      if (!config) return;
+
+      const next = {
+        ...config,
+        buttons: linesToArray(buttonsInput.value),
+        responses: linesToArray(responsesInput.value),
+        idleMessages: linesToArray(idleInput.value),
+        petSize: Math.max(120, Math.min(600, Number(sizeNumber.value || 220)))
+      };
+
+      const res = await window.petAPI.saveConfig(next);
+      if (!res.ok) {
+        setStatus('保存失败，请重试。', true);
+        return;
+      }
+
+      config = res.config;
+      renderAll(config);
+      setStatus('保存成功，宠物窗口已实时更新。');
+    });
+
+    window.petAPI.onConfigUpdated((next) => {
+      config = next;
+      renderAll(config);
+    });
+
+    (async function init() {
+      config = await window.petAPI.getConfig();
+      renderAll(config);
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,19 @@
+{
+  "name": "dog-pet-electron",
+  "version": "1.0.0",
+  "description": "macOS 狗狗桌面宠物 Electron 项目",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "keywords": [
+    "electron",
+    "desktop-pet",
+    "dog"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^31.7.7"
+  }
+}
