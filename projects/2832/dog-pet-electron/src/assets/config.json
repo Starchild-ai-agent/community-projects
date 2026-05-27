@@ -1,0 +1,27 @@
+{
+  "currentAssetId": "placeholder-dog",
+  "assets": [
+    {
+      "id": "placeholder-dog",
+      "name": "狗狗占位符",
+      "type": "placeholder",
+      "path": ""
+    }
+  ],
+  "buttons": [
+    "摸摸头",
+    "握握手",
+    "转圈圈"
+  ],
+  "responses": [
+    "汪！",
+    "好开心！",
+    "再和我玩一会儿吧~"
+  ],
+  "idleMessages": [
+    "我在这儿等你～",
+    "记得喝水和休息哦。"
+  ],
+  "petSize": 220,
+  "autoLaunch": false
+}

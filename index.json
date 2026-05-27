@@ -3,7 +3,7 @@
     "type": "script",
     "user_id": "2832",
     "slug": "dog-pet-electron",
-    "version": "1.0.1",
+    "version": "1.0.3",
     "description": "macOS 透明狗狗桌宠 Electron 项目（宠物悬浮窗 + 控制面板）",
     "tags": [
       "electron",
@@ -13,7 +13,7 @@
     "author": "user-2832",
     "license": "MIT",
     "github_url": "https://github.com/Starchild-ai-agent/community-projects/tree/main/projects/2832/dog-pet-electron",
-    "updated_at": "2026-05-27T06:45:41.775Z",
+    "updated_at": "2026-05-27T07:29:20.646Z",
     "created_at": "2026-05-27T06:45:41.775Z"
   },
   {
