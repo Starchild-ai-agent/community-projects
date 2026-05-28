@@ -1,6 +1,6 @@
 name: credit-spend
 slug: credit-spend
-version: 0.1.1
+version: 0.1.2
 type: service
 license: MIT
 description: A forkable dashboard that breaks down your Starchild credit spend by

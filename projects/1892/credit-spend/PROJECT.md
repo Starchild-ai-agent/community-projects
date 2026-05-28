@@ -13,6 +13,7 @@ Pulls live from the internal Credit API at `http://starchild-credit-api.internal
 - **By agent** — main agent vs sub-agents vs system
 - **Stacked daily breakdown by model** — see which model dominated each day
 - **Last 50 individual charges** with exact cost per call
+- **Subscription reminder** telling users they can ask their agent to connect Grok or ChatGPT OAuth
 
 ## Required env
 

@@ -125,6 +125,10 @@ tbody tr:hover{background:var(--surface-2)}
 
 .empty{color:var(--text-faint); font-size:13px; text-align:center; padding:40px 20px}
 .err{background:#2a0a0a; border:1px solid #5f1818; color:#fca5a5; padding:12px 16px; border-radius:10px; margin-bottom:16px; font-size:13px}
+.subscription-callout{margin-bottom:24px; background:linear-gradient(135deg, rgba(248,70,0,0.18), rgba(12,12,12,0.95)); border:1px solid rgba(248,70,0,0.45); border-radius:var(--radius); padding:18px 20px; display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap}
+.subscription-callout h2{font-size:18px; letter-spacing:-0.02em; margin-bottom:4px}
+.subscription-callout p{color:var(--text-dim); font-size:13px}
+.subscription-callout .cta{font-size:12px; font-family:var(--mono); color:#fff; background:rgba(248,70,0,0.22); border:1px solid rgba(248,70,0,0.55); border-radius:var(--pill); padding:8px 12px; white-space:nowrap}
 </style>
 </head>
 <body>
@@ -155,6 +159,14 @@ tbody tr:hover{background:var(--surface-2)}
 </div>
 
 <div id="errBox"></div>
+
+<section class="subscription-callout" aria-label="Connect your own model subscription">
+  <div>
+    <h2>Tell your agent to connect your Grok or ChatGPT subscription!</h2>
+    <p>Use the subscriptions you already pay for inside Starchild.</p>
+  </div>
+  <div class="cta">Grok OAuth · ChatGPT OAuth</div>
+</section>
 
 <div class="stats" id="stats"></div>
 
@@ -207,6 +219,6 @@ tbody tr:hover{background:var(--surface-2)}
 
 </div>
 
-<script src="./app.js"></script>
+<script src="./app.js?v=20260528-credits-window-fix"></script>
 </body>
 </html>

@@ -46,8 +46,10 @@ async function getJSON(url){
 }
 
 function renderStats(balance, breakdown, daily){
-  const window7 = (daily.daily || []).slice(-7).reduce((s,d) => s + (d.total_credits||0), 0);
-  const reqs = (daily.daily || []).reduce((s,d) => s + (d.request_count||0), 0);
+  const rows = daily.daily || [];
+  const windowSpend = rows.reduce((s,d) => s + Number(d.total_credits||0), 0);
+  const window7 = rows.slice(-7).reduce((s,d) => s + Number(d.total_credits||0), 0);
+  const reqs = rows.reduce((s,d) => s + Number(d.request_count||0), 0);
   els.stats.innerHTML = `
     <div class="stat accent">
       <div class="l">Current balance</div>
@@ -56,8 +58,8 @@ function renderStats(balance, breakdown, daily){
     </div>
     <div class="stat">
       <div class="l">Spent (last ${breakdown.window_days}d)</div>
-      <div class="v">${fmt(breakdown.total_credits_window, 2)}</div>
-      <div class="s">${fmtN(breakdown.charges_in_window)} charges</div>
+      <div class="v">${fmt(windowSpend, 2)}</div>
+      <div class="s">${fmtN(reqs)} requests</div>
     </div>
     <div class="stat">
       <div class="l">Spent (last 7d)</div>
@@ -72,9 +74,19 @@ function renderStats(balance, breakdown, daily){
     <div class="stat">
       <div class="l">Requests (window)</div>
       <div class="v">${fmtN(reqs)}</div>
-      <div class="s">avg ${fmt((breakdown.total_credits_window/(reqs||1)), 4)}/req</div>
+      <div class="s">avg ${fmt((windowSpend/(reqs||1)), 4)}/req</div>
     </div>
   `;
+}
+
+function trimDailyWindow(daily, days){
+  const rows = (daily.daily || []).slice(-days);
+  const daySet = new Set(rows.map(r => r.day));
+  return {
+    ...daily,
+    daily: rows,
+    by_api: (daily.by_api || []).filter(r => daySet.has(r.day)),
+  };
 }
 
 function renderDaily(daily){
@@ -185,11 +197,12 @@ async function loadAll(){
   resetCharts();
   try{
     const days = Number(els.days.value);
-    const [balance, daily, breakdown] = await Promise.all([
+    const [balance, dailyRaw, breakdown] = await Promise.all([
       getJSON('./api/balance'),
       getJSON(`./api/daily?days=${days}`),
       getJSON(`./api/breakdown?days=${days}`),
     ]);
+    const daily = trimDailyWindow(dailyRaw, days);
     renderStats(balance, breakdown, daily);
     renderDaily(daily);
     renderPie('callTypeChart', breakdown.by_call_type || []);
