@@ -3,7 +3,7 @@
     "type": "script",
     "user_id": "2860",
     "slug": "market-structure-notes",
-    "version": "0.7.0",
+    "version": "0.8.0",
     "description": "Structured market structure note-taking tool with CLI, 8 templates, and optional web viewer. Extensible and installable.",
     "tags": [
       "trading",
@@ -15,7 +15,7 @@
     "author": "Svarog",
     "license": "MIT",
     "github_url": "https://github.com/Starchild-ai-agent/community-projects/tree/main/projects/2860/market-structure-notes",
-    "updated_at": "2026-05-29T14:37:19.382Z",
+    "updated_at": "2026-05-29T14:45:49.560Z",
     "created_at": "2026-05-29T14:19:48.335Z"
   },
   {

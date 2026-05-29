@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Market Structure Notes • Preview</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { font-family: ui-sans-serif, system-ui, -apple-system, sans-serif; }
+        .feature { transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1); }
+        .feature:hover { transform: translateY(-2px); }
+    </style>
+</head>
+<body class="bg-zinc-950 text-zinc-200">
+    <div class="max-w-5xl mx-auto px-6 py-12">
+        <!-- Header -->
+        <div class="flex items-center gap-4 mb-8">
+            <div class="w-11 h-11 bg-white rounded-2xl flex items-center justify-center">
+                <span class="text-zinc-950 font-bold text-3xl">M</span>
+            </div>
+            <div>
+                <div class="font-semibold text-4xl tracking-tight">Market Structure Notes</div>
+                <div class="text-sm text-zinc-500 -mt-1">v0.7.0</div>
+            </div>
+        </div>
+
+        <p class="max-w-2xl text-xl text-zinc-400 mb-10">
+            Clean, extensible CLI tool for structured technical analysis note-taking.<br>
+            Zero personal methodology. Fully community-extensible.
+        </p>
+
+        <!-- Live Demo Card -->
+        <div class="bg-zinc-900 border border-zinc-800 rounded-3xl p-8 mb-12">
+            <div class="flex items-center justify-between mb-6">
+                <div>
+                    <div class="font-semibold text-xl">Interactive Web Viewer</div>
+                    <div class="text-sm text-zinc-500">Dark theme • Live stats • Search • Edit • Quick create</div>
+                </div>
+                <div class="text-xs px-3 py-1 bg-emerald-500/10 text-emerald-400 rounded-full">Included</div>
+            </div>
+            
+            <img src="https://storage.googleapis.com/starchild-chat-images/chat-images/2860/agentx/1b1580fe-4bd1-472a-afc9-dadc0a46298f.png" 
+                 alt="Market Structure Notes web viewer screenshot" 
+                 class="w-full rounded-2xl border border-zinc-800 mb-6">
+            
+            <div class="text-sm text-zinc-400">
+                Run <span class="font-mono bg-black px-2 py-0.5 rounded">msn serve</span> to get the full interactive experience with note editing and quick-create modal.
+            </div>
+        </div>
+
+        <!-- Features -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-12">
+            <div class="feature bg-zinc-900 border border-zinc-800 rounded-3xl p-6">
+                <div class="text-emerald-400 text-sm mb-2">CLI FIRST</div>
+                <div class="font-semibold mb-2">Simple &amp; Fast</div>
+                <div class="text-sm text-zinc-400">msn new --template wyckoff --symbol SOL --timeframe 4H</div>
+            </div>
+            <div class="feature bg-zinc-900 border border-zinc-800 rounded-3xl p-6">
+                <div class="text-emerald-400 text-sm mb-2">8 TEMPLATES</div>
+                <div class="font-semibold mb-2">Wyckoff • SMC • Volume Profile</div>
+                <div class="text-sm text-zinc-400">Macro, Session, Price Action, Minimal + easy to add more</div>
+            </div>
+            <div class="feature bg-zinc-900 border border-zinc-800 rounded-3xl p-6">
+                <div class="text-emerald-400 text-sm mb-2">EXTENSIBLE</div>
+                <div class="font-semibold mb-2">Drop-in Templates</div>
+                <div class="text-sm text-zinc-400">Add any .md file to the templates/ folder. Zero config.</div>
+            </div>
+        </div>
+
+        <!-- Quick Start -->
+        <div class="bg-zinc-900 border border-zinc-800 rounded-3xl p-8 mb-8">
+            <div class="font-semibold text-xl mb-4">Quick Start</div>
+            <div class="space-y-3 text-sm">
+                <div class="flex items-start gap-3">
+                    <div class="font-mono text-xs bg-black px-2 py-1 rounded mt-0.5">1</div>
+                    <div><span class="font-mono">pip install -e .</span></div>
+                </div>
+                <div class="flex items-start gap-3">
+                    <div class="font-mono text-xs bg-black px-2 py-1 rounded mt-0.5">2</div>
+                    <div><span class="font-mono">msn new --template wyckoff --symbol BTC --timeframe 4H</span></div>
+                </div>
+                <div class="flex items-start gap-3">
+                    <div class="font-mono text-xs bg-black px-2 py-1 rounded mt-0.5">3</div>
+                    <div><span class="font-mono">msn serve</span> — opens the dark web viewer</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="text-xs text-zinc-500">
+            MIT License • No personal trading logic • Designed for daily structured note-taking
+        </div>
+    </div>
+</body>
+</html>

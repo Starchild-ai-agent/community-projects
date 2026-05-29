@@ -101,16 +101,14 @@ def export_notes(fmt: str = "json"):
         print(f"Exported {len(notes)} notes to export.json")
 
 
-def serve(port: int = 8765):
-    """Start the web viewer with modern UI + editing + quick create."""
+def create_app():
+    """Create the FastAPI web viewer app (reusable for CLI and previews)."""
     try:
-        import uvicorn
-        from fastapi import FastAPI, Form, Request
+        from fastapi import FastAPI, Form
         from fastapi.responses import HTMLResponse, RedirectResponse
         from jinja2 import Template
     except ImportError:
-        print("Web dependencies missing. Install with: pip install 'market-structure-notes[web]'")
-        return
+        raise RuntimeError("Web dependencies missing. Install with: pip install 'market-structure-notes[web]'")
 
     app = FastAPI(title="Market Structure Notes")
 
@@ -324,6 +322,18 @@ def serve(port: int = 8765):
         create_note(template, symbol, timeframe)
         return RedirectResponse("/", status_code=303)
 
+    return app
+
+
+def serve(port: int = 8765):
+    """Start the web viewer (thin wrapper around create_app)."""
+    try:
+        import uvicorn
+    except ImportError:
+        print("Web dependencies missing. Install with: pip install 'market-structure-notes[web]'")
+        return
+
+    app = create_app()
     print(f"Starting web viewer on http://localhost:{port}")
     uvicorn.run(app, host="0.0.0.0", port=port)
 

@@ -1,5 +1,5 @@
 name: market-structure-notes
-version: 0.7.0
+version: 0.8.0
 type: script
 description: Structured market structure note-taking tool with CLI, 8 templates, and
   optional web viewer. Extensible and installable.
@@ -13,3 +13,5 @@ tags:
 - technical-analysis
 - market-structure
 - web
+publisher:
+  public_slug: market-structure-notes
