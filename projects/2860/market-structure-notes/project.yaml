@@ -1,0 +1,14 @@
+name: market-structure-notes
+version: 0.1.2
+type: script
+description: Structured market structure note-taking tool with multiple templates
+  and extensible CLI. Wyckoff, SMC, Price Action, and Minimal templates included.
+license: MIT
+entry: scripts/msn.py
+env_required: []
+author: Svarog
+tags:
+- trading
+- notes
+- technical-analysis
+- market-structure
