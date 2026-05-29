@@ -5,9 +5,11 @@ Clean, extensible CLI tool for structured technical analysis note-taking. Suppor
 ## What it does
 
 - Creates dated, structured notes from reusable templates
-- Supports 4 built-in templates with clear field structure
+- Supports 8 built-in templates (Wyckoff, SMC, Price Action, Minimal, Volume Profile, Macro, Session, etc.)
 - Simple search and listing of existing notes
-- Export notes to JSON or markdown bundles
+- Export notes to JSON
+- Optional web viewer (`msn serve`)
+- Fully installable via pip
 - Zero personal trading logic or data included
 
 ## Required environment
@@ -17,9 +19,10 @@ None. Pure local tool.
 ## How to start
 
 ```bash
-cd market-structure-notes
-python scripts/msn.py --help
-python scripts/msn.py new --template wyckoff --symbol BTC --timeframe 4H
+pip install -e .
+msn --help
+msn new --template wyckoff --symbol BTC --timeframe 4H
+msn serve
 ```
 
 ## Outputs

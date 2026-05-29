@@ -1,8 +1,8 @@
 name: market-structure-notes
-version: 0.1.2
+version: 0.7.0
 type: script
-description: Structured market structure note-taking tool with multiple templates
-  and extensible CLI. Wyckoff, SMC, Price Action, and Minimal templates included.
+description: Structured market structure note-taking tool with CLI, 8 templates, and
+  optional web viewer. Extensible and installable.
 license: MIT
 entry: scripts/msn.py
 env_required: []
@@ -12,3 +12,4 @@ tags:
 - notes
 - technical-analysis
 - market-structure
+- web

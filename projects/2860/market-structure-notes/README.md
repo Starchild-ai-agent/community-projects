@@ -1,21 +1,32 @@
 # Market Structure Notes
 
-Clean, extensible CLI tool for structured technical analysis note-taking.
+Clean, extensible CLI tool for structured technical analysis note-taking. Installable + optional web viewer.
 
-Supports Wyckoff, SMC/ICT, Price Action, and Minimal templates out of the box. Designed to be community-extensible.
+Supports 8 templates (Wyckoff, SMC, Price Action, Minimal, Volume Profile, Macro, Session, and more). Designed to be community-extensible.
 
-## Quick start
+## Quick start (after install)
 
 ```bash
-python scripts/msn.py templates
-python scripts/msn.py new --template wyckoff --symbol BTC --timeframe 4H
-python scripts/msn.py list
-python scripts/msn.py search "liquidity"
+pip install -e .
+msn templates
+msn new --template wyckoff --symbol BTC --timeframe 4H
+msn list
+msn search "liquidity"
+msn serve --port 8765
 ```
 
 ## Adding new templates
 
 Drop any `.md` file with `{{date}}`, `{{symbol}}`, and `{{timeframe}}` placeholders into the `templates/` folder. The CLI discovers them automatically.
+
+## Web viewer
+
+```bash
+pip install 'market-structure-notes[web]'
+msn serve
+```
+
+Then open http://localhost:8765 to browse all notes in the browser.
 
 ## Project goals
 
