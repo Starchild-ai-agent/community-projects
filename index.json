@@ -1,5 +1,18 @@
 [
   {
+    "type": "service",
+    "user_id": "3182",
+    "slug": "memory-to-album-studio",
+    "version": "0.1.2",
+    "description": "Bilingual life events to 5-track concept album studio (lyrics + MV style + cover prompt).",
+    "tags": [],
+    "author": "user-3182",
+    "license": "MIT",
+    "github_url": "https://github.com/Starchild-ai-agent/community-projects/tree/main/projects/3182/memory-to-album-studio",
+    "updated_at": "2026-05-31T09:06:37.937Z",
+    "created_at": "2026-05-31T09:06:37.937Z"
+  },
+  {
     "type": "script",
     "user_id": "2860",
     "slug": "market-structure-notes",

@@ -1,0 +1,13 @@
+name: memory-to-album-studio
+version: 0.1.2
+type: service
+description: Bilingual life events to 5-track concept album studio (lyrics + MV style
+  + cover prompt).
+license: MIT
+entry: src/index.html
+port: 9082
+env_required: []
+author: user-3182
+publisher:
+  public_slug: 3182-memory-to-album-studio
+  code_slug: memory-to-album-studio

@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Memory to Album Studio</title>
+  <style>
+    body{font-family:Inter,system-ui,-apple-system,sans-serif;background:#0b1020;color:#e9eefc;margin:0}
+    .wrap{max-width:1100px;margin:24px auto;padding:0 16px}
+    h1{margin:0 0 10px;font-size:28px}
+    .hint{color:#aab7df;margin-bottom:18px}
+    .grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+    .card{background:#141b34;border:1px solid #24305c;border-radius:14px;padding:14px}
+    label{display:block;font-size:12px;color:#9db0ea;margin-top:8px}
+    input,textarea,select{width:100%;box-sizing:border-box;margin-top:4px;background:#0f1530;color:#eef3ff;border:1px solid #2d3b70;border-radius:10px;padding:8px}
+    textarea{min-height:62px;resize:vertical}
+    button{background:#5d7bff;color:white;border:none;border-radius:10px;padding:10px 14px;margin-top:12px;cursor:pointer}
+    button.alt{background:#2d3b70}
+    #out{white-space:pre-wrap;line-height:1.45;background:#0f1530;border:1px solid #2d3b70;border-radius:12px;padding:12px;min-height:380px}
+    .row{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+    @media (max-width:900px){.grid{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <h1>🎵 Memory to Album Studio (CN+EN)</h1>
+  <div class="hint">Input 5 life events → generate 5 tracks (title + full bilingual lyrics + MV style + cover prompt).</div>
+
+  <div class="grid">
+    <div class="card">
+      <label>Album Working Title</label>
+      <input id="albumTitle" value="Five Years, Five Fires" />
+
+      <label>Tone</label>
+      <select id="tone">
+        <option>healing</option><option>uplifting</option><option>cinematic</option><option>dark</option>
+      </select>
+
+      <label>Style Pool (comma-separated, mixed genres)</label>
+      <input id="styles" value="古风,indie folk,electronic,rock,ambient" />
+
+      <div id="events"></div>
+      <button onclick="generatePack()">Generate Album Pack</button>
+      <button class="alt" onclick="copyOut()">Copy Markdown</button>
+    </div>
+
+    <div class="card">
+      <div id="out">Generated package will appear here...</div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const defaultEvents = [
+    ["Year 1","A difficult beginning in a new city","fear→adaptation","new city,lonely,start"],
+    ["Year 2","Built something that finally worked","doubt→confidence","prototype,night,breakthrough"],
+    ["Year 3","Lost a loved one","warmth→grief→acceptance","rain,letters,silence"],
+    ["Year 4","Changed career direction","chaos→clarity","resign,train,focus"],
+    ["Year 5","Found peace and purpose","restless→peace","sunrise,sea,breath"]
+  ];
+
+  function eventBlock(i, d){
+    return `
+      <div class="card" style="margin-top:10px;background:#101939">
+        <div><b>Event ${i+1}</b></div>
+        <div class="row">
+          <div><label>Time</label><input id="t${i}" value="${d[0]}" /></div>
+          <div><label>Emotion Arc</label><input id="e${i}" value="${d[2]}" /></div>
+        </div>
+        <label>What happened</label><textarea id="w${i}">${d[1]}</textarea>
+        <label>Keywords (2-4)</label><input id="k${i}" value="${d[3]}" />
+      </div>`;
+  }
+
+  document.getElementById('events').innerHTML = defaultEvents.map((d,i)=>eventBlock(i,d)).join('');
+
+  function titleFrom(keys, idx){
+    const first = (keys[0] || `Echo ${idx+1}`).trim();
+    const map = ["Prologue","Signal","Orbit","Breakline","Homecoming"];
+    return `${map[idx] || "Track"}: ${first.charAt(0).toUpperCase()+first.slice(1)}`;
+  }
+
+  function lyricsCNEN(ev, idx, style){
+    const k = ev.keys;
+    const hookCN = `我把${k[0]||'昨日'}点成灯，照见${k[1]||'自己'}的路`; 
+    const hookEN = `I turn ${k[0]||'yesterday'} into light, and find my way through ${k[1]||'the dark'}.`;
+    return `Theme: ${ev.time} · ${style}\n\nLyrics (CN+EN)\n[Verse 1]\n在${ev.time}，${ev.what}，\n我把沉默缝进衣角，风一吹就响。\n${k[2]||'回声'}在夜里反复，像旧城的钟。\n\nIn ${ev.time}, ${ev.what}.\nI stitched my silence to my sleeve, and wind made it sing.\n${k[2]||'Echoes'} kept circling, like bells over an old town.\n\n[Pre-Chorus]\n我知道路不会直，\n但心会学会转弯。\n\nI know the road won’t stay straight,\nbut the heart learns how to turn.\n\n[Chorus]\n${hookCN}\n把破碎的名字，写成新的地图。\n\n${hookEN}\nI redraw every broken name into a brand-new map.\n\n[Bridge]\n如果明天仍有雨，我就把雨声当鼓点。\n如果世界太安静，我就把呼吸当和弦。\n\nIf tomorrow rains again, I’ll use the drops as drums.\nIf the world goes quiet, I’ll tune my breath into chords.\n\n[Outro]\n从${ev.emotion}，我走到此刻。\n你听见了吗？这就是我。\n\nFrom ${ev.emotion}, I arrived here.\nCan you hear it now? This is me.`;
+  }
+
+  function mvStyle(ev, style, idx){
+    const palettes = ["ink black + antique gold","teal + neon violet","steel blue + crimson","sunset orange + grain","silver mist + deep navy"];
+    return `MV Style\n- Palette: ${palettes[idx % palettes.length]}\n- Camera: slow push-in + handheld memory cuts + rhythmic strobe on chorus\n- Scenes: ${ev.keys.join(', ')} + symbolic location tied to "${ev.what}"\n- Wardrobe: genre-matched (${style}) with one recurring accessory across all tracks\n- Pacing: verse = intimate / chorus = wide cinematic release`;
+  }
+
+  function generatePack(){
+    const albumTitle = document.getElementById('albumTitle').value.trim() || 'Untitled Life Album';
+    const tone = document.getElementById('tone').value;
+    const styles = document.getElementById('styles').value.split(',').map(s=>s.trim()).filter(Boolean);
+    const events = Array.from({length:5}, (_,i)=>(
+      {
+        time: document.getElementById(`t${i}`).value.trim(),
+        what: document.getElementById(`w${i}`).value.trim(),
+        emotion: document.getElementById(`e${i}`).value.trim(),
+        keys: document.getElementById(`k${i}`).value.split(',').map(x=>x.trim()).filter(Boolean)
+      }
+    ));
+
+    const tracks = events.map((ev, i)=>{
+      const style = styles[i % Math.max(styles.length,1)] || 'mixed';
+      const title = titleFrom(ev.keys, i);
+      return `## Track ${i+1} — ${title}\nStyle: ${style}\n\n${lyricsCNEN(ev, i, style)}\n\n${mvStyle(ev, style, i)}`;
+    }).join('\n\n---\n\n');
+
+    const coverPrompt = `Album cover for "${albumTitle}", tone=${tone}, mixed genres (${styles.join(', ')}), cinematic bilingual life-story concept, five symbolic motifs from tracks, premium music-art direction, high detail, no text.`;
+
+    const output = `## Album\nTitle: ${albumTitle}\nConcept: A bilingual five-year emotional arc turning memory into momentum.\nTone: ${tone}\n\n${tracks}\n\n## Cover\nCreative brief: One protagonist silhouette crossing five visual zones (ancient ink, analog grain, neon pulse, storm-rock texture, calm horizon), unified by a single glowing thread.\n\nImage prompt:\n${coverPrompt}`;
+
+    document.getElementById('out').textContent = output;
+  }
+
+  async function copyOut(){
+    const text = document.getElementById('out').textContent;
+    await navigator.clipboard.writeText(text);
+    alert('Copied.');
+  }
+</script>
+</body>
+</html>
