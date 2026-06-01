@@ -1,6 +1,6 @@
 name: starchild-brand-registry
 type: service
-version: 0.1.2
+version: 0.1.3
 description: Visual and machine-readable Starchild brand guide for agents, vibe coding
   tools, and app builders.
 license: MIT
