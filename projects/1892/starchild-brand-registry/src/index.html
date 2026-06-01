@@ -1,0 +1,414 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Starchild Brand Registry</title>
+  <style>
+    @font-face {
+      font-family: 'Power Grotesk';
+      src: url('./assets/typography/fonts/PowerGrotesk/PowerGrotesk-Regular.otf') format('opentype');
+      font-weight: 400;
+      font-style: normal;
+    }
+    @font-face {
+      font-family: 'Power Grotesk';
+      src: url('./assets/typography/fonts/PowerGrotesk/PowerGrotesk-Bold.otf') format('opentype');
+      font-weight: 700;
+      font-style: normal;
+    }
+    @font-face {
+      font-family: 'Power Grotesk';
+      src: url('./assets/typography/fonts/PowerGrotesk/PowerGrotesk-Heavy.otf') format('opentype');
+      font-weight: 800;
+      font-style: normal;
+    }
+    @font-face {
+      font-family: 'Google Sans';
+      src: url('./assets/typography/fonts/Google_Sans/GoogleSans-Latin.woff2') format('woff2');
+      font-weight: 300 900;
+      font-style: normal;
+    }
+    @font-face {
+      font-family: 'Google Sans';
+      src: url('./assets/typography/fonts/Google_Sans/GoogleSans-Italic-Latin.woff2') format('woff2');
+      font-weight: 300 900;
+      font-style: italic;
+    }
+    :root {
+      --orange: #F84600;
+      --black: #050505;
+      --ink: #151515;
+      --muted: #646464;
+      --line: #e9e1da;
+      --paper: #FFFFFF;
+      --card: #ffffff;
+      --cream: #fff3e6;
+      --radius: 22px;
+      --shadow: 0 24px 80px rgba(0,0,0,.08);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: 'Google Sans', Inter, system-ui, sans-serif;
+      color: var(--ink);
+      background: var(--paper);
+    }
+    a { color: inherit; }
+    .hero {
+      min-height: 520px;
+      padding: 44px;
+      display: grid;
+      align-items: end;
+      background: linear-gradient(180deg, rgba(0,0,0,.15), rgba(0,0,0,.78)), url('./assets/visual_system/backgrounds/bg_orange_grid.png') center/cover;
+      color: white;
+    }
+    .topbar {
+      position: absolute;
+      top: 28px;
+      left: 44px;
+      right: 44px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 24px;
+    }
+    .brandmark { display: flex; align-items: center; gap: 14px; font-weight: 760; }
+    .brandmark img.icon { width: 34px; height: 34px; }
+    .brandmark img.wordmark { height: 26px; max-width: 180px; object-fit: contain; }
+    .pill {
+      border: 1px solid rgba(255,255,255,.26);
+      border-radius: 999px;
+      padding: 9px 14px;
+      font-size: 13px;
+      color: rgba(255,255,255,.82);
+      backdrop-filter: blur(12px);
+    }
+    h1 {
+      max-width: 960px;
+      margin: 0;
+      font-size: clamp(48px, 8vw, 104px);
+      line-height: .92;
+      letter-spacing: -0.035em;
+    }
+    .hero p {
+      max-width: 760px;
+      margin: 22px 0 0;
+      font-size: clamp(18px, 2vw, 25px);
+      line-height: 1.32;
+      color: rgba(255,255,255,.82);
+    }
+    main { padding: 34px; }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 18px;
+      max-width: 1280px;
+      margin: 0 auto;
+    }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 24px;
+      box-shadow: var(--shadow);
+    }
+    .span-12 { grid-column: span 12; }
+    .span-8 { grid-column: span 8; }
+    .span-6 { grid-column: span 6; }
+    .span-4 { grid-column: span 4; }
+    .span-3 { grid-column: span 3; }
+    h1, h2, h3 { font-family: 'Power Grotesk', 'Google Sans', Inter, system-ui, sans-serif; }
+    h2 { margin: 0 0 14px; font-size: 30px; letter-spacing: -.04em; }
+    h3 { margin: 0 0 8px; font-size: 17px; letter-spacing: -.02em; }
+    p { color: var(--muted); line-height: 1.55; }
+    .rule {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 14px 0;
+      border-top: 1px solid var(--line);
+    }
+    .rule b { min-width: 145px; color: var(--ink); }
+    code, pre {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 13px;
+    }
+    pre {
+      background: #111;
+      color: #f7f0e8;
+      border-radius: 16px;
+      padding: 18px;
+      overflow: auto;
+      line-height: 1.5;
+    }
+    .asset-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px; }
+    .download-menu {
+      position: absolute;
+      right: 12px;
+      bottom: 12px;
+      z-index: 3;
+    }
+    .download {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 26px;
+      height: 26px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: rgba(255,255,255,.94);
+      color: var(--ink);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 760;
+      cursor: pointer;
+      box-shadow: 0 8px 22px rgba(0,0,0,.08);
+    }
+    .download:hover { border-color: var(--orange); color: var(--orange); }
+    .dark .download { background: rgba(255,255,255,.1); color: white; border-color: rgba(255,255,255,.22); }
+    details.download-menu summary { list-style: none; }
+    details.download-menu summary::-webkit-details-marker { display: none; }
+    .download-options {
+      position: absolute;
+      right: 0;
+      bottom: 32px;
+      display: grid;
+      gap: 6px;
+      min-width: 76px;
+      padding: 7px;
+      border: 1px solid var(--line);
+      border-radius: 13px;
+      background: white;
+      box-shadow: 0 14px 40px rgba(0,0,0,.14);
+    }
+    .download-options a {
+      display: block;
+      padding: 7px 9px;
+      border-radius: 9px;
+      color: var(--ink);
+      text-decoration: none;
+      font-size: 12px;
+      font-weight: 700;
+    }
+    .download-options a:hover { background: var(--cream); color: var(--orange); }
+    .asset {
+      position: relative;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 16px 46px 16px 16px;
+      min-height: 160px;
+      display: grid;
+      align-content: center;
+      justify-items: center;
+      gap: 14px;
+      background: #fff;
+    }
+    .asset.dark { background: #080808; }
+    .asset img { max-width: 100%; max-height: 90px; object-fit: contain; }
+    .asset.wordmark { grid-column: span 2; }
+    .asset.wordmark img { width: min(100%, 360px); max-height: 78px; }
+    .caption { font-size: 12px; color: var(--muted); word-break: break-word; overflow-wrap: anywhere; text-align: center; max-width: 100%; line-height: 1.25; }
+    .fileline { max-width: 100%; }
+    .fileline .caption { text-align: center; }
+    .primary-swatches { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 16px; }
+    .swatches { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+    .swatch { overflow: hidden; border-radius: 16px; border: 1px solid var(--line); background: white; }
+    .swatch .color { height: 62px; }
+    .swatch .meta { padding: 8px; font-size: 11px; line-height: 1.25; }
+    .swatch.large .color { height: 118px; }
+    .swatch.large .meta { padding: 12px; font-size: 13px; line-height: 1.35; }
+    .swatch.dark-text .meta, .swatch.dark-text .meta b { color: #fff; }
+    .colour-note { margin-bottom: 14px; }
+    .colour-note p { margin-top: 0; }
+    @media (max-width: 900px) { .primary-swatches { grid-template-columns: 1fr; } }
+    .bg-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; }
+    .bg-card { position: relative; border-radius: 18px; overflow: hidden; border: 1px solid var(--line); background: white; }
+    .bg-card img { width: 100%; height: 150px; object-fit: cover; display: block; }
+    .bg-card div { padding: 12px 46px 12px 12px; font-size: 12px; color: var(--muted); word-break: break-all; min-height: 48px; }
+    .btns { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 14px; }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      padding: 10px 14px;
+      text-decoration: none;
+      background: var(--ink);
+      color: white;
+      font-size: 13px;
+      font-weight: 650;
+    }
+    .btn.secondary { background: white; color: var(--ink); }
+    .agent-note {
+      background: var(--black);
+      color: white;
+      border-color: #262626;
+    }
+    .agent-note p { color: rgba(255,255,255,.72); }
+    .small { font-size: 13px; }
+    @media (max-width: 900px) {
+      .hero, main { padding: 22px; }
+      .topbar { left: 22px; right: 22px; }
+      .span-8, .span-6, .span-4, .span-3 { grid-column: span 12; }
+      .rule { display: block; }
+      .rule b { display: block; margin-bottom: 6px; }
+    }
+  </style>
+</head>
+<body>
+  <section class="hero">
+    <div class="topbar">
+      <div class="brandmark">
+        <img class="icon" src="./assets/logos/icon/starchild_icon.svg" alt="Starchild icon" />
+        <img class="wordmark" src="./assets/logos/wordmark/starchild_words_white.png" alt="Starchild" />
+      </div>
+      <div class="pill">Brand Registry for agents, tools, apps, decks, images, and video</div>
+    </div>
+    <div>
+      <h1>Build with the knowledge of the network.</h1>
+      <p>The Starchild Brand Registry gives humans and agents the canonical logos, colors, typography, visual assets, and voice rules to create work that feels connected to the same system.</p>
+    </div>
+  </section>
+
+  <main>
+    <div class="grid">
+      <section class="card span-8 agent-note">
+        <h2>Agent quick brief</h2>
+        <p>If you are creating a Starchild-branded interface, image, deck, video, landing page, dashboard, or social asset, start here. Use these files before inventing visual direction.</p>
+        <pre>Fetch or inspect:
+./brand.json
+./brand.md
+./tokens.css
+
+Use assets from:
+./assets/logos/
+./assets/typography/
+./assets/visual_system/backgrounds/
+
+Headline typeface: Power Grotesk
+Body/UI typeface: Google Sans
+Voice: clear, capable, direct, slightly opinionated
+Avoid: corporate filler, generic AI phrasing, overhype</pre>
+        <div class="btns">
+          <a class="btn" href="./brand.json">Open brand.json</a>
+          <a class="btn secondary" href="./brand.md">Open brand.md</a>
+          <a class="btn secondary" href="./tokens.css">Open tokens.css</a>
+          <a class="btn secondary" href="https://community.iamstarchild.com/skills/starchild-design-pack">Skill: starchild-design-pack</a>
+        </div>
+      </section>
+
+      <section class="card span-4">
+        <h2>Use order</h2>
+        <div class="rule"><b>1. Read</b><span>`brand.json` for paths and defaults.</span></div>
+        <div class="rule"><b>2. Apply</b><span>Power Grotesk headlines, Google Sans body/UI, logo, background, and voice rules.</span></div>
+        <div class="rule"><b>3. Build</b><span>Keep assets local, paths relative, and output polished.</span></div>
+        <div class="rule"><b>4. Ask</b><span>If a needed asset is missing, ask or mark a placeholder.</span></div>
+      </section>
+
+      <section class="card span-12">
+        <h2>Logos</h2>
+        <div class="asset-grid">
+          <div class="asset">
+            <img src="./assets/logos/icon/starchild_icon.svg" alt="Orange icon">
+            <div class="fileline"><span class="caption">Orange icon</span></div>
+            <details class="download-menu"><summary class="download" title="Download">↓</summary><div class="download-options"><a href="./assets/logos/icon/starchild_icon.svg" download>SVG</a><a href="./assets/logos/icon/starchild_icon.png" download>PNG</a></div></details>
+          </div>
+          <div class="asset">
+            <img src="./assets/logos/icon/starchild-icon-blk.png" alt="Alternative black icon">
+            <div class="fileline"><span class="caption">Alternative black icon</span></div>
+            <a class="download download-menu" href="./assets/logos/icon/starchild-icon-blk.png" download title="Download PNG">↓</a>
+          </div>
+          <div class="asset wordmark">
+            <img src="./assets/logos/wordmark/starchild-words-orange.png" alt="Orange wordmark">
+            <div class="fileline"><span class="caption">Wordmark</span></div>
+            <details class="download-menu"><summary class="download" title="Download">↓</summary><div class="download-options"><a href="./assets/logos/wordmark/Starchild_words.svg" download>SVG</a><a href="./assets/logos/wordmark/starchild-words-orange.png" download>PNG</a></div></details>
+          </div>
+          <div class="asset wordmark dark">
+            <img src="./assets/logos/wordmark/starchild_words_white.png" alt="White wordmark">
+            <div class="fileline"><span class="caption">White wordmark</span></div>
+            <a class="download download-menu" href="./assets/logos/wordmark/starchild_words_white.png" download title="Download PNG">↓</a>
+          </div>
+        </div>
+      </section>
+
+      <section class="card span-12">
+        <h2>The monolith</h2>
+        <p>The monolith in the main logo represents the cognitive leaps of civilization: the moments when knowledge compounds, tools become infrastructure, and individual progress becomes shared progress.</p>
+        <p>Every user who creates an agent with Starchild improves their own knowledge system while also strengthening the knowledge of the network. Each agent becomes a new surface area for memory, workflows, taste, and capability to accumulate.</p>
+      </section>
+
+      <section class="card span-6">
+        <h2>Typography</h2>
+
+        <div style="margin-bottom:24px;">
+          <p style="font-family:'Power Grotesk','Google Sans',sans-serif;font-size:52px;line-height:.95;margin:0;color:#151515;letter-spacing:-.05em;font-weight:800;">Power Grotesk</p>
+          <p>Use Power Grotesk for headlines, hero statements, section titles, and high-emphasis brand moments.</p>
+          <pre>font-family: 'Power Grotesk', 'Google Sans', sans-serif;</pre>
+        </div>
+
+        <div>
+          <p style="font-size:30px;line-height:1;margin:0;color:#151515;font-weight:650;">Google Sans</p>
+          <p>Use Google Sans for body copy, UI text, labels, captions, tables, and product surfaces.</p>
+          <pre>font-family: 'Google Sans', Inter, system-ui, sans-serif;</pre>
+        </div>
+      </section>
+
+      <section class="card span-6">
+        <h2>Colour system</h2>
+        <div class="colour-note">
+          <p>Starchild’s primary colour represents energy, intuition, and momentum. Use it to signal key moments, actions, and emotional states.</p>
+          <p>The secondary orange palette adds depth and hierarchy. Use lighter values for backgrounds and gradients, darker values for emphasis and contrast.</p>
+        </div>
+        <div class="primary-swatches">
+          <div class="swatch large dark-text"><div class="color" style="background:#F84600"></div><div class="meta" style="background:#F84600"><b>Starchild Orange</b><br>RGB 248/70/0<br>CMYK 0/72/100/3<br>HEX #F84600</div></div>
+          <div class="swatch large"><div class="color" style="background:#050505"></div><div class="meta"><b>Black</b><br>RGB 5/5/5<br>HEX #050505</div></div>
+          <div class="swatch large"><div class="color" style="background:#FFFFFF"></div><div class="meta"><b>White</b><br>RGB 255/255/255<br>HEX #FFFFFF</div></div>
+        </div>
+        <div class="swatches">
+          <div class="swatch"><div class="color" style="background:#FFF0DB"></div><div class="meta"><b>Orange/50</b><br>#FFF0DB</div></div>
+          <div class="swatch"><div class="color" style="background:#FFA940"></div><div class="meta"><b>Orange/100</b><br>#FFA940</div></div>
+          <div class="swatch"><div class="color" style="background:#F97300"></div><div class="meta"><b>Orange/200</b><br>#F97300</div></div>
+          <div class="swatch dark-text"><div class="color" style="background:#E25C00"></div><div class="meta" style="background:#E25C00"><b>Orange/300</b><br>#E25C00</div></div>
+          <div class="swatch dark-text"><div class="color" style="background:#C63A00"></div><div class="meta" style="background:#C63A00"><b>Orange/500</b><br>#C63A00</div></div>
+          <div class="swatch dark-text"><div class="color" style="background:#8F2A00"></div><div class="meta" style="background:#8F2A00"><b>Orange/600</b><br>#8F2A00</div></div>
+        </div>
+      </section>
+
+      <section class="card span-12">
+        <h2>Backgrounds</h2>
+        <div class="bg-grid">
+          <div class="bg-card"><img src="./assets/visual_system/backgrounds/bg_black_grid.png" alt=""><div class="fileline"><span class="caption">bg_black_grid.png</span></div><a class="download download-menu" href="./assets/visual_system/backgrounds/bg_black_grid.png" download title="Download">↓</a></div>
+          <div class="bg-card"><img src="./assets/visual_system/backgrounds/BG_blackwithgreywords.jpg" alt=""><div class="fileline"><span class="caption">BG_blackwithgreywords.jpg</span></div><a class="download download-menu" href="./assets/visual_system/backgrounds/BG_blackwithgreywords.jpg" download title="Download">↓</a></div>
+          <div class="bg-card"><img src="./assets/visual_system/backgrounds/BG_monolith.png" alt=""><div class="fileline"><span class="caption">BG_monolith.png</span></div><a class="download download-menu" href="./assets/visual_system/backgrounds/BG_monolith.png" download title="Download">↓</a></div>
+          <div class="bg-card"><img src="./assets/visual_system/backgrounds/bg_orange_grid.png" alt=""><div class="fileline"><span class="caption">bg_orange_grid.png</span></div><a class="download download-menu" href="./assets/visual_system/backgrounds/bg_orange_grid.png" download title="Download">↓</a></div>
+          <div class="bg-card"><img src="./assets/visual_system/backgrounds/bg_orangewithblackwords.png" alt=""><div class="fileline"><span class="caption">bg_orangewithblackwords.png</span></div><a class="download download-menu" href="./assets/visual_system/backgrounds/bg_orangewithblackwords.png" download title="Download">↓</a></div>
+          <div class="bg-card"><img src="./assets/visual_system/backgrounds/bg_pixelburst.png" alt=""><div class="fileline"><span class="caption">bg_pixelburst.png</span></div><a class="download download-menu" href="./assets/visual_system/backgrounds/bg_pixelburst.png" download title="Download">↓</a></div>
+        </div>
+      </section>
+
+      <section class="card span-6">
+        <h2>Voice</h2>
+        <div class="rule"><b>Use</b><span>Clear, capable, direct, slightly opinionated.</span></div>
+        <div class="rule"><b>Avoid</b><span>Corporate filler, generic AI phrasing, overhype, vague abstractions.</span></div>
+        <div class="rule"><b>Default</b><span>Show the concrete workflow, not abstract positioning.</span></div>
+      </section>
+
+      <section class="card span-6">
+        <h2>For vibe coding tools</h2>
+        <pre>Use this registry as the design source of truth.
+Create UI with:
+- Power Grotesk for headlines
+- Google Sans for body and UI text
+- white or black/orange backgrounds
+- Starchild icon or wordmark
+- clear cards with rounded corners
+- concise product language
+
+Do not invent new logos or unrelated palettes.</pre>
+      </section>
+    </div>
+  </main>
+</body>
+</html>

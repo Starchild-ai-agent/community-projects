@@ -1,0 +1,109 @@
+{
+  "brand": "Starchild",
+  "asset_root": "brand/",
+  "instructions_for_agents": {
+    "always_check_before": [
+      "image generation",
+      "slide decks",
+      "videos",
+      "landing pages",
+      "social assets",
+      "investor materials",
+      "public-facing copy"
+    ],
+    "rule": "Use existing brand assets when available. Do not recreate logos, colors, typography, or templates from memory.",
+    "if_missing": "Ask the user for the asset or create a clearly marked placeholder in the correct folder."
+  },
+  "logos": {
+    "icon": {
+      "png": "brand/01_logos/icon/starchild_icon.png",
+      "svg": "brand/01_logos/icon/starchild_icon.svg",
+      "alternative_black_png": "brand/01_logos/icon/starchild-icon-blk.png"
+    },
+    "wordmark": {
+      "svg": "brand/01_logos/wordmark/Starchild_words.svg",
+      "orange_png": "brand/01_logos/wordmark/starchild-words-orange.png",
+      "white_png": "brand/01_logos/wordmark/starchild_words_white.png"
+    },
+    "primary_folder": "brand/01_logos/primary/",
+    "monochrome_folder": "brand/01_logos/monochrome/",
+    "deprecated_folder": "brand/01_logos/deprecated_do_not_use/"
+  },
+  "colors": {
+    "source_folder": "brand/02_colors/",
+    "tokens": {
+      "primary": "#F84600",
+      "orange_400": "#F84600",
+      "orange_50": "#FFF0DB",
+      "orange_100": "#FFA940",
+      "orange_200": "#F97300",
+      "orange_300": "#E25C00",
+      "orange_500": "#C63A00",
+      "orange_600": "#8F2A00",
+      "background": "#FFFFFF",
+      "text": "#151515",
+      "black": "#050505",
+      "accent": "#F84600"
+    },
+    "palette": [
+      {"name": "Orange/50", "hex": "#FFF0DB", "rgb": "255/240/219", "cmyk": "0/6/14/0"},
+      {"name": "Orange/100", "hex": "#FFA940", "rgb": "255/169/64", "cmyk": "0/34/75/0"},
+      {"name": "Orange/200", "hex": "#F97300", "rgb": "249/115/0", "cmyk": "0/54/100/2"},
+      {"name": "Orange/300", "hex": "#E25C00", "rgb": "226/92/0", "cmyk": "0/59/100/11"},
+      {"name": "Starchild Orange/400", "hex": "#F84600", "rgb": "248/70/0", "cmyk": "0/72/100/3"},
+      {"name": "Orange/500", "hex": "#C63A00", "rgb": "198/58/0", "cmyk": "0/71/100/22"},
+      {"name": "Orange/600", "hex": "#8F2A00", "rgb": "143/42/0", "cmyk": "0/71/100/44"}
+    ]
+  },
+  "typography": {
+    "source_folder": "brand/03_typography/",
+    "headline": "Power Grotesk",
+    "body_ui": "Google Sans",
+    "font_files": {
+      "power_grotesk_regular": "brand/03_typography/fonts/PowerGrotesk/PowerGrotesk-Regular.otf",
+      "power_grotesk_bold": "brand/03_typography/fonts/PowerGrotesk/PowerGrotesk-Bold.otf",
+      "power_grotesk_heavy": "brand/03_typography/fonts/PowerGrotesk/PowerGrotesk-Heavy.otf",
+      "google_sans_regular_variable": "brand/03_typography/fonts/Google_Sans/GoogleSans-VariableFont_GRAD,opsz,wght.ttf",
+      "google_sans_italic_variable": "brand/03_typography/fonts/Google_Sans/GoogleSans-Italic-VariableFont_GRAD,opsz,wght.ttf",
+      "google_sans_web_regular_subset": "src/assets/typography/fonts/Google_Sans/GoogleSans-Latin.woff2",
+      "google_sans_web_italic_subset": "src/assets/typography/fonts/Google_Sans/GoogleSans-Italic-Latin.woff2",
+      "google_sans_license": "brand/03_typography/fonts/Google_Sans/OFL.txt",
+      "google_sans_readme": "brand/03_typography/fonts/Google_Sans/README.txt"
+    },
+    "fallback": "Inter, system-ui, sans-serif"
+  },
+  "templates": {
+    "slides": "brand/05_templates/slides/",
+    "social": "brand/05_templates/social/",
+    "blog": "brand/05_templates/blog/",
+    "video": "brand/05_templates/video/"
+  },
+  "visual_system": {
+    "icons": "brand/04_visual_system/icons/",
+    "illustrations": "brand/04_visual_system/illustrations/",
+    "patterns": "brand/04_visual_system/patterns/",
+    "backgrounds": {
+      "black_grid": "brand/04_visual_system/backgrounds/bg_black_grid.png",
+      "black_with_grey_words": "brand/04_visual_system/backgrounds/BG_blackwithgreywords.jpg",
+      "monolith": "brand/04_visual_system/backgrounds/BG_monolith.png",
+      "orange_grid": "brand/04_visual_system/backgrounds/bg_orange_grid.png",
+      "orange_with_black_words": "brand/04_visual_system/backgrounds/bg_orangewithblackwords.png",
+      "pixelburst": "brand/04_visual_system/backgrounds/bg_pixelburst.png"
+    },
+    "product_screenshots": "brand/04_visual_system/product_screenshots/"
+  },
+  "voice": {
+    "tone": [
+      "clear",
+      "capable",
+      "direct",
+      "slightly opinionated"
+    ],
+    "avoid": [
+      "corporate filler",
+      "generic AI phrasing",
+      "overhype",
+      "vague abstractions"
+    ]
+  }
+}

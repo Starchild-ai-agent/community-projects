@@ -1,0 +1,12 @@
+name: starchild-brand-registry
+type: service
+version: 0.1.1
+description: Visual and machine-readable Starchild brand guide for agents, vibe coding
+  tools, and app builders.
+license: MIT
+entry: src/index.html
+port: 7799
+publisher:
+  code_slug: starchild-brand-registry
+  public_slug: starchild-brand
+author: user-1892
