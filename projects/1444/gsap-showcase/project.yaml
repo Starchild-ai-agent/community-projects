@@ -1,0 +1,29 @@
+name: gsap-showcase
+version: 1.0.0
+type: service
+license: MIT
+entry: src/index.html
+port: 8910
+command: python3 -m http.server 8910 --bind 127.0.0.1
+description: 'Interactive showcase of all 8 GSAP skills (gsap-core, gsap-timeline,
+
+  gsap-scrolltrigger, gsap-plugins, gsap-utils, gsap-react, gsap-frameworks,
+
+  gsap-performance) with live demos for each skill''s key features. Pure
+
+  HTML+CSS+JS, no build step. Designed as both a learning resource for the
+
+  GSAP skill suite and a copy-paste template for production animations.
+
+  '
+env_required: []
+publisher:
+  code_slug: gsap-showcase
+  public_slug: gsap-showcase
+tags:
+- gsap
+- animation
+- showcase
+- frontend
+- skill-demo
+author: user-1444

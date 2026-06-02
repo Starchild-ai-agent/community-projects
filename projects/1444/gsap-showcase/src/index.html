@@ -1,0 +1,374 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>GSAP Skills Showcase</title>
+<link rel="stylesheet" href="styles.css" />
+<!-- GSAP 3.13 - 全部 plugin 免费 (Webflow 收购后) -->
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/Flip.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/Draggable.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/MotionPathPlugin.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/TextPlugin.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/SplitText.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/CustomEase.min.js"></script>
+</head>
+<body>
+
+<!-- ─── 侧边导航 ─── -->
+<aside class="sidebar">
+  <div class="logo">
+    <span class="logo-mark">GSAP</span>
+    <span class="logo-sub">Skills Showcase</span>
+  </div>
+  <nav>
+    <a href="#hero" class="nav-link active" data-target="hero">🚀 Intro</a>
+    <a href="#core" class="nav-link" data-target="core">① Core · Eases</a>
+    <a href="#stagger" class="nav-link" data-target="stagger">② Core · Stagger</a>
+    <a href="#timeline" class="nav-link" data-target="timeline">③ Timeline</a>
+    <a href="#scrub" class="nav-link" data-target="scrub">④ ScrollTrigger · Scrub</a>
+    <a href="#pin" class="nav-link" data-target="pin">⑤ ScrollTrigger · Pin</a>
+    <a href="#flip" class="nav-link" data-target="flip">⑥ Plugins · Flip</a>
+    <a href="#draggable" class="nav-link" data-target="draggable">⑦ Plugins · Draggable</a>
+    <a href="#motionpath" class="nav-link" data-target="motionpath">⑧ Plugins · MotionPath</a>
+    <a href="#splittext" class="nav-link" data-target="splittext">⑨ Plugins · SplitText</a>
+    <a href="#utils" class="nav-link" data-target="utils">⑩ Utils · clamp/map</a>
+    <a href="#perf" class="nav-link" data-target="perf">⑪ Performance</a>
+    <a href="#framework" class="nav-link" data-target="framework">⑫ Frameworks</a>
+    <a href="#install" class="nav-link" data-target="install">📦 获取 Skill</a>
+  </nav>
+  <div class="foot">
+    <div>GSAP 3.13 · 全部 plugin 免费</div>
+    <div class="muted">滚动或点击侧栏查看</div>
+    <div class="diag" id="diag">loading…</div>
+  </div>
+</aside>
+
+<main class="content">
+
+  <!-- ═══ HERO ═══ -->
+  <section id="hero" class="section section-hero">
+    <div class="bg-grid"></div>
+    <h1 class="hero-title" id="heroTitle">GSAP Skills Showcase</h1>
+    <p class="hero-sub" id="heroSub">8 个官方 skill · 一个交互式 dashboard 看完它能做什么</p>
+    <div class="hero-meta">
+      <span class="chip">gsap-core</span>
+      <span class="chip">gsap-timeline</span>
+      <span class="chip">gsap-scrolltrigger</span>
+      <span class="chip">gsap-plugins</span>
+      <span class="chip">gsap-utils</span>
+      <span class="chip">gsap-react</span>
+      <span class="chip">gsap-frameworks</span>
+      <span class="chip">gsap-performance</span>
+    </div>
+    <div class="scroll-hint">↓ 滚动开始</div>
+  </section>
+
+  <!-- ═══ ① CORE / EASES ═══ -->
+  <section id="core" class="section">
+    <header class="sec-head">
+      <span class="sec-tag">skill · gsap-core</span>
+      <h2>Tweens & Eases</h2>
+      <p>GSAP 的最基本能力：把元素从 A 状态过渡到 B 状态。Easing 决定它怎么"感觉"运动。</p>
+    </header>
+    <div class="ease-grid" id="easeGrid"></div>
+    <button class="btn-primary" id="playEases">▶ 播放全部 Eases</button>
+    <pre class="code"><code>gsap.to(".box", { x: 400, duration: 1.5, ease: "elastic.out(1, 0.3)" });</code></pre>
+  </section>
+
+  <!-- ═══ ② STAGGER ═══ -->
+  <section id="stagger" class="section">
+    <header class="sec-head">
+      <span class="sec-tag">skill · gsap-core</span>
+      <h2>Stagger · 错峰动画</h2>
+      <p>一行代码让 100 个元素按顺序、按中心、按随机出场。</p>
+    </header>
+    <div class="stagger-grid" id="staggerGrid"></div>
+    <div class="ctrl-row">
+      <button class="btn" data-stagger="start">from: start</button>
+      <button class="btn" data-stagger="center">from: center</button>
+      <button class="btn" data-stagger="edges">from: edges</button>
+      <button class="btn" data-stagger="random">from: random</button>
+    </div>
+    <pre class="code"><code>gsap.to(".cell", { scale: 0, stagger: { amount: 0.6, from: "center", grid: [10,10] } });</code></pre>
+  </section>
+
+  <!-- ═══ ③ TIMELINE ═══ -->
+  <section id="timeline" class="section">
+    <header class="sec-head">
+      <span class="sec-tag">skill · gsap-timeline</span>
+      <h2>Timeline · 时间线编排</h2>
+      <p>把多个动画串成一条可控的时间线，支持播放 / 暂停 / 反向 / 拖动进度条。</p>
+    </header>
+    <div class="tl-stage">
+      <div class="tl-box" id="tlA">A</div>
+      <div class="tl-box" id="tlB">B</div>
+      <div class="tl-box" id="tlC">C</div>
+      <div class="tl-box" id="tlD">D</div>
+    </div>
+    <div class="ctrl-row">
+      <button class="btn" id="tlPlay">▶ Play</button>
+      <button class="btn" id="tlPause">⏸ Pause</button>
+      <button class="btn" id="tlReverse">⏮ Reverse</button>
+      <button class="btn" id="tlRestart">⟳ Restart</button>
+    </div>
+    <input type="range" id="tlProgress" min="0" max="1" step="0.001" value="0" class="slider" />
+    <pre class="code"><code>const tl = gsap.timeline({ defaults: { duration: 0.6, ease: "power2.out" } });
+tl.to("#tlA", { x: 300 })
+  .to("#tlB", { x: 300, rotation: 180 }, "&lt;0.2")
+  .to("#tlC", { x: 300, scale: 1.5 }, "&lt;0.2")
+  .to("#tlD", { x: 300, backgroundColor: "#f43f5e" }, "&lt;0.2");</code></pre>
+  </section>
+
+  <!-- ═══ ④ SCROLLTRIGGER SCRUB ═══ -->
+  <section id="scrub" class="section section-tall">
+    <header class="sec-head">
+      <span class="sec-tag">skill · gsap-scrolltrigger</span>
+      <h2>ScrollTrigger · Scrub</h2>
+      <p>动画进度跟着滚动条走。慢慢滚 ↓ 看 SVG 描边和数字一起被你"画"出来。</p>
+    </header>
+    <div class="scrub-stage">
+      <svg viewBox="0 0 200 200" class="scrub-svg">
+        <circle id="scrubCircle" cx="100" cy="100" r="80" fill="none" stroke="#a78bfa" stroke-width="4"
+                stroke-dasharray="502" stroke-dashoffset="502" stroke-linecap="round" />
+        <text x="100" y="115" text-anchor="middle" fill="#fff" font-size="42" font-weight="700" id="scrubNum">0</text>
+      </svg>
+      <div class="scrub-spacer"></div>
+    </div>
+  </section>
+
+  <!-- ═══ ⑤ PIN + PARALLAX ═══ -->
+  <section id="pin" class="section section-tall">
+    <header class="sec-head">
+      <span class="sec-tag">skill · gsap-scrolltrigger</span>
+      <h2>Pin + Parallax</h2>
+      <p>把一个区块"钉"在视口里，让里面的层按不同速度移动，营造景深感。</p>
+    </header>
+    <div class="parallax-wrap" id="parallaxWrap">
+      <div class="parallax-layer layer-back">★ ✦ ✧  ✦ ★  ✧ ✦ ★ ✦ ✧</div>
+      <div class="parallax-layer layer-mid">CITY · NIGHT · 2026</div>
+      <div class="parallax-layer layer-front">🚀</div>
+    </div>
+  </section>
+
+  <!-- ═══ ⑥ FLIP ═══ -->
+  <section id="flip" class="section">
+    <header class="sec-head">
+      <span class="sec-tag">skill · gsap-plugins (Flip)</span>
+      <h2>Flip · 布局变形</h2>
+      <p>截屏旧布局 → 改 DOM/CSS → Flip.from 自动算差值动画。点按钮切换布局看看：</p>
+    </header>
+    <div id="flipBoard" class="flip-board grid-mode">
+      <div class="flip-card" style="background:#f43f5e">1</div>
+      <div class="flip-card" style="background:#f59e0b">2</div>
+      <div class="flip-card" style="background:#10b981">3</div>
+      <div class="flip-card" style="background:#3b82f6">4</div>
+      <div class="flip-card" style="background:#a78bfa">5</div>
+      <div class="flip-card" style="background:#ec4899">6</div>
+    </div>
+    <div class="ctrl-row">
+      <button class="btn" id="flipGrid">Grid 布局</button>
+      <button class="btn" id="flipList">List 布局</button>
+      <button class="btn" id="flipStack">Stack 堆叠</button>
+    </div>
+    <pre class="code"><code>const state = Flip.getState(".flip-card");
+board.classList.toggle("list-mode");        // ← 改任何布局都行
+Flip.from(state, { duration: 0.7, ease: "power2.inOut", stagger: 0.04 });</code></pre>
+  </section>
+
+  <!-- ═══ ⑦ DRAGGABLE ═══ -->
+  <section id="draggable" class="section">
+    <header class="sec-head">
+      <span class="sec-tag">skill · gsap-plugins (Draggable)</span>
+      <h2>Draggable · 拖拽</h2>
+      <p>给任何元素加拖拽。带边界、惯性、回弹。试着拖一下：</p>
+    </header>
+    <div class="drag-container" id="dragContainer">
+      <div class="drag-card" style="background:#f43f5e">拖我</div>
+      <div class="drag-card" style="background:#f59e0b">拖我</div>
+      <div class="drag-card" style="background:#10b981">拖我</div>
+      <div class="drag-card" style="background:#3b82f6">拖我</div>
+      <div class="drag-card" style="background:#a78bfa">拖我</div>
+    </div>
+    <pre class="code"><code>Draggable.create(".drag-card", { bounds: "#dragContainer", inertia: false });</code></pre>
+  </section>
+
+  <!-- ═══ ⑧ MOTIONPATH ═══ -->
+  <section id="motionpath" class="section">
+    <header class="sec-head">
+      <span class="sec-tag">skill · gsap-plugins (MotionPath)</span>
+      <h2>MotionPath · 沿路径运动</h2>
+      <p>让元素沿任意 SVG 路径飞，自动旋转对齐切线方向。</p>
+    </header>
+    <svg viewBox="0 0 600 200" class="path-svg">
+      <path id="theLine" d="M 50 100 Q 150 0 300 100 T 550 100" fill="none" stroke="#334155" stroke-width="2" stroke-dasharray="4 4"/>
+      <circle id="rocket" cx="0" cy="0" r="14" fill="#f43f5e"/>
+    </svg>
+    <button class="btn-primary" id="playPath">▶ 起飞</button>
+    <pre class="code"><code>gsap.to("#rocket", { motionPath: { path: "#theLine", align: "#theLine", autoRotate: true }, duration: 3 });</code></pre>
+  </section>
+
+  <!-- ═══ ⑨ SPLITTEXT ═══ -->
+  <section id="splittext" class="section">
+    <header class="sec-head">
+      <span class="sec-tag">skill · gsap-plugins (SplitText)</span>
+      <h2>SplitText · 字符级动画</h2>
+      <p>把一段文字拆成单字 / 单词 / 单行，每个字单独动画。</p>
+    </header>
+    <h3 class="split-target" id="splitTarget">Animate every single character with GSAP.</h3>
+    <div class="ctrl-row">
+      <button class="btn" data-split="chars">By Chars</button>
+      <button class="btn" data-split="words">By Words</button>
+      <button class="btn" data-split="lines">By Lines</button>
+    </div>
+    <pre class="code"><code>const split = new SplitText("#title", { type: "chars" });
+gsap.from(split.chars, { y: 50, opacity: 0, stagger: 0.04, ease: "back.out(2)" });</code></pre>
+  </section>
+
+  <!-- ═══ ⑩ UTILS ═══ -->
+  <section id="utils" class="section">
+    <header class="sec-head">
+      <span class="sec-tag">skill · gsap-utils</span>
+      <h2>gsap.utils · 数值帮手</h2>
+      <p>clamp / mapRange / random / snap — 写动画前的数学小工具。拖滑块看映射结果：</p>
+    </header>
+    <div class="utils-demo">
+      <label>输入值（0–100）：<input type="range" id="utilsInput" min="0" max="100" value="50" /></label>
+      <div class="utils-row"><span class="utils-k">输入</span><span class="utils-v" id="vIn">50</span></div>
+      <div class="utils-row"><span class="utils-k">clamp(20, 80)</span><span class="utils-v" id="vClamp">50</span></div>
+      <div class="utils-row"><span class="utils-k">mapRange → (0, 360°)</span><span class="utils-v" id="vMap">180°</span></div>
+      <div class="utils-row"><span class="utils-k">snap(25)</span><span class="utils-v" id="vSnap">50</span></div>
+      <div class="utils-row"><span class="utils-k">normalize 0–1</span><span class="utils-v" id="vNorm">0.50</span></div>
+      <div class="utils-visual"><div id="utilsBox" class="utils-box"></div></div>
+    </div>
+    <pre class="code"><code>gsap.utils.clamp(20, 80, value)
+gsap.utils.mapRange(0, 100, 0, 360, value)
+gsap.utils.snap(25, value)</code></pre>
+  </section>
+
+  <!-- ═══ ⑪ PERFORMANCE ═══ -->
+  <section id="perf" class="section">
+    <header class="sec-head">
+      <span class="sec-tag">skill · gsap-performance</span>
+      <h2>Performance · transform vs layout</h2>
+      <p>左边动 <code>left</code>（触发 layout / paint），右边动 <code>x</code>（只 transform / GPU）。开 DevTools 看帧率差异。</p>
+    </header>
+    <div class="perf-grid">
+      <div class="perf-col">
+        <h4>❌ left / top（layout 重排）</h4>
+        <div class="perf-track"><div id="perfBad" class="perf-box">left</div></div>
+      </div>
+      <div class="perf-col">
+        <h4>✅ x / y（GPU transform）</h4>
+        <div class="perf-track"><div id="perfGood" class="perf-box">x</div></div>
+      </div>
+    </div>
+    <button class="btn-primary" id="perfRun">▶ 同时启动 100 元素</button>
+    <pre class="code"><code>// ❌ 慢：每帧重新计算 layout
+gsap.to(".box", { left: 400 });
+
+// ✅ 快：只走 compositor 线程
+gsap.to(".box", { x: 400 });</code></pre>
+  </section>
+
+  <!-- ═══ ⑫ FRAMEWORKS ═══ -->
+  <section id="framework" class="section">
+    <header class="sec-head">
+      <span class="sec-tag">skill · gsap-react / gsap-frameworks</span>
+      <h2>框架集成</h2>
+      <p>同样的 GSAP API，在 React / Vue / Svelte 里都能用。关键是清理。</p>
+    </header>
+    <div class="fw-grid">
+      <div class="fw-card">
+        <h4>⚛️ React (useGSAP)</h4>
+        <pre class="code"><code>import { useGSAP } from "@gsap/react";
+
+useGSAP(() =&gt; {
+  gsap.to(".box", { x: 100 });
+}, { scope: containerRef });</code></pre>
+      </div>
+      <div class="fw-card">
+        <h4>🟢 Vue 3</h4>
+        <pre class="code"><code>onMounted(() =&gt; {
+  ctx = gsap.context(() =&gt; {
+    gsap.to(".box", { x: 100 });
+  }, root.value);
+});
+onUnmounted(() =&gt; ctx.revert());</code></pre>
+      </div>
+      <div class="fw-card">
+        <h4>🟠 Svelte</h4>
+        <pre class="code"><code>onMount(() =&gt; {
+  const ctx = gsap.context(() =&gt; {
+    gsap.to(".box", { x: 100 });
+  }, container);
+  return () =&gt; ctx.revert();
+});</code></pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ 如何获取这些 GSAP Skill ═══ -->
+  <section id="install" class="section">
+    <header class="sec-head">
+      <span class="sec-tag">get the skills</span>
+      <h2>怎么用上这些能力？</h2>
+      <p>本页面所有动画背后，是 8 个独立的 GSAP skill —— 每一个都是一份让 AI Agent 写正确 GSAP 代码的"使用手册"。</p>
+    </header>
+
+    <div class="install-grid">
+      <div class="install-card">
+        <h3>📦 8 个 GSAP Skill 一览</h3>
+        <ul class="skill-list">
+          <li><b>gsap-core</b> — Tweens, eases, stagger, matchMedia</li>
+          <li><b>gsap-timeline</b> — 多步骤时间线编排</li>
+          <li><b>gsap-scrolltrigger</b> — 滚动驱动 / pin / scrub</li>
+          <li><b>gsap-plugins</b> — Flip / Draggable / MotionPath / SplitText 等</li>
+          <li><b>gsap-utils</b> — clamp / mapRange / snap 数值帮手</li>
+          <li><b>gsap-react</b> — useGSAP, React 集成</li>
+          <li><b>gsap-frameworks</b> — Vue / Svelte 集成</li>
+          <li><b>gsap-performance</b> — 性能最佳实践</li>
+        </ul>
+        <p class="install-src">📍 来源：<code>greensock/gsap-skills</code> (GitHub)</p>
+      </div>
+
+      <div class="install-card">
+        <h3>🚀 在 Starchild 里安装</h3>
+        <p>直接对你的 Agent 说一句：</p>
+        <pre class="install-cmd"><code>帮我安装 GSAP 相关的所有 skill</code></pre>
+        <p>或者指定单个：</p>
+        <pre class="install-cmd"><code>install skill gsap-core</code></pre>
+        <p class="muted">Agent 会调用 <code>search_skills</code> 自动从社区源安装。装完之后，你跟 Agent 提"写一个滚动动画"，它就会自动读 <code>gsap-scrolltrigger</code> 的 SKILL.md 来生成正确代码。</p>
+      </div>
+
+      <div class="install-card">
+        <h3>🍴 Fork 这个 Showcase</h3>
+        <p>这个项目本身也已开源。要在你自己的环境里跑一份：</p>
+        <pre class="install-cmd"><code>fork 1444/gsap-showcase</code></pre>
+        <p class="muted">Fork 后你可以随意改 — 把它当成 GSAP 学习起点，或者作为自己 dashboard 的动画模板。</p>
+      </div>
+
+      <div class="install-card">
+        <h3>💡 为什么需要 Skill？</h3>
+        <p>大模型对 GSAP 的"训练记忆"经常陈旧 — 比如以为 SplitText 还需要付费 Club 会员（Webflow 收购后已全免费），或者给 React 用错误的清理模式。</p>
+        <p>Skill 是给 AI 看的"权威说明书"，让它写出来的 GSAP 代码不会过时、不会错。</p>
+      </div>
+    </div>
+
+    <div class="install-cta">
+      <p class="muted">💜 GSAP by GreenSock · Skill 由 GreenSock 官方维护 · 演示由 Starchild Agent 生成</p>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <p>Made with GSAP 3.13 · 全部 plugin 免费 · 8 个 skill 一站演示</p>
+    <p class="muted">本页面由 Starchild Agent 用 GSAP skill 自动构建 · 你也可以让 Agent 帮你做类似的</p>
+  </footer>
+
+</main>
+
+<script src="main.js"></script>
+</body>
+</html>

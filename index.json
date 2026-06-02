@@ -1,6 +1,25 @@
 [
   {
     "type": "service",
+    "user_id": "1444",
+    "slug": "gsap-showcase",
+    "version": "1.0.0",
+    "description": "Interactive showcase of all 8 GSAP skills (gsap-core, gsap-timeline,\ngsap-scrolltrigger, gsap-plugins, gsap-utils, gsap-react, gsap-frameworks,\ngsap-performance) with live demos for each skill's key features. Pure\nHTML+CSS+JS, no build step. Designed as both a learning resource for the\nGSAP skill suite and a copy-paste template for production animations.\n",
+    "tags": [
+      "gsap",
+      "animation",
+      "showcase",
+      "frontend",
+      "skill-demo"
+    ],
+    "author": "user-1444",
+    "license": "MIT",
+    "github_url": "https://github.com/Starchild-ai-agent/community-projects/tree/main/projects/1444/gsap-showcase",
+    "updated_at": "2026-06-02T20:57:28.127Z",
+    "created_at": "2026-06-02T20:57:28.127Z"
+  },
+  {
+    "type": "service",
     "user_id": "1892",
     "slug": "starchild-brand-registry",
     "version": "0.1.5",
