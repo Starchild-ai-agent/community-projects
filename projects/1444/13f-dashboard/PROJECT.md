@@ -1,6 +1,8 @@
 ## What
 13F Atlas is an interactive dashboard for SEC Form 13F filings. It aggregates institutional holdings by manager and quarter, then provides drill-down views for portfolio composition, baseline performance comparison, and quarter-over-quarter holdings diffs.
 
+中文简介：13F Atlas 是一个 SEC 13F 机构持仓可视化看板，支持基金/季度下钻、持仓结构、基准对照与环比变化分析。
+
 ## Required env
 - SEC_USER_AGENT (optional)
 - F13_DATA_DIR (optional)

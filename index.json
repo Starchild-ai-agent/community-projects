@@ -3,7 +3,7 @@
     "type": "service",
     "user_id": "1444",
     "slug": "13f-dashboard",
-    "version": "0.1.1",
+    "version": "0.1.2",
     "description": "Interactive SEC 13F dashboard for institutional holdings analysis, fund drill-down, allocation treemap, and quarter-over-quarter position changes.",
     "tags": [
       "sec",
@@ -15,7 +15,7 @@
     "author": "user-1444",
     "license": "MIT",
     "github_url": "https://github.com/Starchild-ai-agent/community-projects/tree/main/projects/1444/13f-dashboard",
-    "updated_at": "2026-06-03T13:59:41.257Z",
+    "updated_at": "2026-06-03T14:02:48.072Z",
     "created_at": "2026-06-03T13:59:41.257Z"
   },
   {
