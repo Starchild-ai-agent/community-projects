@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>13F Atlas — Institutional Holdings</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="stylesheet" href="styles.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>
+</head>
+<body>
+
+<div class="bg-layer">
+  <div class="bg-grid"></div>
+  <div class="bg-blob blob-1"></div>
+  <div class="bg-blob blob-2"></div>
+  <div class="bg-blob blob-3"></div>
+</div>
+
+<header class="topbar">
+  <div class="brand" id="brand">
+    <img src="favicon.svg" alt="" width="24" height="24" style="vertical-align:middle">
+    <span class="brand-text">13F<span class="brand-accent">·ATLAS</span></span>
+  </div>
+  <nav class="topnav">
+    <button class="navbtn active" data-view="picker">FUNDS</button>
+    <button class="navbtn" data-view="detail" id="navDetail" disabled>HOLDINGS</button>
+    <a class="navbtn ext" href="https://www.sec.gov/data-research/sec-markets-data/form-13f-data-sets" target="_blank">SEC ↗</a>
+  </nav>
+</header>
+
+<main class="view view-picker active" id="viewPicker">
+  <section class="hero">
+    <div class="hero-eyebrow">QUARTERLY HOLDINGS · INSTITUTIONAL CAPITAL</div>
+    <h1 class="hero-title">
+      <span class="line"><span class="word">Read</span> <span class="word">the</span> <span class="word">tape</span></span>
+      <span class="line"><span class="word">the</span> <span class="word italic">whales</span> <span class="word">leave.</span></span>
+    </h1>
+    <p class="hero-sub">
+      Every 45 days, the world's largest funds file Form 13F-HR. We turn it into something readable.
+    </p>
+    <div class="hero-stats">
+      <div class="stat"><span class="stat-num" data-target="0" id="statFunds">0</span><span class="stat-lbl">Funds</span></div>
+      <div class="stat"><span class="stat-num" data-target="0" id="statFilings">0</span><span class="stat-lbl">Filings</span></div>
+      <div class="stat"><span class="stat-num" data-target="0" id="statValue" data-format="usd">$0</span><span class="stat-lbl">Latest AUM tracked</span></div>
+    </div>
+  </section>
+
+  <section class="picker">
+    <div class="picker-head">
+      <h2 class="section-title">Choose a manager</h2>
+      <div class="picker-actions">
+        <div class="picker-search">
+          <input type="text" id="searchInput" placeholder="Filter installed…">
+        </div>
+        <button class="add-btn" id="addFundBtn">
+          <span class="plus">+</span> Add fund
+        </button>
+      </div>
+    </div>
+    <div class="fund-grid" id="fundGrid"></div>
+  </section>
+</main>
+
+<!-- Add Fund Modal -->
+<div class="modal-backdrop" id="modalBackdrop">
+  <div class="modal" id="addModal">
+    <div class="modal-head">
+      <h3>Add a fund</h3>
+      <button class="modal-close" id="modalClose">×</button>
+    </div>
+    <div class="modal-sub">Search SEC EDGAR for institutional managers that file Form 13F.</div>
+    <div class="modal-search">
+      <input type="text" id="secSearch" placeholder="Bridgewater · BlackRock · CIK 1067983 …" autofocus>
+      <select id="secLimit">
+        <option value="4">Last 4 quarters</option>
+        <option value="8" selected>Last 8 quarters</option>
+        <option value="20">Last 20 quarters</option>
+        <option value="0">All history</option>
+      </select>
+    </div>
+    <div class="modal-results" id="secResults">
+      <div class="empty modal-empty">Type at least 2 characters…</div>
+    </div>
+    <div class="modal-job" id="modalJob"></div>
+  </div>
+</div>
+
+<main class="view view-detail" id="viewDetail">
+  <button class="back-btn" id="backBtn"><span>←</span> Back to managers</button>
+
+  <section class="detail-hero" id="detailHero">
+    <div class="detail-head">
+      <div>
+        <div class="hero-eyebrow" id="detailCik">CIK · —</div>
+        <h1 class="detail-name" id="detailName">—</h1>
+      </div>
+      <div class="detail-headline">
+        <div class="big-num"><span id="detailValue">$0</span></div>
+        <div class="big-lbl"><span id="detailPeriod">—</span> · <span id="detailHoldings">0</span> positions</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="quarters">
+    <div class="quarters-track" id="quartersTrack"></div>
+  </section>
+
+  <section class="panels">
+    <div class="panel panel-tree">
+      <div class="panel-head">
+        <h3>Portfolio composition</h3>
+        <span class="panel-sub" id="treeSub">—</span>
+      </div>
+      <div class="treemap" id="treemap"></div>
+    </div>
+
+    <div class="panel panel-diff">
+      <div class="panel-head">
+        <h3>Quarter-over-quarter changes</h3>
+        <span class="panel-sub" id="diffSub">vs. prior quarter</span>
+      </div>
+      <div class="diff-tabs">
+        <button class="dtab active" data-cat="NEW">New <span class="dcount" id="cnt-NEW">0</span></button>
+        <button class="dtab" data-cat="ADDED">Added <span class="dcount" id="cnt-ADDED">0</span></button>
+        <button class="dtab" data-cat="REDUCED">Reduced <span class="dcount" id="cnt-REDUCED">0</span></button>
+        <button class="dtab" data-cat="CLOSED">Closed <span class="dcount" id="cnt-CLOSED">0</span></button>
+      </div>
+      <div class="diff-list" id="diffList"></div>
+    </div>
+  </section>
+
+  <section class="panel panel-timeline">
+    <div class="panel-head">
+      <h3>AUM &amp; performance</h3>
+      <div class="tl-controls">
+        <div class="tl-mode">
+          <button class="modebtn active" data-mode="aum">$ AUM</button>
+          <button class="modebtn" data-mode="indexed">Indexed · vs benchmarks</button>
+        </div>
+      </div>
+    </div>
+    <div class="tl-baselines" id="tlBaselines"></div>
+    <div class="timeline" id="timeline"></div>
+  </section>
+
+  <section class="panel panel-table">
+    <div class="panel-head">
+      <div>
+        <h3>Holdings · <span id="tableQ">—</span></h3>
+        <span class="panel-sub" id="tableSub">—</span>
+      </div>
+      <div class="tbl-controls">
+        <div class="tbl-search-wrap">
+          <input id="tblSearch" placeholder="Filter ticker or name…" type="text">
+        </div>
+      </div>
+    </div>
+    <div class="table-wrap">
+      <table class="hold-table">
+        <thead>
+          <tr><th>#</th><th>Ticker</th><th>Issuer</th><th>Class</th><th class="num">Shares</th><th class="num">Value</th><th class="num">Weight</th><th>Type</th></tr>
+        </thead>
+        <tbody id="holdBody"></tbody>
+      </table>
+    </div>
+    <div class="tbl-footer" id="tblFooter"></div>
+  </section>
+</main>
+
+<footer class="foot">
+  Data source: <a href="https://www.sec.gov/edgar" target="_blank">SEC EDGAR</a> · Tickers via <a href="https://www.openfigi.com/" target="_blank">OpenFIGI</a>
+</footer>
+
+<script src="app.js"></script>
+</body>
+</html>

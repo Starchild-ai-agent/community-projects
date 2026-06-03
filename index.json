@@ -2,6 +2,25 @@
   {
     "type": "service",
     "user_id": "1444",
+    "slug": "13f-dashboard",
+    "version": "0.1.1",
+    "description": "Interactive SEC 13F dashboard for institutional holdings analysis, fund drill-down, allocation treemap, and quarter-over-quarter position changes.",
+    "tags": [
+      "sec",
+      "13f",
+      "finance",
+      "dashboard",
+      "flask"
+    ],
+    "author": "user-1444",
+    "license": "MIT",
+    "github_url": "https://github.com/Starchild-ai-agent/community-projects/tree/main/projects/1444/13f-dashboard",
+    "updated_at": "2026-06-03T13:59:41.257Z",
+    "created_at": "2026-06-03T13:59:41.257Z"
+  },
+  {
+    "type": "service",
+    "user_id": "1444",
     "slug": "gsap-showcase",
     "version": "1.0.0",
     "description": "Interactive showcase of all 8 GSAP skills (gsap-core, gsap-timeline,\ngsap-scrolltrigger, gsap-plugins, gsap-utils, gsap-react, gsap-frameworks,\ngsap-performance) with live demos for each skill's key features. Pure\nHTML+CSS+JS, no build step. Designed as both a learning resource for the\nGSAP skill suite and a copy-paste template for production animations.\n",

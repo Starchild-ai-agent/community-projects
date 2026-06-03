@@ -1,0 +1,19 @@
+name: 13f-dashboard
+version: 0.1.1
+type: service
+display_name: 13F Atlas
+description: Interactive SEC 13F dashboard for institutional holdings analysis, fund
+  drill-down, allocation treemap, and quarter-over-quarter position changes.
+author: user-1444
+license: MIT
+tags:
+- sec
+- 13f
+- finance
+- dashboard
+- flask
+entry: server.py
+port: 8765
+env_required: []
+publisher:
+  public_slug: 13f-atlas
