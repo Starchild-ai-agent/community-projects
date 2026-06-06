@@ -1,0 +1,42 @@
+{
+  "name": "@infiniteezverse/monskills-ezpath",
+  "version": "0.1.0",
+  "description": "MONSKILLS skill for EZ-Path DEX price quotes on Monad, Base, and other EVM chains",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "dev": "tsc --watch",
+    "lint": "eslint src/**/*.ts",
+    "publish:npm": "npm run build && npm publish --access=public"
+  },
+  "keywords": [
+    "monskills",
+    "monad",
+    "dex",
+    "ezpath",
+    "agent",
+    "skill",
+    "defi"
+  ],
+  "author": "infiniteezverse",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^1.6.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "typescript": "^5.0.0",
+    "jest": "^29.0.0",
+    "@types/jest": "^29.0.0",
+    "ts-jest": "^29.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/infiniteezverse/monskills-ezpath.git"
+  },
+  "homepage": "https://skills.devnads.com"
+}

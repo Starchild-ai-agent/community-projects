@@ -1,0 +1,36 @@
+# Source files (npm should only get dist/)
+src/
+tests/
+examples/
+
+# Development config
+jest.config.js
+tsconfig.json
+.eslintrc*
+
+# Git
+.git
+.gitignore
+
+# CI/CD
+.github/
+.gitlab-ci.yml
+
+# Dependencies
+node_modules/
+package-lock.json
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Logs
+npm-debug.log*
+*.log

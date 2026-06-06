@@ -1,0 +1,19 @@
+name: monskills-ezpath
+display_name: MONSKILLS EZ-Path
+version: 0.1.0
+type: script
+author: user-5172
+description: TypeScript MONSKILLS plugin for EZ-Path DEX quote routing across Monad/Base and EVM chains.
+license: MIT
+entry: src/repo/src/index.ts
+tags:
+  - monad
+  - dex
+  - sdk
+  - typescript
+  - agents
+env_required: []
+sc_proxy: []
+publisher:
+  code_slug: monskills-ezpath
+  public_slug: monskills-ezpath
