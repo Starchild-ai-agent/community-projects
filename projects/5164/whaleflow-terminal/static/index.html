@@ -1,0 +1,336 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>WhaleFlow Terminal</title>
+  <style>
+    :root {
+      --bg: #121515;
+      --panel: #1c2221;
+      --panel-2: #232b2a;
+      --text: #edf2ef;
+      --muted: #a7b2ad;
+      --accent: #6dbd9a;
+      --danger: #d46c6c;
+      --warn: #d6b46f;
+      --ok: #7bcf8b;
+      --border: #2f3a38;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+      background: radial-gradient(circle at 10% 10%, #1a2220 0%, var(--bg) 45%);
+      color: var(--text);
+      min-height: 100dvh;
+    }
+    .wrap {
+      max-width: 1380px;
+      margin: 20px auto;
+      padding: 0 16px 20px;
+    }
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+    .title {
+      font-size: 22px;
+      letter-spacing: 0.2px;
+      font-weight: 700;
+    }
+    .muted { color: var(--muted); font-size: 13px; }
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border: 1px solid var(--border);
+      padding: 6px 10px;
+      border-radius: 12px;
+      background: var(--panel);
+      font-size: 12px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: 1.4fr 1fr;
+      gap: 12px;
+    }
+    .card {
+      background: linear-gradient(180deg, var(--panel) 0%, var(--panel-2) 100%);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 14px;
+    }
+    .card h3 {
+      margin: 0 0 10px;
+      font-size: 14px;
+      font-weight: 600;
+      color: #dce5e1;
+      letter-spacing: 0.2px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+    th, td {
+      text-align: left;
+      padding: 8px 6px;
+      border-bottom: 1px solid #2c3432;
+    }
+    th { color: #bcc7c2; font-weight: 600; }
+    .num { text-align: right; font-variant-numeric: tabular-nums; }
+    .bull { color: var(--ok); }
+    .bear { color: var(--danger); }
+    .neutral { color: var(--warn); }
+    .news-list {
+      display: grid;
+      gap: 8px;
+      max-height: 500px;
+      overflow: auto;
+      padding-right: 4px;
+    }
+    .news-item {
+      padding: 10px;
+      border: 1px solid #303a37;
+      border-radius: 12px;
+      background: #1b2221;
+    }
+    .news-item a {
+      color: #e8f0ed;
+      text-decoration: none;
+    }
+    .news-item a:hover { color: var(--accent); }
+    .source { color: #b8c5bf; font-size: 12px; margin-top: 4px; }
+    .kpi-row {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+    .kpi {
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: #1c2322;
+      padding: 10px;
+    }
+    .kpi .label { color: #aab8b2; font-size: 12px; }
+    .kpi .value { font-size: 18px; font-weight: 700; margin-top: 6px; }
+    .whale-grid {
+      display: grid;
+      gap: 8px;
+      max-height: 280px;
+      overflow: auto;
+    }
+    .whale {
+      border: 1px solid #313c39;
+      border-radius: 12px;
+      padding: 8px;
+      background: #1a2120;
+      font-size: 12px;
+    }
+    .footnote {
+      margin-top: 10px;
+      color: #9fb0a9;
+      font-size: 12px;
+      line-height: 1.45;
+    }
+    .controls { display: flex; gap: 8px; align-items: center; }
+    select, button {
+      border: 1px solid #3a4643;
+      background: #1a2221;
+      color: var(--text);
+      border-radius: 10px;
+      padding: 6px 10px;
+      font-size: 12px;
+    }
+    button { cursor: pointer; }
+    @media (max-width: 1050px) {
+      .grid { grid-template-columns: 1fr; }
+      .kpi-row { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="topbar">
+      <div>
+        <div class="title">WhaleFlow Terminal · Multi-Asset</div>
+        <div class="muted" id="updatedAt">Loading…</div>
+      </div>
+      <div class="controls">
+        <label class="muted" for="interval">Refresh</label>
+        <select id="interval">
+          <option value="30000" selected>30s</option>
+          <option value="60000">60s</option>
+        </select>
+        <button id="refreshBtn">Refresh now</button>
+      </div>
+    </div>
+
+    <div class="kpi-row">
+      <div class="kpi"><div class="label">Regime</div><div class="value" id="regimeLabel">-</div></div>
+      <div class="kpi"><div class="label">Regime Score</div><div class="value" id="regimeScore">-</div></div>
+      <div class="kpi"><div class="label">Hyperliquid Whale Alerts</div><div class="value" id="whaleCount">-</div></div>
+      <div class="kpi"><div class="label">Total 24h Liquidations (BTC+ETH+SOL)</div><div class="value" id="liqTotal">-</div></div>
+    </div>
+
+    <div class="grid">
+      <div style="display:grid; gap:12px;">
+        <div class="card">
+          <h3>Crypto Order-Flow Proxy</h3>
+          <table>
+            <thead>
+              <tr>
+                <th>Asset</th>
+                <th class="num">Funding %</th>
+                <th class="num">OI Δ %</th>
+                <th class="num">24h Liq USD</th>
+                <th>Whale Bias</th>
+              </tr>
+            </thead>
+            <tbody id="cryptoRows"></tbody>
+          </table>
+        </div>
+
+        <div class="card">
+          <h3>Top Whale Positions (Hyperliquid)</h3>
+          <div class="whale-grid" id="whaleRows"></div>
+        </div>
+
+        <div class="card">
+          <h3>TradFi Tape (FX · Indices · Commodities)</h3>
+          <table>
+            <thead>
+              <tr>
+                <th>Symbol</th>
+                <th class="num">Price</th>
+                <th class="num">Change %</th>
+                <th>Source</th>
+              </tr>
+            </thead>
+            <tbody id="tradfiRows"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>Market-Moving News Feed</h3>
+        <div class="news-list" id="newsRows"></div>
+        <div class="footnote">
+          Headlines include source and published time. This feed is for situational awareness,
+          not trade advice. Bloomberg proprietary full order book flow is not publicly accessible;
+          this terminal uses public/proxy whale and flow signals.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const updatedAt = document.getElementById('updatedAt');
+    const cryptoRows = document.getElementById('cryptoRows');
+    const tradfiRows = document.getElementById('tradfiRows');
+    const whaleRows = document.getElementById('whaleRows');
+    const newsRows = document.getElementById('newsRows');
+    const regimeLabel = document.getElementById('regimeLabel');
+    const regimeScore = document.getElementById('regimeScore');
+    const whaleCount = document.getElementById('whaleCount');
+    const liqTotal = document.getElementById('liqTotal');
+    const intervalSelect = document.getElementById('interval');
+    const refreshBtn = document.getElementById('refreshBtn');
+
+    let timer = null;
+
+    const money = (v) => new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(v || 0);
+    const num2 = (v) => Number(v || 0).toFixed(2);
+
+    function clsBySign(v) {
+      if (v > 0) return 'bull';
+      if (v < 0) return 'bear';
+      return 'neutral';
+    }
+
+    async function loadSnapshot() {
+      try {
+        const res = await fetch('./api/snapshot', { cache: 'no-store' });
+        const data = await res.json();
+
+        if (!res.ok) {
+          updatedAt.textContent = `Error: ${data.error || 'snapshot failed'}`;
+          return;
+        }
+
+        updatedAt.textContent = `Updated: ${new Date(data.updated_at).toLocaleString()} UTC`;
+
+        const cRows = data.crypto?.rows || [];
+        cryptoRows.innerHTML = cRows.map(r => {
+          const biasClass = r.whale_bias === 'Bullish' ? 'bull' : (r.whale_bias === 'Bearish' ? 'bear' : 'neutral');
+          return `
+            <tr>
+              <td>${r.symbol}</td>
+              <td class="num ${clsBySign(r.funding_pct)}">${num2(r.funding_pct)}%</td>
+              <td class="num ${clsBySign(r.oi_change_pct)}">${num2(r.oi_change_pct)}%</td>
+              <td class="num">${money(r.liq_24h_usd)}</td>
+              <td class="${biasClass}">${r.whale_bias}</td>
+            </tr>
+          `;
+        }).join('');
+
+        const totalLiq = cRows.reduce((a, b) => a + Number(b.liq_24h_usd || 0), 0);
+        liqTotal.textContent = money(totalLiq);
+
+        whaleCount.textContent = String(data.crypto?.whale_alert_count || 0);
+
+        whaleRows.innerHTML = (data.crypto?.top_whales || []).map(w => {
+          const side = Number(w.position_size || 0) > 0 ? 'Long' : 'Short';
+          const c = side === 'Long' ? 'bull' : 'bear';
+          return `
+            <div class="whale">
+              <div><b>${w.symbol || '-'}</b> · <span class="${c}">${side}</span></div>
+              <div class="muted">Notional: ${money(w.position_value_usd || 0)}</div>
+              <div class="muted">Entry: ${num2(w.entry_price)} · Liq: ${num2(w.liq_price)}</div>
+            </div>
+          `;
+        }).join('') || '<div class="muted">No whale rows right now.</div>';
+
+        tradfiRows.innerHTML = (data.tradfi || []).map(t => `
+          <tr>
+            <td>${t.symbol}</td>
+            <td class="num">${num2(t.price)}</td>
+            <td class="num ${clsBySign(t.change_pct)}">${num2(t.change_pct)}%</td>
+            <td>${t.source}</td>
+          </tr>
+        `).join('');
+
+        newsRows.innerHTML = (data.news || []).map(n => `
+          <div class="news-item">
+            <a href="${n.url}" target="_blank" rel="noopener noreferrer">${n.title}</a>
+            <div class="source">${n.source} · ${n.published || 'time unavailable'}</div>
+          </div>
+        `).join('') || '<div class="muted">No news items available.</div>';
+
+        regimeLabel.textContent = data.regime?.label || '-';
+        regimeScore.textContent = String(data.regime?.score ?? '-');
+        regimeLabel.className = 'value ' + (data.regime?.label === 'Risk-On' ? 'bull' : data.regime?.label === 'Risk-Off' ? 'bear' : 'neutral');
+
+      } catch (e) {
+        updatedAt.textContent = 'Connection issue while loading snapshot.';
+      }
+    }
+
+    function resetTimer() {
+      if (timer) clearInterval(timer);
+      timer = setInterval(loadSnapshot, Number(intervalSelect.value));
+    }
+
+    intervalSelect.addEventListener('change', resetTimer);
+    refreshBtn.addEventListener('click', loadSnapshot);
+
+    loadSnapshot();
+    resetTimer();
+  </script>
+</body>
+</html>

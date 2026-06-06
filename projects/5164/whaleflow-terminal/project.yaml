@@ -1,0 +1,17 @@
+name: whaleflow-terminal
+type: service
+version: 1.0.0
+author: user-5164
+description: Multi-asset whale/order-flow proxy terminal for crypto + FX + commodities + indices with live news feed and risk regime scoring.
+entry: app.py
+port: 8787
+tags:
+  - trading
+  - dashboard
+  - multi-asset
+  - whales
+  - news
+license: MIT
+publisher:
+  code_slug: whaleflow-terminal
+  public_slug: whaleflow-terminal
