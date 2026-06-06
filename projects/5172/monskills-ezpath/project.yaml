@@ -1,6 +1,6 @@
 name: monskills-ezpath
 display_name: MONSKILLS EZ-Path
-version: 0.2.1
+version: 0.2.2
 type: script
 author: user-5172
 description: TypeScript MONSKILLS plugin for EZ-Path DEX quote routing across Monad/Base

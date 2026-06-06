@@ -1,7 +1,7 @@
 {
   "name": "EZ-Path DEX Router",
   "description": "Agent skill for querying the best DEX routes across 10 venues simultaneously. Races 0x, ParaSwap, Aerodrome, Uniswap V3, Curve, Balancer, Uniswap V2, 1Inch, CoW, and Synthetix to return the best price in sub-2 seconds.",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "author": "infiniteezverse",
   "license": "MIT",
   "homepage": "https://github.com/infiniteezverse/monskills-ezpath",
@@ -17,7 +17,15 @@
     "npm": "@infiniteezverse/monskills-ezpath",
     "github": "https://github.com/infiniteezverse/monskills-ezpath",
     "documentation": "https://github.com/infiniteezverse/monskills-ezpath#readme",
-    "api": "https://ezpath.myezverse.xyz/api/v1/quote"
+    "api": {
+      "base": "https://api.monskills-ezpath.dev",
+      "quote": "POST /v1/quote",
+      "batch": "POST /v1/quote/batch",
+      "health": "GET /v1/health",
+      "chains": "GET /v1/chains",
+      "venues": "GET /v1/venues"
+    },
+    "sandbox": "https://sandbox-api.monskills-ezpath.dev"
   },
   "capabilities": {
     "quote": {
@@ -220,10 +228,18 @@
       "catalogPath": "https://community.iamstarchild.com/5172-monskills-ezpath"
     }
   },
+  "liveness": {
+    "proof": "https://github.com/infiniteezverse/monskills-ezpath/blob/main/LIVENESS_PROOF.md",
+    "test_transaction": "0x6d923dc2bd27a4441712aa03b9dc1df2209649f7891738d006824bb8da214d2e",
+    "test_chain": "monad",
+    "test_latency_ms": 177,
+    "test_timestamp": "2026-06-06T15:02:39Z",
+    "test_status": "✅ LIVE"
+  },
   "analytics": {
     "totalRequests": 0,
     "activeAgents": 0,
-    "lastUpdated": "2026-06-06T00:00:00Z"
+    "lastUpdated": "2026-06-06T16:00:00Z"
   },
   "support": {
     "documentation": "https://github.com/infiniteezverse/monskills-ezpath#readme",

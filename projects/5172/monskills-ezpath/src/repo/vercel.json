@@ -1,0 +1,40 @@
+{
+  "version": 2,
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist",
+  "functions": {
+    "src/api-server.ts": {
+      "runtime": "nodejs18.x"
+    }
+  },
+  "rewrites": [
+    {
+      "source": "/v1/:path*",
+      "destination": "/dist/api-server.js"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/dist/api-server.js"
+    }
+  ],
+  "env": {
+    "PORT": "3000",
+    "RATE_LIMIT_PER_MINUTE": "120",
+    "LOG_LEVEL": "info"
+  },
+  "headers": [
+    {
+      "source": "/v1/:path*",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,415 @@
+openapi: 3.1.0
+info:
+  title: MONSKILLS EZ-Path API
+  version: 0.1.1
+  description: Agent-native DEX routing API with real-time quote execution on Monad and Base
+  contact:
+    name: infiniteezverse
+    url: https://github.com/infiniteezverse/monskills-ezpath
+    email: support@infiniteezverse.com
+  license:
+    name: MIT
+    url: https://github.com/infiniteezverse/monskills-ezpath/blob/main/LICENSE
+
+servers:
+  - url: https://api.monskills-ezpath.dev
+    description: Production API
+  - url: https://sandbox-api.monskills-ezpath.dev
+    description: Sandbox (testnet only)
+  - url: http://localhost:3000
+    description: Local development
+
+tags:
+  - name: Quotes
+    description: Get DEX price quotes
+  - name: Batch
+    description: Batch operations
+  - name: Status
+    description: Health and metadata endpoints
+
+paths:
+  /v1/quote:
+    post:
+      summary: Get a DEX price quote
+      tags:
+        - Quotes
+      operationId: getQuote
+      description: |
+        Query 10 DEX venues in parallel and return the best price for a token pair.
+
+        Response time: P50=150ms, P95=450ms, P99=1500ms
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/QuoteRequest'
+            examples:
+              basic:
+                summary: Simple quote request
+                value:
+                  chain: monad
+                  sellToken: "0x4200000000000000000000000000000000000006"
+                  buyToken: "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913"
+                  sellAmount: "1000000000000000000"
+      responses:
+        "200":
+          description: Successful quote
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QuoteResponse'
+              examples:
+                success:
+                  summary: Successful quote
+                  value:
+                    quote_id: "q_monad_abc123"
+                    chain_id: monad
+                    sell_token: "0x4200000000000000000000000000000000000006"
+                    buy_token: "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913"
+                    sell_amount: "1000000000000000000"
+                    buy_amount: "2500000"
+                    route:
+                      venues:
+                        - "0x"
+                        - "Aerodrome"
+                        - "Uniswap V3"
+                      proportions:
+                        - 0.4
+                        - 0.35
+                        - 0.25
+                    gas_estimate: "150000"
+                    expires_at: 1717680839
+                    latency_ms: 177
+                    timestamp: "2026-06-06T15:02:39Z"
+        "400":
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        "429":
+          description: Rate limited
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RateLimitError'
+        "500":
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /v1/quote/batch:
+    post:
+      summary: Get multiple quotes in parallel
+      tags:
+        - Batch
+      operationId: batchQuotes
+      description: |
+        Submit multiple quote requests and get results in parallel.
+        Each quote follows the same latency SLA as /v1/quote.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                requests:
+                  type: array
+                  minItems: 1
+                  maxItems: 10
+                  items:
+                    $ref: '#/components/schemas/QuoteRequest'
+              required:
+                - requests
+      responses:
+        "200":
+          description: Batch quotes successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  batch_id:
+                    type: string
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/QuoteResponse'
+                  latency_ms:
+                    type: integer
+        "400":
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        "429":
+          description: Rate limited
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RateLimitError'
+
+  /v1/health:
+    get:
+      summary: Health check
+      tags:
+        - Status
+      operationId: health
+      description: Check API availability and upstream venue status
+      responses:
+        "200":
+          description: API is healthy
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    enum:
+                      - healthy
+                      - degraded
+                      - down
+                  uptime_ms:
+                    type: integer
+                  venues:
+                    type: object
+                    properties:
+                      healthy:
+                        type: array
+                        items:
+                          type: string
+                      degraded:
+                        type: array
+                        items:
+                          type: string
+                  timestamp:
+                    type: string
+                    format: date-time
+
+  /v1/chains:
+    get:
+      summary: Get supported chains
+      tags:
+        - Status
+      operationId: getChains
+      description: List all supported blockchains and their status
+      responses:
+        "200":
+          description: List of supported chains
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  chains:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Chain'
+
+  /v1/venues:
+    get:
+      summary: Get supported DEX venues
+      tags:
+        - Status
+      operationId: getVenues
+      description: List all 10 DEX venues and their status
+      responses:
+        "200":
+          description: List of supported venues
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  venues:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Venue'
+
+components:
+  schemas:
+    QuoteRequest:
+      type: object
+      properties:
+        chain:
+          type: string
+          enum:
+            - base
+            - monad
+          description: Target blockchain
+        sellToken:
+          type: string
+          pattern: ^0x[a-fA-F0-9]{40}$
+          description: ERC-20 token to sell (contract address)
+        buyToken:
+          type: string
+          pattern: ^0x[a-fA-F0-9]{40}$
+          description: ERC-20 token to buy (contract address)
+        sellAmount:
+          type: string
+          pattern: ^[0-9]+$
+          description: Amount to sell in atomic units (wei)
+        slippageTolerance:
+          type: number
+          minimum: 0
+          maximum: 1
+          description: Optional slippage tolerance (0.01 = 1%)
+      required:
+        - chain
+        - sellToken
+        - buyToken
+        - sellAmount
+
+    QuoteResponse:
+      type: object
+      properties:
+        quote_id:
+          type: string
+          description: Unique quote identifier for tracking
+        chain_id:
+          type: string
+          enum:
+            - base
+            - monad
+        sell_token:
+          type: string
+          pattern: ^0x[a-fA-F0-9]{40}$
+        buy_token:
+          type: string
+          pattern: ^0x[a-fA-F0-9]{40}$
+        sell_amount:
+          type: string
+          description: Input amount in atomic units
+        buy_amount:
+          type: string
+          description: Output amount in atomic units
+        route:
+          type: object
+          properties:
+            venues:
+              type: array
+              items:
+                type: string
+              description: Ordered list of venues used in this route
+            proportions:
+              type: array
+              items:
+                type: number
+              description: Proportion of liquidity from each venue (sum=1.0)
+        gas_estimate:
+          type: string
+          description: Estimated gas cost in wei
+        execution_price:
+          type: string
+          description: Effective price per unit (buy_amount / sell_amount)
+        expires_at:
+          type: integer
+          format: unix-time
+          description: Unix timestamp when this quote expires
+        latency_ms:
+          type: integer
+          description: Quote generation latency in milliseconds
+        timestamp:
+          type: string
+          format: date-time
+          description: When the quote was generated
+
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+          enum:
+            - UNSUPPORTED_PAIR
+            - INSUFFICIENT_LIQUIDITY
+            - QUOTE_TIMEOUT
+            - RATE_LIMITED
+            - UPSTREAM_ERROR
+            - INVALID_REQUEST
+          description: Machine-friendly error code for agent logic branching
+        message:
+          type: string
+          description: Human-readable error message
+        details:
+          type: object
+          description: Additional error context
+        timestamp:
+          type: string
+          format: date-time
+
+    RateLimitError:
+      type: object
+      properties:
+        error:
+          type: string
+          enum:
+            - RATE_LIMITED
+        message:
+          type: string
+        retry_after_seconds:
+          type: integer
+          description: Seconds to wait before retrying
+        limit_info:
+          type: object
+          properties:
+            requests_per_minute:
+              type: integer
+            requests_remaining:
+              type: integer
+            reset_at:
+              type: string
+              format: date-time
+
+    Chain:
+      type: object
+      properties:
+        id:
+          type: string
+          enum:
+            - base
+            - monad
+        name:
+          type: string
+        chain_id:
+          type: integer
+        status:
+          type: string
+          enum:
+            - production
+            - testnet
+            - deprecated
+        venues_count:
+          type: integer
+        settlement_support:
+          type: boolean
+
+    Venue:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        status:
+          type: string
+          enum:
+            - operational
+            - degraded
+            - unavailable
+        chains:
+          type: array
+          items:
+            type: string
+
+  securitySchemes:
+    rateLimitKey:
+      type: apiKey
+      in: header
+      name: X-Rate-Limit-Key
+      description: Optional API key to increase rate limits (future)
