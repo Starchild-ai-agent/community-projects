@@ -11,16 +11,15 @@
  * 6. Return settlement transaction and quote data
  */
 
-import axios, { AxiosError } from 'axios';
+import axios from 'axios';
 import {
   createAuthorizationMessage,
   createX402PaymentHeader,
-  validateAuthorizationMessage,
   getTierByAmount,
   TOLL_ADDRESS,
 } from './eip3009';
 import type { TransferAuthorizationMessage, X402PaymentSignature } from './eip3009';
-import type { EZPathQuoteRequest, EZPathResponse } from '../types/ezpath';
+import type { EZPathQuoteRequest } from '../types/ezpath';
 
 /**
  * Quote execution result

@@ -66,7 +66,6 @@ export class StrategyEngine {
     currentStrategy: StrategyMode
   ): StrategyRecommendation {
     const bankrollHealth = Math.min(metrics.buyinsRemaining / 20, 1);
-    const riskScore = Math.max(0, 1 - metrics.riskOfRuin);
 
     // Determine optimal strategy
     let recommended: StrategyMode;
@@ -219,8 +218,6 @@ export class StrategyEngine {
     reasoning: string;
   } {
     const aggressiveness = STRATEGY_CONFIG[context.strategy.recommendedStrategy].aggressiveness;
-    const riskTolerance =
-      STRATEGY_CONFIG[context.strategy.recommendedStrategy].riskTolerance;
 
     // Simplified decision logic
     const stackInBuyins = context.stackInBuyins;
@@ -266,12 +263,10 @@ export class StrategyEngine {
    */
   static calculateOptimalBuyin(
     bankroll: bigint,
-    strategy: StrategyMode,
+    _strategy: StrategyMode,
     minBuyin: bigint,
     maxBuyin: bigint
   ): bigint {
-    const config = STRATEGY_CONFIG[strategy];
-
     // Buyin should be 1-2% of bankroll (conservative)
     const one_percent = bankroll / BigInt(100);
     const optimalBuyin = one_percent * BigInt(2);

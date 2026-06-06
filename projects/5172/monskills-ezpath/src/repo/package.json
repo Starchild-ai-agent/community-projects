@@ -1,6 +1,6 @@
 {
   "name": "@infiniteezverse/monskills-ezpath",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "MONSKILLS skill for EZ-Path DEX price quotes on Monad, Base, and other EVM chains",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

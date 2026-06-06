@@ -229,7 +229,7 @@ export interface DecisionContext {
   canCall: boolean;
   canCheck: boolean;
   canFold: boolean;
-  canGo all-in: boolean;
+  canGoAllIn: boolean;
 }
 
 /**

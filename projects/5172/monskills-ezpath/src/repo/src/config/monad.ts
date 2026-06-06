@@ -161,7 +161,6 @@ export async function getMonadRPC(): Promise<string> {
         params: [],
         id: 1,
       }),
-      timeout: 5000,
     });
 
     if (response.ok) return MONAD_CONFIG.rpc.primary;
@@ -181,7 +180,6 @@ export async function getMonadRPC(): Promise<string> {
           params: [],
           id: 1,
         }),
-        timeout: 5000,
       });
 
       if (response.ok) return fallback;

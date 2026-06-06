@@ -9,7 +9,6 @@ import {
   BankrollMetrics,
   BankrollStatus,
   HistoricalRecord,
-  PriceQuote,
 } from './types';
 
 /**
@@ -19,8 +18,6 @@ import {
 export class BankrollManager {
   private agent: ArenaAgent;
   private history: HistoricalRecord[] = [];
-  private priceCache: Map<string, { quote: PriceQuote; timestamp: number }> = new Map();
-  private readonly PRICE_CACHE_TTL = 5000; // 5 seconds
 
   constructor(agent: ArenaAgent) {
     this.agent = agent;
@@ -121,8 +118,7 @@ export class BankrollManager {
    */
   private calculateRiskOfRuin(bankrollInBuyins: number): number {
     // Simplified Kelly Criterion-based RoR calculation
-    const winRate = this.estimateWinRate(); // 0-1
-    const loseRate = 1 - winRate;
+    // winRate estimation available via estimateWinRate() but using fixed thresholds for simplicity
 
     if (bankrollInBuyins < 1) return 0.99; // Nearly certain bust
     if (bankrollInBuyins < 5) return 0.7;

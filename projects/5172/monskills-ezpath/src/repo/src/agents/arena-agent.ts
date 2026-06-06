@@ -38,12 +38,11 @@ export class Agent implements ArenaAgent {
   // Timestamps
   createdAt: number;
   updatedAt: number;
+  metadata?: Record<string, any>;
 
   // Internal state
   private bankrollManager: BankrollManager;
-  private currentTournament?: Tournament;
   private tournamentEntry?: TournamentEntry;
-  private metadata?: Record<string, any>;
 
   constructor(config: AgentConfig) {
     this.id = config.id;
@@ -102,7 +101,6 @@ export class Agent implements ArenaAgent {
     this.bankrollManager.updateBankroll(this.currentBankroll);
 
     // Set tournament state
-    this.currentTournament = tournament;
     this.tournamentEntry = {
       tournamentId: tournament.id,
       agentId: this.id,
@@ -132,7 +130,7 @@ export class Agent implements ArenaAgent {
    */
   exitTournament(
     finishPosition: number,
-    finalStack: bigint,
+    _finalStack: bigint,
     prize: bigint
   ): void {
     if (!this.tournamentEntry) {
@@ -163,7 +161,6 @@ export class Agent implements ArenaAgent {
     this.tournamentEntry.finishPosition = finishPosition;
     this.tournamentEntry.exitedAt = Date.now();
 
-    this.currentTournament = undefined;
     this.tournamentEntry = undefined;
   }
 
@@ -275,7 +272,6 @@ export class Agent implements ArenaAgent {
     }
 
     const handStrength = StrategyEngine.evaluateHandStrength(handType);
-    const riskLevel = 1 - handStrength;
 
     console.log(`\n[${this.name}] Playing hand ${handType}`);
     console.log(`   Strength: ${(handStrength * 100).toFixed(0)}%`);
@@ -306,7 +302,6 @@ export class Agent implements ArenaAgent {
   shouldQuitTournament(): boolean {
     if (!this.tournamentEntry) return false;
 
-    const metrics = this.bankrollManager['calculateHealthScore'];
     const recommendation = this.strategy;
 
     // Quit if in critical condition and playing conservative

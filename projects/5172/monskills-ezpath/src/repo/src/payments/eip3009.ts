@@ -96,7 +96,7 @@ export function getDomainSeparator(): string {
  * EIP-712 Hash Struct for TransferWithAuthorization
  * Calculates the hash of the message according to EIP-712
  */
-export function hashAuthorizationMessage(message: TransferAuthorizationMessage): string {
+export function hashAuthorizationMessage(_message: TransferAuthorizationMessage): string {
   // This is a simplified version. In production, use ethers.js
   // const hash = ethers.TypedDataEncoder.hash(domain, types, message)
 
