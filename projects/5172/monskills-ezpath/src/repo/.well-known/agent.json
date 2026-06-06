@@ -1,0 +1,241 @@
+{
+  "name": "EZ-Path DEX Router",
+  "description": "Agent skill for querying the best DEX routes across 10 venues simultaneously. Races 0x, ParaSwap, Aerodrome, Uniswap V3, Curve, Balancer, Uniswap V2, 1Inch, CoW, and Synthetix to return the best price in sub-2 seconds.",
+  "version": "0.1.0",
+  "author": "infiniteezverse",
+  "license": "MIT",
+  "homepage": "https://github.com/infiniteezverse/monskills-ezpath",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/infiniteezverse/monskills-ezpath.git"
+  },
+  "logo": "https://ezpath.myezverse.xyz/logo.svg",
+  "category": "dex-routing",
+  "tags": ["dex", "routing", "price", "monad", "base", "evm", "trading", "agent-skill"],
+  "status": "active",
+  "endpoints": {
+    "npm": "@infiniteezverse/monskills-ezpath",
+    "github": "https://github.com/infiniteezverse/monskills-ezpath",
+    "documentation": "https://github.com/infiniteezverse/monskills-ezpath#readme",
+    "api": "https://ezpath.myezverse.xyz/api/v1/quote"
+  },
+  "capabilities": {
+    "quote": {
+      "description": "Get a full DEX price quote from EZ-Path",
+      "method": "getQuote",
+      "inputs": {
+        "chain": {
+          "type": "string",
+          "enum": ["base", "monad"],
+          "description": "Target blockchain"
+        },
+        "sellToken": {
+          "type": "string",
+          "description": "ERC-20 token address to sell"
+        },
+        "buyToken": {
+          "type": "string",
+          "description": "ERC-20 token address to buy"
+        },
+        "sellAmount": {
+          "type": "string",
+          "description": "Amount in atomic units (base decimals)"
+        },
+        "slippagePercentage": {
+          "type": "number",
+          "optional": true,
+          "description": "Slippage tolerance (e.g., 0.01 for 1%)"
+        }
+      },
+      "outputs": {
+        "success": "boolean",
+        "data": {
+          "status": "ok | payment_required | error",
+          "request_id": "string",
+          "sellToken": "string",
+          "buyToken": "string",
+          "sellAmount": "string",
+          "buyAmount": "string",
+          "price": "string",
+          "sources": [
+            {
+              "name": "string (venue name)",
+              "buyAmount": "string"
+            }
+          ],
+          "routingEngine": "string (best venue)",
+          "tier": "basic | resilient | institutional",
+          "settlement_tx": "string (optional)"
+        },
+        "error": "string (if success=false)"
+      },
+      "pricing": {
+        "basic": {
+          "cost": 0.03,
+          "currency": "USDC",
+          "description": "Direct 0x routing"
+        },
+        "resilient": {
+          "cost": 0.1,
+          "currency": "USDC",
+          "description": "4-venue racing"
+        },
+        "institutional": {
+          "cost": 0.5,
+          "currency": "USDC",
+          "description": "Full 10-venue racing"
+        }
+      }
+    },
+    "price": {
+      "description": "Quick price lookup (convenience wrapper)",
+      "method": "getPrice",
+      "inputs": {
+        "chain": "string (base|monad)",
+        "sellToken": "string (address)",
+        "buyToken": "string (address)",
+        "amount": "string (atomic units)"
+      },
+      "outputs": {
+        "price": "string (decimal)",
+        "sources": ["string (venue names)"]
+      }
+    },
+    "batchQuotes": {
+      "description": "Get quotes for multiple pairs in parallel",
+      "method": "batchQuotes",
+      "inputs": {
+        "requests": [
+          {
+            "chain": "string",
+            "sellToken": "string",
+            "buyToken": "string",
+            "sellAmount": "string"
+          }
+        ]
+      },
+      "outputs": "QuoteResult[]"
+    }
+  },
+  "supportedChains": [
+    {
+      "id": "base",
+      "name": "Base",
+      "status": "live",
+      "venues": [
+        "0x",
+        "ParaSwap",
+        "Aerodrome",
+        "Uniswap V3",
+        "Curve",
+        "Balancer",
+        "Uniswap V2",
+        "1Inch",
+        "CoW",
+        "Synthetix"
+      ]
+    },
+    {
+      "id": "monad",
+      "name": "Monad",
+      "status": "live",
+      "venues": [
+        "0x",
+        "ParaSwap",
+        "Aerodrome",
+        "Uniswap V3",
+        "Curve",
+        "Balancer",
+        "Uniswap V2",
+        "1Inch",
+        "CoW",
+        "Synthetix"
+      ]
+    },
+    {
+      "id": "arbitrum",
+      "name": "Arbitrum",
+      "status": "coming-soon"
+    },
+    {
+      "id": "optimism",
+      "name": "Optimism",
+      "status": "coming-soon"
+    },
+    {
+      "id": "polygon",
+      "name": "Polygon",
+      "status": "coming-soon"
+    }
+  ],
+  "authentication": {
+    "required": false,
+    "type": "x402",
+    "description": "Optional X402 EIP-3009 payment for institutional tier. Free basic tier available."
+  },
+  "rateLimit": {
+    "free": "120 requests per minute",
+    "authenticated": "1000 requests per minute per address"
+  },
+  "performance": {
+    "latency": "sub-2 seconds",
+    "availability": "99.9%",
+    "updateFrequency": "real-time"
+  },
+  "useCases": [
+    "Agent token swaps with optimal routing",
+    "Portfolio valuation and monitoring",
+    "Arbitrage opportunity detection",
+    "Arena agent bankroll management",
+    "DEX aggregation and comparison",
+    "Cross-venue price discovery"
+  ],
+  "examples": {
+    "quick_price": {
+      "description": "Get price for a token pair",
+      "code": "const result = await getPrice('base', '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913', '0x4200000000000000000000000000000000000006', '1000000');"
+    },
+    "full_quote": {
+      "description": "Get full quote with venue details",
+      "code": "const result = await getQuote({ chain: 'base', sellToken: '0x833...', buyToken: '0x420...', sellAmount: '1000000' });"
+    },
+    "batch_valuation": {
+      "description": "Valuate multiple token pairs",
+      "code": "const results = await batchQuotes([{chain: 'base', sellToken: '0x833...', buyToken: '0x420...', sellAmount: '1000000'}, ...]);"
+    }
+  },
+  "integration": {
+    "monskills": {
+      "compatible": true,
+      "installCommand": "npx skills add @infiniteezverse/monskills-ezpath",
+      "npmPackage": "@infiniteezverse/monskills-ezpath"
+    },
+    "arena": {
+      "compatible": true,
+      "useCase": "Bankroll management and real-time stake valuation",
+      "template": "https://github.com/infiniteezverse/monskills-ezpath/blob/main/examples/arena-agent.ts"
+    },
+    "coinbase_bazaar": {
+      "discoverable": true,
+      "catalogPath": "https://community.iamstarchild.com/5172-monskills-ezpath"
+    }
+  },
+  "analytics": {
+    "totalRequests": 0,
+    "activeAgents": 0,
+    "lastUpdated": "2026-06-06T00:00:00Z"
+  },
+  "support": {
+    "documentation": "https://github.com/infiniteezverse/monskills-ezpath#readme",
+    "issues": "https://github.com/infiniteezverse/monskills-ezpath/issues",
+    "discord": "https://discord.gg/monad",
+    "twitter": "https://twitter.com/infiniteezverse"
+  },
+  "security": {
+    "auditStatus": "pending",
+    "openSourced": true,
+    "license": "MIT",
+    "privacyPolicy": "No data collection. Queries are stateless and ephemeral.",
+    "paymentProcessing": "X402 EIP-3009 USDC (agent manages private keys)"
+  }
+}

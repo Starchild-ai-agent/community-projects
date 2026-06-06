@@ -1,0 +1,310 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "EZ-Path MONSKILLS Skill API",
+    "description": "DEX price routing skill for agents. Query the best prices across 10 venues simultaneously.",
+    "version": "0.1.0",
+    "contact": {
+      "name": "infiniteezverse",
+      "url": "https://github.com/infiniteezverse/monskills-ezpath",
+      "email": "hello@infiniteezverse.com"
+    },
+    "license": {
+      "name": "MIT"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://ezpath.myezverse.xyz",
+      "description": "Production EZ-Path API"
+    }
+  ],
+  "paths": {
+    "/api/v1/quote": {
+      "get": {
+        "summary": "Get DEX price quote",
+        "description": "Query the best price across 10 DEX venues. Returns the best routing engine and all venue quotes.",
+        "operationId": "getQuote",
+        "parameters": [
+          {
+            "name": "chain",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": ["base", "monad", "arbitrum", "optimism", "polygon"]
+            },
+            "description": "Target blockchain"
+          },
+          {
+            "name": "sellToken",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^0x[a-fA-F0-9]{40}$"
+            },
+            "description": "Token address to sell (ERC-20)"
+          },
+          {
+            "name": "buyToken",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^0x[a-fA-F0-9]{40}$"
+            },
+            "description": "Token address to buy (ERC-20)"
+          },
+          {
+            "name": "sellAmount",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Amount in atomic units (wei, smallest denomination)"
+          },
+          {
+            "name": "slippagePercentage",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "number",
+              "example": 0.5
+            },
+            "description": "Slippage tolerance as percentage (e.g., 0.5 for 0.5%)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful quote",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/QuoteResponse"
+                }
+              }
+            }
+          },
+          "402": {
+            "description": "Payment required for this tier",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaymentRequired"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid parameters)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": { "type": "string" }
+                  }
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        },
+        "x-tier": "basic",
+        "x-cost": 0.03,
+        "x-cost-currency": "USDC"
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "QuoteResponse": {
+        "type": "object",
+        "required": [
+          "status",
+          "request_id",
+          "sellToken",
+          "buyToken",
+          "sellAmount",
+          "buyAmount",
+          "price",
+          "sources",
+          "routingEngine",
+          "tier"
+        ],
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": ["ok", "payment_required", "error"],
+            "description": "Response status"
+          },
+          "request_id": {
+            "type": "string",
+            "description": "Unique request identifier for tracking"
+          },
+          "sellToken": {
+            "type": "string",
+            "pattern": "^0x[a-fA-F0-9]{40}$",
+            "description": "Token address being sold"
+          },
+          "buyToken": {
+            "type": "string",
+            "pattern": "^0x[a-fA-F0-9]{40}$",
+            "description": "Token address being bought"
+          },
+          "sellAmount": {
+            "type": "string",
+            "description": "Input amount in atomic units"
+          },
+          "buyAmount": {
+            "type": "string",
+            "description": "Output amount in atomic units (best available)"
+          },
+          "price": {
+            "type": "string",
+            "description": "Human-readable price (buyAmount per sellAmount unit)"
+          },
+          "sources": {
+            "type": "array",
+            "description": "All venue quotes",
+            "items": {
+              "$ref": "#/components/schemas/VenueQuote"
+            }
+          },
+          "routingEngine": {
+            "type": "string",
+            "description": "Best venue name (winner of the race)"
+          },
+          "tier": {
+            "type": "string",
+            "enum": ["basic", "resilient", "institutional"],
+            "description": "Service tier used"
+          },
+          "settlement_tx": {
+            "type": "string",
+            "nullable": true,
+            "description": "Transaction hash if settled on-chain"
+          }
+        }
+      },
+      "VenueQuote": {
+        "type": "object",
+        "required": ["name", "buyAmount"],
+        "properties": {
+          "name": {
+            "type": "string",
+            "enum": [
+              "0x",
+              "ParaSwap",
+              "Aerodrome",
+              "Uniswap V3",
+              "Curve",
+              "Balancer",
+              "Uniswap V2",
+              "1Inch",
+              "CoW",
+              "Synthetix"
+            ],
+            "description": "DEX venue"
+          },
+          "buyAmount": {
+            "type": "string",
+            "description": "Output amount from this venue"
+          },
+          "gasEstimate": {
+            "type": "string",
+            "nullable": true,
+            "description": "Estimated gas cost in ETH"
+          }
+        }
+      },
+      "PaymentRequired": {
+        "type": "object",
+        "required": ["status", "x402Version", "accepts", "unlock_fee_usd", "request_id"],
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": ["payment_required"]
+          },
+          "x402Version": {
+            "type": "integer",
+            "description": "X-402 protocol version"
+          },
+          "accepts": {
+            "type": "array",
+            "description": "Payment methods accepted",
+            "items": {
+              "type": "object",
+              "properties": {
+                "scheme": { "type": "string" },
+                "network": { "type": "string" },
+                "maxAmountRequired": { "type": "string" },
+                "asset": { "type": "string" }
+              }
+            }
+          },
+          "unlock_fee_usd": {
+            "type": "number",
+            "description": "Cost in USD for next tier"
+          },
+          "request_id": {
+            "type": "string"
+          },
+          "tiers": {
+            "type": "object",
+            "properties": {
+              "basic": {
+                "$ref": "#/components/schemas/Tier"
+              },
+              "resilient": {
+                "$ref": "#/components/schemas/Tier"
+              },
+              "institutional": {
+                "$ref": "#/components/schemas/Tier"
+              }
+            }
+          }
+        }
+      },
+      "Tier": {
+        "type": "object",
+        "properties": {
+          "min_atomic": {
+            "type": "string",
+            "description": "Minimum payment in atomic USDC"
+          },
+          "min_usdc": {
+            "type": "number",
+            "description": "Minimum payment in USDC"
+          },
+          "description": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "x402Payment": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "X-Payment",
+        "description": "EIP-3009 TransferWithAuthorization signature for X402 payment"
+      }
+    }
+  },
+  "x-agent-metadata": {
+    "skillName": "ez-path",
+    "skillVersion": "0.1.0",
+    "npmPackage": "@infiniteezverse/monskills-ezpath",
+    "handlers": ["getQuote", "getPrice", "batchQuotes"],
+    "supportedChains": ["base", "monad"],
+    "category": "dex-routing"
+  }
+}
