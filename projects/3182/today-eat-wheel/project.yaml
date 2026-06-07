@@ -1,0 +1,14 @@
+name: today-eat-wheel
+type: service
+version: 1.0.0
+description: Spin a customizable wheel to decide what to eat.
+license: MIT
+entry: src/index.html
+port: 8080
+tags:
+- food
+- fun
+- decision
+publisher:
+  public_slug: today-eat-wheel
+author: user-3182

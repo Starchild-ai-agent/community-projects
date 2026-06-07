@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>今天吃什么 · 决策轮盘</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="app">
+    <section class="left card">
+      <h1>🍽️ 今天吃什么 · 决策轮盘</h1>
+      <p class="sub">把纠结交给轮盘。输入选项，一键开转。</p>
+
+      <label>候选菜单（每行一个）</label>
+      <textarea id="options" placeholder="黄焖鸡
+麻辣烫
+寿司
+兰州拉面
+沙拉"></textarea>
+
+      <div class="row">
+        <button id="sampleBtn">填充示例</button>
+        <button id="spinBtn" class="primary">开始转盘</button>
+      </div>
+
+      <div class="row">
+        <label class="small">转速</label>
+        <input id="speed" type="range" min="3" max="12" value="7" />
+      </div>
+
+      <div id="result" class="result">结果将在这里出现</div>
+
+      <div class="row">
+        <button id="copyBtn">复制结果</button>
+        <button id="rerollBtn">再转一次</button>
+      </div>
+    </section>
+
+    <section class="right card wheel-wrap">
+      <div class="pointer">▼</div>
+      <canvas id="wheel" width="520" height="520" aria-label="food wheel"></canvas>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
