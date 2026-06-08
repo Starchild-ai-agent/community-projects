@@ -57,8 +57,9 @@
   },
   "typography": {
     "source_folder": "brand/03_typography/",
-    "headline": "Power Grotesk",
+    "headings": "Google Sans",
     "body_ui": "Google Sans",
+    "logo_only": "Power Grotesk",
     "font_files": {
       "power_grotesk_regular": "brand/03_typography/fonts/PowerGrotesk/PowerGrotesk-Regular.otf",
       "power_grotesk_bold": "brand/03_typography/fonts/PowerGrotesk/PowerGrotesk-Bold.otf",

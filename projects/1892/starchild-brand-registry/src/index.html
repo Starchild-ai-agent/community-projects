@@ -6,24 +6,6 @@
   <title>Starchild Brand Registry</title>
   <style>
     @font-face {
-      font-family: 'Power Grotesk';
-      src: url('./assets/typography/fonts/PowerGrotesk/PowerGrotesk-Regular.otf') format('opentype');
-      font-weight: 400;
-      font-style: normal;
-    }
-    @font-face {
-      font-family: 'Power Grotesk';
-      src: url('./assets/typography/fonts/PowerGrotesk/PowerGrotesk-Bold.otf') format('opentype');
-      font-weight: 700;
-      font-style: normal;
-    }
-    @font-face {
-      font-family: 'Power Grotesk';
-      src: url('./assets/typography/fonts/PowerGrotesk/PowerGrotesk-Heavy.otf') format('opentype');
-      font-weight: 800;
-      font-style: normal;
-    }
-    @font-face {
       font-family: 'Google Sans';
       src: url('./assets/typography/fonts/Google_Sans/GoogleSans-Latin.woff2') format('woff2');
       font-weight: 300 900;
@@ -56,13 +38,40 @@
     }
     a { color: inherit; }
     .hero {
+      position: relative;
       min-height: 640px;
       padding: 44px;
       display: grid;
       align-items: end;
       padding-top: 160px;
-      background: url('./assets/visual_system/backgrounds/bg_orange_grid.png') center/cover;
-      color: #151515;
+      background: #050505 url('./assets/visual_system/backgrounds/BG_monolith.png') center/cover;
+      color: white;
+      overflow: hidden;
+      isolation: isolate;
+    }
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: -2;
+      background:
+        radial-gradient(circle at 72% 42%, rgba(248,70,0,.42), transparent 31%),
+        radial-gradient(circle at 54% 58%, rgba(255,169,64,.22), transparent 24%),
+        linear-gradient(90deg, rgba(5,5,5,.76), rgba(5,5,5,.34), rgba(5,5,5,.08));
+    }
+    .hero::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      pointer-events: none;
+      background:
+        radial-gradient(circle at 78% 18%, rgba(255,169,64,.18) 0 1px, transparent 2px),
+        radial-gradient(circle at 67% 34%, rgba(248,70,0,.22) 0 1px, transparent 2px),
+        radial-gradient(circle at 84% 56%, rgba(255,169,64,.2) 0 1px, transparent 2px),
+        linear-gradient(180deg, transparent 68%, rgba(248,70,0,.18));
+      background-size: 140px 140px, 190px 190px, 230px 230px, auto;
+      mix-blend-mode: screen;
     }
     .topbar {
       position: absolute;
@@ -78,12 +87,12 @@
     .brandmark img.icon { width: 34px; height: 34px; }
     .brandmark img.wordmark { height: 26px; max-width: 180px; object-fit: contain; }
     .pill {
-      border: 1px solid rgba(21,21,21,.18);
+      border: 1px solid rgba(255,255,255,.18);
       border-radius: 999px;
       padding: 9px 14px;
       font-size: 13px;
-      color: rgba(21,21,21,.72);
-      background: rgba(255,255,255,.32);
+      color: rgba(255,255,255,.72);
+      background: rgba(5,5,5,.22);
       backdrop-filter: blur(12px);
     }
     h1 {
@@ -98,7 +107,7 @@
       margin: 22px 0 0;
       font-size: clamp(18px, 2vw, 25px);
       line-height: 1.32;
-      color: rgba(21,21,21,.74);
+      color: rgba(255,255,255,.74);
     }
     main { padding: 34px; }
     .grid {
@@ -120,7 +129,7 @@
     .span-6 { grid-column: span 6; }
     .span-4 { grid-column: span 4; }
     .span-3 { grid-column: span 3; }
-    h1, h2, h3 { font-family: 'Power Grotesk', 'Google Sans', Inter, system-ui, sans-serif; }
+    h1, h2, h3 { font-family: 'Google Sans', Inter, system-ui, sans-serif; }
     h2 { margin: 0 0 14px; font-size: 30px; letter-spacing: -.04em; }
     h3 { margin: 0 0 8px; font-size: 17px; letter-spacing: -.02em; }
     p { color: var(--muted); line-height: 1.55; }
@@ -224,10 +233,146 @@
     .colour-note { margin-bottom: 14px; }
     .colour-note p { margin-top: 0; }
     @media (max-width: 900px) { .primary-swatches { grid-template-columns: 1fr; } }
-    .bg-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; }
+    .bg-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+    @media (max-width: 900px) { .bg-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+    @media (max-width: 560px) { .bg-grid { grid-template-columns: 1fr; } }
     .bg-card { position: relative; border-radius: 18px; overflow: hidden; border: 1px solid var(--line); background: white; }
     .bg-card img { width: 100%; height: 150px; object-fit: cover; display: block; }
     .bg-card div { padding: 12px 46px 12px 12px; font-size: 12px; color: var(--muted); word-break: break-all; min-height: 48px; }
+    .monolith-panel {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(360px, .9fr);
+      gap: 0;
+      align-items: stretch;
+      padding: 0;
+      overflow: hidden;
+      background: var(--orange);
+      border-color: rgba(0,0,0,.1);
+    }
+    .monolith-copy {
+      padding: 42px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .monolith-copy h2 { color: #050505; }
+    .monolith-copy p { color: rgba(5,5,5,.72); }
+    .monolith-copy p:last-child { margin-bottom: 0; }
+    .monolith-stage {
+      position: relative;
+      min-height: 380px;
+      background: #F84600;
+      overflow: hidden;
+      perspective: 900px;
+      transform: translateY(12px);
+      opacity: .72;
+      transition: transform .7s ease, opacity .7s ease;
+    }
+    .monolith-stage.is-visible { transform: translateY(0); opacity: 1; }
+    .monolith-stage::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: #F84600;
+    }
+    .mono-grid {
+      position: absolute;
+      inset: -20% -34%;
+      display: grid;
+      grid-template-columns: repeat(20, 1fr);
+      grid-template-rows: repeat(16, 1fr);
+      column-gap: 5px;
+      row-gap: 6px;
+      transform-style: preserve-3d;
+      animation: monoDrift 9s ease-in-out infinite;
+    }
+    .mono-tile {
+      position: relative;
+      transform-style: preserve-3d;
+      animation: tilePop 9s ease-in-out infinite;
+      animation-delay: calc(var(--i) * -38ms);
+    }
+    .mono-tile::before {
+      content: '';
+      position: absolute;
+      inset: 13%;
+      background: #050505;
+      clip-path: polygon(50% 0, 86% 18%, 86% 100%, 50% 92%, 14% 100%, 14% 18%);
+      transform: rotateY(calc(var(--r) * 1deg));
+      box-shadow: 10px 0 0 rgba(5,5,5,.78), -10px 0 0 rgba(5,5,5,.38);
+    }
+    .mono-focus {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: min(44%, 280px);
+      aspect-ratio: 1;
+      transform: translate(-50%, -50%);
+      animation: focusFade 9s ease-in-out infinite;
+    }
+    .mono-focus img { width: 100%; height: 100%; object-fit: contain; display: block; }
+    @keyframes monoDrift {
+      0% { transform: translateZ(0) scale(.42) rotateX(0deg) rotateY(0deg); opacity: 0; }
+      14% { transform: translateZ(0) scale(.42) rotateX(0deg) rotateY(0deg); opacity: 0; }
+      34% { transform: translateZ(70px) scale(.76) rotateX(10deg) rotateY(-16deg); opacity: .58; }
+      62% { transform: translateZ(180px) scale(1.12) rotateX(18deg) rotateY(24deg); opacity: .9; }
+      100% { transform: translateZ(420px) scale(1.62) rotateX(28deg) rotateY(-38deg); opacity: 0; }
+    }
+    @keyframes tilePop {
+      0%, 20% { transform: translateZ(0) scale(.62); }
+      55% { transform: translateZ(calc(var(--z) * 1px)) scale(.95); }
+      100% { transform: translateZ(calc(var(--z) * 2.8px)) scale(1.4); }
+    }
+    @keyframes focusFade {
+      0%, 22% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+      36% { opacity: .18; transform: translate(-50%, -50%) scale(.72); }
+      100% { opacity: 0; transform: translate(-50%, -50%) scale(.48); }
+    }
+    .motion-card {
+      border-radius: 22px;
+      overflow: hidden;
+      border: 1px solid rgba(248,70,0,.28);
+      background: var(--orange);
+      box-shadow: 0 18px 50px rgba(248,70,0,.12);
+      transform: translateY(12px);
+      opacity: .72;
+      transition: transform .7s ease, opacity .7s ease;
+    }
+    .motion-card.is-visible { transform: translateY(0); opacity: 1; }
+    .motion-card video { width: 100%; display: block; aspect-ratio: 16/9; object-fit: cover; }
+    .toolkit-section {
+      grid-column: span 12;
+      display: grid;
+      grid-template-columns: minmax(0, .95fr) minmax(0, 1.05fr);
+      gap: 0;
+      padding: 0;
+      overflow: hidden;
+      background: #080808;
+      border-color: rgba(248,70,0,.24);
+    }
+    .toolkit-section .voice-motion {
+      height: 100%;
+      min-height: 360px;
+      border: 0;
+      border-radius: 0;
+      box-shadow: none;
+      background: #080808;
+    }
+    .toolkit-section .voice-motion video { height: 100%; aspect-ratio: auto; object-fit: cover; }
+    .toolkit-copy { padding: 42px; display: flex; flex-direction: column; justify-content: center; }
+    .toolkit-copy h2 { color: #fff; margin-bottom: 18px; }
+    .toolkit-copy pre {
+      margin: 0;
+      padding: 0;
+      border: 0;
+      border-radius: 0;
+      background: transparent;
+      color: rgba(255,255,255,.88);
+      box-shadow: none;
+      white-space: pre-wrap;
+      overflow: visible;
+    }
+    @media (max-width: 900px) { .monolith-panel { grid-template-columns: 1fr; } .toolkit-section { grid-template-columns: 1fr; } .toolkit-copy { padding: 28px; } }
     .btns { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 14px; }
     .btn {
       display: inline-flex;
@@ -267,7 +412,7 @@
         <img class="icon" src="./assets/logos/icon/starchild_icon.svg" alt="Starchild icon" />
         <img class="wordmark" src="./assets/logos/wordmark/starchild_words_white.png" alt="Starchild" />
       </div>
-      <div class="pill">Brand Registry for agents, tools, apps, decks, images, and video</div>
+
     </div>
     <div>
       <h1>Build with the knowledge of the network.</h1>
@@ -290,8 +435,8 @@ Use assets from:
 ./assets/typography/
 ./assets/visual_system/backgrounds/
 
-Headline typeface: Power Grotesk
-Body/UI typeface: Google Sans
+Headings/body/UI: Google Sans
+Logo/wordmark only: Power Grotesk
 Voice: clear, capable, direct, slightly opinionated
 Avoid: corporate filler, generic AI phrasing, overhype</pre>
         <div class="btns">
@@ -305,7 +450,7 @@ Avoid: corporate filler, generic AI phrasing, overhype</pre>
       <section class="card span-4">
         <h2>Use order</h2>
         <div class="rule"><b>1. Read</b><span>`brand.json` for paths and defaults.</span></div>
-        <div class="rule"><b>2. Apply</b><span>Power Grotesk headlines, Google Sans body/UI, logo, background, and voice rules.</span></div>
+        <div class="rule"><b>2. Apply</b><span>Google Sans headings/body/UI, approved logo assets, background, and voice rules.</span></div>
         <div class="rule"><b>3. Build</b><span>Keep assets local, paths relative, and output polished.</span></div>
         <div class="rule"><b>4. Ask</b><span>If a needed asset is missing, ask or mark a placeholder.</span></div>
       </section>
@@ -336,19 +481,25 @@ Avoid: corporate filler, generic AI phrasing, overhype</pre>
         </div>
       </section>
 
-      <section class="card span-12">
-        <h2>The monolith</h2>
-        <p>The monolith in the main logo represents the cognitive leaps of civilization: the moments when knowledge compounds, tools become infrastructure, and individual progress becomes shared progress.</p>
-        <p>Every user who creates an agent with Starchild improves their own knowledge system while also strengthening the knowledge of the network. Each agent becomes a new surface area for memory, workflows, taste, and capability to accumulate.</p>
+      <section class="card span-12 monolith-panel">
+        <div class="monolith-copy">
+          <h2>The monolith</h2>
+          <p>The monolith in the main logo represents the cognitive leaps of civilization: the moments when knowledge compounds, tools become infrastructure, and individual progress becomes shared progress.</p>
+          <p>Every user who creates an agent with Starchild improves their own knowledge system while also strengthening the knowledge of the network. Each agent becomes a new surface area for memory, workflows, taste, and capability to accumulate.</p>
+        </div>
+        <div class="monolith-stage" data-motion-card>
+          <div class="mono-focus"><img src="./assets/logos/icon/starchild_icon.svg" alt="Starchild monolith mark"></div>
+          <div class="mono-grid" aria-hidden="true"></div>
+        </div>
       </section>
 
       <section class="card span-6">
         <h2>Typography</h2>
 
         <div style="margin-bottom:24px;">
-          <p style="font-family:'Power Grotesk','Google Sans',sans-serif;font-size:52px;line-height:.95;margin:0;color:#151515;letter-spacing:-.05em;font-weight:800;">Power Grotesk</p>
-          <p>Use Power Grotesk for headlines, hero statements, section titles, and high-emphasis brand moments.</p>
-          <pre>font-family: 'Power Grotesk', 'Google Sans', sans-serif;</pre>
+          <p style="font-family:'Google Sans',sans-serif;font-size:52px;line-height:.95;margin:0;color:#151515;letter-spacing:-.05em;font-weight:800;">Google Sans</p>
+          <p>Use Google Sans for headings, hero statements, body copy, UI labels, and product surfaces.</p>
+          <pre>font-family: 'Google Sans', system-ui, sans-serif;</pre>
         </div>
 
         <div>
@@ -391,19 +542,18 @@ Avoid: corporate filler, generic AI phrasing, overhype</pre>
         </div>
       </section>
 
-      <section class="card span-6">
-        <h2>Voice</h2>
-        <div class="rule"><b>Use</b><span>Clear, capable, direct, slightly opinionated.</span></div>
-        <div class="rule"><b>Avoid</b><span>Corporate filler, generic AI phrasing, overhype, vague abstractions.</span></div>
-        <div class="rule"><b>Default</b><span>Show the concrete workflow, not abstract positioning.</span></div>
-      </section>
-
-      <section class="card span-6">
-        <h2>For vibe coding tools</h2>
-        <pre>Use this registry as the design source of truth.
+      <section class="card toolkit-section">
+        <div class="motion-card voice-motion">
+          <video muted loop playsinline preload="metadata" poster="./assets/visual_system/backgrounds/BG_monolith.png" data-scroll-video>
+            <source src="./assets/motion/network-pulse.mp4" type="video/mp4" />
+          </video>
+        </div>
+        <div class="toolkit-copy">
+          <h2>For vibe coding tools</h2>
+          <pre>Use this registry as the design source of truth.
 Create UI with:
-- Power Grotesk for headlines
-- Google Sans for body and UI text
+- Google Sans for headings, body, and UI text
+- Power Grotesk only when using the Starchild logo or wordmark
 - white or black/orange backgrounds
 - Starchild icon or wordmark
 - clear cards with rounded corners
@@ -414,8 +564,43 @@ Do not invent new logos or unrelated palettes.
 For workflow guidance, install:
 @349/starchild-design-pack
 https://github.com/Starchild-ai-agent/community-skills/tree/main/349/starchild-design-pack</pre>
+        </div>
       </section>
     </div>
   </main>
+  <script>
+    const monoGrid = document.querySelector('.mono-grid');
+    if (monoGrid && !monoGrid.children.length) {
+      const visible = new Set([0, 1, 2, 3, 4, 7, 8, 11, 12, 15, 16, 17, 18, 19]);
+      for (let i = 0; i < 320; i++) {
+        const tile = document.createElement('span');
+        tile.className = 'mono-tile';
+        tile.style.setProperty('--i', i);
+        tile.style.setProperty('--z', 20 + ((i * 37) % 180));
+        tile.style.setProperty('--r', -36 + ((i * 17) % 72));
+        if (!visible.has(i % 20)) tile.style.opacity = '.24';
+        monoGrid.appendChild(tile);
+      }
+    }
+
+    const motionCards = document.querySelectorAll('.motion-card, [data-motion-card]');
+    const videos = document.querySelectorAll('[data-scroll-video]');
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        const video = entry.target.matches('video') ? entry.target : entry.target.querySelector('video');
+        if (entry.isIntersecting) {
+          entry.target.classList?.add('is-visible');
+          if (video) video.play().catch(() => {});
+        } else {
+          entry.target.classList?.remove('is-visible');
+          if (video) video.pause();
+        }
+      });
+    }, { threshold: 0.35 });
+
+    videos.forEach((video) => observer.observe(video));
+    motionCards.forEach((card) => observer.observe(card));
+  </script>
 </body>
 </html>

@@ -28,7 +28,9 @@ Canonical color values live in:
 
 ### Typography
 
-Primary typeface: Google Sans.
+Primary typeface for headings, body, and UI: Google Sans.
+
+Power Grotesk is reserved for the Starchild logo and wordmark only.
 
 Font files live in:
 
