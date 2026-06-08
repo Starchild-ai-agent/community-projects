@@ -1,6 +1,19 @@
 [
   {
     "type": "service",
+    "user_id": "3182",
+    "slug": "decarbon-alpha-warroom",
+    "version": "0.1.1",
+    "description": "One-page war room dashboard for selloff opportunities with regime detection and 9-column execution table.",
+    "tags": [],
+    "author": "user-3182",
+    "license": "MIT",
+    "github_url": "https://github.com/Starchild-ai-agent/community-projects/tree/main/projects/3182/decarbon-alpha-warroom",
+    "updated_at": "2026-06-08T14:53:40.667Z",
+    "created_at": "2026-06-08T14:53:40.667Z"
+  },
+  {
+    "type": "service",
     "user_id": "1892",
     "slug": "starchild-brand-registry",
     "version": "0.1.7",

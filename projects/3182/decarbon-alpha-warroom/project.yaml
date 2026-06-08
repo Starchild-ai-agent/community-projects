@@ -1,0 +1,10 @@
+name: decarbon-alpha-warroom
+version: 0.1.1
+type: service
+description: One-page war room dashboard for selloff opportunities with regime detection
+  and 9-column execution table.
+license: MIT
+entry: src/index.html
+port: 8765
+env_required: []
+author: user-3182
