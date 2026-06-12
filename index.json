@@ -3,7 +3,7 @@
     "type": "service",
     "user_id": "2195",
     "slug": "quotesim",
-    "version": "1.2.2",
+    "version": "1.2.3",
     "description": "BYO-asset market-maker simulator with an honest trust score. Simulates a two-sided quoting strategy on any oracle-backed asset (Hyperliquid perps, Pyth RWA feeds, any CoinGlass exchange pair), calibrated against a real production MM bot's tape — and tells you exactly how much NOT to trust the dollar estimates until real-tape validation clears.\n",
     "tags": [
       "market-making",
@@ -16,7 +16,7 @@
     "author": "user-2195",
     "license": "MIT",
     "github_url": "https://github.com/Starchild-ai-agent/community-projects/tree/main/projects/2195/quotesim",
-    "updated_at": "2026-06-12T17:22:41.410Z",
+    "updated_at": "2026-06-12T17:40:43.827Z",
     "created_at": "2026-06-12T16:28:47.332Z"
   },
   {

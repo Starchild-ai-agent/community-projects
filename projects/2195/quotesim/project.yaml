@@ -1,6 +1,6 @@
 name: quotesim
 type: service
-version: 1.2.2
+version: 1.2.3
 description: 'BYO-asset market-maker simulator with an honest trust score. Simulates
   a two-sided quoting strategy on any oracle-backed asset (Hyperliquid perps, Pyth
   RWA feeds, any CoinGlass exchange pair), calibrated against a real production MM

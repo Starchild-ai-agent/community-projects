@@ -134,20 +134,8 @@
     -webkit-box-shadow:0 0 0 1000px var(--bg) inset;
     -webkit-text-fill-color:var(--ink);caret-color:var(--ink);
     border:1px solid var(--line)}
-  /* ---- one-box hero ---- */
-  #hero{max-width:1160px;margin:18px auto 0;padding:0 20px}
-  .hero-in{background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:14px;padding:26px 24px}
-  .hero-q{font-size:19px;font-weight:600;margin-bottom:12px}
-  .hero-row{display:flex;gap:10px}
-  .hero-row input{flex:1;font-size:16px;padding:13px 16px;background:var(--bg);border:1px solid var(--line);border-radius:10px;color:var(--ink)}
-  .hero-row input:focus{outline:none;border-color:var(--acc)}
-  .hero-row button{font-size:15px;padding:13px 26px;border-radius:10px;border:0;background:var(--acc);color:#fff;cursor:pointer;white-space:nowrap}
-  .hero-row button:disabled{opacity:.55;cursor:wait}
-  .hero-msg{margin-top:10px;font-size:12.5px;color:var(--mut)}
   .plain{background:var(--panel2);border:1px solid var(--line);border-left:3px solid var(--acc);border-radius:10px;padding:16px 18px;font-size:14.5px;line-height:1.55;margin-bottom:14px}
   @media (max-width:860px){
-    .hero-row{flex-direction:column}
-    .hero-row button{width:100%}
     .wrap{grid-template-columns:1fr}
     .cfg{border-right:0;border-bottom:1px solid var(--line)}
     .res{padding:16px}
@@ -164,16 +152,6 @@
   <h1>QuoteSim</h1>
   <div class="sub">Quote any asset → get a PnL decomposition + a trust score. The engine calibrates on a live ground-truth book and won't vouch for numbers it can't reproduce.</div>
 </header>
-<section id="hero">
-  <div class="hero-in">
-    <div class="hero-q">What do you want to quote?</div>
-    <div class="hero-row">
-      <input id="herobox" list="oraclelist" placeholder="type an asset — HYPE, BTC, XAU, AAPL, EUR/USD…" autocomplete="off" autocapitalize="characters">
-      <button id="herogo">Quote it</button>
-    </div>
-    <div class="hero-msg" id="heromsg">One box. Real oracle history is fetched, the strategy auto-tunes to the asset's volatility, and you get a plain-English answer. Knobs are below if you want them.</div>
-  </div>
-</section>
 <div class="wrap">
   <div class="cfg" id="cfg"></div>
   <div class="res" id="res"></div>
@@ -283,7 +261,7 @@ async function loadOracleAssets(){
       return `<option value="${a.value}">${a.class} · ${a.ref}</option>`;
     }).join('');
     const nC=ORACLE.filter(a=>a.class==='Crypto').length, nR=ORACLE.length-nC;
-    $('fetchmsg').innerHTML = `${nC} crypto + ${nR} RWA (equities · metals · FX) oracle assets — type to search, then Run.`;
+    $('fetchmsg').innerHTML = `${nC} crypto + ${nR} RWA (equities · metals · FX) oracle assets — type one and press Enter; it fetches &amp; runs automatically.`;
   }catch(e){ ORACLE=[]; $('fetchmsg').innerHTML='<span class="err">could not load oracle list</span>'; }
 }
 
@@ -314,8 +292,8 @@ function onAssetReady(r){
   applyDefaults(r.defaults);
 }
 
-$('assetpick').addEventListener('change', e=> selectOracle(e.target.value));
-$('assetpick').addEventListener('keydown', e=>{ if(e.key==='Enter'){e.preventDefault(); selectOracle(e.target.value);} });
+$('assetpick').addEventListener('change', e=> pickAndRun(e.target.value));
+$('assetpick').addEventListener('keydown', e=>{ if(e.key==='Enter'){e.preventDefault(); pickAndRun(e.target.value);} });
 
 $('fetchcg').addEventListener('click', async ()=>{
   const sym=$('symbol').value.trim().toUpperCase(), ex=$('exchange').value;
@@ -347,29 +325,19 @@ async function runSim(){
 }
 $('run').addEventListener('click', runSim);
 
-// ---------- one-box hero ----------
-async function oneBox(){
-  const raw=$('herobox').value.trim();
+// pick → fetch → auto-run, one gesture, with typo suggestions
+async function pickAndRun(raw){
+  raw=(raw||'').trim();
   if(!raw) return;
-  if(!ORACLE.length){ $('heromsg').textContent='Still loading the asset list — one second…'; return; }
-  $('herogo').disabled=true;
-  $('heromsg').textContent='Pulling real oracle history for '+raw.toUpperCase()+'…';
   const ok=await selectOracle(raw);
   if(!ok){
     const v=raw.toUpperCase();
     const near=ORACLE.filter(a=>a.value.toUpperCase().startsWith(v)).slice(0,5).map(a=>a.value);
-    $('heromsg').innerHTML=`<span class="err">"${raw}" isn't an oracle-backed asset here.${near.length?' Did you mean: <b>'+near.join('</b>, <b>')+'</b>?':' Type to see suggestions.'}</span>`;
-    $('herogo').disabled=false; return;
+    if(near.length) $('fetchmsg').innerHTML=`<span class="err">"${raw}" isn't an oracle asset here. Did you mean: <b>${near.join('</b>, <b>')}</b>?</span>`;
+    return;
   }
-  $('assetpick').value=raw.toUpperCase();
-  $('heromsg').textContent='Asset ready — running the simulation…';
   await runSim();
-  $('heromsg').innerHTML='<span class="ok">Done — your answer is right below. Tweak the knobs in the left panel if you want, or type another asset.</span>';
-  $('herogo').disabled=false;
-  document.querySelector('.wrap').scrollIntoView({behavior:'smooth'});
 }
-$('herogo').addEventListener('click', oneBox);
-$('herobox').addEventListener('keydown', e=>{ if(e.key==='Enter'){e.preventDefault(); oneBox();} });
 
 // ---------- results ----------
 function emptyState(){
