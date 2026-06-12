@@ -445,14 +445,69 @@ function render(r){
           Starchild agent <b>“validate ${r.target.split(':').pop()}”</b> — free, no code, ~2 days.
         </div>
       </div>
-    </div>`;
+    </div>
+    <div id="valwrap"></div>`;
   $('calib').innerHTML = `calibrated fill_eff=${r.fill_eff} · natgas sim ${fmt(r.calibration.sim.fills_per_day)} fills/d vs truth ${r.calibration.truth.fills_per_day}/d`;
   drawBars(rep,dir,total);
   drawChart(s.inv_path||[]);
+  valRender(r);
   // offer to take this exact asset/config live (paper) on Orderly, if listed
   const tok=r.target.split(':').pop().split('/')[0];
   if(PL_SYMS.find(x=>x.token===tok)){ $('pl-sym').value=tok;
     $('pl-msg').innerHTML=`<span class="ok">${tok} is on Orderly — click ▶ to paper-live it with the config above.</span>`; }
+}
+
+/* ---------------- in-dashboard real-tape validation ---------------- */
+let VAL_TIMER=null;
+function valCoin(){
+  if(!CURKEY) return null;
+  const [src,...rest]=CURKEY.split(':');
+  if(src==='PYTH') return null;                  // oracle-only, no tape
+  if(src==='HL') return rest.join(':');          // handles HL:xyz:NATGAS too
+  return null;                                   // CEX candles: no HL tape
+}
+function valRender(r){
+  const coin=valCoin(), w=$('valwrap'); if(!w) return;
+  if(r.trust.score>=75){ w.innerHTML=''; return; }
+  if(!coin){
+    w.innerHTML=`<div class="grp" style="margin-top:14px"><h3>Validate for real</h3>
+      <div class="hint">This asset has no public trade tape here (oracle-only or CEX-candle source), so tape validation isn't available. Hyperliquid-listed assets can be validated in place.</div></div>`;
+    return;
+  }
+  w.innerHTML=`<div class="grp" style="margin-top:14px"><h3>Validate for real — right here</h3>
+    <div class="hint" style="margin-bottom:8px">Records the live trade tape against your exact dry-run ladder (no keys, no orders, no capital). Dollars unlock at <b>200 real fills + 2 days</b>. Keep this server running; progress survives restarts.</div>
+    <button id="valgo" style="width:auto;padding:10px 18px">▶ Start validating ${coin}</button>
+    <div id="valbar"></div></div>`;
+  $('valgo').addEventListener('click',()=>valStart(coin));
+  valPoll(coin,false);
+}
+async function valStart(coin){
+  $('valgo').disabled=true;
+  try{
+    const r=await(await fetch('api/validate/start',{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({coin, side_notional_usd:parseFloat($('side_notional_usd').value)||30000, strategy:cfg()})})).json();
+    if(!r.ok){ $('valbar').innerHTML=`<div class="hint"><span class="err">${r.error}</span></div>`; $('valgo').disabled=false; return; }
+    valPoll(coin,true);
+  }catch(e){ $('valbar').innerHTML='<div class="hint"><span class="err">'+e+'</span></div>'; $('valgo').disabled=false; }
+}
+async function valPoll(coin,loop){
+  try{
+    const r=await(await fetch('api/validate/status?coin='+encodeURIComponent(coin))).json();
+    const v=(r.validations||[])[0]; if(!v) return;
+    const bar=$('valbar'); if(!bar) return;
+    if(v.active && $('valgo')){ $('valgo').style.display='none'; }
+    if(!v.active && !v.fills){ return; }          // nothing started yet
+    const pct=Math.min(100, v.confidence||0);
+    if(v.ready){
+      bar.innerHTML=`<div class="hint" style="margin-top:8px"><span class="ok"><b>✅ Validated.</b> ${v.fills} real fills over ${v.days}d — spread ${usd(v.spread_per_day)}/day, directional ${usd(v.directional_per_day)}/day, total <b>${usd(v.total_per_day)}/day</b>. Re-run the simulation: it now clears the trust gate.</span></div>`;
+      fetch('api/validate/stop',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({coin})});
+      return;
+    }
+    bar.innerHTML=`<div style="margin-top:10px;background:var(--bg);border:1px solid var(--line);border-radius:8px;overflow:hidden;height:14px">
+        <div style="width:${pct}%;height:100%;background:var(--acc);transition:width .6s"></div></div>
+      <div class="hint" style="margin-top:6px">${v.active?'● collecting':'⏸ paused'} — ${v.fills||0}/${v.min_fills} fills · day ${(v.days||0).toFixed(1)} of ${v.min_days} · dollars stay hidden until the sample is big enough${(v.fills||0)>0&&(v.days||0)>0.5?(' · at this rate ≈ '+Math.ceil(Math.max(v.min_fills/((v.fills||1)/(v.days||1)),v.min_days))+' days total'):''}</div>`;
+    if(loop||v.active){ clearTimeout(VAL_TIMER); VAL_TIMER=setTimeout(()=>valPoll(coin,true),30000); }
+  }catch(e){}
 }
 
 /* ---------------- Paper-Live on Orderly ---------------- */

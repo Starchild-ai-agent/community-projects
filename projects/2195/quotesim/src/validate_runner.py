@@ -122,7 +122,8 @@ def collect(coin, side_notional, strat_dict):
     st, last_tid, started = _load_state(coin)
     mark = _mark(coin)
     if mark <= 0:
-        print(json.dumps({"ok": False, "error": f"no mark for {coin}"})); return
+        out = {"ok": False, "error": f"no mark for {coin}"}
+        print(json.dumps(out)); return out
     trades = _recent_trades(coin)
     fresh = [t for t in trades if t.get("tid", 0) > last_tid]
     fresh.sort(key=lambda t: t["tid"])
@@ -154,17 +155,20 @@ def collect(coin, side_notional, strat_dict):
     with open(OUT / f"HL_{_fsafe(coin)}_shadow.jsonl", "a") as tf:
         tf.write(json.dumps(tel) + "\n")
     _save_state(coin, st, last_tid, started)
-    print(json.dumps({"ok": True, "coin": coin, **tel,
-                      "elapsed_days": round((time.time() - started) / 86400, 3)}))
+    out = {"ok": True, "coin": coin, **tel,
+           "elapsed_days": round((time.time() - started) / 86400, 3)}
+    print(json.dumps(out))
+    return out
 
 
 def score(coin):
     sp = OUT / f"HL_{_fsafe(coin)}_shadow.jsonl"
     st, last_tid, started = _load_state(coin)
     if not sp.exists() or st.n_fills == 0:
-        print(json.dumps({"ok": True, "ready": False,
-                          "msg": "no tape collected yet — collection just started",
-                          "fills": st.n_fills})); return
+        out = {"ok": True, "ready": False, "confidence": 0, "days": 0.0,
+               "fills": st.n_fills,
+               "verdict": "COLLECTING — no fills yet; collection just started"}
+        print(json.dumps(out)); return out
     days = max((time.time() - started) / 86400, 1e-6)
     spread_d = st.spread_pnl / days
     dir_d = st.directional_pnl / days
@@ -187,6 +191,7 @@ def score(coin):
                           f"{days:.1f}/{MIN_DAYS} days. Dollars hidden until the "
                           f"sample is large enough to mean something.")
     print(json.dumps(out))
+    return out
 
 
 def main():
