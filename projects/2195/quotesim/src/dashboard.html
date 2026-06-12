@@ -127,6 +127,13 @@
   .interp .body b{color:var(--ink);font-weight:600}
   .interp .body .pos{color:var(--grn);font-weight:600}
   .interp .body .neg{color:var(--red);font-weight:600}
+  /* selection + autofill visibility (dark theme) */
+  ::selection{background:rgba(91,140,255,.35);color:var(--ink)}
+  input::selection{background:rgba(91,140,255,.35);color:#fff}
+  input:-webkit-autofill,input:-webkit-autofill:hover,input:-webkit-autofill:focus{
+    -webkit-box-shadow:0 0 0 1000px var(--bg) inset;
+    -webkit-text-fill-color:var(--ink);caret-color:var(--ink);
+    border:1px solid var(--line)}
   /* ---- one-box hero ---- */
   #hero{max-width:1160px;margin:18px auto 0;padding:0 20px}
   .hero-in{background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:14px;padding:26px 24px}
