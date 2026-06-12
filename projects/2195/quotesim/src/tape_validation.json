@@ -1,0 +1,35 @@
+{
+  "span_days": 4.004650833333532,
+  "pred": {
+    "spread": 52.71300697600016,
+    "fees": 1.3819150199999999,
+    "directional": 144.69133140599942,
+    "realized": 215.02796486688857,
+    "gross": 27638.300399999996,
+    "n": 46,
+    "qty": 8448.099999999997
+  },
+  "real": {
+    "spread": -39.187914974000144,
+    "fees": 1.549661955,
+    "directional": 144.69133140599942,
+    "realized": -0.9498934504573775,
+    "gross": 30993.239099999995,
+    "n": 53,
+    "qty": 9606.100000000002,
+    "n_taker_excluded": 5
+  },
+  "score": {
+    "score": 52,
+    "label": "DIRECTIONAL ONLY",
+    "pred_repeatable_per_day": 13.51,
+    "real_repeatable_per_day": -9.4,
+    "pred_fills": 46,
+    "real_fills": 53,
+    "pred_qty": 8448,
+    "real_qty": 9606,
+    "err_repeatable": 2.44,
+    "err_qty": 0.12,
+    "err_fills": 0.13
+  }
+}

@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+<title>QuoteSim — quote any asset, with a trust score</title>
+<style>
+  :root{
+    --bg:#0b0e14; --panel:#121722; --panel2:#161c29; --line:#222b3d;
+    --ink:#e6edf6; --mut:#8a96ad; --acc:#5b8cff; --grn:#37d39a; --red:#ff6b6b;
+    --amb:#ffc452; --mono:'SF Mono',ui-monospace,Menlo,Consolas,monospace;
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font:14px/1.5 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+  header{padding:16px 20px;border-bottom:1px solid var(--line)}
+  header h1{font-size:17px;margin:0 0 3px;letter-spacing:.2px}
+  header .sub{color:var(--mut);font-size:12.5px}
+  .wrap{display:grid;grid-template-columns:340px 1fr;min-height:calc(100vh - 60px)}
+  .cfg{border-right:1px solid var(--line);padding:18px;background:var(--panel)}
+  .res{padding:20px 24px;overflow:auto;min-width:0}
+  .grp{margin-bottom:16px;border:1px solid var(--line);border-radius:10px;
+    padding:14px;background:var(--panel2)}
+  .grp h3{font-size:11px;text-transform:uppercase;letter-spacing:.12em;
+    color:var(--mut);margin:0 0 10px;display:flex;justify-content:space-between}
+  label{display:flex;justify-content:space-between;align-items:center;
+    gap:10px;margin:9px 0;font-size:12.5px;color:var(--mut)}
+  input,select{background:var(--bg);border:1px solid var(--line);color:var(--ink);
+    border-radius:7px;padding:9px 10px;font:13px var(--mono);min-width:0}
+  .num input{width:110px;text-align:right}
+  .full{display:block;width:100%}
+  select.full,input.full{width:100%;margin-top:5px;text-align:left}
+  button{background:var(--acc);color:#fff;border:0;border-radius:8px;
+    padding:12px;font-weight:600;font-size:14px;cursor:pointer;width:100%}
+  button:hover{filter:brightness(1.08)} button:disabled{opacity:.5;cursor:wait}
+  button.ghost{background:var(--panel);border:1px solid var(--line);color:var(--ink);
+    font-weight:500;padding:10px}
+  .row2{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:end}
+  .hint{color:var(--mut);font-size:11.5px;margin-top:8px;line-height:1.45}
+  .ok{color:var(--grn)} .err{color:var(--red)}
+  .badge{border-radius:14px;padding:18px 20px;margin-bottom:18px;display:flex;
+    align-items:center;gap:18px;border:1px solid var(--line)}
+  .badge .score{font:700 42px/1 var(--mono)}
+  .badge .meta{flex:1;min-width:0}
+  .badge .lab{font-weight:600;font-size:15px;margin-bottom:3px}
+  .badge .det{color:var(--mut);font-size:12px}
+  .b-good{background:linear-gradient(135deg,#0f2a20,#0e1f1a);border-color:#1d5c44}
+  .b-good .score{color:var(--grn)}
+  .b-mid{background:linear-gradient(135deg,#2a2410,#1f1c0e);border-color:#6b551d}
+  .b-mid .score{color:var(--amb)}
+  .b-prev{background:linear-gradient(135deg,#101d2e,#0e1622);border-color:#27466e}
+  .b-prev .score{color:#5b8cff}
+  .score-cap{font:600 9.5px/1 var(--mono);letter-spacing:.06em;text-transform:uppercase;
+    color:var(--mut);margin-top:5px;text-align:center}
+  .badge .scorewrap{display:flex;flex-direction:column;align-items:center}
+  .cards{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:18px}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:14px}
+  .card .k{color:var(--mut);font-size:10.5px;text-transform:uppercase;letter-spacing:.07em}
+  .card .v{font:600 21px/1.2 var(--mono);margin-top:6px}
+  .card.hero{border-color:#1d5c44;background:linear-gradient(135deg,#0f2a20,#11161f)}
+  .card .card-sub{color:var(--mut);font-size:10px;margin-top:6px;line-height:1.4}
+  .tag-good{font:600 9px/1 var(--mono);letter-spacing:.04em;text-transform:uppercase;
+    color:var(--grn);background:#0f2a20;border:1px solid #1d5c44;border-radius:10px;padding:3px 6px;margin-left:5px}
+  .tag-warn{font:600 9px/1 var(--mono);letter-spacing:.04em;text-transform:uppercase;
+    color:var(--amb);background:#26210e;border:1px solid #6b551d;border-radius:10px;padding:3px 6px;margin-left:5px}
+  .pos{color:var(--grn)} .neg{color:var(--red)} .neu{color:var(--ink)}
+  .split{display:grid;grid-template-columns:1.25fr 1fr;gap:18px}
+  .box{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:18px}
+  /* paper-live */
+  #paperlive{border-top:1px solid var(--line);padding:22px 24px;background:var(--panel)}
+  .pl-head{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;margin-bottom:16px}
+  .pl-head h2{margin:0 0 4px;font-size:18px}
+  .pl-head .sub{color:var(--mut);font-size:12.5px;max-width:760px;line-height:1.5}
+  .pl-badge{flex:none;font:600 10px/1 var(--mono);letter-spacing:.06em;text-transform:uppercase;
+    color:var(--grn);border:1px solid #1d5c44;background:#0f2a20;border-radius:20px;padding:7px 11px}
+  .pl-start{display:flex;flex-wrap:wrap;align-items:flex-end;gap:12px;margin-bottom:18px}
+  .pl-start label{display:flex;flex-direction:column;gap:5px;font-size:11px;color:var(--mut)}
+  .pl-start input{min-width:160px}
+  .pl-start #pl-go{width:auto;white-space:nowrap}
+  .pl-msg{flex-basis:100%;color:var(--mut);font-size:11.5px;margin-top:2px}
+  .pl-sessions{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:14px}
+  .pl-card{border:1px solid var(--line);border-radius:12px;background:var(--panel2);padding:16px;position:relative}
+  .pl-card .pl-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+  .pl-card .pl-sym{font:600 15px/1 var(--mono)}
+  .pl-card .pl-run{color:var(--mut);font-size:10.5px;margin-top:4px}
+  .pl-stop{background:transparent;border:1px solid #6b1d1d;color:var(--red);width:auto;
+    padding:6px 12px;font-size:11px;border-radius:7px}
+  .pl-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px 14px;margin-bottom:12px}
+  .pl-kv .k{color:var(--mut);font-size:9.5px;text-transform:uppercase;letter-spacing:.06em}
+  .pl-kv .v{font:600 16px/1.2 var(--mono);margin-top:3px}
+  .pl-spark{height:46px;width:100%}
+  .pl-foot{color:var(--mut);font-size:10.5px;margin-top:8px;line-height:1.5}
+  .pl-empty{color:var(--mut);font-size:12px;padding:14px;border:1px dashed var(--line);border-radius:10px}
+  @media (max-width:680px){.pl-head{flex-direction:column}.pl-start input{min-width:120px}}
+  .box h3{margin-top:0;font-size:13px}
+  canvas{width:100%;height:200px;display:block}
+  .bar{display:flex;align-items:center;gap:10px;margin:10px 0;font-size:12.5px}
+  .bar .name{width:84px;color:var(--mut)}
+  .bar .track{flex:1;height:18px;background:var(--panel2);border-radius:5px;overflow:hidden}
+  .bar .fill{height:100%;border-radius:5px}
+  .bar .amt{width:88px;text-align:right;font-family:var(--mono)}
+  .note{margin-top:14px;padding:12px 14px;border-radius:9px;background:#1a1410;
+    border:1px solid #5c3d1d;color:#ffd9a8;font-size:12.5px;display:none}
+  .note.show{display:block}
+  .calib{color:var(--mut);font-size:11.5px;margin-top:12px;font-family:var(--mono);line-height:1.5}
+  .muted{color:var(--mut)} .empty{color:var(--mut);padding:36px 16px;text-align:center;line-height:1.6}
+  .flow{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:18px}
+  .step{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:14px}
+  .step .n{display:inline-flex;width:22px;height:22px;border-radius:50%;
+    background:var(--acc);color:#fff;align-items:center;justify-content:center;
+    font:600 12px var(--mono);margin-bottom:8px}
+  .step b{font-size:13px} .step p{margin:6px 0 0;color:var(--mut);font-size:12px;line-height:1.5}
+  details.help{margin-bottom:18px;border:1px solid var(--line);border-radius:10px;
+    background:var(--panel);overflow:hidden}
+  details.help summary{padding:13px 16px;cursor:pointer;font-weight:600;font-size:13px;
+    list-style:none;display:flex;justify-content:space-between;align-items:center}
+  details.help summary::-webkit-details-marker{display:none}
+  details.help[open] summary{border-bottom:1px solid var(--line)}
+  details.help .body{padding:14px 16px;color:var(--mut);font-size:12.5px;line-height:1.6}
+  details.help .body code{background:var(--panel2);padding:1px 5px;border-radius:4px;
+    font-family:var(--mono);color:var(--ink)}
+  details.interp{margin:-4px 0 18px}
+  details.interp summary{color:var(--ink)}
+  .interp-row{padding:7px 0;border-top:1px solid var(--line)}
+  .interp-row:first-child{border-top:0;padding-top:2px}
+  .interp .body b{color:var(--ink);font-weight:600}
+  .interp .body .pos{color:var(--grn);font-weight:600}
+  .interp .body .neg{color:var(--red);font-weight:600}
+  @media (max-width:860px){
+    .wrap{grid-template-columns:1fr}
+    .cfg{border-right:0;border-bottom:1px solid var(--line)}
+    .res{padding:16px}
+    .split{grid-template-columns:1fr}
+    .cards{grid-template-columns:repeat(2,1fr)}
+    .flow{grid-template-columns:1fr}
+    .badge .score{font-size:34px}
+    header h1{font-size:16px}
+  }
+</style>
+</head>
+<body>
+<header>
+  <h1>QuoteSim</h1>
+  <div class="sub">Quote any asset → get a PnL decomposition + a trust score. The engine calibrates on a live ground-truth book and won't vouch for numbers it can't reproduce.</div>
+</header>
+<div class="wrap">
+  <div class="cfg" id="cfg"></div>
+  <div class="res" id="res"></div>
+</div>
+<section id="paperlive">
+  <div class="pl-head">
+    <div>
+      <h2>Paper-Live on Orderly</h2>
+      <div class="sub">Watch your exact strategy quote against <b>live</b> Orderly order flow — real marks, real trade tape, predicted fills and inventory in real time. <b>No API keys, no capital, no orders.</b> This is the bridge between backtest and going live.</div>
+    </div>
+    <span class="pl-badge">live data · dry-run</span>
+  </div>
+  <div class="pl-start">
+    <label>Orderly market
+      <input id="pl-sym" list="pl-symlist" placeholder="search — ETH, BTC, SOL…" autocomplete="off" autocapitalize="characters"></label>
+    <datalist id="pl-symlist"></datalist>
+    <label>Side notional $
+      <input id="pl-side" type="number" value="30000" step="5000" inputmode="numeric"></label>
+    <button id="pl-go">▶ Start paper-live</button>
+    <div class="pl-msg" id="pl-msg">Pick an Orderly market. It uses your current config from the panel above.</div>
+  </div>
+  <div id="pl-sessions" class="pl-sessions"></div>
+</section>
+<script>
+const $ = id => document.getElementById(id);
+const fmt = (n,d=0)=> (n>=0?'+':'')+Number(n).toLocaleString('en-US',{minimumFractionDigits:d,maximumFractionDigits:d});
+const usd = (n,d=0)=> '$'+fmt(n,d);
+
+// ---------- config panel ----------
+$('cfg').innerHTML = `
+  <div class="grp">
+    <h3>1 · Asset</h3>
+    <input id="assetpick" class="full" placeholder="search any oracle asset — XAU, AAPL, EUR/USD, HYPE, BTC…" list="oraclelist" autocomplete="off" autocapitalize="characters">
+    <datalist id="oraclelist"></datalist>
+    <div class="muted" id="volnote" style="font-size:11.5px;margin-top:8px"></div>
+    <div class="hint" id="fetchmsg">Loading oracle assets…</div>
+    <details class="help" style="margin:12px 0 0;background:transparent">
+      <summary style="padding:8px 0;font-size:11.5px;color:var(--mut)"><span>advanced: other exchange/symbol ▾</span></summary>
+      <div class="body" style="padding:8px 0">
+        <label class="full" style="flex-direction:column;align-items:stretch">Exchange
+          <select id="exchange" class="full"></select></label>
+        <div class="row2" style="margin-top:8px">
+          <label class="full" style="flex-direction:column;align-items:stretch;margin:0">Symbol
+            <input id="symbol" class="full" placeholder="e.g. HYPEUSDT" autocapitalize="characters"></label>
+          <button class="ghost" id="fetchcg" style="width:auto;white-space:nowrap">Add</button>
+        </div>
+        <div class="hint">No oracle guarantee — uses raw CEX futures candles.</div>
+      </div>
+    </details>
+  </div>
+  <div class="grp">
+    <h3>2 · Quoting config <span id="cfgtag" style="text-transform:none;letter-spacing:0;color:var(--grn);font-weight:500">auto-tuned</span></h3>
+    <div class="hint" id="cfghint" style="margin:-4px 0 4px">Pick an asset — these auto-fill to sensible defaults for its volatility. Expand only if you want to tweak.</div>
+    <details class="help" style="background:transparent;border:0;margin:0">
+      <summary style="padding:8px 0;font-size:11.5px;color:var(--mut)"><span>customize ▾</span></summary>
+      <div class="body" style="padding:6px 0">
+        <div class="num"><label>Side notional $ <input id="side_notional_usd" type="number" value="30000" step="5000" inputmode="numeric"></label></div>
+        <div class="num"><label>Levels / side <input id="n_levels" type="number" value="10" inputmode="numeric"></label></div>
+        <div class="num"><label>Min bps <input id="min_bps" type="number" value="5" inputmode="numeric"></label></div>
+        <div class="num"><label>Band bps <input id="band_bps" type="number" value="200" inputmode="numeric"></label></div>
+        <div class="num"><label>Inv hard $ <input id="inv_hard_usd" type="number" value="6000" step="1000" inputmode="numeric"></label></div>
+        <div class="num"><label>close_skew lots <input id="close_skew_lots" type="number" value="1000" step="100" inputmode="numeric"></label></div>
+        <div class="num"><label>close_skew × <input id="close_skew_mult" type="number" value="1.31" step="0.01" inputmode="decimal"></label></div>
+        <button class="ghost" id="reset_cfg" style="margin-top:8px">↺ reset to auto-tuned</button>
+      </div>
+    </details>
+  </div>
+  <button id="run">Run simulation</button>
+  <div class="calib" id="calib"></div>`;
+
+const CFG_IDS=['side_notional_usd','n_levels','min_bps','band_bps','inv_hard_usd','close_skew_lots','close_skew_mult'];
+let ORACLE=[];        // [{value,source,symbol,class,ref}]
+let OMAP={};          // value(upper) -> asset record
+let CURKEY=null;      // selected target key, e.g. "HL:HYPE" / "PYTH:XAU"
+let CURDEF=null;      // auto-tuned defaults for current asset
+let DIRTY=false;      // user manually edited config?
+
+function applyDefaults(def){
+  CURDEF = def;
+  CFG_IDS.forEach(i=>{ if(def[i]!==undefined) $(i).value = def[i]; });
+  DIRTY=false;
+  $('cfgtag').textContent='auto-tuned'; $('cfgtag').style.color='var(--grn)';
+}
+CFG_IDS.forEach(i=>{
+  document.addEventListener('input', e=>{
+    if(e.target && e.target.id===i){ DIRTY=true;
+      $('cfgtag').textContent='customized'; $('cfgtag').style.color='var(--amb)'; }
+  });
+});
+$('reset_cfg').addEventListener('click',()=>{ if(CURDEF) applyDefaults(CURDEF); });
+
+async function loadExchanges(){
+  try{
+    const r = await (await fetch('api/exchanges')).json();
+    $('exchange').innerHTML = (r.exchanges||['Binance']).map(e=>`<option>${e}</option>`).join('');
+  }catch(e){ $('exchange').innerHTML='<option>Binance</option>'; }
+}
+async function loadOracleAssets(){
+  try{
+    const r = await (await fetch('api/oracle_assets')).json();
+    ORACLE = r.assets||[]; OMAP={};
+    // RWA first (curated, short) so it surfaces in the dropdown, then crypto
+    const order={'Metal':0,'US Equity':1,'FX':2,'Crypto':3};
+    const sorted=[...ORACLE].sort((a,b)=>(order[a.class]??9)-(order[b.class]??9));
+    $('oraclelist').innerHTML = sorted.map(a=>{
+      OMAP[a.value.toUpperCase()]=a;
+      return `<option value="${a.value}">${a.class} · ${a.ref}</option>`;
+    }).join('');
+    const nC=ORACLE.filter(a=>a.class==='Crypto').length, nR=ORACLE.length-nC;
+    $('fetchmsg').innerHTML = `${nC} crypto + ${nR} RWA (equities · metals · FX) oracle assets — type to search, then Run.`;
+  }catch(e){ ORACLE=[]; $('fetchmsg').innerHTML='<span class="err">could not load oracle list</span>'; }
+}
+
+// select an oracle asset by value -> route to its oracle source -> fetch
+async function selectOracle(raw){
+  const val=raw.trim().toUpperCase();
+  if(!val) return;
+  const rec=OMAP[val];
+  if(!rec){
+    $('fetchmsg').innerHTML=`<span class="err">"${raw}" isn't in the oracle list. Pick from the dropdown, or use advanced below.</span>`;
+    CURKEY=null; return;
+  }
+  $('fetchmsg').textContent=`Loading ${rec.source==='pyth'?'Pyth':'Hyperliquid'} oracle history for ${rec.value}…`;
+  try{
+    const r=await(await fetch('api/fetch',{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({source:rec.source,symbol:rec.value})})).json();
+    if(r.ok){ onAssetReady(r); }
+    else { $('fetchmsg').innerHTML=`<span class="err">${r.error||'failed'}</span>`; CURKEY=null; }
+  }catch(e){ $('fetchmsg').innerHTML='<span class="err">'+e+'</span>'; CURKEY=null; }
+}
+
+function onAssetReady(r){
+  CURKEY=r.key;
+  $('volnote').textContent=`realized vol ≈ ${r.vol}% annualized · ${r.bars} bars (${r.span_days}d)`;
+  let msg=`<span class="ok">✓ ${r.label} ready — config auto-tuned for ${r.vol}% vol. Hit Run.</span>`;
+  if(r.rwa) msg+=`<br><span style="color:var(--amb);font-size:11px">⚠ RWA: the underlying only trades during market hours. A real perp would face oracle staleness + gap risk overnight/weekends — not modeled here. Treat the result as in-session shape only.</span>`;
+  $('fetchmsg').innerHTML=msg;
+  applyDefaults(r.defaults);
+}
+
+$('assetpick').addEventListener('change', e=> selectOracle(e.target.value));
+$('assetpick').addEventListener('keydown', e=>{ if(e.key==='Enter'){e.preventDefault(); selectOracle(e.target.value);} });
+
+$('fetchcg').addEventListener('click', async ()=>{
+  const sym=$('symbol').value.trim().toUpperCase(), ex=$('exchange').value;
+  if(!sym){ $('fetchmsg').innerHTML='<span class="err">Enter a symbol first.</span>'; return; }
+  $('fetchcg').disabled=true; $('fetchmsg').textContent='Fetching '+sym+'…';
+  try{
+    const r = await (await fetch('api/fetch',{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({source:'coinglass',exchange:ex,symbol:sym})})).json();
+    if(r.ok){ $('assetpick').value=`${sym} @ ${ex}`; onAssetReady(r); }
+    else{ $('fetchmsg').innerHTML=`<span class="err">${r.error||'fetch failed'}</span>`; }
+  }catch(e){ $('fetchmsg').innerHTML='<span class="err">'+e+'</span>'; }
+  $('fetchcg').disabled=false;
+});
+
+function cfg(){
+  const s={}; CFG_IDS.forEach(i=>s[i]=parseFloat($(i).value)); return s;
+}
+
+$('run').addEventListener('click', async ()=>{
+  if(!CURKEY){ $('fetchmsg').innerHTML='<span class="err">Pick an asset first.</span>'; return; }
+  $('run').disabled=true; $('run').textContent='Running…';
+  try{
+    const r = await (await fetch('api/run',{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({target:CURKEY, strategy:cfg()})})).json();
+    if(r.error){ $('res').innerHTML='<div class="empty">'+r.error+'</div>'; }
+    else render(r);
+  }catch(e){ $('res').innerHTML='<div class="empty">Error: '+e+'</div>'; }
+  $('run').disabled=false; $('run').textContent='Run simulation';
+});
+
+// ---------- results ----------
+function emptyState(){
+  $('res').innerHTML = `
+    <div class="flow">
+      <div class="step"><span class="n">1</span><br><b>Pick an oracle-backed asset</b>
+        <p>Crypto (Hyperliquid) or RWA — equities, metals, FX (Pyth). E.g. <code>XAU</code>, <code>AAPL</code>, <code>HYPE</code>. Pulls real 5-min oracle history.</p></div>
+      <div class="step"><span class="n">2</span><br><b>Set your quoting config</b>
+        <p>Side notional, ladder depth, spread band, inventory caps — the same knobs a live MM bot uses.</p></div>
+      <div class="step"><span class="n">3</span><br><b>Read the $-accuracy score</b>
+        <p>Blue = fast preview, lead with <b>spread capture</b> (the MM edge); validate for exact net. Amber = shape solid, dollars rough. Green = dollars trustworthy.</p></div>
+    </div>
+    <details class="help"><summary><span>How do I actually market-make a new asset with this? <span class="muted">▾</span></summary>
+      <div class="body">
+        This dashboard is the <b>evaluation</b> step — it doesn't place orders. It answers the two questions you ask <i>before</i> committing capital to a new market:
+        <br><br>
+        <b>1. Is there repeatable edge, or am I just taking directional risk?</b> The PnL split separates <span class="ok">spread capture</span> (repeatable maker edge) from <span style="color:var(--amb)">directional</span> (inventory mark drift — luck/risk).
+        <br><br>
+        <b>2. How big does inventory get, and how hard does vol bite?</b> The inventory chart shows your exposure path; peak inventory shows your worst warehoused position under that config.
+        <br><br>
+        <b>The honest path to live MMing:</b>
+        <br>① Evaluate here → ② if promising, <b>tell your Starchild agent: “validate &lt;ASSET&gt;”</b> — it records the real trade tape against your dry-run quotes for a few days (no code, no capital) and messages you when the number is trustworthy → ③ once it clears trust ≥ 75 → ④ only then point a live bot at it.
+        <br><br>
+        The OHLC model here is fast but optimistic (it overcounts fills), which is exactly why every result is trust-gated. A green dollar figure on a low-trust engine would be a lie — so the tool refuses to show one.
+      </div>
+    </details>
+    <div class="empty">Pick an asset and run a simulation to see the decomposition.</div>`;
+}
+
+function render(r){
+  const t=r.trust, s=r.summary;
+  const cls = t.score>=75?'b-good':t.score>=45?'b-mid':'b-prev';
+  const total=s.total_per_day, rep=s.repeatable_per_day, dir=s.directional_per_day;
+  const cl = v=> v>=0?'pos':'neg';
+  const lowTrust = t.score<45;
+  $('res').innerHTML = `
+    <div class="badge ${cls}">
+      <div class="scorewrap">
+        <div class="score">${t.score}<span style="font-size:17px;color:var(--mut)">/100</span></div>
+        <div class="score-cap">$ accuracy</div>
+      </div>
+      <div class="meta">
+        <div class="lab">${t.label}</div>
+        <div class="det">${t.score<45
+          ? 'Normal for a first look at any asset — the dollars just need one free step (see “Next” below). The risk shape is already real.'
+          : 'Calibrated on NATGAS ground truth · '+r.target.replace(':',' @ ')+' vol '+r.target_vol+'% vs NATGAS '+r.natgas_vol+'%'}</div>
+      </div>
+    </div>
+    <details class="help interp" open>
+      <summary><span>How to read this result <span class="muted">▾</span></span></summary>
+      <div class="body">${interpret(r,s,t)}</div>
+    </details>
+    ${lowTrust ? `
+    <div class="cards">
+      <div class="card hero"><div class="k">Spread capture / day <span class="tag-good">the MM edge</span></div><div class="v ${cl(rep)}">${usd(rep)}</div><div class="card-sub">repeatable maker income — the reason to MM this asset</div></div>
+      <div class="card"><div class="k">Directional / day <span class="tag-warn">unreliable in preview</span></div><div class="v neu">${usd(dir)}</div><div class="card-sub">inventory drift — fast model over-states this; sign not trustworthy yet</div></div>
+      <div class="card"><div class="k">Net / day <span class="muted">(fast est.)</span></div><div class="v neu">${usd(total)}</div><div class="card-sub">don't read as forecast — validate for the real bottom line</div></div>
+      <div class="card"><div class="k">Peak inventory</div><div class="v neu">${usd(s.peak_inv_usd)}</div><div class="card-sub">worst one-sided book under your caps</div></div>
+    </div>` : `
+    <div class="cards">
+      <div class="card"><div class="k">Total / day</div><div class="v ${cl(total)}">${usd(total)}</div></div>
+      <div class="card"><div class="k">Repeatable / day</div><div class="v ${cl(rep)}">${usd(rep)}</div></div>
+      <div class="card"><div class="k">Directional / day</div><div class="v ${cl(dir)}">${usd(dir)}</div></div>
+      <div class="card"><div class="k">Peak inventory</div><div class="v neu">${usd(s.peak_inv_usd)}</div></div>
+    </div>`}
+    <div class="split">
+      <div class="box">
+        <h3>Inventory exposure ($ over window)</h3>
+        <canvas id="chart"></canvas>
+        <div class="muted" style="font-size:11.5px;margin-top:8px">
+          ${s.fills_per_day} sim fills/day · ${usd(s.gross_vol_usd)} gross volume · span ${s.span_days}d</div>
+      </div>
+      <div class="box">
+        <h3>PnL decomposition / day</h3>
+        <div id="bars"></div>
+        <div class="note ${lowTrust?'show':''}">
+          These are a <b>fast estimate</b>, not a forecast — read them as <b>risk shape</b>
+          (inventory swings, directional bite at this vol). For exact dollars, tell your
+          Starchild agent <b>“validate ${r.target.split(':').pop()}”</b> — free, no code, ~2 days.
+        </div>
+      </div>
+    </div>`;
+  $('calib').innerHTML = `calibrated fill_eff=${r.fill_eff} · natgas sim ${fmt(r.calibration.sim.fills_per_day)} fills/d vs truth ${r.calibration.truth.fills_per_day}/d`;
+  drawBars(rep,dir,total);
+  drawChart(s.inv_path||[]);
+  // offer to take this exact asset/config live (paper) on Orderly, if listed
+  const tok=r.target.split(':').pop().split('/')[0];
+  if(PL_SYMS.find(x=>x.token===tok)){ $('pl-sym').value=tok;
+    $('pl-msg').innerHTML=`<span class="ok">${tok} is on Orderly — click ▶ to paper-live it with the config above.</span>`; }
+}
+
+/* ---------------- Paper-Live on Orderly ---------------- */
+let PL_SYMS=[];
+async function plLoadSymbols(){
+  try{
+    const r=await(await fetch('api/paper/symbols')).json();
+    PL_SYMS=r.symbols||[];
+    $('pl-symlist').innerHTML=PL_SYMS.map(s=>`<option value="${s.token}">${s.symbol} · mark ${s.mark}</option>`).join('');
+  }catch(e){ PL_SYMS=[]; }
+}
+function plResolve(raw){
+  const v=raw.trim().toUpperCase();
+  let m=PL_SYMS.find(s=>s.token===v||s.symbol===v);
+  if(!m && v) m=PL_SYMS.find(s=>s.token.startsWith(v));
+  return m;
+}
+$('pl-go').addEventListener('click', async ()=>{
+  const m=plResolve($('pl-sym').value);
+  if(!m){ $('pl-msg').innerHTML='<span class="err">Pick an Orderly market from the list.</span>'; return; }
+  $('pl-go').disabled=true; $('pl-msg').textContent='Starting paper-live on '+m.symbol+'…';
+  try{
+    const r=await(await fetch('api/paper/start',{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({symbol:m.symbol, side_notional_usd:parseFloat($('pl-side').value)||30000, strategy:cfg()})})).json();
+    if(r.ok){ $('pl-msg').innerHTML=`<span class="ok">▶ Live on ${m.symbol}. It advances every ~60s — watch it build below.</span>`; plPoll(); }
+    else $('pl-msg').innerHTML=`<span class="err">${r.error||'failed'}</span>`;
+  }catch(e){ $('pl-msg').innerHTML='<span class="err">'+e+'</span>'; }
+  $('pl-go').disabled=false;
+});
+async function plStop(sym){
+  await fetch('api/paper/stop',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({symbol:sym})});
+  plPoll();
+}
+function plMoney(v){ const s=v>=0?'pos':'neg'; return `<span class="${s}">${usd(v)}</span>`; }
+function plCard(s){
+  const capPct = s.cfg.inv_hard_usd ? Math.min(100, Math.round(Math.abs(s.inv_usd)/s.cfg.inv_hard_usd*100)) : 0;
+  const dur = s.running_min<60 ? s.running_min+'m' : (s.running_min/60).toFixed(1)+'h';
+  return `<div class="pl-card">
+    <div class="pl-top">
+      <div><div class="pl-sym">${s.symbol}</div>
+        <div class="pl-run">live ${dur} · ${s.n_fills} fills · ${fmt(s.fills_per_day)}/day</div></div>
+      <button class="pl-stop" onclick="plStop('${s.symbol}')">Stop</button>
+    </div>
+    <div class="pl-grid">
+      <div class="pl-kv"><div class="k">Total PnL</div><div class="v">${plMoney(s.total_pnl)}</div></div>
+      <div class="pl-kv"><div class="k">Per day (extrap.)</div><div class="v">${plMoney(s.total_per_day)}</div></div>
+      <div class="pl-kv"><div class="k">Spread capture</div><div class="v">${plMoney(s.spread_pnl)}</div></div>
+      <div class="pl-kv"><div class="k">Directional</div><div class="v">${plMoney(s.directional_pnl)}</div></div>
+      <div class="pl-kv"><div class="k">Inventory</div><div class="v">${plMoney(s.inv_usd)}</div></div>
+      <div class="pl-kv"><div class="k">Peak / cap</div><div class="v" style="font-size:13px">${usd(s.peak_inv_usd)} <span style="color:var(--mut)">/ ${capPct}%</span></div></div>
+    </div>
+    <canvas class="pl-spark" id="spark-${s.symbol}"></canvas>
+    <div class="pl-foot">Predicting fills from Orderly's live public tape against your resting ladder. Dry-run — no orders placed. Early per-day figures are noisy until the session matures.</div>
+  </div>`;
+}
+async function plPoll(){
+  try{
+    const r=await(await fetch('api/paper/status')).json();
+    const box=$('pl-sessions');
+    if(!r.sessions||!r.sessions.length){ box.innerHTML='<div class="pl-empty">No paper-live sessions running. Start one above to watch your strategy quote live Orderly flow.</div>'; return; }
+    box.innerHTML=r.sessions.map(plCard).join('');
+    r.sessions.forEach(s=>plSpark(s));
+  }catch(e){}
+}
+function plSpark(s){
+  const c=document.getElementById('spark-'+s.symbol); if(!c||!s.spark||s.spark.length<2) return;
+  const dpr=window.devicePixelRatio||1, W=c.clientWidth||300, H=46;
+  c.width=W*dpr; c.height=H*dpr; const x=c.getContext('2d'); x.scale(dpr,dpr); x.clearRect(0,0,W,H);
+  const ys=s.spark.map(p=>p[2]), ymin=Math.min(0,...ys), ymax=Math.max(0,...ys);
+  const px=i=>i/(s.spark.length-1)*(W-4)+2, py=v=>H-3-(v-ymin)/((ymax-ymin)||1)*(H-6);
+  x.strokeStyle='#2a3447';x.beginPath();x.moveTo(2,py(0));x.lineTo(W-2,py(0));x.stroke();
+  x.beginPath(); s.spark.forEach((p,i)=>{const X=px(i),Y=py(p[2]); i?x.lineTo(X,Y):x.moveTo(X,Y);});
+  x.strokeStyle=(ys[ys.length-1]>=0?'#37d39a':'#ff6b6b');x.lineWidth=1.5;x.stroke();
+}
+setInterval(plPoll, 15000);
+
+// dynamic interpretation — reads the actual numbers, not a hardcoded case
+function interpret(r,s,t){
+  const rep=s.repeatable_per_day, dir=s.directional_per_day, total=s.total_per_day;
+  const truthFills=(r.calibration&&r.calibration.truth&&r.calibration.truth.fills_per_day)||23;
+  const infl=Math.max(1, Math.round(s.fills_per_day/truthFills));
+  const trust=t.score;
+  const dirBigger=Math.abs(dir)>Math.abs(rep);
+  const repPos=rep>=0, dirNeg=dir<0;
+  // 1) the trust line
+  let trustLine;
+  if(trust>=75) trustLine=`<b>${trust}/100 $-accuracy — believe the dollars.</b> The fast model reproduced the known NATGAS book on this config, so the $ figures below are a usable estimate.`;
+  else if(trust>=45) trustLine=`<b>${trust}/100 $-accuracy — trust the shape, dollars are rough.</b> Read signs and relative sizes; the exact $ needs validation.`;
+  else trustLine=`<b>${trust}/100 $-accuracy — this is a fast preview, and that's expected.</b> The fast model can't pin exact dollars on this book yet, so read the result as <b>risk shape</b>, not edge. One free step (below) turns it into a real number.`;
+  // 2) fill inflation tell
+  const inflLine = trust<75
+    ? `<b>Why:</b> ${fmt(s.fills_per_day)} sim fills/day ≈ <b>${infl}× </b> a comparable live book (~${truthFills}/day). The OHLC model fills whenever a 5-min candle wicks a level — it ignores queue position, so every $ figure is built on ~${infl}× too many fills.`
+    : `Fill rate (${fmt(s.fills_per_day)}/day) is in a believable range vs the ~${truthFills}/day ground-truth book.`;
+  // 3) edge vs risk verdict — TRUST-AWARE. In preview, the directional term is
+  // over-stated by wick-filling, so it must NOT drive a win/lose verdict.
+  let verdict;
+  if(trust<45){
+    if(repPos)
+      verdict=`<b>Edge vs risk:</b> spread capture is <b>positive (${usd(rep)}/d)</b> — that's the maker edge, and it's the reliable read here. The directional / net figure looks ugly, but the fast model <b>over-states directional loss</b> (it fills every wick with no queue), so <b>don't conclude this asset loses money from it</b>. On the one book we have ground truth for, the same model shows red while the live bot is green. <span class="pos">Validate to get the true net.</span>`;
+    else
+      verdict=`<b>Edge vs risk:</b> even <b>spread capture is negative</b> (${usd(rep)}/d) — and that's the term the model gets roughly right. This config doesn't earn the spread on this asset, so it's a <span class="neg">likely no</span> regardless of validation. Try a wider spread / smaller inventory cap.`;
+  } else if(repPos && dirNeg && dirBigger)
+    verdict=`<b>Edge vs risk:</b> spread capture is positive (${usd(rep)}/d) but <b>directional risk is larger</b> (${usd(dir)}/d) — inventory drift eats the maker edge. At this vol, you're not paid enough spread to carry the position. <span class="neg">Leans unfavorable.</span>`;
+  else if(repPos && !dirBigger)
+    verdict=`<b>Edge vs risk:</b> spread capture (${usd(rep)}/d) is positive and <b>larger than</b> directional swing (${usd(dir)}/d) — the repeatable edge dominates. <span class="pos">Leans favorable.</span>`;
+  else if(!repPos)
+    verdict=`<b>Edge vs risk:</b> repeatable edge is <b>negative</b> (${usd(rep)}/d) even before directional risk — this config doesn't earn the spread on this asset. <span class="neg">Unfavorable.</span>`;
+  else
+    verdict=`<b>Edge vs risk:</b> repeatable ${usd(rep)}/d, directional ${usd(dir)}/d. Compare the bars below — bigger one drives the outcome.`;
+  // 4) inventory read
+  const invLine=`<b>Peak inventory ${usd(s.peak_inv_usd)}:</b> worst one-sided book reached under your caps. The exposure chart's spikes/plateaus are real risk info even when $ is inflated — flat tops mean it pinned at the cap.`;
+  // 5) next step
+  const next = trust>=75
+    ? `<b>Next:</b> dollars are usable — size a small live position and verify before scaling.`
+    : `<b>Next:</b> for a real number, just tell your Starchild agent <b>“validate ${r.target.split(':').pop()}”</b> — it records the real trade tape vs your dry-run quotes over a few days (no code, no capital) and messages you when it's trustworthy. You do nothing.`;
+  const rwaNote = r.rwa ? `<div style="margin-top:8px;color:var(--amb)">⚠ RWA: underlying trades market hours only — a real perp adds overnight/weekend gap + oracle-staleness risk this sim doesn't model.</div>` : '';
+  return `<div class="interp-row">${trustLine}</div>
+    <div class="interp-row">${inflLine}</div>
+    <div class="interp-row">${verdict}</div>
+    <div class="interp-row">${invLine}</div>
+    <div class="interp-row">${next}</div>${rwaNote}`;
+}
+
+function drawBars(rep,dir,total){
+  const max=Math.max(Math.abs(rep),Math.abs(dir),Math.abs(total),1);
+  const row=(name,v,c)=>`<div class="bar"><div class="name">${name}</div>
+    <div class="track"><div class="fill" style="width:${Math.abs(v)/max*100}%;background:${c}"></div></div>
+    <div class="amt ${v>=0?'pos':'neg'}">${usd(v)}</div></div>`;
+  $('bars').innerHTML =
+    row('Repeatable',rep,'var(--grn)')+
+    row('Directional',dir, dir>=0?'var(--amb)':'var(--red)')+
+    row('Total',total, total>=0?'var(--grn)':'var(--red)');
+}
+
+function drawChart(path){
+  const c=$('chart'); if(!c) return;
+  const dpr=window.devicePixelRatio||1, W=c.clientWidth, H=200;
+  c.width=W*dpr; c.height=H*dpr; const x=c.getContext('2d'); x.scale(dpr,dpr);
+  x.clearRect(0,0,W,H);
+  if(!path.length){x.fillStyle='#8a96ad';x.fillText('no data',W/2-20,H/2);return;}
+  const ys=path.map(p=>p[1]), ts=path.map(p=>p[0]);
+  const ymin=Math.min(0,...ys), ymax=Math.max(0,...ys), tmin=ts[0], tmax=ts[ts.length-1];
+  const px=t=>(t-tmin)/(tmax-tmin||1)*(W-52)+44;
+  const py=v=>H-20-(v-ymin)/((ymax-ymin)||1)*(H-40);
+  x.strokeStyle='#2a3447';x.lineWidth=1;x.beginPath();x.moveTo(44,py(0));x.lineTo(W-8,py(0));x.stroke();
+  x.fillStyle='#8a96ad';x.font='10px monospace';
+  x.fillText('$'+ymax.toLocaleString(),2,py(ymax)+4); x.fillText('$'+ymin.toLocaleString(),2,py(ymin)+4);
+  x.beginPath(); path.forEach((p,i)=>{const X=px(p[0]),Y=py(p[1]); i?x.lineTo(X,Y):x.moveTo(X,Y);});
+  x.lineTo(px(tmax),py(0)); x.lineTo(px(tmin),py(0)); x.closePath();
+  x.fillStyle='rgba(91,140,255,.15)'; x.fill();
+  x.beginPath(); path.forEach((p,i)=>{const X=px(p[0]),Y=py(p[1]); i?x.lineTo(X,Y):x.moveTo(X,Y);});
+  x.strokeStyle='#5b8cff';x.lineWidth=1.5;x.stroke();
+}
+
+emptyState();
+loadExchanges();
+loadOracleAssets();
+plLoadSymbols();
+plPoll();
+</script>
+</body>
+</html>

@@ -1,0 +1,7 @@
+.env
+__pycache__/
+*.pyc
+src/fetched/
+src/shadow/
+src/paper/
+src/valdata/
