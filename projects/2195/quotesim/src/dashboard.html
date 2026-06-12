@@ -127,7 +127,20 @@
   .interp .body b{color:var(--ink);font-weight:600}
   .interp .body .pos{color:var(--grn);font-weight:600}
   .interp .body .neg{color:var(--red);font-weight:600}
+  /* ---- one-box hero ---- */
+  #hero{max-width:1160px;margin:18px auto 0;padding:0 20px}
+  .hero-in{background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:14px;padding:26px 24px}
+  .hero-q{font-size:19px;font-weight:600;margin-bottom:12px}
+  .hero-row{display:flex;gap:10px}
+  .hero-row input{flex:1;font-size:16px;padding:13px 16px;background:var(--bg);border:1px solid var(--line);border-radius:10px;color:var(--ink)}
+  .hero-row input:focus{outline:none;border-color:var(--acc)}
+  .hero-row button{font-size:15px;padding:13px 26px;border-radius:10px;border:0;background:var(--acc);color:#fff;cursor:pointer;white-space:nowrap}
+  .hero-row button:disabled{opacity:.55;cursor:wait}
+  .hero-msg{margin-top:10px;font-size:12.5px;color:var(--mut)}
+  .plain{background:var(--panel2);border:1px solid var(--line);border-left:3px solid var(--acc);border-radius:10px;padding:16px 18px;font-size:14.5px;line-height:1.55;margin-bottom:14px}
   @media (max-width:860px){
+    .hero-row{flex-direction:column}
+    .hero-row button{width:100%}
     .wrap{grid-template-columns:1fr}
     .cfg{border-right:0;border-bottom:1px solid var(--line)}
     .res{padding:16px}
@@ -144,6 +157,16 @@
   <h1>QuoteSim</h1>
   <div class="sub">Quote any asset → get a PnL decomposition + a trust score. The engine calibrates on a live ground-truth book and won't vouch for numbers it can't reproduce.</div>
 </header>
+<section id="hero">
+  <div class="hero-in">
+    <div class="hero-q">What do you want to quote?</div>
+    <div class="hero-row">
+      <input id="herobox" list="oraclelist" placeholder="type an asset — HYPE, BTC, XAU, AAPL, EUR/USD…" autocomplete="off" autocapitalize="characters">
+      <button id="herogo">Quote it</button>
+    </div>
+    <div class="hero-msg" id="heromsg">One box. Real oracle history is fetched, the strategy auto-tunes to the asset's volatility, and you get a plain-English answer. Knobs are below if you want them.</div>
+  </div>
+</section>
 <div class="wrap">
   <div class="cfg" id="cfg"></div>
   <div class="res" id="res"></div>
@@ -264,15 +287,15 @@ async function selectOracle(raw){
   const rec=OMAP[val];
   if(!rec){
     $('fetchmsg').innerHTML=`<span class="err">"${raw}" isn't in the oracle list. Pick from the dropdown, or use advanced below.</span>`;
-    CURKEY=null; return;
+    CURKEY=null; return false;
   }
   $('fetchmsg').textContent=`Loading ${rec.source==='pyth'?'Pyth':'Hyperliquid'} oracle history for ${rec.value}…`;
   try{
     const r=await(await fetch('api/fetch',{method:'POST',headers:{'Content-Type':'application/json'},
       body:JSON.stringify({source:rec.source,symbol:rec.value})})).json();
-    if(r.ok){ onAssetReady(r); }
-    else { $('fetchmsg').innerHTML=`<span class="err">${r.error||'failed'}</span>`; CURKEY=null; }
-  }catch(e){ $('fetchmsg').innerHTML='<span class="err">'+e+'</span>'; CURKEY=null; }
+    if(r.ok){ onAssetReady(r); return true; }
+    else { $('fetchmsg').innerHTML=`<span class="err">${r.error||'failed'}</span>`; CURKEY=null; return false; }
+  }catch(e){ $('fetchmsg').innerHTML='<span class="err">'+e+'</span>'; CURKEY=null; return false; }
 }
 
 function onAssetReady(r){
@@ -304,7 +327,7 @@ function cfg(){
   const s={}; CFG_IDS.forEach(i=>s[i]=parseFloat($(i).value)); return s;
 }
 
-$('run').addEventListener('click', async ()=>{
+async function runSim(){
   if(!CURKEY){ $('fetchmsg').innerHTML='<span class="err">Pick an asset first.</span>'; return; }
   $('run').disabled=true; $('run').textContent='Running…';
   try{
@@ -314,7 +337,32 @@ $('run').addEventListener('click', async ()=>{
     else render(r);
   }catch(e){ $('res').innerHTML='<div class="empty">Error: '+e+'</div>'; }
   $('run').disabled=false; $('run').textContent='Run simulation';
-});
+}
+$('run').addEventListener('click', runSim);
+
+// ---------- one-box hero ----------
+async function oneBox(){
+  const raw=$('herobox').value.trim();
+  if(!raw) return;
+  if(!ORACLE.length){ $('heromsg').textContent='Still loading the asset list — one second…'; return; }
+  $('herogo').disabled=true;
+  $('heromsg').textContent='Pulling real oracle history for '+raw.toUpperCase()+'…';
+  const ok=await selectOracle(raw);
+  if(!ok){
+    const v=raw.toUpperCase();
+    const near=ORACLE.filter(a=>a.value.toUpperCase().startsWith(v)).slice(0,5).map(a=>a.value);
+    $('heromsg').innerHTML=`<span class="err">"${raw}" isn't an oracle-backed asset here.${near.length?' Did you mean: <b>'+near.join('</b>, <b>')+'</b>?':' Type to see suggestions.'}</span>`;
+    $('herogo').disabled=false; return;
+  }
+  $('assetpick').value=raw.toUpperCase();
+  $('heromsg').textContent='Asset ready — running the simulation…';
+  await runSim();
+  $('heromsg').innerHTML='<span class="ok">Done — your answer is right below. Tweak the knobs in the left panel if you want, or type another asset.</span>';
+  $('herogo').disabled=false;
+  document.querySelector('.wrap').scrollIntoView({behavior:'smooth'});
+}
+$('herogo').addEventListener('click', oneBox);
+$('herobox').addEventListener('keydown', e=>{ if(e.key==='Enter'){e.preventDefault(); oneBox();} });
 
 // ---------- results ----------
 function emptyState(){
@@ -351,6 +399,7 @@ function render(r){
   const cl = v=> v>=0?'pos':'neg';
   const lowTrust = t.score<45;
   $('res').innerHTML = `
+    <div class="plain">${plainVerdict(r,s,t)}</div>
     <div class="badge ${cls}">
       <div class="scorewrap">
         <div class="score">${t.score}<span style="font-size:17px;color:var(--mut)">/100</span></div>
@@ -481,6 +530,17 @@ function plSpark(s){
 setInterval(plPoll, 15000);
 
 // dynamic interpretation — reads the actual numbers, not a hardcoded case
+function plainVerdict(r,s,t){
+  const tok=r.target.split(':').pop().split('@')[0].trim();
+  const side=usd(parseFloat($('side_notional_usd').value)||30000);
+  const rep=s.repeatable_per_day, total=s.total_per_day;
+  if(t.score>=75)
+    return `Quoting <b>${tok}</b> at ${side}/side: about <b>${usd(total)}/day</b> (${usd(rep)} of it repeatable spread income), with inventory swings up to <b>${usd(s.peak_inv_usd)}</b>. These dollars cleared the validation gate — they're calibrated against real tape.`;
+  if(rep>=0)
+    return `Quoting <b>${tok}</b> at ${side}/side: repeatable spread income around <b>${usd(rep)}/day</b>, with inventory swings up to <b>${usd(s.peak_inv_usd)}</b>. The income shape is trustworthy; the exact bottom line isn't validated yet — tell your Starchild agent <b>“validate ${tok}”</b> (free, no code) to earn the real number.`;
+  return `Quoting <b>${tok}</b> at ${side}/side <b>doesn't earn the spread</b> — repeatable income is <b>${usd(rep)}/day</b> before any directional risk. That's the term the model gets roughly right, so this config is a likely no. Try a wider minimum spread or smaller size in the left panel.`;
+}
+
 function interpret(r,s,t){
   const rep=s.repeatable_per_day, dir=s.directional_per_day, total=s.total_per_day;
   const truthFills=(r.calibration&&r.calibration.truth&&r.calibration.truth.fills_per_day)||23;
