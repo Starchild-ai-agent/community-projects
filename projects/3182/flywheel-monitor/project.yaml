@@ -1,0 +1,14 @@
+name: flywheel-monitor
+version: 0.1.0
+type: service
+description: Interactive flywheel monitor for deep-tech companies with loop metrics
+  and timeline diagnostics.
+license: MIT
+entry: src/index.html
+port: 8765
+env_required: []
+tags:
+- deeptech
+- dashboard
+- strategy
+author: user-3182
