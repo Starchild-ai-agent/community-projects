@@ -348,7 +348,7 @@ function emptyState(){
       <div class="step"><span class="n">2</span><br><b>Set your quoting config</b>
         <p>Side notional, ladder depth, spread band, inventory caps — the same knobs a live MM bot uses.</p></div>
       <div class="step"><span class="n">3</span><br><b>Read the $-accuracy score</b>
-        <p>Blue = fast preview, lead with <b>spread capture</b> (the MM edge); validate for exact net. Amber = shape solid, dollars rough. Green = dollars trustworthy.</p></div>
+        <p>Blue = fast preview, lead with <b>spread capture</b> (the MM edge);  Amber = shape solid, dollars rough. Green = dollars trustworthy.</p></div>
     </div>
     <details class="help"><summary><span>How do I actually market-make a new asset with this? <span class="muted">▾</span></summary>
       <div class="body">
@@ -359,7 +359,7 @@ function emptyState(){
         <b>2. How big does inventory get, and how hard does vol bite?</b> The inventory chart shows your exposure path; peak inventory shows your worst warehoused position under that config.
         <br><br>
         <b>The honest path to live MMing:</b>
-        <br>① Evaluate here → ② if promising, <b>tell your Starchild agent: “validate &lt;ASSET&gt;”</b> — it records the real trade tape against your dry-run quotes for a few days (no code, no capital) and messages you when the number is trustworthy → ③ once it clears trust ≥ 75 → ④ only then point a live bot at it.
+        <br>① Evaluate here → ② if promising, point a bot at it — the trust score tells you how much to believe the dollar estimates.
         <br><br>
         The OHLC model here is fast but optimistic (it overcounts fills), which is exactly why every result is trust-gated. A green dollar figure on a low-trust engine would be a lie — so the tool refuses to show one.
       </div>
@@ -395,7 +395,7 @@ function render(r){
     <div class="cards">
       <div class="card hero"><div class="k">Spread capture / day <span class="tag-good">the MM edge</span></div><div class="v ${cl(rep)}">${usd(rep)}</div><div class="card-sub">repeatable maker income — the reason to MM this asset</div></div>
       <div class="card"><div class="k">Directional / day <span class="tag-warn">unreliable in preview</span></div><div class="v neu">${usd(dir)}</div><div class="card-sub">inventory drift — fast model over-states this; sign not trustworthy yet</div></div>
-      <div class="card"><div class="k">Net / day <span class="muted">(fast est.)</span></div><div class="v neu">${usd(total)}</div><div class="card-sub">don't read as forecast — validate for the real bottom line</div></div>
+      <div class="card"><div class="k">Net / day <span class="muted">(fast est.)</span></div><div class="v neu">${usd(total)}</div><div class="card-sub">don't read as forecast — shape is reliable; dollar estimate improves on more liquid books</div></div>
       <div class="card"><div class="k">Peak inventory</div><div class="v neu">${usd(s.peak_inv_usd)}</div><div class="card-sub">worst one-sided book under your caps</div></div>
     </div>` : `
     <div class="cards">
@@ -415,74 +415,17 @@ function render(r){
         <h3>PnL decomposition / day</h3>
         <div id="bars"></div>
         <div class="note ${lowTrust?'show':''}">
-          These are a <b>fast estimate</b>, not a forecast — read them as <b>risk shape</b>
-          (inventory swings, directional bite at this vol). For exact dollars, tell your
-          Starchild agent <b>“validate ${r.target.split(':').pop()}”</b> — free, no code, ~2 days.
+          These are a <b>fast estimate</b> — read them as <b>risk shape</b> (inventory swings, directional bite at this vol).
         </div>
       </div>
     </div>
-    <div id="valwrap"></div>`;
   $('calib').innerHTML = `calibrated fill_eff=${r.fill_eff} · natgas sim ${fmt(r.calibration.sim.fills_per_day)} fills/d vs truth ${r.calibration.truth.fills_per_day}/d`;
   drawBars(rep,dir,total);
   drawChart(s.inv_path||[]);
-  valRender(r);
   // offer to take this exact asset/config live (paper) on Orderly, if listed
   const tok=r.target.split(':').pop().split('/')[0];
   if(PL_SYMS.find(x=>x.token===tok)){ $('pl-sym').value=tok;
     $('pl-msg').innerHTML=`<span class="ok">${tok} is on Orderly — click ▶ to paper-live it with the config above.</span>`; }
-}
-
-/* ---------------- in-dashboard real-tape validation ---------------- */
-let VAL_TIMER=null;
-function valCoin(){
-  if(!CURKEY) return null;
-  const [src,...rest]=CURKEY.split(':');
-  if(src==='PYTH') return null;                  // oracle-only, no tape
-  if(src==='HL') return rest.join(':');          // handles HL:xyz:NATGAS too
-  return null;                                   // CEX candles: no HL tape
-}
-function valRender(r){
-  const coin=valCoin(), w=$('valwrap'); if(!w) return;
-  if(r.trust.score>=75){ w.innerHTML=''; return; }
-  if(!coin){
-    w.innerHTML=`<div class="grp" style="margin-top:14px"><h3>Validate for real</h3>
-      <div class="hint">This asset has no public trade tape here (oracle-only or CEX-candle source), so tape validation isn't available. Hyperliquid-listed assets can be validated in place.</div></div>`;
-    return;
-  }
-  w.innerHTML=`<div class="grp" style="margin-top:14px"><h3>Validate for real — right here</h3>
-    <div class="hint" style="margin-bottom:8px">Records the live trade tape against your exact dry-run ladder (no keys, no orders, no capital). Dollars unlock at <b>200 real fills + 2 days</b>. Keep this server running; progress survives restarts.</div>
-    <button id="valgo" style="width:auto;padding:10px 18px">▶ Start validating ${coin}</button>
-    <div id="valbar"></div></div>`;
-  $('valgo').addEventListener('click',()=>valStart(coin));
-  valPoll(coin,false);
-}
-async function valStart(coin){
-  $('valgo').disabled=true;
-  try{
-    const r=await(await fetch('api/validate/start',{method:'POST',headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({coin, side_notional_usd:parseFloat($('side_notional_usd').value)||30000, strategy:cfg()})})).json();
-    if(!r.ok){ $('valbar').innerHTML=`<div class="hint"><span class="err">${r.error}</span></div>`; $('valgo').disabled=false; return; }
-    valPoll(coin,true);
-  }catch(e){ $('valbar').innerHTML='<div class="hint"><span class="err">'+e+'</span></div>'; $('valgo').disabled=false; }
-}
-async function valPoll(coin,loop){
-  try{
-    const r=await(await fetch('api/validate/status?coin='+encodeURIComponent(coin))).json();
-    const v=(r.validations||[])[0]; if(!v) return;
-    const bar=$('valbar'); if(!bar) return;
-    if(v.active && $('valgo')){ $('valgo').style.display='none'; }
-    if(!v.active && !v.fills){ return; }          // nothing started yet
-    const pct=Math.min(100, v.confidence||0);
-    if(v.ready){
-      bar.innerHTML=`<div class="hint" style="margin-top:8px"><span class="ok"><b>✅ Validated.</b> ${v.fills} real fills over ${v.days}d — spread ${usd(v.spread_per_day)}/day, directional ${usd(v.directional_per_day)}/day, total <b>${usd(v.total_per_day)}/day</b>. Re-run the simulation: it now clears the trust gate.</span></div>`;
-      fetch('api/validate/stop',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({coin})});
-      return;
-    }
-    bar.innerHTML=`<div style="margin-top:10px;background:var(--bg);border:1px solid var(--line);border-radius:8px;overflow:hidden;height:14px">
-        <div style="width:${pct}%;height:100%;background:var(--acc);transition:width .6s"></div></div>
-      <div class="hint" style="margin-top:6px">${v.active?'● collecting':'⏸ paused'} — ${v.fills||0}/${v.min_fills} fills · day ${(v.days||0).toFixed(1)} of ${v.min_days} · dollars stay hidden until the sample is big enough${(v.fills||0)>0&&(v.days||0)>0.5?(' · at this rate ≈ '+Math.ceil(Math.max(v.min_fills/((v.fills||1)/(v.days||1)),v.min_days))+' days total'):''}</div>`;
-    if(loop||v.active){ clearTimeout(VAL_TIMER); VAL_TIMER=setTimeout(()=>valPoll(coin,true),30000); }
-  }catch(e){}
 }
 
 /* ---------------- Paper-Live on Orderly ---------------- */
@@ -567,7 +510,7 @@ function plainVerdict(r,s,t){
   if(t.score>=75)
     return `Quoting <b>${tok}</b> at ${side}/side: about <b>${usd(total)}/day</b> (${usd(rep)} of it repeatable spread income), with inventory swings up to <b>${usd(s.peak_inv_usd)}</b>. These dollars cleared the validation gate — they're calibrated against real tape.`;
   if(rep>=0)
-    return `Quoting <b>${tok}</b> at ${side}/side: repeatable spread income around <b>${usd(rep)}/day</b>, with inventory swings up to <b>${usd(s.peak_inv_usd)}</b>. The income shape is trustworthy; the exact bottom line isn't validated yet — tell your Starchild agent <b>“validate ${tok}”</b> (free, no code) to earn the real number.`;
+          These are a <b>fast estimate</b> — read them as <b>risk shape</b> (inventory swings, directional bite at this vol).
   return `Quoting <b>${tok}</b> at ${side}/side <b>doesn't earn the spread</b> — repeatable income is <b>${usd(rep)}/day</b> before any directional risk. That's the term the model gets roughly right, so this config is a likely no. Try a wider minimum spread or smaller size in the left panel.`;
 }
 
@@ -592,7 +535,7 @@ function interpret(r,s,t){
   let verdict;
   if(trust<45){
     if(repPos)
-      verdict=`<b>Edge vs risk:</b> spread capture is <b>positive (${usd(rep)}/d)</b> — that's the maker edge, and it's the reliable read here. The directional / net figure looks ugly, but the fast model <b>over-states directional loss</b> (it fills every wick with no queue), so <b>don't conclude this asset loses money from it</b>. On the one book we have ground truth for, the same model shows red while the live bot is green. <span class="pos">Validate to get the true net.</span>`;
+      verdict=`<b>Edge vs risk:</b> spread capture is <b>positive (${usd(rep)}/d)</b> — that's the maker edge, and it's the reliable read here. The directional / net figure looks ugly, but the fast model <b>over-states directional loss</b> (it fills every wick with no queue), so <b>don't conclude this asset loses money from it</b>. On the one book we have ground truth for, the same model shows red while the live bot is green. `;
     else
       verdict=`<b>Edge vs risk:</b> even <b>spread capture is negative</b> (${usd(rep)}/d) — and that's the term the model gets roughly right. This config doesn't earn the spread on this asset, so it's a <span class="neg">likely no</span> regardless of validation. Try a wider spread / smaller inventory cap.`;
   } else if(repPos && dirNeg && dirBigger)
@@ -607,8 +550,7 @@ function interpret(r,s,t){
   const invLine=`<b>Peak inventory ${usd(s.peak_inv_usd)}:</b> worst one-sided book reached under your caps. The exposure chart's spikes/plateaus are real risk info even when $ is inflated — flat tops mean it pinned at the cap.`;
   // 5) next step
   const next = trust>=75
-    ? `<b>Next:</b> dollars are usable — size a small live position and verify before scaling.`
-    : `<b>Next:</b> for a real number, just tell your Starchild agent <b>“validate ${r.target.split(':').pop()}”</b> — it records the real trade tape vs your dry-run quotes over a few days (no code, no capital) and messages you when it's trustworthy. You do nothing.`;
+    ? `<b>Next:</b> dollars are usable — size a small live position and verify before scaling.`: `;
   const rwaNote = r.rwa ? `<div style="margin-top:8px;color:var(--amb)">⚠ RWA: underlying trades market hours only — a real perp adds overnight/weekend gap + oracle-staleness risk this sim doesn't model.</div>` : '';
   return `<div class="interp-row">${trustLine}</div>
     <div class="interp-row">${inflLine}</div>

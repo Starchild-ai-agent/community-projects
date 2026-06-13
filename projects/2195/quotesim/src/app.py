@@ -384,93 +384,6 @@ def _orderly_symbols():
     return out
 
 
-# ---- in-dashboard real-tape validation (repo-forker path; no CLI) ----
-import validate_runner as vr
-
-_VAL = {}          # coin -> {"side": float, "strat": dict, "started": ts, "last": dict}
-_VAL_LOCK = threading.Lock()
-_VAL_STATE = HERE / "shadow" / "_active_validations.json"
-
-
-def _val_persist():
-    try:
-        (HERE / "shadow").mkdir(exist_ok=True)
-        json.dump({c: {"side": v["side"], "strat": v["strat"], "started": v["started"]}
-                   for c, v in _VAL.items()}, open(_VAL_STATE, "w"))
-    except Exception:
-        pass
-
-
-def _val_restore():
-    try:
-        if _VAL_STATE.exists():
-            for c, v in json.load(open(_VAL_STATE)).items():
-                _VAL[c] = {**v, "last": None}
-    except Exception:
-        pass
-
-
-def _val_loop():
-    """Every 60s, run one collect cycle per active validation."""
-    while True:
-        try:
-            for coin in list(_VAL.keys()):
-                with _VAL_LOCK:
-                    v = _VAL.get(coin)
-                    if not v:
-                        continue
-                    try:
-                        v["last"] = vr.collect(coin, v["side"], v["strat"])
-                    except Exception as e:
-                        v["last"] = {"ok": False, "error": str(e)[:120]}
-        except Exception:
-            pass
-        time.sleep(60)
-
-
-@app.post("/api/validate/start")
-def validate_start():
-    b = request.get_json(force=True) or {}
-    coin = (b.get("coin") or "").strip()
-    if not coin:
-        return jsonify({"ok": False, "error": "coin required"}), 400
-    # Pyth RWA feeds have no public tape — only HL coins are validatable
-    if b.get("source") == "pyth":
-        return jsonify({"ok": False, "error": "oracle-only asset (no public tape) — "
-                        "validation needs a Hyperliquid-listed market"}), 200
-    with _VAL_LOCK:
-        _VAL[coin] = {"side": float(b.get("side_notional_usd") or 30000),
-                      "strat": b.get("strategy") or {}, "started": time.time(),
-                      "last": None}
-        _val_persist()
-    return jsonify({"ok": True, "coin": coin})
-
-
-@app.post("/api/validate/stop")
-def validate_stop():
-    b = request.get_json(force=True) or {}
-    coin = (b.get("coin") or "").strip()
-    with _VAL_LOCK:
-        _VAL.pop(coin, None)
-        _val_persist()
-    return jsonify({"ok": True})
-
-
-@app.get("/api/validate/status")
-def validate_status():
-    coin = (request.args.get("coin") or "").strip()
-    out = []
-    for c in ([coin] if coin else list(_VAL.keys())):
-        if not c:
-            continue
-        try:
-            sc = vr.score(c)
-        except Exception as e:
-            sc = {"ok": False, "error": str(e)[:120]}
-        out.append({"coin": c, "active": c in _VAL,
-                    "min_fills": vr.MIN_FILLS, "min_days": vr.MIN_DAYS, **(sc or {})})
-    return jsonify({"ok": True, "validations": out})
-
 
 @app.get("/api/paper/symbols")
 def paper_symbols():
@@ -528,6 +441,4 @@ def _paper_loop():
 if __name__ == "__main__":
     t = threading.Thread(target=_paper_loop, daemon=True)
     t.start()
-    _val_restore()
-    threading.Thread(target=_val_loop, daemon=True).start()
     app.run(host="0.0.0.0", port=int(os.environ.get("PORT", "7011")), threaded=True)
