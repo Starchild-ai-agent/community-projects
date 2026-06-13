@@ -1,0 +1,37 @@
+# NATGAS MM Bot — machine-enforceable policy
+# Mirrors AUTOPILOT.md. Only Ran can change this file.
+
+assets:
+  allowed: [NATGAS]
+  max_notional_per_asset: 65000   # $60k/side + 8% buffer
+
+actions:
+
+  autonomous:                     # bot executes, no ping
+    - type: place_order
+      condition: "notional <= 65000"
+    - type: cancel_order
+    - type: adjust_spread
+    - type: pause_quoting
+
+  escalate:                       # push to Telegram, wait for Ran
+    - type: place_order
+      condition: "notional > 65000"
+    - type: close_position
+    - type: reduce_position
+    - type: change_endpoint
+
+  forbidden:                      # hard block — PolicyViolation raised
+    - type: withdraw
+    - type: transfer_out
+    - type: cancel_all
+    - type: change_leverage
+    - type: change_margin_mode
+    - type: edit_strategy
+    - type: disable_watchdog
+
+circuit_breakers:
+  daily_loss_limit: 1000        # matches bot hardcode; escalate before we hit it
+  drawdown_pct: 5.0             # from 24h equity high
+  consecutive_loss_trades: 8
+  margin_ratio_max: 65          # liquidation risk starts ~80%

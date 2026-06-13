@@ -1,5 +1,25 @@
 [
   {
+    "type": "script",
+    "user_id": "2195",
+    "slug": "agent-policy",
+    "version": "1.0.0",
+    "description": "Signing policy engine for AI-driven DeFi bots. Every action an agent\nproposes is evaluated against a YAML policy before any key is touched.\nThree verdicts: ALLOW (execute), ESCALATE (Telegram approve/deny), BLOCK\n(raise PolicyViolation). Includes circuit breakers for daily loss, drawdown,\nconsecutive losses, and margin ratio. Drop-in wrapper for OrderlyClient.\n",
+    "tags": [
+      "trading",
+      "policy",
+      "safety",
+      "orderly",
+      "defi",
+      "ai-agent"
+    ],
+    "author": "user-2195",
+    "license": "MIT",
+    "github_url": "https://github.com/Starchild-ai-agent/community-projects/tree/main/projects/2195/agent-policy",
+    "updated_at": "2026-06-13T12:36:09.537Z",
+    "created_at": "2026-06-13T12:36:09.537Z"
+  },
+  {
     "type": "service",
     "user_id": "3182",
     "slug": "flywheel-monitor",

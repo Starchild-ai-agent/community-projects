@@ -1,0 +1,15 @@
+name: agent-policy
+type: script
+version: 1.0.0
+description: |
+  Signing policy engine for AI-driven DeFi bots. Every action an agent
+  proposes is evaluated against a YAML policy before any key is touched.
+  Three verdicts: ALLOW (execute), ESCALATE (Telegram approve/deny), BLOCK
+  (raise PolicyViolation). Includes circuit breakers for daily loss, drawdown,
+  consecutive losses, and margin ratio. Drop-in wrapper for OrderlyClient.
+tags: [trading, policy, safety, orderly, defi, ai-agent]
+license: MIT
+entry: src/policy.py
+env_required: []
+sc_proxy: false
+author: user-2195
