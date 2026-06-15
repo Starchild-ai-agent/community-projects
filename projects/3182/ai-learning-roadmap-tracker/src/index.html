@@ -1,0 +1,460 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>AI Learning Roadmap Tracker</title>
+  <style>
+    :root {
+      --bg: #f5f7fb;
+      --card: #ffffff;
+      --text: #111827;
+      --muted: #6b7280;
+      --primary: #2563eb;
+      --primary-2: #1d4ed8;
+      --border: #e5e7eb;
+      --ok: #16a34a;
+      --warn: #d97706;
+      --danger: #dc2626;
+      --shadow: 0 10px 25px rgba(2, 8, 23, 0.06);
+    }
+    [data-theme="dark"] {
+      --bg: #0b1220;
+      --card: #111827;
+      --text: #e5e7eb;
+      --muted: #9ca3af;
+      --primary: #3b82f6;
+      --primary-2: #60a5fa;
+      --border: #374151;
+      --ok: #22c55e;
+      --warn: #f59e0b;
+      --danger: #ef4444;
+      --shadow: 0 10px 25px rgba(0, 0, 0, 0.35);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      color: var(--text);
+      background: var(--bg);
+      line-height: 1.45;
+    }
+    .wrap { max-width: 1080px; margin: 0 auto; padding: 20px; }
+    header {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 12px; margin-bottom: 16px;
+    }
+    h1 { margin: 0; font-size: 1.5rem; }
+    .sub { color: var(--muted); margin-top: 6px; }
+    .btn {
+      border: 1px solid var(--border);
+      background: var(--card);
+      color: var(--text);
+      padding: 10px 12px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: 600;
+      min-height: 44px;
+    }
+    .btn-primary {
+      border-color: var(--primary);
+      background: var(--primary);
+      color: #fff;
+    }
+    .btn-primary:hover { background: var(--primary-2); }
+    .grid {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 16px;
+    }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      box-shadow: var(--shadow);
+      padding: 16px;
+    }
+    .card h2 { margin-top: 0; font-size: 1.05rem; }
+    label { font-weight: 600; display: block; margin-bottom: 6px; }
+    input, select, textarea {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: transparent;
+      color: var(--text);
+      margin-bottom: 12px;
+      min-height: 44px;
+    }
+    textarea { min-height: 88px; resize: vertical; }
+    .row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .kpis {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-bottom: 8px;
+    }
+    .kpi {
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px;
+      text-align: center;
+    }
+    .kpi .v { font-size: 1.3rem; font-weight: 700; }
+    .muted { color: var(--muted); }
+    .task {
+      display: flex; align-items: start; gap: 8px;
+      padding: 8px 0; border-bottom: 1px dashed var(--border);
+    }
+    .task:last-child { border-bottom: 0; }
+    .task input[type="checkbox"] { width: 20px; height: 20px; margin-top: 2px; }
+    .badge { font-size: 0.8rem; border: 1px solid var(--border); border-radius: 999px; padding: 3px 8px; }
+    .milestones { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+    .m { border: 1px solid var(--border); border-radius: 10px; padding: 10px; }
+    .next {
+      border-left: 4px solid var(--primary);
+      padding: 10px;
+      background: rgba(37,99,235,0.08);
+      border-radius: 8px;
+      margin-top: 8px;
+    }
+    .ok { color: var(--ok); }
+    .warn { color: var(--warn); }
+    .danger { color: var(--danger); }
+    .actions { display: flex; flex-wrap: wrap; gap: 8px; }
+    @media (max-width: 900px) {
+      .grid { grid-template-columns: 1fr; }
+      .kpis, .milestones, .row { grid-template-columns: 1fr; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      * { animation: none !important; transition: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <header>
+      <div>
+        <h1>AI Learning Roadmap Tracker</h1>
+        <div class="sub">Generate a practical 30/60/90-day AI plan and track weekly execution.</div>
+      </div>
+      <button id="themeBtn" class="btn" aria-label="Toggle theme">🌗 Theme</button>
+    </header>
+
+    <section class="grid" aria-label="Roadmap planner and tracker">
+      <article class="card">
+        <h2>1) Plan Setup</h2>
+        <label for="name">Name</label>
+        <input id="name" placeholder="e.g. Alex" />
+
+        <div class="row">
+          <div>
+            <label for="level">Current Level</label>
+            <select id="level">
+              <option>Beginner</option>
+              <option>Intermediate</option>
+              <option>Advanced</option>
+            </select>
+          </div>
+          <div>
+            <label for="goal">Primary Goal</label>
+            <select id="goal">
+              <option>Career Switch</option>
+              <option>Startup Builder</option>
+              <option>Investor Intelligence</option>
+              <option>AI Product Manager</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="row">
+          <div>
+            <label for="hours">Weekly Hours</label>
+            <input id="hours" type="number" min="2" max="40" value="8" />
+          </div>
+          <div>
+            <label for="weeks">Plan Horizon</label>
+            <select id="weeks">
+              <option value="12">90 Days (12 weeks)</option>
+              <option value="8">60 Days (8 weeks)</option>
+              <option value="4">30 Days (4 weeks)</option>
+            </select>
+          </div>
+        </div>
+
+        <label for="focus">Current Focus / Constraints</label>
+        <textarea id="focus" placeholder="e.g. Need portfolio projects for hiring. Only available on weekends."></textarea>
+
+        <div class="actions">
+          <button id="generateBtn" class="btn btn-primary">Generate Plan</button>
+          <button id="resetBtn" class="btn">Reset Plan</button>
+        </div>
+      </article>
+
+      <article class="card">
+        <h2>2) Progress Snapshot</h2>
+        <div class="kpis">
+          <div class="kpi"><div class="muted">Completion</div><div id="kpiCompletion" class="v">0%</div></div>
+          <div class="kpi"><div class="muted">Current Streak</div><div id="kpiStreak" class="v">0</div></div>
+          <div class="kpi"><div class="muted">Next Week</div><div id="kpiNext" class="v">-</div></div>
+        </div>
+        <div class="muted">Next Best Action</div>
+        <div id="nextAction" class="next">Generate your first plan.</div>
+
+        <h3>Milestones</h3>
+        <div class="milestones">
+          <div class="m"><strong>Day 30</strong><div class="muted">Foundation</div><div id="m30">Pending</div></div>
+          <div class="m"><strong>Day 60</strong><div class="muted">Build</div><div id="m60">Pending</div></div>
+          <div class="m"><strong>Day 90</strong><div class="muted">Ship</div><div id="m90">Pending</div></div>
+        </div>
+      </article>
+    </section>
+
+    <section class="card" style="margin-top:16px;" aria-label="Weekly execution board">
+      <h2>3) Weekly Execution Board</h2>
+      <div id="tasks"></div>
+    </section>
+
+    <section class="card" style="margin-top:16px;" aria-label="Reflection journal">
+      <h2>4) Reflection Log</h2>
+      <div class="row">
+        <div>
+          <label for="wins">Wins this week</label>
+          <textarea id="wins"></textarea>
+        </div>
+        <div>
+          <label for="blockers">Blockers</label>
+          <textarea id="blockers"></textarea>
+        </div>
+      </div>
+      <label for="nextFocus">Next focus</label>
+      <textarea id="nextFocus"></textarea>
+      <button id="saveReflection" class="btn">Save Reflection</button>
+      <span id="saveStatus" class="muted" style="margin-left:8px;"></span>
+    </section>
+
+    <section class="card" style="margin-top:16px;" aria-label="Export summary">
+      <h2>5) Export Summary</h2>
+      <textarea id="exportBox" readonly aria-label="Export summary"></textarea>
+      <button id="copyBtn" class="btn">Copy Summary</button>
+      <span id="copyStatus" class="muted" style="margin-left:8px;"></span>
+    </section>
+  </main>
+
+  <script>
+    const KEY = 'ai_roadmap_tracker_v1';
+    const THEME_KEY = 'ai_roadmap_theme';
+    const $ = (id) => document.getElementById(id);
+
+    function loadState() {
+      try { return JSON.parse(localStorage.getItem(KEY)) || {}; }
+      catch { return {}; }
+    }
+    function saveState(s) { localStorage.setItem(KEY, JSON.stringify(s)); }
+
+    function getTemplate(goal, level) {
+      const common = [
+        'Study one core AI concept (LLM, embeddings, eval, or deployment)',
+        'Build one micro project or notebook',
+        'Write a short learning note (what worked, what failed)',
+      ];
+      const goalMap = {
+        'Career Switch': ['Polish portfolio project and README', 'Practice 2 interview questions'],
+        'Startup Builder': ['Interview one potential user', 'Ship one small product improvement'],
+        'Investor Intelligence': ['Analyze one AI company and moat', 'Track one KPI dashboard update'],
+        'AI Product Manager': ['Draft one PRD for AI feature', 'Review one model quality metric']
+      };
+      const levelMap = {
+        'Beginner': ['Complete one beginner tutorial end-to-end'],
+        'Intermediate': ['Refactor one project with better architecture'],
+        'Advanced': ['Benchmark one model/system and document trade-offs']
+      };
+      return [...common, ...(goalMap[goal] || []), ...(levelMap[level] || [])];
+    }
+
+    function generatePlan() {
+      const profile = {
+        name: $('name').value.trim() || 'Learner',
+        level: $('level').value,
+        goal: $('goal').value,
+        hours: Number($('hours').value || 8),
+        weeks: Number($('weeks').value || 12),
+        focus: $('focus').value.trim()
+      };
+
+      const baseTasks = getTemplate(profile.goal, profile.level);
+      const tasks = [];
+      for (let w = 1; w <= profile.weeks; w++) {
+        baseTasks.forEach((t, i) => {
+          tasks.push({ id: `w${w}_${i}`, week: w, text: t, done: false, doneAt: null });
+        });
+      }
+
+      const state = {
+        createdAt: new Date().toISOString(),
+        profile,
+        tasks,
+        reflection: { wins: '', blockers: '', nextFocus: '', updatedAt: null }
+      };
+      saveState(state);
+      render();
+    }
+
+    function resetPlan() {
+      localStorage.removeItem(KEY);
+      render();
+    }
+
+    function toggleTask(id, checked) {
+      const s = loadState();
+      if (!s.tasks) return;
+      const t = s.tasks.find(x => x.id === id);
+      if (!t) return;
+      t.done = checked;
+      t.doneAt = checked ? new Date().toISOString() : null;
+      saveState(s);
+      render();
+    }
+
+    function calcStreak(tasks) {
+      const days = [...new Set(tasks.filter(t => t.doneAt).map(t => t.doneAt.slice(0,10)))].sort().reverse();
+      if (!days.length) return 0;
+      let streak = 0;
+      let d = new Date();
+      for (;;) {
+        const iso = d.toISOString().slice(0,10);
+        if (days.includes(iso)) { streak++; d.setDate(d.getDate() - 1); }
+        else break;
+      }
+      return streak;
+    }
+
+    function milestoneStatus(week, tasks) {
+      const upto = tasks.filter(t => t.week <= week);
+      const done = upto.filter(t => t.done).length;
+      const pct = upto.length ? Math.round((done / upto.length) * 100) : 0;
+      return pct >= 85 ? `Completed (${pct}%)` : pct >= 50 ? `On track (${pct}%)` : `At risk (${pct}%)`;
+    }
+
+    function buildExport(state, completion, streak, nextAction) {
+      const p = state.profile;
+      const done = state.tasks.filter(t => t.done).length;
+      const total = state.tasks.length;
+      return [
+        `AI Learning Roadmap Summary`,
+        `Name: ${p.name}`,
+        `Level: ${p.level}`,
+        `Goal: ${p.goal}`,
+        `Weekly Hours: ${p.hours}`,
+        `Plan Length: ${p.weeks} weeks`,
+        `Progress: ${done}/${total} (${completion}%)`,
+        `Current Streak: ${streak} day(s)`,
+        `Next Best Action: ${nextAction}`,
+        `Reflection - Wins: ${state.reflection?.wins || '-'}`,
+        `Reflection - Blockers: ${state.reflection?.blockers || '-'}`,
+        `Reflection - Next Focus: ${state.reflection?.nextFocus || '-'}`
+      ].join('\n');
+    }
+
+    function render() {
+      const s = loadState();
+      const hasPlan = Array.isArray(s.tasks) && s.tasks.length > 0;
+
+      $('tasks').innerHTML = '';
+      $('kpiCompletion').textContent = '0%';
+      $('kpiStreak').textContent = '0';
+      $('kpiNext').textContent = '-';
+      $('nextAction').textContent = 'Generate your first plan.';
+      $('m30').textContent = 'Pending';
+      $('m60').textContent = 'Pending';
+      $('m90').textContent = 'Pending';
+      $('exportBox').value = '';
+
+      if (!hasPlan) return;
+
+      $('name').value = s.profile?.name || '';
+      $('level').value = s.profile?.level || 'Beginner';
+      $('goal').value = s.profile?.goal || 'Career Switch';
+      $('hours').value = s.profile?.hours || 8;
+      $('weeks').value = String(s.profile?.weeks || 12);
+      $('focus').value = s.profile?.focus || '';
+      $('wins').value = s.reflection?.wins || '';
+      $('blockers').value = s.reflection?.blockers || '';
+      $('nextFocus').value = s.reflection?.nextFocus || '';
+
+      const currentWeek = Math.min(Math.max(1, Math.ceil((Date.now() - new Date(s.createdAt).getTime()) / (7*24*3600*1000))), s.profile.weeks);
+      const weekly = s.tasks.filter(t => t.week === currentWeek);
+      weekly.forEach(t => {
+        const row = document.createElement('div');
+        row.className = 'task';
+        row.innerHTML = `<input type="checkbox" aria-label="Mark task done" ${t.done ? 'checked' : ''} /><div><div>${t.text}</div><div class="muted">Week ${t.week}</div></div>`;
+        row.querySelector('input').addEventListener('change', (e) => toggleTask(t.id, e.target.checked));
+        $('tasks').appendChild(row);
+      });
+
+      const done = s.tasks.filter(t => t.done).length;
+      const completion = Math.round((done / s.tasks.length) * 100);
+      const streak = calcStreak(s.tasks);
+      const next = s.tasks.find(t => !t.done) || null;
+      const nextText = next ? `Week ${next.week}: ${next.text}` : 'All planned tasks completed. Scale up your next 90-day plan.';
+
+      $('kpiCompletion').textContent = `${completion}%`;
+      $('kpiStreak').textContent = String(streak);
+      $('kpiNext').textContent = `W${currentWeek}`;
+      $('nextAction').textContent = nextText;
+
+      $('m30').textContent = milestoneStatus(Math.min(4, s.profile.weeks), s.tasks);
+      $('m60').textContent = s.profile.weeks >= 8 ? milestoneStatus(8, s.tasks) : 'N/A for selected horizon';
+      $('m90').textContent = s.profile.weeks >= 12 ? milestoneStatus(12, s.tasks) : 'N/A for selected horizon';
+
+      $('exportBox').value = buildExport(s, completion, streak, nextText);
+    }
+
+    function saveReflection() {
+      const s = loadState();
+      if (!s.tasks) return;
+      s.reflection = {
+        wins: $('wins').value.trim(),
+        blockers: $('blockers').value.trim(),
+        nextFocus: $('nextFocus').value.trim(),
+        updatedAt: new Date().toISOString()
+      };
+      saveState(s);
+      $('saveStatus').textContent = 'Saved.';
+      setTimeout(() => $('saveStatus').textContent = '', 1200);
+      render();
+    }
+
+    async function copySummary() {
+      try {
+        await navigator.clipboard.writeText($('exportBox').value || '');
+        $('copyStatus').textContent = 'Copied.';
+      } catch {
+        $('copyStatus').textContent = 'Copy failed. Select text manually.';
+      }
+      setTimeout(() => $('copyStatus').textContent = '', 1800);
+    }
+
+    function initTheme() {
+      const saved = localStorage.getItem(THEME_KEY);
+      const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+      const theme = saved || (prefersDark ? 'dark' : 'light');
+      document.documentElement.setAttribute('data-theme', theme);
+    }
+
+    $('themeBtn').addEventListener('click', () => {
+      const cur = document.documentElement.getAttribute('data-theme') || 'light';
+      const next = cur === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', next);
+      localStorage.setItem(THEME_KEY, next);
+    });
+    $('generateBtn').addEventListener('click', generatePlan);
+    $('resetBtn').addEventListener('click', resetPlan);
+    $('saveReflection').addEventListener('click', saveReflection);
+    $('copyBtn').addEventListener('click', copySummary);
+
+    initTheme();
+    render();
+  </script>
+</body>
+</html>

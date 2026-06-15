@@ -1,6 +1,19 @@
 [
   {
     "type": "service",
+    "user_id": "3182",
+    "slug": "ai-learning-roadmap-tracker",
+    "version": "0.1.2",
+    "description": "Interactive 30/60/90-day AI learning roadmap generator and progress tracker.",
+    "tags": [],
+    "author": "user-3182",
+    "license": "MIT",
+    "github_url": "https://github.com/Starchild-ai-agent/community-projects/tree/main/projects/3182/ai-learning-roadmap-tracker",
+    "updated_at": "2026-06-15T06:00:34.142Z",
+    "created_at": "2026-06-15T06:00:34.142Z"
+  },
+  {
+    "type": "service",
     "user_id": "2195",
     "slug": "quotesim",
     "version": "1.2.4",
