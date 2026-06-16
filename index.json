@@ -1,6 +1,19 @@
 [
   {
     "type": "service",
+    "user_id": "5396",
+    "slug": "intro-page",
+    "version": "1.0.1",
+    "description": "A clean personal intro page with light/dark theme toggle.",
+    "tags": [],
+    "author": "user-5396",
+    "license": "MIT",
+    "github_url": "https://github.com/Starchild-ai-agent/community-projects/tree/main/projects/5396/intro-page",
+    "updated_at": "2026-06-16T15:30:24.567Z",
+    "created_at": "2026-06-16T15:30:24.567Z"
+  },
+  {
+    "type": "service",
     "user_id": "3182",
     "slug": "ai-learning-roadmap-tracker",
     "version": "0.1.2",
