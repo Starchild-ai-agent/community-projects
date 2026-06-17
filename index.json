@@ -1,6 +1,19 @@
 [
   {
     "type": "service",
+    "user_id": "5400",
+    "slug": "intro-page",
+    "version": "1.0.2",
+    "description": "A minimal personal landing page with links and bio.",
+    "tags": [],
+    "author": "user-5400",
+    "license": "MIT",
+    "github_url": "https://github.com/Starchild-ai-agent/community-projects/tree/main/projects/5400/intro-page",
+    "updated_at": "2026-06-17T04:15:12.175Z",
+    "created_at": "2026-06-17T04:15:12.175Z"
+  },
+  {
+    "type": "service",
     "user_id": "3182",
     "slug": "ai-learning-roadmap-tracker",
     "version": "0.1.2",
