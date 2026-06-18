@@ -1,5 +1,25 @@
 [
   {
+    "type": "script",
+    "user_id": "1365",
+    "slug": "market-analyzer",
+    "version": "1.0.1",
+    "description": "Live crypto market analysis agent. Streams exchange data 24/7, uses a 3-tier architecture (fast rule screener → multimodal LLM debate → risk-gated signal) to fire Claude Sonnet 4.6 analysis only when something interesting happens. Tracks its own win/loss rate and self-tunes thresholds over time.\n",
+    "tags": [
+      "crypto",
+      "trading",
+      "llm",
+      "analysis",
+      "market",
+      "self-tuning"
+    ],
+    "author": "user-1365",
+    "license": "MIT",
+    "github_url": "https://github.com/Starchild-ai-agent/community-projects/tree/main/projects/1365/market-analyzer",
+    "updated_at": "2026-06-18T08:22:59.596Z",
+    "created_at": "2026-06-18T08:22:59.596Z"
+  },
+  {
     "type": "service",
     "user_id": "3182",
     "slug": "ai-learning-roadmap-tracker",
