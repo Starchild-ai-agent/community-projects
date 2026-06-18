@@ -1,8 +1,0 @@
-.env
-*.json
-__pycache__/
-*.pyc
-*.pyo
-*.log
-outcomes.json
-memory.json
