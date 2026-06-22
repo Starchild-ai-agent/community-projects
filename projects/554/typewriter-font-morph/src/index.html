@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Typewriter · Font Morph</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html, body {
+    height: 100%;
+    background: #ffffff;
+    color: #0a0a0a;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    overflow: hidden;
+  }
+
+  .bg {
+    position: fixed; inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    overflow: hidden;
+  }
+  .bg::before, .bg::after {
+    content: '';
+    position: absolute;
+    width: 600px; height: 600px;
+    border-radius: 50%;
+    filter: blur(140px);
+    opacity: 0.28;
+  }
+  .bg::before {
+    background: radial-gradient(circle, #ffb3a7 0%, transparent 70%);
+    top: -15%; left: -12%;
+  }
+  .bg::after {
+    background: radial-gradient(circle, #a7c8ff 0%, transparent 70%);
+    bottom: -18%; right: -12%;
+  }
+
+  .stage {
+    position: relative;
+    z-index: 1;
+    height: 100vh;
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    padding: 48px 64px;
+    gap: 32px;
+  }
+
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: #9a9a9a;
+  }
+  header .dot {
+    display: inline-block;
+    width: 8px; height: 8px;
+    background: #ff5b3a;
+    border-radius: 50%;
+    margin-right: 10px;
+    animation: pulse 1.6s ease-in-out infinite;
+    vertical-align: middle;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50%      { opacity: 0.3; transform: scale(0.85); }
+  }
+
+  main {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  .line {
+    font-size: clamp(2rem, 5vw, 4rem);
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+    color: #0a0a0a;
+    white-space: nowrap;
+  }
+
+  /* crisp typewriter strike: instant scale pop, no soft fade */
+  .line .ch {
+    display: inline-block;
+    opacity: 0;
+    transform: scale(0.55) translateY(0.04em);
+    will-change: opacity, transform;
+  }
+  .line .ch.in {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+    transition: opacity 60ms steps(1),
+                transform 130ms cubic-bezier(0.2, 0.9, 0.3, 1.2);
+  }
+
+  /* the morphing A — lives in a fixed-width box so font changes
+     don't reflow the rest of the string */
+  .line .morph {
+    display: inline-block;
+    width: 0.82em;
+    height: 1em;
+    text-align: center;
+    line-height: 1;
+    vertical-align: baseline;
+    overflow: visible;
+    opacity: 0;
+    transform: scale(0.55);
+    transition: opacity 60ms steps(1),
+                transform 130ms cubic-bezier(0.2, 0.9, 0.3, 1.2);
+    will-change: font-family;
+  }
+  .line .morph.in {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  /* control panel */
+  .controls {
+    position: fixed;
+    top: 24px;
+    right: 24px;
+    z-index: 20;
+    background: rgba(255,255,255,0.92);
+    backdrop-filter: blur(12px);
+    border: 1px solid #e5e5e5;
+    border-radius: 14px;
+    padding: 18px 20px;
+    width: 240px;
+    font-family: 'Inter', sans-serif;
+    color: #0a0a0a;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.08);
+  }
+  .controls h3 {
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: #9a9a9a;
+    margin-bottom: 14px;
+    font-weight: 500;
+  }
+  .ctrl {
+    margin-bottom: 14px;
+  }
+  .ctrl:last-of-type { margin-bottom: 16px; }
+  .ctrl label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    letter-spacing: 0.05em;
+    margin-bottom: 6px;
+    color: #555;
+  }
+  .ctrl label .val {
+    color: #0a0a0a;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+  }
+  .ctrl input[type=range] {
+    width: 100%;
+    height: 4px;
+    -webkit-appearance: none;
+    appearance: none;
+    background: #e5e5e5;
+    border-radius: 2px;
+    outline: none;
+  }
+  .ctrl input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 16px; height: 16px;
+    border-radius: 50%;
+    background: #0a0a0a;
+    cursor: pointer;
+    border: 2px solid #fff;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+  }
+  .ctrl input[type=range]::-moz-range-thumb {
+    width: 16px; height: 16px;
+    border-radius: 50%;
+    background: #0a0a0a;
+    cursor: pointer;
+    border: 2px solid #fff;
+  }
+  .replay-btn {
+    width: 100%;
+    padding: 8px;
+    background: #0a0a0a;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    cursor: pointer;
+    font-family: inherit;
+    transition: background 0.2s;
+  }
+  .replay-btn:hover { background: #ff5b3a; }
+
+  footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: #9a9a9a;
+  }
+  .progress { display: flex; gap: 6px; }
+  .progress span {
+    width: 24px; height: 2px;
+    background: #d0d0d0;
+    transition: background 0.4s;
+  }
+  .progress span.active { background: #ff5b3a; }
+  .hint { opacity: 0.5; font-size: 10px; }
+
+  .word { display: inline-block; white-space: nowrap; }
+</style>
+</head>
+<body>
+<div class="bg"></div>
+
+<div class="controls">
+  <h3>Controls</h3>
+  <div class="ctrl">
+    <label>字体数量 <span class="val" id="v-fonts">10</span></label>
+    <input type="range" id="r-fonts" min="2" max="10" value="10" step="1">
+  </div>
+  <div class="ctrl">
+    <label>变换频率 <span class="val" id="v-freq">30ms</span></label>
+    <input type="range" id="r-freq" min="10" max="200" value="30" step="5">
+  </div>
+  <div class="ctrl">
+    <label>打字速度 <span class="val" id="v-type">86ms</span></label>
+    <input type="range" id="r-type" min="30" max="200" value="86" step="2">
+  </div>
+  <button class="replay-btn" id="replay">重播</button>
+</div>
+
+<div class="stage">
+  <header>
+    <div><span class="dot"></span>Typewriter · Font Morph</div>
+    <div id="clock">--:--:--</div>
+  </header>
+
+  <main>
+    <div class="line" id="line"></div>
+  </main>
+
+  <footer>
+    <div class="progress" id="progress"></div>
+    <div class="hint">press any key to skip</div>
+  </footer>
+</div>
+
+<script>
+  const FONTS = [
+    '"Times New Roman", serif',
+    'Impact, "Arial Black", sans-serif',
+    '"Comic Sans MS", "Comic Sans", cursive',
+    '"Courier New", monospace',
+    'Georgia, serif',
+    '"Arial Black", sans-serif',
+    'Papyrus, fantasy',
+    'Verdana, sans-serif',
+    '"Brush Script MT", cursive',
+    'Helvetica, Arial, sans-serif',
+  ];
+
+  const TEXT = "ALL YOUR AGENTS";
+
+  const lineEl = document.getElementById('line');
+
+  // live-tunable params (via control panel)
+  const params = {
+    fontCount: 10,     // how many of the 10 fonts to cycle through
+    morphInterval: 30, // ms between font swaps
+    typeStep: 86,      // ms per letter
+  };
+  const MORPH_HEAD = 300;
+  const HOLD = 1800;
+
+  function escapeChar(c) {
+    if (c === ' ') return '&nbsp;';
+    if (c === '<') return '&lt;';
+    if (c === '>') return '&gt;';
+    if (c === '&') return '&amp;';
+    return c;
+  }
+
+  function buildHTML() {
+    let html = '';
+    for (let i = 0; i < TEXT.length; i++) {
+      const ch = TEXT[i];
+      if (i === 0) {
+        html += `<span class="morph">${escapeChar(ch)}</span>`;
+      } else {
+        html += `<span class="ch">${escapeChar(ch)}</span>`;
+      }
+    }
+    return html;
+  }
+
+  function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+  let skipped = false;
+  document.addEventListener('keydown', () => { skipped = true; });
+
+  async function morphLetter(el, stopSignal) {
+    let i = 0;
+    while (!stopSignal.stopped) {
+      const n = Math.max(1, params.fontCount);
+      el.style.fontFamily = FONTS[i % n];
+      el.textContent = Math.random() < 0.5 ? 'A' : 'a';
+      i++;
+      await sleep(params.morphInterval);
+    }
+  }
+
+  async function play() {
+    lineEl.innerHTML = buildHTML();
+    const morphEl = lineEl.querySelector('.morph');
+    const chars = lineEl.querySelectorAll('.ch');
+
+    // t=0: A appears + starts morphing
+    morphEl.classList.add('in');
+    const stopSignal = { stopped: false };
+    const morphPromise = morphLetter(morphEl, stopSignal);
+
+    // first 0.3s: only morph, no typing
+    await sleep(MORPH_HEAD);
+
+    // t=0.3s → end: type remaining letters
+    for (let i = 0; i < chars.length; i++) {
+      if (skipped) {
+        chars.forEach(c => c.classList.add('in'));
+        skipped = false;
+        break;
+      }
+      chars[i].classList.add('in');
+      await sleep(params.typeStep);
+    }
+
+    // settle the A on Helvetica
+    stopSignal.stopped = true;
+    await morphPromise.catch(() => {});
+    morphEl.style.fontFamily = 'Helvetica, Arial, sans-serif';
+
+    await sleep(HOLD);
+
+    // erase for loop reset
+    for (let i = chars.length - 1; i >= 0; i--) {
+      chars[i].classList.remove('in');
+      await sleep(20);
+    }
+    morphEl.classList.remove('in');
+    morphEl.style.fontFamily = '';
+    await sleep(300);
+  }
+
+  async function loop() {
+    while (true) {
+      await play();
+    }
+  }
+
+  // wire up controls
+  const rFonts = document.getElementById('r-fonts');
+  const rFreq = document.getElementById('r-freq');
+  const rType = document.getElementById('r-type');
+  const vFonts = document.getElementById('v-fonts');
+  const vFreq = document.getElementById('v-freq');
+  const vType = document.getElementById('v-type');
+
+  rFonts.addEventListener('input', e => {
+    params.fontCount = parseInt(e.target.value, 10);
+    vFonts.textContent = params.fontCount;
+  });
+  rFreq.addEventListener('input', e => {
+    params.morphInterval = parseInt(e.target.value, 10);
+    vFreq.textContent = params.morphInterval + 'ms';
+  });
+  rType.addEventListener('input', e => {
+    params.typeStep = parseInt(e.target.value, 10);
+    vType.textContent = params.typeStep + 'ms';
+  });
+  document.getElementById('replay').addEventListener('click', () => {
+    skipped = true; // break current loop iteration, restarts with new params
+  });
+
+  function tick() {
+    const d = new Date();
+    const pad = n => String(n).padStart(2, '0');
+    document.getElementById('clock').textContent =
+      `${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`;
+  }
+  setInterval(tick, 1000); tick();
+
+  loop();
+</script>
+</body>
+</html>
