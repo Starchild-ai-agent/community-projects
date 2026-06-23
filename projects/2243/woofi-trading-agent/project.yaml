@@ -1,0 +1,27 @@
+name: woofi-trading-agent
+type: task
+version: 1.0.1
+license: MIT
+entry: src/agent.py
+schedule: '*/10 * * * *'
+description: 'Automated trading agent for WOOFi Pro perpetual futures (Orderly Network).
+
+  Mean-reversion + funding-filter strategy on BTC/ETH/SOL with risk-managed
+
+  position sizing, stop-loss/take-profit orders, and circuit breakers.
+
+  '
+tags:
+- trading
+- crypto
+- woofi
+- orderly
+- perps
+env_required:
+- WOOFI_API_KEY
+- WOOFI_API_SECRET
+- WOOFI_ACCOUNT_ID
+sc_proxy: false
+publisher:
+  code_slug: woofi-trading-agent
+author: user-2243

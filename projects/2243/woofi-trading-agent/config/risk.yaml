@@ -1,0 +1,48 @@
+# WOOFi Pro Agent — Risk Parameters (DRAFT)
+# Review and approve before going live
+
+account:
+  starting_balance_usd: 20.00
+  currency: USDC
+  exchange: woofi_pro
+  infrastructure: orderly_network
+  margin_mode: cross  # only mode available
+
+leverage:
+  max_account_leverage: 3      # hard ceiling, set on WOOFi Pro portfolio page
+  default_position_leverage: 2  # typical trades
+  max_position_leverage: 3      # never exceed per-position
+
+position_sizing:
+  risk_per_trade_pct: 2.0       # % of equity risked per trade (conservative for $20 acct)
+  risk_per_trade_usd: 0.40      # $20 * 2% = $0.40
+  max_concurrent_positions: 2
+  max_notional_per_position_pct: 50  # max 50% of equity as notional at default leverage
+
+circuit_breakers:
+  max_daily_loss_pct: 5.0       # stop trading for the day
+  max_daily_loss_usd: 1.00
+  max_weekly_loss_pct: 10.0     # stop trading for the week, review
+  max_weekly_loss_usd: 2.00
+  max_drawdown_pct: 15.0        # halt and full review
+  max_consecutive_losses: 4     # pause and review
+
+order_rules:
+  require_stop_loss: true
+  require_take_profit: true
+  min_risk_reward: 1.5
+  default_order_type: LIMIT     # maker to capture rebate
+  allow_market_orders: false    # only on close/stop-out
+  max_slippage_bps: 20          # reject if slippage > 0.2%
+
+strategy_filters:
+  min_24h_volume_usd: 1000000   # only trade liquid markets
+  avoid_high_funding_bps: 10    # don't open long if funding > 0.1%/8h (10bps)
+  avoid_extreme_funding_bps: 20 # don't trade either side if > 0.2%/8h (20bps)
+  allowed_symbols:
+    - PERP_BTC_USDC
+    - PERP_ETH_USDC
+    - PERP_SOL_USDC
+
+# NOT YET ACTIVE — no orders will be placed until user approves
+status: DRAFT

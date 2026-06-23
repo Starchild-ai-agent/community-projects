@@ -1,0 +1,14 @@
+# Environment files (contain API keys)
+.env
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+
+# Logs
+logs/*.log
+
+# OS
+.DS_Store
+Thumbs.db

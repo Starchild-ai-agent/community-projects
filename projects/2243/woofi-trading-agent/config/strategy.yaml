@@ -1,0 +1,66 @@
+# WOOFi Pro Agent — Strategy Config (FINAL)
+# Single strategy: Mean Reversion with Funding Filter
+
+phase: live  # observation -> paper -> live
+
+strategy:
+  name: mean_reversion_funding_filter
+  description: |
+    Fade extremes within established ranges. Skip when funding is elevated
+    (crowded positioning). Designed for range-bound markets on a small account.
+
+  # --- Range detection ---
+  range_lookback: 50           # candles to define the range
+  min_range_touches: 2         # support/resistance must be touched >= 2x
+  max_range_width_pct: 8.0     # if range > 8%, market is trending — skip
+  min_range_age_hours: 4       # range must persist at least 4h
+
+  # --- Entry conditions ---
+  entry:
+    # Buy when price near support band (bottom 20% of range) + RSI < 40
+    # Short when price near resistance band (top 20% of range) + RSI > 60
+    support_band_pct: 20       # bottom 20% of range = support zone
+    resistance_band_pct: 20    # top 20% of range = resistance zone
+    rsi_oversold: 40
+    rsi_overbought: 60
+    require_ob_confirmation: true  # orderbook imbalance must align with direction
+    min_ob_imbalance: 0.05     # |imbalance| >= 0.05 to confirm
+
+  # --- Funding filter (the edge) ---
+  funding_filter:
+    enabled: true
+    # Don't long if funding is high (longs crowded → reversion risk)
+    max_long_funding_bps: 10       # 0.10%/8h
+    # Don't short if funding is very negative (shorts crowded)
+    max_short_funding_bps: 10      # |funding| > this for shorts → skip
+    # Don't trade at all if funding is extreme (either direction)
+    extreme_funding_bps: 20
+
+  # --- Exit rules ---
+  exit:
+    stop_loss_atr_mult: 1.5        # stop = entry - 1.5*ATR (for longs)
+    take_profit_atr_mult: 2.0      # TP = entry + 2.0*ATR (for longs)
+    # R:R = 2.0/1.5 = 1.33:1 — acceptable given win-rate edge from funding filter
+    max_hold_hours: 24             # close after 24h regardless (avoid funding bleed)
+    exit_on_range_break: true      # close if price breaks the range
+
+  # --- Position sizing (delegated to risk engine) ---
+  # Uses risk.yaml: 4% risk per trade, 2x default leverage
+
+market_data:
+  candle_interval: 1h
+  candle_lookback: 100
+  orderbook_depth: 20
+  track_funding: true
+  track_open_interest: true
+
+allowed_symbols:
+  - PERP_BTC_USDC
+  - PERP_ETH_USDC
+  - PERP_SOL_USDC
+
+# Logging
+log_dir: projects/woofi-agent/logs
+log_signals: true      # log every signal evaluation (trade or no-trade)
+log_trades: true       # log simulated trades + outcomes
+log_decisions: true    # log the reasoning for each decision
