@@ -1,0 +1,13 @@
+# Secrets
+.env
+*.key
+*.pem
+*.p12
+
+# Ledger (contains post history, not secrets, but keep local)
+output/content_publisher_ledger.json
+
+# Python
+__pycache__/
+*.pyc
+.venv/

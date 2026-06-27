@@ -1,5 +1,24 @@
 [
   {
+    "type": "script",
+    "user_id": "3182",
+    "slug": "scheduled-content-publisher",
+    "version": "1.0.1",
+    "description": "Orchestrate recurring fetch → generate → publish → engage loops for content posting (daily news, market digests, tournament trackers).",
+    "tags": [
+      "content",
+      "publishing",
+      "scheduling",
+      "automation",
+      "agentx"
+    ],
+    "author": "user-3182",
+    "license": "MIT",
+    "github_url": "https://github.com/Starchild-ai-agent/community-projects/tree/main/projects/3182/scheduled-content-publisher",
+    "updated_at": "2026-06-27T13:06:46.497Z",
+    "created_at": "2026-06-27T13:06:46.497Z"
+  },
+  {
     "type": "task",
     "user_id": "2243",
     "slug": "woofi-trading-agent",
