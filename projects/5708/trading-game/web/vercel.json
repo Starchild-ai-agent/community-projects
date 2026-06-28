@@ -1,0 +1,6 @@
+{
+  "crons": [
+    { "path": "/api/cron/auto-close", "schedule": "* * * * *" },
+    { "path": "/api/cron/index-events", "schedule": "*/5 * * * *" }
+  ]
+}

@@ -1,5 +1,24 @@
 [
   {
+    "type": "service",
+    "user_id": "5708",
+    "slug": "trading-game",
+    "version": "1.0.1",
+    "description": "Full-stack Web3 1000x leveraged up/down trading game with on-chain settlement.\nSolidity contract (oracle-signed prices, nonce replay protection, PnL caps),\nNext.js 14 frontend + API, Supabase mirror, Hardhat deploy, Foundry tests,\nTP/SL auto-close cron, on-chain event indexer.\n",
+    "tags": [
+      "web3",
+      "trading",
+      "solidity",
+      "nextjs",
+      "perp"
+    ],
+    "author": "user-5708",
+    "license": "MIT",
+    "github_url": "https://github.com/Starchild-ai-agent/community-projects/tree/main/projects/5708/trading-game",
+    "updated_at": "2026-06-28T15:49:09.355Z",
+    "created_at": "2026-06-28T15:49:09.355Z"
+  },
+  {
     "type": "script",
     "user_id": "3182",
     "slug": "scheduled-content-publisher",

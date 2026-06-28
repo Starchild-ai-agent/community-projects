@@ -1,0 +1,44 @@
+name: trading-game
+type: service
+version: 1.0.1
+license: MIT
+entry: web/src/app/page.tsx
+port: 3000
+description: 'Full-stack Web3 1000x leveraged up/down trading game with on-chain settlement.
+
+  Solidity contract (oracle-signed prices, nonce replay protection, PnL caps),
+
+  Next.js 14 frontend + API, Supabase mirror, Hardhat deploy, Foundry tests,
+
+  TP/SL auto-close cron, on-chain event indexer.
+
+  '
+tags:
+- web3
+- trading
+- solidity
+- nextjs
+- perp
+env_required:
+- NEXT_PUBLIC_WC_PROJECT_ID
+- NEXT_PUBLIC_CHAIN_ID
+- NEXT_PUBLIC_RPC_URL
+- NEXT_PUBLIC_TRADING_GAME_ADDRESS
+- NEXT_PUBLIC_MARGIN_TOKEN_ADDRESS
+- NEXT_PUBLIC_MARGIN_TOKEN_DECIMALS
+- NEXT_PUBLIC_MARGIN_TOKEN_SYMBOL
+- ORACLE_PRIVATE_KEY
+- ORACLE_SIGNER_ADDRESS
+- DEPLOYER_PRIVATE_KEY
+- SUPABASE_URL
+- SUPABASE_SERVICE_ROLE_KEY
+- NEXT_PUBLIC_SUPABASE_URL
+- NEXT_PUBLIC_SUPABASE_ANON_KEY
+- ADMIN_WALLETS
+- CRON_SECRET
+- PRICE_PROVIDER
+sc_proxy: false
+publisher:
+  code_slug: trading-game
+  public_slug: trading-game
+author: user-5708
