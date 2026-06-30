@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>方案A - 材料尺寸清单</title>
+<style>
+body{font-family:"Microsoft YaHei",sans-serif;margin:20px;background:#f5f5f5;color:#222}
+h1{color:#1a5276;border-bottom:2px solid #1a5276;padding-bottom:6px}
+h2{color:#2874a6;margin-top:30px}
+table{border-collapse:collapse;width:100%;background:#fff;margin:10px 0}
+th,td{border:1px solid #bbb;padding:8px 10px;font-size:13px}
+th{background:#2874a6;color:#fff}
+tr:nth-child(even){background:#f0f7ff}
+.note{background:#fef9e7;border-left:4px solid #f39c12;padding:10px;margin:10px 0;font-size:13px}
+.qty{text-align:center}.price{color:#e67e22;font-weight:bold;text-align:right}
+</style>
+</head>
+<body>
+<h1>方案A 向心力定量演示仪 - 材料尺寸清单</h1>
+<div class="note">所有尺寸单位为毫米(mm)。3D打印件见 <code>stl/</code> 目录的 .stl 文件，可直接送打印店。金属/塑料件可按尺寸在淘宝定尺切割或本地五金店加工。</div>
+
+<h2>一、3D打印件（PLA材质）</h2>
+<table>
+<tr><th>序号</th><th>名称</th><th>尺寸(长×宽×高)</th><th>数量</th><th>材质</th><th>填充率</th><th>来源</th></tr>
+<tr><td>1</td><td>旋转臂</td><td>380 × 24 × 10，中心孔 Φ16</td><td class="qty">1</td><td>PLA</td><td>30%</td><td>3D打印店/自有打印机</td></tr>
+<tr><td>2</td><td>滑块-轻档</td><td>40 × 30 × 24，内腔20×20×18，M3孔</td><td class="qty">1</td><td>PLA</td><td>30%</td><td>3D打印</td></tr>
+<tr><td>3</td><td>滑块-中档</td><td>同上，填铅粒约78g</td><td class="qty">1</td><td>PLA+铅粒</td><td>30%</td><td>3D打印+配重</td></tr>
+<tr><td>4</td><td>滑块-重档</td><td>同上，填铅粒约128g</td><td class="qty">1</td><td>PLA+铅粒</td><td>30%</td><td>3D打印+配重</td></tr>
+<tr><td>5</td><td>配重块</td><td>30 × 30 × 24（与滑块等重，平衡转轴）</td><td class="qty">1</td><td>PLA+铅粒</td><td>30%</td><td>3D打印+配重</td></tr>
+</table>
+<div class="note">打印参数：层高0.2mm，喷嘴200℃，热床60℃，打印速度50mm/s，壁厚1.2mm(3层)。旋转臂约18g耗材/2.5h，滑块约6g/0.5h。</div>
+
+<h2>二、金属/机械件</h2>
+<table>
+<tr><th>序号</th><th>名称</th><th>尺寸规格</th><th>数量</th><th>材质</th><th>加工方式</th><th>来源</th></tr>
+<tr><td>6</td><td>底座钢板</td><td>500 × 300 × 10，四角Φ8安装孔</td><td class="qty">1</td><td>Q235钢</td><td>激光切割+钻孔</td><td>五金加工店</td></tr>
+<tr><td>7</td><td>立柱</td><td>Φ20 × 320，顶端M8螺纹</td><td class="qty">1</td><td>45钢</td><td>车削</td><td>五金店/淘宝定尺</td></tr>
+<tr><td>8</td><td>电机联轴器</td><td>Φ16内孔，M3顶丝，长25</td><td class="qty">1</td><td>铝合金</td><td>成品</td><td>淘宝</td></tr>
+<tr><td>9</td><td>滚珠轴承</td><td>6204-2RS（20×47×14）</td><td class="qty">2</td><td>轴承钢</td><td>成品</td><td>淘宝</td></tr>
+<tr><td>10</td><td>轴承座</td><td>配合6204，带安装孔</td><td class="qty">2</td><td>铸铁</td><td>成品</td><td>淘宝</td></tr>
+<tr><td>11</td><td>M3螺丝</td><td>不锈钢，长10/15/20各若干</td><td class="qty">20</td><td>304不锈钢</td><td>成品</td><td>五金店</td></tr>
+<tr><td>12</td><td>M4螺丝</td><td>长15（连接传感器）</td><td class="qty">4</td><td>304不锈钢</td><td>成品</td><td>五金店</td></tr>
+<tr><td>13</td><td>M8螺丝及螺母</td><td>长40（立柱固定）</td><td class="qty">4套</td><td>304不锈钢</td><td>成品</td><td>五金店</td></tr>
+</table>
+
+<h2>三、电子元器件</h2>
+<table>
+<tr><th>序号</th><th>名称</th><th>型号/规格</th><th>数量</th><th>引脚/接口</th><th>参考价</th></tr>
+<tr><td>14</td><td>ESP32开发板</td><td>ESP32-WROOM-32，Type-C</td><td class="qty">1</td><td>—</td><td class="price">¥17</td></tr>
+<tr><td>15</td><td>HX711模块</td><td>24位ADC，128增益</td><td class="qty">1</td><td>E+/E-/A+/A-/VCC/GND/SCK/DOUT</td><td class="price">¥18</td></tr>
+<tr><td>16</td><td>S型拉压力传感器</td><td>2kg(20N)，2mV/V，M4螺纹</td><td class="qty">1</td><td>4线：红(E+)黑(E-)绿(A+)白(A-)</td><td class="price">¥25</td></tr>
+<tr><td>17</td><td>红外光电门模块</td><td>红外对管，3.3V兼容</td><td class="qty">1</td><td>VCC/GND/DOUT</td><td class="price">¥6</td></tr>
+<tr><td>18</td><td>直流调速电机</td><td>12V，0-300rpm，带调速器</td><td class="qty">1</td><td>+/-(电源)</td><td class="price">¥35</td></tr>
+<tr><td>19</td><td>稳压电源</td><td>12V/2A，DC5.5插头</td><td class="qty">1</td><td>—</td><td class="price">¥22</td></tr>
+<tr><td>20</td><td>杜邦线</td><td>母对母+公对母各20根</td><td class="qty">1套</td><td>—</td><td class="price">¥8</td></tr>
+<tr><td>21</td><td>面包板</td><td>400孔</td><td class="qty">1</td><td>—</td><td class="price">¥5</td></tr>
+</table>
+
+<h2>四、测量工具</h2>
+<table>
+<tr><th>序号</th><th>名称</th><th>规格</th><th>数量</th><th>参考价</th></tr>
+<tr><td>22</td><td>游标卡尺</td><td>0-150mm，精度0.02mm</td><td class="qty">1</td><td class="price">¥15</td></tr>
+<tr><td>23</td><td>电子天平</td><td>500g/0.1g，便携式</td><td class="qty">1</td><td class="price">¥28</td></tr>
+</table>
+
+<h2>五、辅材</h2>
+<table>
+<tr><th>序号</th><th>名称</th><th>规格</th><th>数量</th><th>用途</th></tr>
+<tr><td>24</td><td>铅粒</td><td>Φ3，100g</td><td class="qty">1</td><td>滑块配重</td></tr>
+<tr><td>25</td><td>热缩管</td><td>Φ3/Φ5各1m</td><td class="qty">1套</td><td>传感器线缆保护</td></tr>
+<tr><td>26</td><td>扎带</td><td>100mm，黑色</td><td class="qty">20</td><td>线束整理</td></tr>
+<tr><td>27</td><td>双面胶/魔术贴</td><td>—</td><td class="qty">若干</td><td>ESP32与电池固定</td></tr>
+</table>
+
+<div class="note">
+<b>预算合计：</b>约 ¥214（不含共用工具）。<br>
+<b>采购优先级：</b>先买电子件(14-21)和3D打印件(1-5)，机械件(6-13)可本地加工或淘宝定尺。<br>
+<b>替代方案：</b>底座可用现成实验台夹具替代；立柱可用现成支架；若预算紧张，滚珠轴承可省略（用铜套替代，摩擦稍大但可扣除系统误差）。
+</div>
+
+</body>
+</html>

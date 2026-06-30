@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 480" font-family="SimSun, serif">
+<rect width="900" height="480" fill="#fafafa"/>
+<text x="450" y="28" text-anchor="middle" font-size="16" font-weight="bold">工艺图5  旋转臂→S型传感器→滑块  连接爆炸图</text>
+
+<text x="450" y="55" text-anchor="middle" font-size="13" fill="#2874a6" font-weight="bold">力测量链路装配（爆炸视图）</text>
+
+<!-- 旋转臂右端 -->
+<rect x="60" y="220" width="180" height="20" fill="#d9a44a" stroke="#333" stroke-width="1.5"/>
+<text x="150" y="235" text-anchor="middle" font-size="10" fill="#fff">旋转臂右端</text>
+<circle cx="230" cy="230" r="4" fill="#fff" stroke="#333"/>
+<text x="230" y="255" text-anchor="middle" font-size="8">M4孔</text>
+
+<!-- M4螺丝1 -->
+<rect x="260" y="226" width="30" height="8" fill="#aaa" stroke="#333" stroke-width="1"/>
+<text x="275" y="255" text-anchor="middle" font-size="8">M4螺丝</text>
+
+<!-- S型传感器 -->
+<rect x="310" y="210" width="60" height="40" fill="#5cb85c" stroke="#333" stroke-width="2" rx="4"/>
+<text x="340" y="235" text-anchor="middle" font-size="10" fill="#fff" font-weight="bold">S型传感器</text>
+<text x="340" y="250" text-anchor="middle" font-size="8" fill="#fff">20N 2mV/V</text>
+<circle cx="310" cy="230" r="3" fill="#fff" stroke="#333"/>
+<circle cx="370" cy="230" r="3" fill="#fff" stroke="#333"/>
+
+<!-- M4螺丝2 -->
+<rect x="390" y="226" width="30" height="8" fill="#aaa" stroke="#333" stroke-width="1"/>
+<text x="405" y="255" text-anchor="middle" font-size="8">M4螺丝</text>
+
+<!-- 滑块 -->
+<rect x="440" y="200" width="60" height="60" fill="#e8554e" stroke="#333" stroke-width="1.5"/>
+<text x="470" y="235" text-anchor="middle" font-size="10" fill="#fff">滑块</text>
+<circle cx="440" cy="230" r="4" fill="#fff" stroke="#333"/>
+<text x="470" y="275" text-anchor="middle" font-size="8">M4孔</text>
+
+<!-- 装配方向 -->
+<line x1="245" y1="180" x2="305" y2="180" stroke="#c0392b" stroke-width="2" marker-end="url(#a5)"/>
+<text x="275" y="172" text-anchor="middle" font-size="9" fill="#c0392b">拧入</text>
+<line x1="375" y1="180" x2="435" y2="180" stroke="#c0392b" stroke-width="2" marker-end="url(#a5)"/>
+<text x="405" y="172" text-anchor="middle" font-size="9" fill="#c0392b">拧入</text>
+
+<!-- 装配后俯视图 -->
+<text x="450" y="320" text-anchor="middle" font-size="13" fill="#2874a6" font-weight="bold">装配后俯视图</text>
+<rect x="150" y="370" width="500" height="20" fill="#d9a44a" stroke="#333" stroke-width="1.5"/>
+<text x="400" y="385" text-anchor="middle" font-size="9" fill="#fff">旋转臂</text>
+<rect x="580" y="365" width="30" height="30" fill="#5cb85c" stroke="#333" stroke-width="1.5"/>
+<text x="595" y="385" text-anchor="middle" font-size="7" fill="#fff">S型</text>
+<rect x="610" y="360" width="40" height="40" fill="#e8554e" stroke="#333" stroke-width="1.5"/>
+<text x="630" y="385" text-anchor="middle" font-size="8" fill="#fff">滑块</text>
+<text x="450" y="430" text-anchor="middle" font-size="9" fill="#666">传感器轴线与旋转臂轴线重合，构成力测量链路</text>
+<text x="450" y="450" text-anchor="middle" font-size="9" fill="#c0392b">注意：滑块在传感器外侧（远离圆心），旋转时拉力即向心力</text>
+<defs><marker id="a5" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="#c0392b"/></marker></defs>
+</svg>

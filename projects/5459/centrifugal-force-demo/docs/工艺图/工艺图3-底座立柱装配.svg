@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 520" font-family="SimSun, serif">
+<rect width="900" height="520" fill="#fafafa"/>
+<text x="450" y="28" text-anchor="middle" font-size="16" font-weight="bold">工艺图3  底座与立柱装配</text>
+
+<!-- 俯视 -->
+<text x="450" y="55" text-anchor="middle" font-size="13" fill="#2874a6" font-weight="bold">（a）底座钢板俯视图</text>
+<rect x="200" y="80" width="500" height="120" fill="#888" stroke="#333" stroke-width="1.5"/>
+<text x="450" y="145" text-anchor="middle" font-size="11" fill="#fff">底座钢板 500×300×10mm</text>
+<circle cx="230" cy="110" r="6" fill="#fff" stroke="#333" stroke-width="1.2"/>
+<circle cx="670" cy="110" r="6" fill="#fff" stroke="#333" stroke-width="1.2"/>
+<circle cx="230" cy="170" r="6" fill="#fff" stroke="#333" stroke-width="1.2"/>
+<circle cx="670" cy="170" r="6" fill="#fff" stroke="#333" stroke-width="1.2"/>
+<text x="230" y="200" text-anchor="middle" font-size="8">Φ8</text>
+<text x="670" y="200" text-anchor="middle" font-size="8">Φ8</text>
+<circle cx="450" cy="140" r="10" fill="#fff" stroke="#333" stroke-width="1.5"/>
+<text x="450" y="144" text-anchor="middle" font-size="8">Φ20</text>
+<line x1="200" y1="220" x2="700" y2="220" stroke="#333" stroke-width="0.6"/>
+<text x="450" y="235" text-anchor="middle" font-size="10">500</text>
+<line x1="710" y1="80" x2="710" y2="200" stroke="#333" stroke-width="0.6"/>
+<text x="725" y="145" font-size="10">300</text>
+
+<!-- 侧视装配 -->
+<text x="450" y="275" text-anchor="middle" font-size="13" fill="#2874a6" font-weight="bold">（b）立柱固定侧视图</text>
+<rect x="200" y="420" width="500" height="20" fill="#888" stroke="#333" stroke-width="1.5"/>
+<text x="450" y="455" text-anchor="middle" font-size="10">底座（侧视）</text>
+<rect x="442" y="290" width="16" height="130" fill="#aaa" stroke="#333" stroke-width="1.5"/>
+<text x="465" y="355" font-size="10">立柱Φ20</text>
+<rect x="438" y="285" width="24" height="10" fill="#aaa" stroke="#333" stroke-width="1.2"/>
+<text x="450" y="280" text-anchor="middle" font-size="8">M8螺母</text>
+<rect x="438" y="435" width="24" height="10" fill="#aaa" stroke="#333" stroke-width="1.2"/>
+<text x="475" y="443" font-size="8">M8螺母+垫片</text>
+<rect x="480" y="300" width="8" height="110" fill="none" stroke="#c0392b" stroke-width="1.2" stroke-dasharray="3,2"/>
+<text x="500" y="355" font-size="9" fill="#c0392b">角尺校验垂直度</text>
+<text x="500" y="370" font-size="9" fill="#c0392b">误差&lt;1°</text>
+</svg>

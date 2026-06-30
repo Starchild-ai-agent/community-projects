@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>向心力定量演示仪 - 实验运行模拟</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#0a0a1a;color:#cde;font-family:"Microsoft YaHei",monospace;overflow:hidden}
+#app{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:auto 1fr 1fr auto;height:100vh;gap:6px;padding:8px}
+.toolbar{grid-column:1/-1;display:flex;gap:8px;align-items:center;padding:8px;background:#111;border-radius:6px;flex-wrap:wrap}
+.toolbar button{padding:6px 14px;border:none;border-radius:4px;background:#2874a6;color:#fff;cursor:pointer;font-size:13px}
+.toolbar button:hover{background:#3498db}
+.toolbar select,.toolbar input{padding:4px 8px;border-radius:4px;border:1px solid #444;background:#222;color:#fff}
+.panel{background:#111;border-radius:6px;padding:8px;position:relative;overflow:hidden}
+.panel h3{font-size:12px;color:#2874a6;margin-bottom:4px;border-bottom:1px solid #333;padding-bottom:3px}
+canvas{display:block;width:100%;height:calc(100% - 24px)}
+.subtitle{grid-column:1/-1;background:#111;border-radius:6px;padding:10px 16px;font-size:15px;min-height:48px;display:flex;align-items:center;line-height:1.5}
+.subtitle .time{color:#e94560;font-weight:bold;margin-right:10px;font-family:Consolas}
+.subtitle .text{color:#0f0}
+.data-stream{position:absolute;bottom:8px;left:8px;right:8px;height:60px;background:#000;border:1px solid #333;border-radius:4px;padding:4px;font-size:10px;color:#0f0;overflow:hidden;font-family:Consolas}
+.lbl{font-size:10px;color:#888}
+</style>
+</head>
+<body>
+<div id="app">
+<div class="toolbar">
+  <button id="btnPlay">▶ 播放</button>
+  <button id="btnPause">⏸ 暂停</button>
+  <button id="btnReset">↺ 重置</button>
+  <span>速度</span>
+  <select id="speed"><option value="1">1x</option><option value="2" selected>2x</option><option value="4">4x</option></select>
+  <span>跳转</span>
+  <button data-jump="0">片头</button>
+  <button data-jump="1">F-ω²组</button>
+  <button data-jump="2">F-r组</button>
+  <button data-jump="3">F-m组</button>
+  <button data-jump="4">结论</button>
+  <span style="margin-left:auto;color:#0f0" id="statusText">就绪</span>
+</div>
+
+<div class="panel">
+  <h3>🔬 装置运转（实物模拟）</h3>
+  <canvas id="deviceCanvas"></canvas>
+</div>
+
+<div class="panel">
+  <h3>📱 手机APP（实时数据接收与绘图）</h3>
+  <canvas id="appCanvas"></canvas>
+</div>
+
+<div class="panel">
+  <h3>📡 ESP32 数据流（蓝牙传输）</h3>
+  <canvas id="espCanvas"></canvas>
+  <div class="data-stream" id="streamLog"></div>
+</div>
+
+<div class="panel">
+  <h3>📊 数据拟合与分析（电脑处理）</h3>
+  <canvas id="fitCanvas"></canvas>
+</div>
+
+<div class="subtitle" id="subtitle"><span class="time">00:00</span><span class="text">点击「播放」开始实验运行模拟</span></div>
+</div>
+
+<script>
+// ============ 全局状态 ============
+const $=id=>document.getElementById(id);
+let playing=false, t=0, speed=2, phase=0;
+// phase: 0片头 1-3三组实验 4结论
+let angle=0, omega=0, force=0, period=0, rpm=0;
+let m=0.1, r=0.15, w=5;
+let liveData=[], dataPoints=[], currentGroup='omega';
+let streamLines=[];
+let lastPhotoAngle=0;
+let fitResults={k:0,b:0,r2:0};
+
+// 三组实验配置
+const EXPERIMENTS=[
+  {group:'omega',name:'F-ω²组',fixed:'m=0.1kg, r=0.15m',vary:[[3,0.1],[4,0.1],[5,0.1],[6,0.1],[7,0.1],[8,0.1]],
+   theoryK:()=>m*r,xLabel:'ω²/(rad²/s²)',theory:0.015},
+  {group:'r',name:'F-r组',fixed:'m=0.1kg, ω=5.0rad/s',vary:[[0.05,0.1],[0.08,0.1],[0.11,0.1],[0.14,0.1],[0.17,0.1],[0.20,0.1]],
+   theoryK:()=>m*w*w,xLabel:'r/m',theory:2.5},
+  {group:'m',name:'F-m组',fixed:'r=0.15m, ω=5.0rad/s',vary:[[0.05,0.05],[0.075,0.075],[0.1,0.1],[0.125,0.125],[0.15,0.15],[0.175,0.175]],
+   theoryK:()=>r*w*w,xLabel:'m/kg',theory:0.375}
+];
+
+// 时间轴脚本（秒，模拟时间）
+// phase 0: 0-8s 片头
+// phase 1: 8-40s F-ω²组（6个点，每点5s）
+// phase 2: 40-72s F-r组
+// phase 3: 72-104s F-m组
+// phase 4: 104-120s 结论
+const SCRIPT=[
+  {t:0,text:'实验运行模拟开始。装置：3D打印转台 + S型传感器 + 光电门 + ESP32'},
+  {t:4,text:'第一组实验：F-ω²关系。固定 m=100g, r=15cm，改变角速度ω'},
+  {t:8,text:'启动电机，转速稳定后采集第1个数据点（ω=3 rad/s）'},
+  {t:14,text:'ESP32采集：力F由HX711读取，周期T由光电门测脉冲间隔'},
+  {t:20,text:'数据通过蓝牙实时传到手机APP，F-t曲线开始绘制'},
+  {t:26,text:'提高转速，采集第2个点（ω=4 rad/s）。力明显增大'},
+  {t:32,text:'继续采集6个不同转速的数据点...'},
+  {t:38,text:'6个点采完，APP做线性拟合：F = kω² + b，斜率k应等于mr'},
+  {t:40,text:'第二组：F-r关系。固定 m=100g, ω=5 rad/s，改变半径r'},
+  {t:46,text:'调整半径r=5cm，采集数据。半径越小，向心力越小'},
+  {t:52,text:'依次改变r=8/11/14/17/20cm，各采一个数据点'},
+  {t:58,text:'半径增大，力线性增大。6个点拟合成直线，斜率应等于mω²'},
+  {t:64,text:'F-r组完成，斜率与理论值mω²=2.5对比'},
+  {t:68,text:'第三组：F-m关系。固定 r=15cm, ω=5 rad/s，改变质量m'},
+  {t:74,text:'换装50g滑块，采集数据。质量越小，向心力越小'},
+  {t:80,text:'依次换装75/100/125/150/175g滑块'},
+  {t:86,text:'质量增大，力线性增大。斜率应等于rω²=0.375'},
+  {t:92,text:'F-m组完成。三组实验全部结束'},
+  {t:96,text:'三组拟合结果汇总：验证 F = mrω²'},
+  {t:104,text:'结论：三组相对误差均<5%，R²>0.95，向心力公式定量验证成功'},
+  {t:114,text:'模拟结束。这就是实验从物理量→传感器→数字数据→图象拟合的完整链路'}
+];
+
+// ============ 装置动画 ============
+const dC=$('deviceCanvas'),dCtx=dC.getContext('2d');
+function resizeCanvas(c){c.width=c.offsetWidth;c.height=c.offsetHeight-24;}
+function drawDevice(){
+  resizeCanvas(dC);
+  const W=dC.width,H=dC.height,cx=W/2,cy=H/2;
+  dCtx.fillStyle='#0a0a1a';dCtx.fillRect(0,0,W,H);
+  // 底座
+  dCtx.fillStyle='#555';dCtx.fillRect(cx-120,H-40,240,20);
+  // 立柱
+  dCtx.fillStyle='#888';dCtx.fillRect(cx-6,cy-60,12,H-cy-40+60);
+  // 电机
+  dCtx.fillStyle='#4a90d9';dCtx.fillRect(cx-25,cy-70,50,30);
+  dCtx.fillStyle='#fff';dCtx.font='10px sans-serif';dCtx.textAlign='center';
+  dCtx.fillText('电机',cx,cy-52);
+  // 旋转臂
+  dCtx.save();dCtx.translate(cx,cy-50);dCtx.rotate(angle);
+  dCtx.fillStyle='#d9a44a';dCtx.fillRect(-100,-5,200,10);
+  // 滑块
+  dCtx.fillStyle='#e8554e';dCtx.fillRect(80,-15,30,30);
+  dCtx.fillStyle='#fff';dCtx.font='8px sans-serif';
+  dCtx.fillText('滑块',95,2);
+  dCtx.fillText(m*1000+'g',95,22);
+  // 传感器
+  dCtx.fillStyle='#5cb85c';dCtx.fillRect(65,-8,15,16);
+  // 配重
+  dCtx.fillStyle='#777';dCtx.fillRect(-110,-15,30,30);
+  dCtx.restore();
+  // 光电门
+  const photoX=cx+115,photoY=cy-50;
+  dCtx.fillStyle='#f0ad4e';dCtx.fillRect(photoX,photoY-20,10,40);
+  // 光电门光束（被遮挡时变红）
+  const blockAngle=((angle%(2*Math.PI))+2*Math.PI)%(2*Math.PI);
+  const photoAngle=0; // 光电门在0度方向
+  const angDiff=Math.abs(blockAngle-photoAngle);
+  const blocked=angDiff<0.15||angDiff>2*Math.PI-0.15;
+  dCtx.strokeStyle=blocked?'#f00':'#aa0';
+  dCtx.lineWidth=blocked?2:1;
+  dCtx.beginPath();dCtx.moveTo(photoX,photoY);dCtx.lineTo(photoX-20,photoY);dCtx.stroke();
+  // ω方向箭头
+  dCtx.strokeStyle='#4a90d9';dCtx.lineWidth=2;
+  dCtx.beginPath();dCtx.arc(cx,cy-50,40,-0.3,1.2);dCtx.stroke();
+  dCtx.fillStyle='#4a90d9';dCtx.font='12px serif';
+  dCtx.fillText('ω='+(omega>0?omega.toFixed(1):'0'),cx+60,cy-90);
+  // F数值
+  dCtx.fillStyle='#0f0';dCtx.font='14px Consolas';
+  dCtx.textAlign='left';
+  dCtx.fillText('F = '+force.toFixed(3)+' N',10,20);
+  dCtx.fillText('T = '+(period>0?period.toFixed(3):'0')+' s',10,38);
+  dCtx.fillText('转速 = '+rpm+' r/min',10,56);
+  dCtx.fillText('r = '+(r*100).toFixed(0)+' cm',10,74);
+  dCtx.fillText('m = '+(m*1000).toFixed(0)+' g',10,92);
+  // 实验组标识
+  dCtx.fillStyle='#e94560';dCtx.font='bold 12px sans-serif';
+  dCtx.textAlign='right';
+  const expName=phase===1?'F-ω²组':phase===2?'F-r组':phase===3?'F-m组':'';
+  dCtx.fillText(expName,W-10,20);
+  dCtx.fillStyle='#888';dCtx.font='10px sans-serif';
+  if(phase>=1&&phase<=3){
+    dCtx.fillText(EXPERIMENTS[phase-1].fixed,W-10,38);
+  }
+}
+
+// ============ ESP32 数据流动画 ============
+const eC=$('espCanvas'),eCtx=eC.getContext('2d');
+function drawESP(){
+  resizeCanvas(eC);
+  const W=eC.width,H=eC.height;
+  eCtx.fillStyle='#0a0a1a';eCtx.fillRect(0,0,W,H);
+  // ESP32 板
+  const bx=W/2-60,by=20;
+  eCtx.fillStyle='#1a5276';eCtx.fillRect(bx,by,120,60);
+  eCtx.fillStyle='#fff';eCtx.font='10px sans-serif';eCtx.textAlign='center';
+  eCtx.fillText('ESP32',bx+60,by+25);
+  eCtx.fillText('WROOM-32',bx+60,by+40);
+  // 引脚指示
+  eCtx.fillStyle=force>0?'#0f0':'#333';
+  eCtx.fillRect(bx+10,by+50,8,8);eCtx.fillStyle='#888';
+  eCtx.fillText('GPIO33',bx+14,by+72);
+  eCtx.fillStyle=omega>0?'#0f0':'#333';
+  eCtx.fillRect(bx+30,by+50,8,8);
+  eCtx.fillText('GPIO27',bx+34,by+72);
+  eCtx.fillStyle='#5cb85c';eCtx.fillRect(bx+50,by+50,8,8);
+  eCtx.fillText('BLE',bx+54,by+72);
+  // HX711
+  eCtx.fillStyle='#f0ad4e';eCtx.fillRect(bx-50,by+15,40,30);
+  eCtx.fillStyle='#fff';eCtx.fillText('HX711',bx-30,by+35);
+  // 传感器
+  eCtx.fillStyle='#5cb85c';eCtx.fillRect(bx-90,by+15,30,30);
+  eCtx.fillText('S型',bx-75,by+35);
+  // 连线
+  eCtx.strokeStyle='#5cb85c';eCtx.lineWidth=1.5;
+  eCtx.beginPath();eCtx.moveTo(bx-60,by+30);eCtx.lineTo(bx-50,by+30);eCtx.stroke();
+  eCtx.strokeStyle='#f0ad4e';
+  eCtx.beginPath();eCtx.moveTo(bx-10,by+30);eCtx.lineTo(bx,by+30);eCtx.stroke();
+  // 蓝牙波纹
+  if(playing){
+    for(let i=0;i<3;i++){
+      const rr=((t*speed*50)+i*30)%90;
+      eCtx.strokeStyle=`rgba(74,144,209,${1-rr/90})`;
+      eCtx.lineWidth=2;
+      eCtx.beginPath();eCtx.arc(bx+60,by+80,rr,0,Math.PI*2);eCtx.stroke();
+    }
+  }
+  eCtx.fillStyle='#4a90d9';eCtx.font='10px sans-serif';
+  eCtx.fillText('蓝牙BLE → 手机',bx+60,by+100);
+  // 数据流文字
+  eCtx.fillStyle='#0f0';eCtx.font='9px Consolas';eCtx.textAlign='left';
+  eCtx.fillText('采样率: 10Hz | ADC: 24bit | 蓝牙: BLE 4.2',10,H-10);
+}
+
+// ============ 手机APP动画 ============
+const aC=$('appCanvas'),aCtx=aC.getContext('2d');
+function drawApp(){
+  resizeCanvas(aC);
+  const W=aC.width,H=aC.height;
+  aCtx.fillStyle='#0a0a1a';aCtx.fillRect(0,0,W,H);
+  // APP 标题栏
+  aCtx.fillStyle='#2874a6';aCtx.fillRect(0,0,W,24);
+  aCtx.fillStyle='#fff';aCtx.font='11px sans-serif';aCtx.textAlign='left';
+  aCtx.fillText('🎵 向心力定量探究 APP',8,16);
+  aCtx.textAlign='right';aCtx.fillText(phase>=1&&phase<=3?EXPERIMENTS[phase-1].name:'-',W-8,16);
+  // 实时数值卡片
+  const cards=[['F',force.toFixed(3)+'N','#0ff'],['ω',omega.toFixed(2)+'rad/s','#e94560'],
+               ['T',(period>0?period.toFixed(3):'0')+'s','#0f0'],['rpm',rpm,'#f0ad4e']];
+  cards.forEach((c,i)=>{
+    const x=8+i*(W-16)/4,cw=(W-16)/4-4;
+    aCtx.fillStyle='#16213e';aCtx.fillRect(x,30,cw,40);
+    aCtx.fillStyle='#888';aCtx.font='9px sans-serif';aCtx.textAlign='center';
+    aCtx.fillText(c[0],x+cw/2,42);
+    aCtx.fillStyle=c[3];aCtx.font='14px Consolas';
+    aCtx.fillText(c[1],x+cw/2,60);
+  });
+  // F-t 曲线
+  const gx=8,gy=78,gw=W-16,gh=H-86;
+  aCtx.strokeStyle='#333';aCtx.lineWidth=1;
+  aCtx.strokeRect(gx,gy,gw,gh);
+  aCtx.fillStyle='#888';aCtx.font='9px sans-serif';aCtx.textAlign='left';
+  aCtx.fillText('F-t 实时曲线',gx+4,gy+12);
+  if(liveData.length>1){
+    const maxF=Math.max(...liveData.map(d=>d.force),0.5);
+    aCtx.strokeStyle='#0ff';aCtx.lineWidth=1.5;aCtx.beginPath();
+    liveData.forEach((d,i)=>{
+      const x=gx+i/(liveData.length-1)*gw;
+      const y=gy+gh-d.force/maxF*gh*0.9;
+      i===0?aCtx.moveTo(x,y):aCtx.lineTo(x,y);
+    });
+    aCtx.stroke();
+  }
+  // 数据点计数
+  aCtx.fillStyle='#0f0';aCtx.textAlign='right';
+  aCtx.fillText('已采集 '+dataPoints.length+' 点',W-8,gy+gh-4);
+}
+
+// ============ 拟合图 ============
+const fC=$('fitCanvas'),fCtx=fC.getContext('2d');
+function drawFit(){
+  resizeCanvas(fC);
+  const W=fC.width,H=fC.height;
+  fCtx.fillStyle='#0a0a1a';fCtx.fillRect(0,0,W,H);
+  fCtx.fillStyle='#2874a6';fCtx.fillRect(0,0,W,24);
+  fCtx.fillStyle='#fff';fCtx.font='11px sans-serif';fCtx.textAlign='left';
+  fCtx.fillText('📊 线性拟合 F = kx + b',8,16);
+  if(dataPoints.length===0){
+    fCtx.fillStyle='#666';fCtx.textAlign='center';
+    fCtx.fillText('等待数据采集...',W/2,H/2);
+    return;
+  }
+  const pts=dataPoints.filter(p=>p.group===currentGroup);
+  if(pts.length===0)return;
+  const maxX=Math.max(...pts.map(p=>p.x))*1.15||1;
+  const maxY=Math.max(...pts.map(p=>p.force))*1.15||1;
+  const ox=50,oy=H-30,pw=W-70,ph=H-60;
+  // 坐标轴
+  fCtx.strokeStyle='#555';fCtx.lineWidth=1;
+  fCtx.beginPath();fCtx.moveTo(ox,oy);fCtx.lineTo(ox+pw,oy);fCtx.moveTo(ox,oy);fCtx.lineTo(ox,oy-ph);fCtx.stroke();
+  fCtx.fillStyle='#aaa';fCtx.font='10px sans-serif';fCtx.textAlign='center';
+  const exp=phase>=1&&phase<=3?EXPERIMENTS[phase-1]:null;
+  fCtx.fillText(exp?exp.xLabel:'x',ox+pw/2,oy+18);
+  fCtx.save();fCtx.translate(15,oy-ph/2);fCtx.rotate(-Math.PI/2);fCtx.fillText('F/N',0,0);fCtx.restore();
+  // 数据点
+  fCtx.fillStyle='#0ff';
+  pts.forEach(p=>{
+    const x=ox+p.x/maxX*pw,y=oy-p.force/maxY*ph;
+    fCtx.beginPath();fCtx.arc(x,y,4,0,Math.PI*2);fCtx.fill();
+  });
+  // 拟合线
+  if(fitResults.r2>0&&pts.length>=2){
+    fCtx.strokeStyle='#e94560';fCtx.lineWidth=2;fCtx.setLineDash([5,3]);
+    fCtx.beginPath();
+    fCtx.moveTo(ox,oy-(fitResults.b)/maxY*ph);
+    fCtx.lineTo(ox+pw,oy-(fitResults.k*maxX+fitResults.b)/maxY*ph);
+    fCtx.stroke();fCtx.setLineDash([]);
+    // 公式
+    fCtx.fillStyle='#e94560';fCtx.font='11px Consolas';fCtx.textAlign='left';
+    fCtx.fillText(`F = ${fitResults.k.toFixed(4)}x + ${fitResults.b.toFixed(4)}`,ox+pw-200,40);
+    fCtx.fillText(`R² = ${fitResults.r2.toFixed(4)}`,ox+pw-90,58);
+    if(exp){
+      const err=Math.abs(fitResults.k-exp.theory)/exp.theory*100;
+      fCtx.fillStyle=err<5?'#0f0':'#e94560';
+      fCtx.fillText(`理论k=${exp.theory}  误差${err.toFixed(1)}%`,ox+pw-200,76);
+    }
+  }
+  // 数据表
+  fCtx.fillStyle='#888';fCtx.font='9px Consolas';fCtx.textAlign='left';
+  fCtx.fillText('#   x        F(N)',8,H-12);
+  pts.forEach((p,i)=>{
+    fCtx.fillText(`${i+1}   ${p.x.toFixed(3)}  ${p.force.toFixed(3)}`,8+i%3*100,H-24-Math.floor(i/3)*0);
+  });
+}
+
+// ============ 数据流日志 ============
+function updateStream(){
+  if(!playing)return;
+  if(t%(0.1*speed)<0.05){
+    const line=`{"t":${(t).toFixed(1)},"force":${force.toFixed(3)},"omega":${omega.toFixed(2)},"period":${period>0?period.toFixed(4):'0.0000'},"rpm":${rpm},"state":"RUN"}`;
+    streamLines.push(line);
+    if(streamLines.length>4)streamLines.shift();
+    $('streamLog').innerHTML=streamLines.map(l=>`> ${l}`).join('<br>');
+  }
+}
+
+// ============ 拟合计算 ============
+function fitLine(pts){
+  if(pts.length<2)return{k:0,b:0,r2:0};
+  let sx=0,sy=0,sxx=0,sxy=0,n=pts.length;
+  pts.forEach(p=>{sx+=p.x;sy+=p.force;sxx+=p.x*p.x;sxy+=p.x*p.force;});
+  const k=(n*sxy-sx*sy)/(n*sxx-sx*sx);
+  const b=(sy-k*sx)/n;
+  const my=sy/n;let st=0,sr=0;
+  pts.forEach(p=>{st+=(p.force-my)**2;sr+=(p.force-(k*p.x+b))**2;});
+  return{k,b,r2:st>0?1-sr/st:1};
+}
+
+// ============ 主循环 ============
+let lastTime=performance.now();
+function loop(now){
+  const dt=(now-lastTime)/1000;lastTime=now;
+  if(playing){
+    t+=dt*speed;
+    updatePhase();
+    updatePhysics(dt*speed);
+    updateStream();
+  }
+  drawDevice();drawESP();drawApp();drawFit();
+  updateSubtitle();
+  requestAnimationFrame(loop);
+}
+
+function updatePhase(){
+  if(t<4)phase=0;
+  else if(t<40){phase=1;currentGroup='omega';}
+  else if(t<72){phase=2;currentGroup='r';}
+  else if(t<104){phase=3;currentGroup='m';}
+  else phase=4;
+}
+
+function updatePhysics(dt){
+  if(phase===0){omega=0;force=0;period=0;rpm=0;return;}
+  const exp=EXPERIMENTS[phase-1];
+  // 根据时间确定当前实验参数
+  const phaseStart=[4,40,72][phase-1];
+  const pointIdx=Math.floor((t-phaseStart)/5.5); // 每5.5秒一个点
+  const pointProgress=((t-phaseStart)%5.5)/5.5;
+  if(pointIdx>=0&&pointIdx<exp.vary.length){
+    const [v1,v2]=exp.vary[pointIdx];
+    if(phase===1){omega=v1;m=v2;r=0.15;}
+    else if(phase===2){r=v1;m=v2;omega=5;}
+    else{m=v1;omega=5;r=0.15;}
+    // 转速稳定过程：前1.5s加速，中间稳定，最后0.5s记录
+    if(pointProgress<0.3){
+      omega*=pointProgress/0.3;
+    }
+    // 计算力（加2%噪声）
+    const Ftheory=m*r*omega*omega;
+    force=Ftheory*(1+(Math.random()-0.5)*0.04);
+    // 周期
+    if(omega>0.1){period=2*Math.PI/omega;rpm=Math.round(60/period);}
+    else{period=0;rpm=0;}
+    // 旋转
+    angle+=omega*dt;
+    // 在每个点的末尾记录数据
+    if(pointProgress>0.9&&!liveData.some(d=>d.recorded===pointIdx+phase*10)){
+      let x;
+      if(phase===1)x=omega*omega;
+      else if(phase===2)x=r;
+      else x=m;
+      dataPoints.push({x,force,group:currentGroup,recorded:pointIdx+phase*10});
+      liveData=[];
+      // 更新拟合
+      const pts=dataPoints.filter(p=>p.group===currentGroup);
+      fitResults=fitLine(pts);
+    }
+  }
+  // 实时曲线数据
+  if(playing&&omega>0.1){
+    liveData.push({t,force,omega});
+    if(liveData.length>80)liveData.shift();
+  }
+}
+
+function updateSubtitle(){
+  let cur=SCRIPT[0];
+  for(let s of SCRIPT){if(t>=s.t)cur=s;}
+  const mm=Math.floor(t/60),ss=Math.floor(t%60);
+  $('subtitle').innerHTML=`<span class="time">${String(mm).padStart(2,'0')}:${String(ss).padStart(2,'0')}</span><span class="text">${cur.text}</span>`;
+  $('statusText').textContent=playing?`运行中 | phase=${phase} | 点数=${dataPoints.length}`:'已暂停';
+}
+
+// ============ 控制 ============
+$('btnPlay').onclick=()=>{playing=true;$('statusText').textContent='运行中';};
+$('btnPause').onclick=()=>{playing=false;$('statusText').textContent='已暂停';};
+$('btnReset').onclick=()=>{playing=false;t=0;phase=0;angle=0;omega=0;force=0;period=0;rpm=0;m=0.1;r=0.15;liveData=[];dataPoints=[];streamLines=[];fitResults={k:0,b:0,r2:0};$('streamLog').innerHTML='';};
+$('speed').onchange=e=>speed=parseFloat(e.target.value);
+document.querySelectorAll('[data-jump]').forEach(b=>{
+  b.onclick=()=>{
+    const j=parseInt(b.dataset.jump);
+    const targets=[0,6,42,74,106];
+    t=targets[j];
+    if(j===0){dataPoints=[];liveData=[];fitResults={k:0,b:0,r2:0};}
+  };
+});
+
+resizeCanvas(dC);resizeCanvas(eC);resizeCanvas(aC);resizeCanvas(fC);
+requestAnimationFrame(loop);
+</script>
+</body>
+</html>

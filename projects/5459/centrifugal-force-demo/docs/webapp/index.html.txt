@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>向心力定量探究 - 数据采集与分析</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:"Microsoft YaHei","PingFang SC",sans-serif;background:#1a1a2e;color:#e0e0e0;padding:10px}
+h1{text-align:center;color:#0ff;font-size:20px;padding:8px;text-shadow:0 0 10px #0ff}
+.toolbar{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;padding:8px;background:#16213e;border-radius:6px;margin:8px 0}
+.toolbar button{padding:8px 16px;border:none;border-radius:4px;background:#0f3460;color:#fff;cursor:pointer;font-size:13px;transition:.2s}
+.toolbar button:hover{background:#e94560}
+.toolbar button:disabled{background:#444;cursor:not-allowed}
+.toolbar select,.toolbar input{padding:6px;border-radius:4px;border:1px solid #444;background:#16213e;color:#fff;font-size:13px}
+.main{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.panel{background:#16213e;border-radius:6px;padding:10px}
+.panel h2{color:#e94560;font-size:14px;margin-bottom:8px;border-bottom:1px solid #333;padding-bottom:4px}
+canvas{width:100%;background:#0f0f23;border-radius:4px}
+.data-display{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:8px 0}
+.data-card{background:#0f3460;padding:8px;border-radius:4px;text-align:center}
+.data-card .label{font-size:11px;color:#888}
+.data-card .value{font-size:22px;color:#0ff;font-weight:bold}
+.data-card .unit{font-size:11px;color:#888}
+table{width:100%;border-collapse:collapse;font-size:12px}
+th,td{border:1px solid #333;padding:4px 6px;text-align:center}
+th{background:#0f3460;color:#0ff}
+.explain{background:#0f3460;padding:10px;border-radius:4px;font-size:13px;line-height:1.7;margin:8px 0;min-height:60px}
+.explain .formula{color:#0ff;font-family:Times New Roman,serif;font-size:15px}
+.explain .good{color:#0f0}.explain .bad{color:#e94560}
+.debug{background:#000;color:#0f0;padding:8px;border-radius:4px;font-family:Consolas,monospace;font-size:11px;max-height:150px;overflow-y:auto;white-space:pre-wrap}
+.status{padding:4px 8px;border-radius:4px;font-size:12px;display:inline-block}
+.status.off{background:#444}.status.on{background:#0f0;color:#000}
+.status.err{background:#e94560}
+@media(max-width:900px){.main{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<h1>🎵 向心力定量探究 - 数据采集与分析系统</h1>
+
+<div class="toolbar">
+  <button id="btnConnect">🔌 连接ESP32</button>
+  <button id="btnStart" disabled>▶️ 开始采集</button>
+  <button id="btnStop" disabled>⏹️ 停止</button>
+  <button id="btnZero" disabled>⚖️ 归零</button>
+  <span>实验组：</span>
+  <select id="expGroup">
+    <option value="omega">F-ω²组</option>
+    <option value="r">F-r组</option>
+    <option value="m">F-m组</option>
+  </select>
+  <span>固定值：</span>
+  <input id="fixedVal" type="text" placeholder="如 m=0.1,r=0.15" size="14">
+  <button id="btnRecord" disabled>📝 记录数据点</button>
+  <button id="btnFit">📈 拟合</button>
+  <button id="btnClear">🗑️ 清空</button>
+  <button id="btnExport">💾 导出CSV</button>
+  <span class="status off" id="connStatus">未连接</span>
+</div>
+
+<div class="data-display">
+  <div class="data-card"><div class="label">力 F</div><div class="value" id="dForce">0.00</div><div class="unit">N</div></div>
+  <div class="data-card"><div class="label">角速度 ω</div><div class="value" id="dOmega">0.00</div><div class="unit">rad/s</div></div>
+  <div class="data-card"><div class="label">周期 T</div><div class="value" id="dPeriod">0.00</div><div class="unit">s</div></div>
+  <div class="data-card"><div class="label">转速</div><div class="value" id="dRpm">0</div><div class="unit">r/min</div></div>
+</div>
+
+<div class="main">
+  <div class="panel">
+    <h2>📊 实时数据曲线（F vs 时间）</h2>
+    <canvas id="liveCanvas" height="240"></canvas>
+  </div>
+  <div class="panel">
+    <h2>📈 实验数据与拟合</h2>
+    <canvas id="fitCanvas" height="240"></canvas>
+  </div>
+  <div class="panel">
+    <h2>📋 数据记录表</h2>
+    <div style="max-height:200px;overflow:auto">
+    <table id="dataTable">
+      <thead><tr><th>#</th><th>自变量</th><th>F实测/N</th><th>F理论/N</th><th>误差</th><th>操作</th></tr></thead>
+      <tbody></tbody>
+    </table>
+    </div>
+  </div>
+  <div class="panel">
+    <h2>🤖 图象解释与结论</h2>
+    <div class="explain" id="explain">连接ESP32并开始采集后，此处将显示实时分析与图象解释。</div>
+  </div>
+  <div class="panel" style="grid-column:1/-1">
+    <h2>🐞 调试日志</h2>
+    <div class="debug" id="debug">等待操作...</div>
+  </div>
+</div>
+
+<script>
+// ============ 全局状态 ============
+let port=null, reader=null, decoder=null, serialOpen=false, collecting=false;
+let liveData=[], dataPoints=[], currentGroup='omega', fixedParams={};
+let latestForce=0, latestOmega=0, latestPeriod=0, latestRpm=0;
+const $=id=>document.getElementById(id);
+const debug=$('debug');
+
+function log(msg){debug.textContent=`[${new Date().toLocaleTimeString()}] ${msg}\n`+debug.textContent;debug.scrollTop=0;}
+
+// ============ Web Serial 连接 ============
+async function connect(){
+  if(!('serial' in navigator)){log('❌ 浏览器不支持Web Serial，请用Chrome/Edge 87+');return;}
+  try{
+    port=await navigator.serial.requestPort();
+    await port.open({baudRate:115200});
+    decoder=new TextDecoderStream();
+    const readableStreamClosed=port.readable.pipeTo(decoder.writable);
+    reader=decoder.readable.getReader();
+    serialOpen=true;
+    $('connStatus').className='status on';$('connStatus').textContent='已连接';
+    $('btnConnect').textContent='🔌 已连接';$('btnStart').disabled=false;
+    $('btnZero').disabled=false;$('btnRecord').disabled=false;
+    log('✅ ESP32已连接，115200bps');
+    readLoop();
+  }catch(e){log('❌ 连接失败：'+e.message);$('connStatus').className='status err';}
+}
+
+async function readLoop(){
+  while(serialOpen&&reader){
+    try{
+      const{value,done}=await reader.read();
+      if(done)break;
+      if(value)parseLine(value);
+    }catch(e){log('读取错误：'+e.message);break;}
+  }
+}
+
+function parseLine(chunk){
+  // 按行切分（可能粘包）
+  if(!parseLine.buf)parseLine.buf='';
+  parseLine.buf+=chunk;
+  let idx;
+  while((idx=parseLine.buf.indexOf('\n'))>=0){
+    const line=parseLine.buf.slice(0,idx).trim();
+    parseLine.buf=parseLine.buf.slice(idx+1);
+    if(line.startsWith('{'))try{handleJSON(JSON.parse(line));}catch(e){}
+  }
+}
+
+function handleJSON(d){
+  if(d.info){log('ℹ️ '+d.info);return;}
+  latestForce=d.force||0;latestOmega=d.omega||0;latestPeriod=d.period||0;latestRpm=d.rpm||0;
+  $('dForce').textContent=latestForce.toFixed(3);
+  $('dOmega').textContent=latestOmega.toFixed(3);
+  $('dPeriod').textContent=latestPeriod.toFixed(4);
+  $('dRpm').textContent=latestRpm;
+  if(collecting){
+    liveData.push({t:d.t,force:latestForce,omega:latestOmega});
+    if(liveData.length>300)liveData.shift();
+    drawLive();
+  }
+}
+
+// ============ 命令发送 ============
+async function sendCmd(cmd){
+  if(!port||!port.writable){log('❌ 未连接');return;}
+  const writer=port.writable.getWriter();
+  await writer.write(new TextEncoder().encode(cmd+'\n'));
+  writer.releaseLock();
+  log('→ '+cmd);
+}
+
+// ============ 实时曲线绘制 ============
+function drawLive(){
+  const c=$('liveCanvas'),ctx=c.getContext('2d');
+  c.width=c.offsetWidth;
+  ctx.fillStyle='#0f0f23';ctx.fillRect(0,0,c.width,c.height);
+  if(liveData.length<2){ctx.fillStyle='#666';ctx.fillText('等待数据...',c.width/2-40,c.height/2);return;}
+  // 网格
+  ctx.strokeStyle='#222';ctx.lineWidth=0.5;
+  for(let i=0;i<=5;i++){const y=i*c.height/5;ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(c.width,y);ctx.stroke();}
+  // 力曲线
+  const maxF=Math.max(...liveData.map(d=>Math.abs(d.force)),1);
+  ctx.strokeStyle='#0ff';ctx.lineWidth=2;ctx.beginPath();
+  liveData.forEach((d,i)=>{
+    const x=i/(liveData.length-1)*c.width;
+    const y=c.height/2 - d.force/maxF*c.height*0.4;
+    if(i===0)ctx.moveTo(x,y);else ctx.lineTo(x,y);
+  });
+  ctx.stroke();
+  // 角速度曲线（归一化）
+  const maxW=Math.max(...liveData.map(d=>d.omega),1);
+  ctx.strokeStyle='#e94560';ctx.lineWidth=1.5;ctx.beginPath();
+  liveData.forEach((d,i)=>{
+    const x=i/(liveData.length-1)*c.width;
+    const y=c.height - d.omega/maxW*c.height*0.4;
+    if(i===0)ctx.moveTo(x,y);else ctx.lineTo(x,y);
+  });
+  ctx.stroke();
+  // 图例
+  ctx.fillStyle='#0ff';ctx.font='11px sans-serif';ctx.fillText('F (青)',8,16);
+  ctx.fillStyle='#e94560';ctx.fillText('ω (红)',8,32);
+}
+
+// ============ 数据记录与拟合 ============
+function recordPoint(){
+  let x;
+  if(currentGroup==='omega')x=latestOmega*latestOmega;
+  else if(currentGroup==='r')x=parseFloat(prompt('当前半径r/cm？','15'))/100;
+  else x=parseFloat(prompt('当前质量m/g？','100'))/1000;
+  if(isNaN(x)){log('❌ 自变量无效');return;}
+  const point={x,force:latestForce,group:currentGroup};
+  dataPoints.push(point);
+  updateTable();drawFit();
+  log(`📝 记录点：x=${x.toFixed(4)} F=${latestForce.toFixed(3)}N`);
+}
+
+function updateTable(){
+  const tb=$('dataTable').querySelector('tbody');
+  tb.innerHTML='';
+  dataPoints.forEach((p,i)=>{
+    const fth=theoryForce(p);
+    const err=fth?((p.force-fth)/fth*100).toFixed(1):'—';
+    const tr=document.createElement('tr');
+    const errStr = (fth!==null) ? err+'%' : '—';
+    tr.innerHTML=`<td>${i+1}</td><td>${p.x.toFixed(3)}</td><td>${p.force.toFixed(3)}</td><td>${fth?fth.toFixed(3):'—'}</td><td>${errStr}</td><td><button onclick="delPoint(${i})">删</button></td>`;
+    tb.appendChild(tr);
+  });
+}
+function delPoint(i){dataPoints.splice(i,1);updateTable();drawFit();}
+function theoryForce(p){
+  const m=parseFloat(fixedParams.m)||0.1, r=parseFloat(fixedParams.r)||0.15, w=parseFloat(fixedParams.w)||5;
+  if(p.group==='omega')return m*r*p.x;
+  if(p.group==='r')return m*w*w*p.x;
+  if(p.group==='m')return r*w*w*p.x;
+  return null;
+}
+
+// 最小二乘法线性拟合 y = kx + b
+function fitLine(pts){
+  const n=pts.length;if(n<2)return null;
+  let sx=0,sy=0,sxx=0,sxy=0;
+  pts.forEach(p=>{sx+=p.x;sy+=p.force;sxx+=p.x*p.x;sxy+=p.x*p.force;});
+  const k=(n*sxy-sx*sy)/(n*sxx-sx*sx);
+  const b=(sy-k*sx)/n;
+  // R²
+  const meanY=sy/n;
+  let ssTot=0,ssRes=0;
+  pts.forEach(p=>{ssTot+=(p.force-meanY)**2;ssRes+=(p.force-(k*p.x+b))**2;});
+  const r2=ssTot>0?1-ssRes/ssTot:1;
+  return {k,b,r2};
+}
+
+function drawFit(){
+  const c=$('fitCanvas'),ctx=c.getContext('2d');
+  c.width=c.offsetWidth;
+  ctx.fillStyle='#0f0f23';ctx.fillRect(0,0,c.width,c.height);
+  if(dataPoints.length<1){ctx.fillStyle='#666';ctx.fillText('记录数据点后显示拟合',c.width/2-60,c.height/2);return;}
+  const pts=dataPoints.filter(p=>p.group===currentGroup);
+  if(pts.length<1)return;
+  const maxX=Math.max(...pts.map(p=>p.x))*1.1;
+  const maxY=Math.max(...pts.map(p=>p.force))*1.1||1;
+  // 坐标轴
+  ctx.strokeStyle='#555';ctx.lineWidth=1;
+  const ox=50,oy=c.height-30,pw=c.width-70,ph=c.height-60;
+  ctx.beginPath();ctx.moveTo(ox,oy);ctx.lineTo(ox+pw,oy);ctx.moveTo(ox,oy);ctx.lineTo(ox,oy-ph);ctx.stroke();
+  // 轴标签
+  ctx.fillStyle='#aaa';ctx.font='11px sans-serif';
+  const xLabel=currentGroup==='omega'?'ω²/(rad²·s⁻²)':currentGroup==='r'?'r/m':'m/kg';
+  ctx.fillText(xLabel,ox+pw/2-10,oy+18);
+  ctx.save();ctx.translate(15,oy-ph/2);ctx.rotate(-Math.PI/2);ctx.fillText('F/N',0,0);ctx.restore();
+  // 数据点
+  ctx.fillStyle='#0ff';
+  pts.forEach(p=>{
+    const x=ox+p.x/maxX*pw, y=oy-p.force/maxY*ph;
+    ctx.beginPath();ctx.arc(x,y,4,0,Math.PI*2);ctx.fill();
+  });
+  // 拟合线
+  const fit=fitLine(pts);
+  if(fit){
+    ctx.strokeStyle='#e94560';ctx.lineWidth=2;ctx.setLineDash([5,3]);
+    ctx.beginPath();
+    const x0=0,x1=maxX;
+    ctx.moveTo(ox+x0/maxX*pw, oy-(fit.k*x0+fit.b)/maxY*ph);
+    ctx.lineTo(ox+x1/maxX*pw, oy-(fit.k*x1+fit.b)/maxY*ph);
+    ctx.stroke();ctx.setLineDash([]);
+    // 显示拟合公式
+    ctx.fillStyle='#e94560';ctx.font='12px sans-serif';
+    ctx.fillText(`F = ${fit.k.toFixed(4)}x + ${fit.b.toFixed(4)}`,ox+pw-200,20);
+    ctx.fillText(`R² = ${fit.r2.toFixed(4)}`,ox+pw-90,38);
+  }
+  // 自动解释
+  autoExplain(pts,fit);
+}
+
+function autoExplain(pts,fit){
+  const el=$('explain');
+  if(!fit){el.innerHTML='数据点不足，至少需要2个点才能拟合。';return;}
+  const m=parseFloat(fixedParams.m)||0.1, r=parseFloat(fixedParams.r)||0.15, w=parseFloat(fixedParams.w)||5;
+  let theoryK, varName;
+  if(currentGroup==='omega'){theoryK=m*r;varName='ω²';}
+  else if(currentGroup==='r'){theoryK=m*w*w;varName='r';}
+  else{theoryK=r*w*w;varName='m';}
+  const relErr=Math.abs(fit.k-theoryK)/theoryK*100;
+  const isGood=relErr<5 && fit.r2>0.95 && Math.abs(fit.b)<Math.abs(fit.k)*0.1;
+  let html=`<div class="formula">拟合结果：F = ${fit.k.toFixed(4)}·${varName} + ${fit.b.toFixed(4)}</div>`;
+  html+=`理论斜率：${theoryK.toFixed(4)}（${varName}系数）<br>`;
+  html+=`实测斜率：${fit.k.toFixed(4)}，相对误差：<span class="${relErr<5?'good':'bad'}">${relErr.toFixed(2)}%</span><br>`;
+  html+=`线性度 R² = <span class="${fit.r2>0.95?'good':'bad'}">${fit.r2.toFixed(4)}</span>，`;
+  html+=fit.r2>0.95?'线性关系良好':'线性度偏低，建议检查数据<br>';
+  html+=`截距 b = ${fit.b.toFixed(4)}（理想为0），`;
+  html+=Math.abs(fit.b)<Math.abs(fit.k)*0.1?'<span class="good">归零良好</span>':'<span class="bad">建议重新归零</span><br>';
+  html+=isGood?`<br><span class="good">✅ 结论：F与${varName}成正比，验证 F=mrω² 中${varName}的依赖关系。</span>`:
+    `<br><span class="bad">⚠️ 数据偏差较大，建议：1)重新归零 2)检查转速稳定性 3)增加数据点</span>`;
+  el.innerHTML=html;
+}
+
+// ============ 事件绑定 ============
+$('btnConnect').onclick=connect;
+$('btnStart').onclick=()=>{collecting=true;sendCmd('START');$('btnStart').disabled=true;$('btnStop').disabled=false;liveData=[];};
+$('btnStop').onclick=()=>{collecting=false;sendCmd('STOP');$('btnStart').disabled=false;$('btnStop').disabled=true;};
+$('btnZero').onclick=()=>sendCmd('ZERO');
+$('btnRecord').onclick=recordPoint;
+$('btnFit').onclick=drawFit;
+$('btnClear').onclick=()=>{dataPoints=[];liveData=[];updateTable();drawFit();drawLive();};
+$('btnExport').onclick=()=>{
+  if(dataPoints.length===0){log('无数据');return;}
+  let csv='序号,实验组,自变量x,力F(N),\n';
+  dataPoints.forEach((p,i)=>csv+=`${i+1},${p.group},${p.x.toFixed(4)},${p.force.toFixed(4)},\n`);
+  const blob=new Blob([csv],{type:'text/csv;charset=utf-8'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);
+  a.download=`向心力实验数据_${Date.now()}.csv`;a.click();
+  log('💾 已导出 '+dataPoints.length+' 条数据');
+};
+$('expGroup').onchange=e=>{
+  currentGroup=e.target.value;
+  // 解析固定值
+  const fv=$('fixedVal').value;
+  fixedParams={};
+  fv.split(',').forEach(kv=>{const[k,v]=kv.split('=');if(k&&v)fixedParams[k.trim()]=v.trim();});
+  log(`切换到 ${currentGroup} 组，固定参数：${JSON.stringify(fixedParams)}`);
+  drawFit();
+};
+$('fixedVal').onchange=$('expGroup').onchange;
+window.delPoint=delPoint;
+log('系统就绪。点击「连接ESP32」开始。需用Chrome或Edge浏览器。');
+</script>
+</body>
+</html>

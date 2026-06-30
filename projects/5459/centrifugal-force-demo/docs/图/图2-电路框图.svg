@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 480" font-family="SimSun, serif">
+  <rect width="900" height="480" fill="#fafafa"/>
+  <text x="450" y="30" text-anchor="middle" font-size="18" font-weight="bold">图2 传感器与数据采集电路框图</text>
+  
+  <!-- 各模块 -->
+  <g font-size="11">
+    <!-- S型传感器 -->
+    <rect x="40" y="120" width="130" height="60" fill="#5cb85c" stroke="#333" stroke-width="1.5" rx="4"/>
+    <text x="105" y="145" text-anchor="middle" fill="#fff">S型拉压力传感器</text>
+    <text x="105" y="162" text-anchor="middle" fill="#fff" font-size="9">20N / 2mV·V⁻¹</text>
+    <text x="105" y="200" text-anchor="middle" font-size="9">输出: 毫伏级电压</text>
+    
+    <!-- HX711 -->
+    <rect x="230" y="120" width="130" height="60" fill="#f0ad4e" stroke="#333" stroke-width="1.5" rx="4"/>
+    <text x="295" y="145" text-anchor="middle" fill="#fff">HX711 模块</text>
+    <text x="295" y="162" text-anchor="middle" fill="#fff" font-size="9">24位ADC×128增益</text>
+    <text x="295" y="200" text-anchor="middle" font-size="9">放大+数字化</text>
+    
+    <!-- 光电门 -->
+    <rect x="40" y="260" width="130" height="60" fill="#e8554e" stroke="#333" stroke-width="1.5" rx="4"/>
+    <text x="105" y="285" text-anchor="middle" fill="#fff">红外光电门</text>
+    <text x="105" y="302" text-anchor="middle" fill="#fff" font-size="9">响应&lt;1ms</text>
+    <text x="105" y="340" text-anchor="middle" font-size="9">输出: 脉冲信号</text>
+    
+    <!-- ESP32 -->
+    <rect x="420" y="190" width="140" height="80" fill="#4a90d9" stroke="#333" stroke-width="1.5" rx="4"/>
+    <text x="490" y="215" text-anchor="middle" fill="#fff" font-weight="bold">ESP32-WROOM-32</text>
+    <text x="490" y="232" text-anchor="middle" fill="#fff" font-size="9">数据采集 + 蓝牙</text>
+    <text x="490" y="250" text-anchor="middle" fill="#fff" font-size="9">240MHz 双核</text>
+    <text x="490" y="295" text-anchor="middle" font-size="9">数字量汇总</text>
+    
+    <!-- 手机APP -->
+    <rect x="640" y="190" width="120" height="80" fill="#222" stroke="#333" stroke-width="1.5" rx="6"/>
+    <rect x="648" y="200" width="104" height="60" fill="#4a90d9" rx="2"/>
+    <text x="700" y="225" text-anchor="middle" fill="#fff" font-size="10">手机 APP</text>
+    <text x="700" y="242" text-anchor="middle" fill="#fff" font-size="8">绘图+拟合</text>
+    <text x="700" y="290" text-anchor="middle" font-size="9">可视化</text>
+    
+    <!-- 电源 -->
+    <rect x="230" y="380" width="130" height="50" fill="#777" stroke="#333" stroke-width="1.5" rx="4"/>
+    <text x="295" y="402" text-anchor="middle" fill="#fff">稳压电源 12V/2A</text>
+    <text x="295" y="418" text-anchor="middle" fill="#fff" font-size="9">→ 电机 + 传感器供电</text>
+  </g>
+  
+  <!-- 连线 -->
+  <g stroke="#333" stroke-width="1.5" fill="none">
+    <line x1="170" y1="150" x2="230" y2="150"/>
+    <line x1="360" y1="150" x2="420" y2="210"/>
+    <line x1="170" y1="290" x2="420" y2="240"/>
+    <line x1="560" y1="230" x2="640" y2="230" stroke="#4a90d9" stroke-dasharray="4,3"/>
+  </g>
+  
+  <!-- 信号标注 -->
+  <text x="200" y="143" text-anchor="middle" font-size="8">mV</text>
+  <text x="390" y="175" text-anchor="middle" font-size="8">数字力值</text>
+  <text x="300" y="270" text-anchor="middle" font-size="8">脉冲</text>
+  <text x="600" y="222" text-anchor="middle" font-size="8" fill="#4a90d9">蓝牙BLE</text>
+  
+  <!-- 信号流说明 -->
+  <rect x="60" y="420" width="780" height="45" fill="none" stroke="#ccc"/>
+  <text x="80" y="440" font-size="10" font-weight="bold">信号流：</text>
+  <text x="140" y="440" font-size="10">力F→S型传感器(毫伏)→HX711(数字)↘</text>
+  <text x="140" y="456" font-size="10">周期T→光电门(脉冲)→ESP32(计时)↗ESP32汇总⇒蓝牙⇒手机APP实时绘图与拟合</text>
+</svg>

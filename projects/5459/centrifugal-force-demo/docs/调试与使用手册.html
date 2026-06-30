@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>方案A - 调试与使用手册</title>
+<style>
+body{font-family:"Microsoft YaHei",sans-serif;margin:20px;background:#f5f5f5;color:#222;line-height:1.7}
+h1{color:#1a5276;border-bottom:2px solid #1a5276;padding-bottom:6px}
+h2{color:#2874a6;margin-top:28px;border-left:4px solid #2874a6;padding-left:10px}
+h3{color:#1a5276;margin-top:18px}
+table{border-collapse:collapse;width:100%;background:#fff;margin:10px 0}
+th,td{border:1px solid #bbb;padding:8px 10px;font-size:13px;text-align:left}
+th{background:#2874a6;color:#fff}
+tr:nth-child(even){background:#f0f7ff}
+.warn{background:#fef9e7;border-left:4px solid #f39c12;padding:10px;margin:10px 0}
+.tip{background:#e8f8f5;border-left:4px solid #1abc9c;padding:10px;margin:10px 0}
+.err{background:#fdedec;border-left:4px solid #c0392b;padding:10px;margin:10px 0}
+code{background:#eee;padding:2px 6px;border-radius:3px;font-size:13px}
+ol,ul{background:#fff;padding:15px 15px 15px 35px;border-radius:6px;margin:10px 0}
+li{margin:6px 0}
+</style>
+</head>
+<body>
+<h1>方案A 向心力定量演示仪 - 调试与使用手册</h1>
+
+<h2>一、首次使用流程</h2>
+<ol>
+<li>用Chrome或Edge浏览器打开 <code>webapp/index.html</code>（双击即可，无需联网）。</li>
+<li>ESP32用USB Type-C线连接电脑，电脑会识别为串口设备（Windows为COMx，Mac为/dev/cu.usbserial-xxx）。</li>
+<li>点击网页「🔌连接ESP32」，浏览器弹出串口选择框，选择ESP32对应端口，波特率115200。</li>
+<li>连接成功后状态显示「已连接」，力/ω/周期/转速四项实时刷新。</li>
+<li>点「⚖️归零」，等待2秒（期间不要触碰传感器）。</li>
+<li>挂100g砝码做力标定（见下方「传感器标定」章节）。</li>
+<li>开始教学实验。</li>
+</ol>
+
+<h2>二、传感器标定（关键步骤）</h2>
+<h3>2.1 力传感器标定</h3>
+<ol>
+<li>确保传感器无受力，点「归零」。</li>
+<li>挂已知质量砝码（推荐100g，对应0.981N），等待读数稳定。</li>
+<li>记录网页显示力值 F_read。若 F_read ≠ 0.981，需修正SCALE系数。</li>
+<li>在网页调试栏（或串口监视器）发送：<code>SCALE:新值</code>，其中 新值 = 原值 × (0.981 / F_read)。</li>
+<li>原值默认 -22000，可在串口发送 <code>INFO</code> 查询当前值。</li>
+<li>重复2-3次，直到 F_read 误差 <2%。</li>
+</ol>
+<div class="tip">标定只需做一次。SCALE值会保存在ESP32内存中，重启后恢复默认。若需永久保存，可修改固件中 <code>SCALE_FACTOR</code> 宏定义后重新烧录。</div>
+
+<h3>2.2 光电门标定</h3>
+<ol>
+<li>手动匀速转动旋转臂一圈，观察网页「转速」是否显示合理值（手动约30-60 r/min）。</li>
+<li>若转速为0，检查光电门DOUT线是否接GPIO27、光电门缺口是否有遮挡物。</li>
+<li>若转速数值异常大（如>1000），可能是滑块每圈遮挡多次，需调整光电门位置使其每圈只遮挡一次。</li>
+</ol>
+
+<h3>2.3 半径校准</h3>
+<ol>
+<li>用游标卡尺测量旋转中心（电机轴中心）到滑块中心的距离，即为半径r。</li>
+<li>在网页「固定值」栏填入实际r值（单位cm，如 <code>r=15</code>）。</li>
+<li>切换实验组时，固定值栏会自动解析，确保理论计算正确。</li>
+</ol>
+
+<h2>三、三组实验操作流程</h2>
+<h3>3.1 F-ω² 组（固定 m、r，改变 ω）</h3>
+<ol>
+<li>固定值栏填 <code>m=0.1,r=0.15</code>（即100g、15cm），实验组选「F-ω²组」。</li>
+<li>安装100g滑块，半径调至15cm。</li>
+<li>电机调至最低速，等待转速稳定（网页ω值连续5秒波动<3%），点「记录数据点」。</li>
+<li>电机调速提高一档，重复步骤3，共记录6组不同ω的数据。</li>
+<li>点「拟合」，查看斜率是否接近 mr = 0.015，R²>0.95。</li>
+</ol>
+
+<h3>3.2 F-r 组（固定 m、ω，改变 r）</h3>
+<ol>
+<li>固定值栏填 <code>m=0.1,w=5</code>，实验组选「F-r组」。</li>
+<li>保持100g滑块，电机调至ω≈5 rad/s 并保持调速器不动。</li>
+<li>半径调至5cm，记录；再调至8、11、14、17、20cm各记录一次。</li>
+<li>注意：改变半径时需停机，调整后再启动并等待转速恢复到5 rad/s。</li>
+<li>拟合斜率应接近 mω² = 2.5。</li>
+</ol>
+
+<h3>3.3 F-m 组（固定 r、ω，改变 m）</h3>
+<ol>
+<li>固定值栏填 <code>r=0.15,w=5</code>，实验组选「F-m组」。</li>
+<li>半径固定15cm，电机保持ω≈5 rad/s。</li>
+<li>依次换装50g、75g、100g、125g、150g、175g滑块，每次记录。</li>
+<li>拟合斜率应接近 rω² = 0.375。</li>
+</ol>
+
+<h2>四、数据导出与报告</h2>
+<ol>
+<li>实验完成后点「💾导出CSV」，文件名含时间戳。</li>
+<li>CSV包含序号、实验组、自变量x、力F四列，可用Excel打开。</li>
+<li>在Excel中可自行作图，或直接用网页的拟合图截图插入实验报告。</li>
+<li>网页「图象解释」栏的结论文字可直接复制到报告。</li>
+</ol>
+
+<h2>五、常见故障排查</h2>
+<table>
+<tr><th>故障现象</th><th>可能原因</th><th>解决方法</th></tr>
+<tr><td>连接ESP32失败</td><td>浏览器不支持Web Serial / 驱动未装 / 端口被占用</td><td>用Chrome 87+或Edge；安装CH340/CP2102驱动；关闭其他串口软件（如Arduino IDE串口监视器）</td></tr>
+<tr><td>力读数为0或异常大</td><td>HX711未归零 / 接线错误 / SCALE未标定</td><td>点「归零」；检查E+/E-/A+/A-接线；按2.1重新标定</td></tr>
+<tr><td>力读数为负</td><td>传感器受力方向反 / A+与A-接反</td><td>交换A+与A-线；或在固件中将SCALE取反</td></tr>
+<tr><td>ω始终为0</td><td>光电门未遮挡 / DOUT线接错 / 光电门损坏</td><td>检查GPIO27接线；手动拨动旋转臂看是否有读数；换光电门</td></tr>
+<tr><td>ω数值跳动大</td><td>转速不稳定 / 光电门固定松动 / 滑块遮挡不完全</td><td>等电机转速稳定后再记录；紧固光电门；调整光电门与滑块间距至5mm</td></tr>
+<tr><td>拟合R²<0.9</td><td>数据点太少 / 个别点偏离 / 未归零</td><td>增加数据点至6个以上；删除明显偏离的点；重新归零</td></tr>
+<tr><td>斜率误差>10%</td><td>力标定不准 / 半径测量错 / 滑块质量不准</td><td>重新标定力传感器；用卡尺重测半径；用天平校准滑块质量</td></tr>
+<tr><td>蓝牙无法连接</td><td>BLE未初始化 / 设备不在范围</td><td>网页优先用USB串口；蓝牙作为备选，用「蓝牙串口助手」APP连接「CentrifugalForce」设备</td></tr>
+<tr><td>ESP32反复重启</td><td>供电不足 / 电机干扰</td><td>ESP32用独立USB供电（不用电脑USB Hub）；电机电源与ESP32电源分开</td></tr>
+<tr><td>网页打开空白</td><td>浏览器禁用JS / 文件损坏</td><td>启用浏览器JS；重新打开index.html</td></tr>
+</table>
+
+<h2>六、调试日志使用</h2>
+<ul>
+<li>网页底部「🐞调试日志」显示所有操作记录与ESP32返回信息，带时间戳。</li>
+<li>发送 <code>INFO</code> 命令可查询ESP32当前零点、SCALE系数、中断计数。</li>
+<li>若数据异常，先看调试日志是否有 <code>info</code> 类消息提示。</li>
+<li>日志最多保留最近50条，超出自动滚动。</li>
+</ul>
+
+<h2>七、教学使用建议</h2>
+<ul>
+<li>课前10分钟开机预热，完成力标定与归零。</li>
+<li>课堂演示流程：连接→归零→选实验组→采集→记录→拟合→解释，全程可投屏。</li>
+<li>学生分组实验时，每组用同一台ESP32+网页，轮流操作，数据各自导出。</li>
+<li>视频录制时，建议用OBS同时录制网页画面与实验装置近景，合成画中画。</li>
+</ul>
+
+<div class="tip"><b>技术支持：</b>若按本手册无法解决问题，可在调试日志中截图，连同ESP32串口输出（串口监视器115200bps）一起反馈，便于定位。</div>
+
+</body>
+</html>

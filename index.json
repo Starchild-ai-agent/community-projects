@@ -1,6 +1,28 @@
 [
   {
     "type": "service",
+    "user_id": "5459",
+    "slug": "centrifugal-force-demo",
+    "version": "1.0.1",
+    "description": "高中物理向心力定量演示仪的传感器化改造方案。\n把传统弹簧测力计定性演示升级为压力传感器+光电门+ESP32蓝牙的数字化定量探究，\n验证 F = mrω² 三变量关系。含完整教学文稿、PPT、ESP32固件、网页采集APP、\n3D打印STL模型、装配工艺图、视频分镜脚本、实验运行模拟动画。\n",
+    "tags": [
+      "物理",
+      "高中",
+      "向心力",
+      "传感器",
+      "ESP32",
+      "实验教学",
+      "定量探究",
+      "3D打印"
+    ],
+    "author": "user-5459",
+    "license": "MIT",
+    "github_url": "https://github.com/Starchild-ai-agent/community-projects/tree/main/projects/5459/centrifugal-force-demo",
+    "updated_at": "2026-06-30T09:18:18.608Z",
+    "created_at": "2026-06-30T09:18:18.608Z"
+  },
+  {
+    "type": "service",
     "user_id": "5708",
     "slug": "trading-game",
     "version": "1.0.1",

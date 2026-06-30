@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>方案A - 零件制作工艺步骤（配装配图）</title>
+<style>
+body{font-family:"Microsoft YaHei",sans-serif;margin:20px;background:#f5f5f5;color:#222;line-height:1.7}
+h1{color:#1a5276;border-bottom:2px solid #1a5276;padding-bottom:6px}
+h2{color:#2874a6;margin-top:30px;border-left:4px solid #2874a6;padding-left:10px}
+h3{color:#1a5276;margin-top:20px}
+ol{background:#fff;padding:20px 20px 20px 40px;border-radius:6px;margin:10px 0}
+li{margin:8px 0}
+.warn{background:#fef9e7;border-left:4px solid #f39c12;padding:10px;margin:10px 0}
+.tip{background:#e8f8f5;border-left:4px solid #1abc9c;padding:10px;margin:10px 0}
+code{background:#eee;padding:2px 6px;border-radius:3px;font-size:13px}
+.step-num{display:inline-block;width:24px;height:24px;background:#2874a6;color:#fff;border-radius:50%;text-align:center;line-height:24px;font-size:13px;margin-right:6px}
+.fig{margin:15px 0;text-align:center}
+.fig img{max-width:100%;border:1px solid #ddd;border-radius:6px;box-shadow:0 2px 8px rgba(0,0,0,0.1)}
+.fig .caption{font-size:12px;color:#666;margin-top:6px}
+</style>
+</head>
+<body>
+<h1>方案A 向心力定量演示仪 - 零件制作工艺步骤（配装配图）</h1>
+<div class="tip">本指南分4部分：①3D打印件制作 ②机械件加工与装配 ③电子件接线 ④整机调试。每一步配装配示意图，预计总工时8-12小时（含打印等待）。</div>
+
+<h2>一、3D打印件制作（旋转臂 + 滑块 + 配重）</h2>
+<h3>1.1 准备模型文件</h3>
+<ol>
+<li><span class="step-num">1</span>将 <code>stl/旋转臂.stl</code> 和 <code>滑块.stl</code> 拷贝给打印店，或自行用切片软件（Cura/PrusaSlicer）打开。</li>
+<li><span class="step-num">2</span>切片参数设置：层高0.2mm，填充率30%（网格填充），壁厚1.2mm（3层外壳），喷嘴温度200℃，热床60℃，打印速度50mm/s，回抽距离6mm。</li>
+<li><span class="step-num">3</span>支撑设置：旋转臂中心孔与滑块内腔无需支撑（悬臂角度<45°的桥接结构可自支撑）；若打印店默认加支撑，需手动移除中心孔支撑。</li>
+</ol>
+
+<h3>1.2 打印后处理</h3>
+<div class="fig">
+<img src="工艺图/工艺图1-打印后处理.png" alt="打印后处理">
+<div class="caption">工艺图1　3D打印件后处理：旋转臂中心孔扩孔 + 滑块M3孔攻丝</div>
+</div>
+<ol>
+<li><span class="step-num">1</span>用美工刀去除打印底座（raft/brim），用砂纸(400目)轻磨毛刺。</li>
+<li><span class="step-num">2</span>旋转臂中心孔用Φ16钻头手工扩孔（3D打印孔通常偏小0.1-0.3mm），确保电机轴可顺畅插入。扩孔时垂直操作，避免偏斜。</li>
+<li><span class="step-num">3</span>滑块M3安装孔用M3丝锥攻丝（或直接用Φ2.5钻头打孔后用M3螺丝自攻）。</li>
+<li><span class="step-num">4</span>滑块内腔检查：若顶面有拉丝，用尖嘴钳清理，确保铅粒可放入。</li>
+</ol>
+
+<h3>1.3 滑块配重（制作3个质量档位）</h3>
+<div class="fig">
+<img src="工艺图/工艺图2-滑块配重.png" alt="滑块配重">
+<div class="caption">工艺图2　滑块剖视图：内腔填铅粒 + 三档质量配置</div>
+</div>
+<ol>
+<li><span class="step-num">1</span>用电子天平称量空滑块质量 m₀（约12-15g）。</li>
+<li><span class="step-num">2</span>计算所需铅粒质量：轻档50g需铅粒 50-m₀≈38g；中档100g需≈88g；重档150g需≈138g。</li>
+<li><span class="step-num">3</span>将铅粒填入滑块内腔，用热熔胶或502胶固定（防止旋转时铅粒晃动影响质心）。</li>
+<li><span class="step-num">4</span>盖上顶盖（可用打印的薄盖片，或用胶带封口），再次称量确认总质量为50/100/150g（误差±0.5g）。</li>
+<li><span class="step-num">5</span>用记号笔在滑块侧面标注质量值。</li>
+</ol>
+<div class="warn"><b>安全提示：</b>铅粒有毒性，操作后洗手。若担心安全，可用钢珠或螺母替代铅粒，但体积较大需调整内腔尺寸。</div>
+
+<h2>二、机械件加工与装配</h2>
+<h3>2.1 底座与立柱</h3>
+<div class="fig">
+<img src="工艺图/工艺图3-底座立柱装配.png" alt="底座立柱装配">
+<div class="caption">工艺图3　底座钢板俯视图 + 立柱固定侧视图</div>
+</div>
+<ol>
+<li><span class="step-num">1</span>底座钢板按500×300×10mm激光切割，四角钻Φ8安装孔（用于固定到实验台）。表面可喷防锈漆。</li>
+<li><span class="step-num">2</span>立柱Φ20×320mm，顶端车M8螺纹（长20mm），底端焊接或用螺母固定到底座中心。</li>
+<li><span class="step-num">3</span>立柱与底座垂直度用角尺校验，误差<1°。</li>
+</ol>
+
+<h3>2.2 电机与转轴装配</h3>
+<div class="fig">
+<img src="工艺图/工艺图4-电机转轴装配.png" alt="电机转轴装配">
+<div class="caption">工艺图4　电机→联轴器→旋转臂 装配爆炸图 + 装配后侧视图</div>
+</div>
+<ol>
+<li><span class="step-num">1</span>电机用M4螺丝固定到立柱中部的电机支架（可用现成L型铝型材）。</li>
+<li><span class="step-num">2</span>电机轴通过联轴器连接旋转臂中心孔。联轴器内孔Φ16，用M3顶丝紧定电机轴与旋转臂。</li>
+<li><span class="step-num">3</span>旋转臂安装后，手动转动应顺畅无卡顿。若偏心明显，松开顶丝重新对中。</li>
+<li><span class="step-num">4</span>电机调速器固定在底座侧面，便于操作。</li>
+</ol>
+
+<h3>2.3 传感器与光电门安装</h3>
+<div class="fig">
+<img src="工艺图/工艺图5-传感器连接.png" alt="传感器连接">
+<div class="caption">工艺图5　旋转臂→M4螺丝→S型传感器→M4螺丝→滑块 连接爆炸图</div>
+</div>
+<ol>
+<li><span class="step-num">1</span>S型传感器两端M4螺纹：一端用M4螺丝连接滑块，另一端连接旋转臂右端安装孔。传感器轴线与旋转臂轴线重合。</li>
+</ol>
+<div class="fig">
+<img src="工艺图/工艺图6-光电门固定.png" alt="光电门固定">
+<div class="caption">工艺图6　红外光电门固定位置：俯视图 + 侧视图（缺口对准滑块中部）</div>
+</div>
+<ol start="2">
+<li><span class="step-num">2</span>红外光电门用夹具固定在旋转臂外侧（滑块经过的位置），光电门缺口朝向滑块路径，间距约5mm。</li>
+<li><span class="step-num">3</span>配重块安装在旋转臂左端（与滑块对称位置），用M3螺丝固定，用于平衡转轴受力。</li>
+</ol>
+
+<h2>三、电子件接线</h2>
+<h3>3.1 接线（参照接线图）</h3>
+<ol>
+<li><span class="step-num">1</span>S型传感器4线接HX711：E+红→E+，E-黑→E-，A+绿→A+，A-白→A-。若读数为负，交换A+/A-即可。</li>
+<li><span class="step-num">2</span>HX711接ESP32：VCC→3V3，GND→GND，SCK→GPIO32，DOUT→GPIO33。</li>
+<li><span class="step-num">3</span>光电门接ESP32：VCC→3V3，GND→GND，DOUT→GPIO27。</li>
+<li><span class="step-num">4</span>电机接稳压电源（12V），电机调速器串联在中间。ESP32用USB线连电脑供电+通信。</li>
+</ol>
+<div class="warn"><b>注意：</b>ESP32的3V3引脚电流有限(<50mA)，HX711+光电门总电流约15mA，可安全共用。若再加其他传感器，需用独立3.3V电源。详细接线见 <code>接线图/接线图.png</code>。</div>
+
+<h3>3.2 固件烧录</h3>
+<ol>
+<li><span class="step-num">1</span>安装Arduino IDE，在「文件→首选项」添加ESP32开发板管理URL：<code>https://raw.githubusercontent.com/espressif/arduino-esp32/gh-pages/package_esp32_index.json</code></li>
+<li><span class="step-num">2</span>「工具→开发板→开发板管理器」搜索esp32并安装。</li>
+<li><span class="step-num">3</span>在「库管理器」安装 <code>BLEDevice</code>（ESP32 BLE Arduino）。</li>
+<li><span class="step-num">4</span>打开 <code>esp32_firmware/centrifugal_force.ino</code>，选择开发板「ESP32 Dev Module」，USB端口选择ESP32对应的COM口。</li>
+<li><span class="step-num">5</span>点击上传（→按钮），等待编译烧录完成。串口监视器(115200bps)应显示启动信息。</li>
+</ol>
+
+<h2>四、整机调试</h2>
+<h3>4.1 传感器标定</h3>
+<div class="fig">
+<img src="工艺图/工艺图7-传感器标定.png" alt="传感器标定">
+<div class="caption">工艺图7　传感器标定三步骤：归零 → 挂100g砝码 → 修正SCALE系数</div>
+</div>
+<ol>
+<li><span class="step-num">1</span>上电预热3分钟，使HX711零点稳定。</li>
+<li><span class="step-num">2</span>不挂任何重物，在网页应用点「⚖️归零」，ESP32自动记录零点原始值。</li>
+<li><span class="step-num">3</span>挂一个已知质量砝码（如100g=0.981N），记录网页显示的力值F_read。</li>
+<li><span class="step-num">4</span>计算标定系数：SCALE = 原始SCALE × (0.981 / F_read)。在串口发送 <code>SCALE:新值</code> 更新。</li>
+<li><span class="step-num">5</span>重复2-4步骤2-3次，直到F_read与理论值误差<2%。</li>
+</ol>
+
+<h3>4.2 光电门测试</h3>
+<ol>
+<li><span class="step-num">1</span>手动拨动旋转臂，使滑块经过光电门缺口，串口应显示非零period和rpm。</li>
+<li><span class="step-num">2</span>启动电机低速旋转，观察网页ω值是否稳定（连续10个读数波动<5%为合格）。</li>
+<li><span class="step-num">3</span>若ω不稳定，检查光电门固定是否松动、滑块遮挡是否完全。</li>
+</ol>
+
+<h3>4.3 试采数据</h3>
+<ol>
+<li><span class="step-num">1</span>设置 m=100g, r=15cm，电机调至中速。</li>
+<li><span class="step-num">2</span>网页点「连接ESP32」→「开始采集」→「记录数据点」，记录6组不同转速的数据。</li>
+<li><span class="step-num">3</span>点「拟合」，检查R²是否>0.95，斜率是否接近 mr=0.015。若偏差大，回到4.1重新标定。</li>
+</ol>
+
+<div class="tip"><b>完工标准：</b>三组实验(F-ω²、F-r、F-m)各6个数据点，拟合R²>0.95，相对误差<5%，即可用于教学展示与视频录制。</div>
+
+</body>
+</html>

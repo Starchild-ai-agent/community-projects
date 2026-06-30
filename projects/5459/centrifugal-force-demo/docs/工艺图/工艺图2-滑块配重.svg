@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 480" font-family="SimSun, serif">
+<rect width="900" height="480" fill="#fafafa"/>
+<text x="450" y="28" text-anchor="middle" font-size="16" font-weight="bold">工艺图2  滑块配重：内腔填铅粒 + 称量校准</text>
+
+<text x="450" y="60" text-anchor="middle" font-size="13" fill="#2874a6" font-weight="bold">滑块剖视图（切开看内腔）</text>
+
+<!-- 滑块外壳剖面 -->
+<rect x="250" y="120" width="400" height="120" fill="none" stroke="#e8554e" stroke-width="3"/>
+<rect x="250" y="220" width="400" height="20" fill="#e8554e" stroke="#333" stroke-width="1.5"/>
+<rect x="250" y="120" width="15" height="120" fill="#e8554e" stroke="#333" stroke-width="1.5"/>
+<rect x="635" y="120" width="15" height="120" fill="#e8554e" stroke="#333" stroke-width="1.5"/>
+
+<!-- 铅粒 -->
+<circle cx="290" cy="180" r="8" fill="#444" stroke="#333"/>
+<circle cx="320" cy="170" r="8" fill="#444" stroke="#333"/>
+<circle cx="350" cy="185" r="8" fill="#444" stroke="#333"/>
+<circle cx="380" cy="175" r="8" fill="#444" stroke="#333"/>
+<circle cx="410" cy="190" r="8" fill="#444" stroke="#333"/>
+<circle cx="440" cy="180" r="8" fill="#444" stroke="#333"/>
+<circle cx="470" cy="175" r="8" fill="#444" stroke="#333"/>
+<circle cx="500" cy="185" r="8" fill="#444" stroke="#333"/>
+<circle cx="530" cy="170" r="8" fill="#444" stroke="#333"/>
+<circle cx="560" cy="190" r="8" fill="#444" stroke="#333"/>
+<circle cx="590" cy="180" r="8" fill="#444" stroke="#333"/>
+<circle cx="610" cy="175" r="8" fill="#444" stroke="#333"/>
+<text x="450" y="155" text-anchor="middle" font-size="10" fill="#fff" font-weight="bold">铅粒（Φ3mm）</text>
+<text x="450" y="210" text-anchor="middle" font-size="9" fill="#888">热熔胶/502胶固定防晃动</text>
+
+<!-- 顶盖 -->
+<rect x="245" y="110" width="410" height="12" fill="#e8554e" stroke="#333" stroke-width="1.5" opacity="0.6"/>
+<text x="450" y="105" text-anchor="middle" font-size="9">顶盖（打印薄盖片或胶带封口）</text>
+
+<!-- 尺寸标注 -->
+<line x1="250" y1="260" x2="650" y2="260" stroke="#333" stroke-width="0.6"/>
+<line x1="250" y1="255" x2="250" y2="265" stroke="#333"/>
+<line x1="650" y1="255" x2="650" y2="265" stroke="#333"/>
+<text x="450" y="275" text-anchor="middle" font-size="10">40mm（内腔约36×20×18）</text>
+
+<!-- 三档质量配置 -->
+<text x="450" y="310" text-anchor="middle" font-size="13" fill="#2874a6" font-weight="bold">三档质量配置</text>
+<rect x="120" y="330" width="200" height="100" fill="#fff" stroke="#333" stroke-width="1.5" rx="4"/>
+<text x="220" y="355" text-anchor="middle" font-size="12" font-weight="bold">轻档 50g</text>
+<text x="220" y="375" text-anchor="middle" font-size="10">空滑块m₀≈12g</text>
+<text x="220" y="392" text-anchor="middle" font-size="10">铅粒≈38g</text>
+<text x="220" y="412" text-anchor="middle" font-size="9" fill="#c0392b">误差±0.5g</text>
+<rect x="350" y="330" width="200" height="100" fill="#fff" stroke="#333" stroke-width="1.5" rx="4"/>
+<text x="450" y="355" text-anchor="middle" font-size="12" font-weight="bold">中档 100g</text>
+<text x="450" y="375" text-anchor="middle" font-size="10">空滑块m₀≈12g</text>
+<text x="450" y="392" text-anchor="middle" font-size="10">铅粒≈88g</text>
+<text x="450" y="412" text-anchor="middle" font-size="9" fill="#c0392b">误差±0.5g</text>
+<rect x="580" y="330" width="200" height="100" fill="#fff" stroke="#333" stroke-width="1.5" rx="4"/>
+<text x="680" y="355" text-anchor="middle" font-size="12" font-weight="bold">重档 150g</text>
+<text x="680" y="375" text-anchor="middle" font-size="10">空滑块m₀≈12g</text>
+<text x="680" y="392" text-anchor="middle" font-size="10">铅粒≈138g</text>
+<text x="680" y="412" text-anchor="middle" font-size="9" fill="#c0392b">误差±0.5g</text>
+<text x="450" y="455" text-anchor="middle" font-size="10" fill="#666">用电子天平称量，记号笔在侧面标注质量值</text>
+</svg>
