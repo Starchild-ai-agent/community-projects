@@ -1,5 +1,24 @@
 [
   {
+    "type": "script",
+    "user_id": "3182",
+    "slug": "thesis-falsifier",
+    "version": "1.0.1",
+    "description": "逆向证伪器 — a skill that takes any investment thesis (\"I should buy X because Y\") and systematically tries to destroy it before you act. Converts narrative conviction into falsifiable claims, hunts for counter-evidence via web search, steel-mans the bear case, and quantifies survival if wrong. Use BEFORE acting on any thesis you feel strongly about. Works on stocks, crypto, macro bets, any decision with a \"because\".\n",
+    "tags": [
+      "investing",
+      "decision-making",
+      "critical-thinking",
+      "risk-management",
+      "falsification"
+    ],
+    "author": "user-3182",
+    "license": "MIT",
+    "github_url": "https://github.com/Starchild-ai-agent/community-projects/tree/main/projects/3182/thesis-falsifier",
+    "updated_at": "2026-07-01T05:20:59.321Z",
+    "created_at": "2026-07-01T05:20:59.321Z"
+  },
+  {
     "type": "service",
     "user_id": "5459",
     "slug": "centrifugal-force-demo",
