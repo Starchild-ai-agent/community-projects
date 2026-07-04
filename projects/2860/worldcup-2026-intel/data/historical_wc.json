@@ -1,0 +1,325 @@
+{
+  "metadata": {
+    "source": "FIFA World Cup records and statistics - Wikipedia (https://en.wikipedia.org/wiki/FIFA_World_Cup_records_and_statistics)",
+    "last_updated": "2026-06-19",
+    "scope": "All 48 teams qualified for 2026 FIFA World Cup",
+    "note": "Best finish reflects highest placement achieved in any World Cup. Last WC result is from 2022 tournament."
+  },
+  "teams": {
+    "Argentina": {
+      "appearances": 19,
+      "best_finish": "Champion (3x: 1978, 1986, 2022)",
+      "last_wc_result": "Champion (2022)",
+      "notable": "Messi's crowning moment in Qatar; 36-year wait between 2nd and 3rd title",
+      "source_url": "https://en.wikipedia.org/wiki/FIFA_World_Cup_records_and_statistics"
+    },
+    "Australia": {
+      "appearances": 6,
+      "best_finish": "Round of 16 (2006, 2022)",
+      "last_wc_result": "Round of 16 (2022)",
+      "notable": "Penalty shootout loss to Argentina in 2022 R16",
+      "source_url": "https://en.wikipedia.org/wiki/National_team_appearances_in_the_FIFA_World_Cup"
+    },
+    "Austria": {
+      "appearances": 7,
+      "best_finish": "3rd place (1954)",
+      "last_wc_result": "Did not qualify (2018, 2022)",
+      "notable": "Golden generation of 1950s; 3rd place in Switzerland 1954",
+      "source_url": "https://en.wikipedia.org/wiki/National_team_appearances_in_the_FIFA_World_Cup"
+    },
+    "Belgium": {
+      "appearances": 14,
+      "best_finish": "3rd place (2018)",
+      "last_wc_result": "Group stage (2022)",
+      "notable": "Golden generation peaked with bronze in Russia 2018",
+      "source_url": "https://en.wikipedia.org/wiki/FIFA_World_Cup_records_and_statistics"
+    },
+    "Brazil": {
+      "appearances": 23,
+      "best_finish": "Champion (5x: 1958, 1962, 1970, 1994, 2002)",
+      "last_wc_result": "Quarterfinals (2022)",
+      "notable": "Only team to appear in every World Cup; 5 titles is record",
+      "source_url": "https://en.wikipedia.org/wiki/FIFA_World_Cup_records_and_statistics"
+    },
+    "Canada": {
+      "appearances": 2,
+      "best_finish": "Group stage (1986, 2022)",
+      "last_wc_result": "Group stage (2022)",
+      "notable": "First appearance in 36 years (2022); hosted 2026",
+      "source_url": "https://en.wikipedia.org/wiki/National_team_appearances_in_the_FIFA_World_Cup"
+    },
+    "Colombia": {
+      "appearances": 6,
+      "best_finish": "Quarterfinals (2014)",
+      "last_wc_result": "Group stage (2022)",
+      "notable": "James Rodríguez Golden Boot winner in 2014",
+      "source_url": "https://en.wikipedia.org/wiki/National_team_appearances_in_the_FIFA_World_Cup"
+    },
+    "Costa Rica": {
+      "appearances": 6,
+      "best_finish": "Quarterfinals (2014)",
+      "last_wc_result": "Did not qualify (2022)",
+      "notable": "Historic run to QF in Brazil 2014; beat Uruguay, Italy, Greece",
+      "source_url": "https://en.wikipedia.org/wiki/National_team_appearances_in_the_FIFA_World_Cup"
+    },
+    "Croatia": {
+      "appearances": 6,
+      "best_finish": "Runner-up (2018)",
+      "last_wc_result": "3rd place (2022)",
+      "notable": "Back-to-back bronze medals (2018, 2022); smallest nation to reach final",
+      "source_url": "https://en.wikipedia.org/wiki/FIFA_World_Cup_records_and_statistics"
+    },
+    "Czechia": {
+      "appearances": 9,
+      "best_finish": "Runner-up (1934, 1962) [as Czechoslovakia]",
+      "last_wc_result": "Did not qualify (2018, 2022)",
+      "notable": "Two runner-up finishes as Czechoslovakia; 2006 Round of 16 as Czechia",
+      "source_url": "https://en.wikipedia.org/wiki/National_team_appearances_in_the_FIFA_World_Cup"
+    },
+    "Denmark": {
+      "appearances": 6,
+      "best_finish": "Quarterfinals (1998)",
+      "last_wc_result": "Group stage (2022)",
+      "notable": "Euro 1992 winners also reached WC QF in 1998",
+      "source_url": "https://en.wikipedia.org/wiki/National_team_appearances_in_the_FIFA_World_Cup"
+    },
+    "Ecuador": {
+      "appearances": 4,
+      "best_finish": "Round of 16 (2006)",
+      "last_wc_result": "Group stage (2022)",
+      "notable": "Historic R16 run in Germany 2006",
+      "source_url": "https://en.wikipedia.org/wiki/National_team_appearances_in_the_FIFA_World_Cup"
+    },
+    "Egypt": {
+      "appearances": 4,
+      "best_finish": "Round of 16 (1934)",
+      "last_wc_result": "Group stage (2018)",
+      "notable": "Africa's first WC participant (1934); 3 straight Africa Cup wins (2019-2021)",
+      "source_url": "https://en.wikipedia.org/wiki/National_team_appearances_in_the_FIFA_World_Cup"
+    },
+    "England": {
+      "appearances": 16,
+      "best_finish": "Champion (1966)",
+      "last_wc_result": "Quarterfinals (2022)",
+      "notable": "Home soil triumph in 1966; 56-year title drought",
+      "source_url": "https://en.wikipedia.org/wiki/FIFA_World_Cup_records_and_statistics"
+    },
+    "France": {
+      "appearances": 16,
+      "best_finish": "Champion (2x: 1998, 2018)",
+      "last_wc_result": "Runner-up (2022)",
+      "notable": "Back-to-back finals (2018, 2022); Mbappé's 3 goals in final",
+      "source_url": "https://en.wikipedia.org/wiki/FIFA_World_Cup_records_and_statistics"
+    },
+    "Germany": {
+      "appearances": 20,
+      "best_finish": "Champion (4x: 1954, 1974, 1990, 2014)",
+      "last_wc_result": "Group stage (2022)",
+      "notable": "4 titles, 8 finals appearances; shocking group stage exit in Qatar",
+      "source_url": "https://en.wikipedia.org/wiki/FIFA_World_Cup_records_and_statistics"
+    },
+    "Ghana": {
+      "appearances": 4,
+      "best_finish": "Quarterfinals (2010)",
+      "last_wc_result": "Group stage (2022)",
+      "notable": "First African team to reach QF; Suarez handball controversy",
+      "source_url": "https://en.wikipedia.org/wiki/National_team_appearances_in_the_FIFA_World_Cup"
+    },
+    "Iran": {
+      "appearances": 6,
+      "best_finish": "Group stage (6x)",
+      "last_wc_result": "Group stage (2022)",
+      "notable": "Never advanced past group stage; 1998 win vs USA",
+      "source_url": "https://en.wikipedia.org/wiki/National_team_appearances_in_the_FIFA_World_Cup"
+    },
+    "Iraq": {
+      "appearances": 1,
+      "best_finish": "Group stage (1986)",
+      "last_wc_result": "Did not qualify (2022)",
+      "notable": "Only appearance in Mexico 1986; war-torn nation qualified",
+      "source_url": "https://en.wikipedia.org/wiki/National_team_appearances_in_the_FIFA_World_Cup"
+    },
+    "Italy": {
+      "appearances": 18,
+      "best_finish": "Champion (4x: 1934, 1938, 1982, 2006)",
+      "last_wc_result": "Did not qualify (2022)",
+      "notable": "4 titles, 6 finals; failed to qualify for 2018 and 2022",
+      "source_url": "https://en.wikipedia.org/wiki/FIFA_World_Cup_records_and_statistics"
+    },
+    "Japan": {
+      "appearances": 7,
+      "best_finish": "Round of 16 (2002, 2010, 2018, 2022)",
+      "last_wc_result": "Round of 16 (2022)",
+      "notable": "Consistent R16 appearances; co-hosted 2002",
+      "source_url": "https://en.wikipedia.org/wiki/National_team_appearances_in_the_FIFA_World_Cup"
+    },
+    "Korea Republic": {
+      "appearances": 11,
+      "best_finish": "4th place (2002)",
+      "last_wc_result": "Round of 16 (2022)",
+      "notable": "Co-hosted 2002; reached semi-finals on home soil",
+      "source_url": "https://en.wikipedia.org/wiki/National_team_appearances_in_the_FIFA_World_Cup"
+    },
+    "Mexico": {
+      "appearances": 18,
+      "best_finish": "Quarterfinals (1970, 1986)",
+      "last_wc_result": "Group stage (2022)",
+      "notable": "18 appearances (2nd most); hosted twice (1970, 1986); 7 straight R16 exits ended in 2022",
+      "source_url": "https://en.wikipedia.org/wiki/FIFA_World_Cup_records_and_statistics"
+    },
+    "Morocco": {
+      "appearances": 6,
+      "best_finish": "4th place (2022)",
+      "last_wc_result": "4th place (2022)",
+      "notable": "First African team to reach semi-finals; beat Belgium, Spain, Portugal",
+      "source_url": "https://en.wikipedia.org/wiki/FIFA_World_Cup_records_and_statistics"
+    },
+    "Netherlands": {
+      "appearances": 11,
+      "best_finish": "Runner-up (3x: 1974, 1978, 2010)",
+      "last_wc_result": "Quarterfinals (2022)",
+      "notable": "3 finals, 0 titles; Total Football pioneers",
+      "source_url": "https://en.wikipedia.org/wiki/FIFA_World_Cup_records_and_statistics"
+    },
+    "New Zealand": {
+      "appearances": 2,
+      "best_finish": "Group stage (1982, 2010)",
+      "last_wc_result": "Did not qualify (2022)",
+      "notable": "Oceania's only WC participant; 2010 unbeaten group stage",
+      "source_url": "https://en.wikipedia.org/wiki/National_team_appearances_in_the_FIFA_World_Cup"
+    },
+    "Norway": {
+      "appearances": 3,
+      "best_finish": "Round of 16 (1994, 1998)",
+      "last_wc_result": "Did not qualify (2022)",
+      "notable": "1998 R16 run; Erling Haaland's father played in 1994",
+      "source_url": "https://en.wikipedia.org/wiki/National_team_appearances_in_the_FIFA_World_Cup"
+    },
+    "Panama": {
+      "appearances": 1,
+      "best_finish": "Group stage (2018)",
+      "last_wc_result": "Did not qualify (2022)",
+      "notable": "First WC appearance in Russia 2018",
+      "source_url": "https://en.wikipedia.org/wiki/National_team_appearances_in_the_FIFA_World_Cup"
+    },
+    "Paraguay": {
+      "appearances": 8,
+      "best_finish": "Quarterfinals (2010)",
+      "last_wc_result": "Did not qualify (2022)",
+      "notable": "2010 QF run; beat Japan on penalties",
+      "source_url": "https://en.wikipedia.org/wiki/National_team_appearances_in_the_FIFA_World_Cup"
+    },
+    "Peru": {
+      "appearances": 5,
+      "best_finish": "Quarterfinals (1970)",
+      "last_wc_result": "Did not qualify (2022)",
+      "notable": "1970 QF; Teófilo Cubillas Golden Boot winner",
+      "source_url": "https://en.wikipedia.org/wiki/National_team_appearances_in_the_FIFA_World_Cup"
+    },
+    "Poland": {
+      "appearances": 9,
+      "best_finish": "3rd place (1974, 1982)",
+      "last_wc_result": "Round of 16 (2022)",
+      "notable": "Two bronze medals; Lewandowski's 2022 R16 goal vs France",
+      "source_url": "https://en.wikipedia.org/wiki/National_team_appearances_in_the_FIFA_World_Cup"
+    },
+    "Portugal": {
+      "appearances": 8,
+      "best_finish": "3rd place (1966)",
+      "last_wc_result": "Quarterfinals (2022)",
+      "notable": "Eusébio's 9 goals in 1966; Ronaldo's 5 tournaments",
+      "source_url": "https://en.wikipedia.org/wiki/National_team_appearances_in_the_FIFA_World_Cup"
+    },
+    "Qatar": {
+      "appearances": 1,
+      "best_finish": "Group stage (2022)",
+      "last_wc_result": "Group stage (2022)",
+      "notable": "Hosts in 2022; only appearance; lost all 3 group matches",
+      "source_url": "https://en.wikipedia.org/wiki/National_team_appearances_in_the_FIFA_World_Cup"
+    },
+    "Saudi Arabia": {
+      "appearances": 6,
+      "best_finish": "Round of 16 (1994)",
+      "last_wc_result": "Group stage (2022)",
+      "notable": "1994 R16 upset vs Belgium; 2022 upset vs Argentina",
+      "source_url": "https://en.wikipedia.org/wiki/National_team_appearances_in_the_FIFA_World_Cup"
+    },
+    "Senegal": {
+      "appearances": 3,
+      "best_finish": "Quarterfinals (2002)",
+      "last_wc_result": "Group stage (2022)",
+      "notable": "2002 QF run; beat France in opening match",
+      "source_url": "https://en.wikipedia.org/wiki/National_team_appearances_in_the_FIFA_World_Cup"
+    },
+    "Serbia": {
+      "appearances": 12,
+      "best_finish": "4th place (1930, 1962) [as Yugoslavia]",
+      "last_wc_result": "Group stage (2022)",
+      "notable": "Yugoslavia's 4th place finishes; 1998 R16 as FR Yugoslavia",
+      "source_url": "https://en.wikipedia.org/wiki/National_team_appearances_in_the_FIFA_World_Cup"
+    },
+    "South Africa": {
+      "appearances": 3,
+      "best_finish": "Group stage (1998, 2002, 2010)",
+      "last_wc_result": "Did not qualify (2022)",
+      "notable": "Hosts in 2010; first African nation to host WC",
+      "source_url": "https://en.wikipedia.org/wiki/National_team_appearances_in_the_FIFA_World_Cup"
+    },
+    "Spain": {
+      "appearances": 16,
+      "best_finish": "Champion (2010)",
+      "last_wc_result": "Group stage (2022)",
+      "notable": "2010 champions; tiki-taka peak; shocking 2022 group stage exit",
+      "source_url": "https://en.wikipedia.org/wiki/FIFA_World_Cup_records_and_statistics"
+    },
+    "Sweden": {
+      "appearances": 12,
+      "best_finish": "Runner-up (1958)",
+      "last_wc_result": "Did not qualify (2022)",
+      "notable": "1958 final on home soil; 3rd place in 1950, 1994",
+      "source_url": "https://en.wikipedia.org/wiki/National_team_appearances_in_the_FIFA_World_Cup"
+    },
+    "Switzerland": {
+      "appearances": 12,
+      "best_finish": "Quarterfinals (1934, 1938, 1954)",
+      "last_wc_result": "Round of 16 (2022)",
+      "notable": "Hosted 1954; 3 QF appearances; 2010s R16 consistency",
+      "source_url": "https://en.wikipedia.org/wiki/National_team_appearances_in_the_FIFA_World_Cup"
+    },
+    "Tunisia": {
+      "appearances": 6,
+      "best_finish": "Group stage (6x)",
+      "last_wc_result": "Group stage (2022)",
+      "notable": "Never advanced past group; 2022 win vs France",
+      "source_url": "https://en.wikipedia.org/wiki/National_team_appearances_in_the_FIFA_World_Cup"
+    },
+    "Türkiye": {
+      "appearances": 2,
+      "best_finish": "3rd place (2002)",
+      "last_wc_result": "Did not qualify (2022)",
+      "notable": "Historic 3rd place in 2002; beat Brazil in bronze match",
+      "source_url": "https://en.wikipedia.org/wiki/National_team_appearances_in_the_FIFA_World_Cup"
+    },
+    "United States": {
+      "appearances": 11,
+      "best_finish": "3rd place (1930)",
+      "last_wc_result": "Round of 16 (2022)",
+      "notable": "1930 bronze; 2002 QF; hosted 1994, co-hosting 2026",
+      "source_url": "https://en.wikipedia.org/wiki/FIFA_World_Cup_records_and_statistics"
+    },
+    "Uruguay": {
+      "appearances": 14,
+      "best_finish": "Champion (2x: 1930, 1950)",
+      "last_wc_result": "Group stage (2022)",
+      "notable": "Inaugural champions (1930); 1950 'Maracanazo' vs Brazil",
+      "source_url": "https://en.wikipedia.org/wiki/FIFA_World_Cup_records_and_statistics"
+    },
+    "Wales": {
+      "appearances": 2,
+      "best_finish": "Quarterfinals (1958)",
+      "last_wc_result": "Group stage (2022)",
+      "notable": "1958 QF with 17-year-old Pelé's first WC goal; 64-year gap (1958-2022)",
+      "source_url": "https://en.wikipedia.org/wiki/National_team_appearances_in_the_FIFA_World_Cup"
+    }
+  }
+}

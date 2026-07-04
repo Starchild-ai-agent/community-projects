@@ -1,0 +1,650 @@
+{
+  "United States": {
+    "team": "United States",
+    "match_count": 3,
+    "total_travel_km": 4000,
+    "avg_rest_days": 3.0,
+    "schedule": [
+      {
+        "match_num": 1,
+        "date": "2026-06-12",
+        "opponent": "Paraguay",
+        "home_away": "H",
+        "venue": "AT&T Stadium",
+        "city": "Dallas",
+        "travel_from_prev_km": 0,
+        "rest_days": 0,
+        "altitude_m": 128,
+        "temp_c": 32,
+        "humidity_pct": 65,
+        "climate_score": 0,
+        "climate_risk_flags": [
+          "HIGH_TEMP_DELTA",
+          "INDOOR_BENEFIT",
+          "LOW_REST_AMPLIFIES"
+        ],
+        "venue_conditions": {
+          "temp_c": 32,
+          "humidity_pct": 65,
+          "altitude_m": 128
+        }
+      },
+      {
+        "match_num": 2,
+        "date": "2026-06-17",
+        "opponent": "Australia",
+        "home_away": "H",
+        "venue": "SoFi Stadium",
+        "city": "Los Angeles",
+        "travel_from_prev_km": 2000,
+        "rest_days": 4,
+        "altitude_m": 7,
+        "temp_c": 24,
+        "humidity_pct": 70,
+        "climate_score": 0,
+        "climate_risk_flags": [
+          "INDOOR_BENEFIT"
+        ],
+        "venue_conditions": {
+          "temp_c": 24,
+          "humidity_pct": 70,
+          "altitude_m": 7
+        }
+      },
+      {
+        "match_num": 3,
+        "date": "2026-06-20",
+        "opponent": "T\u00fcrkiye",
+        "home_away": "A",
+        "venue": "AT&T Stadium",
+        "city": "Dallas",
+        "travel_from_prev_km": 2000,
+        "rest_days": 2,
+        "altitude_m": 128,
+        "temp_c": 32,
+        "humidity_pct": 65,
+        "climate_score": 0,
+        "climate_risk_flags": [
+          "HIGH_TEMP_DELTA",
+          "INDOOR_BENEFIT",
+          "LOW_REST_AMPLIFIES"
+        ],
+        "venue_conditions": {
+          "temp_c": 32,
+          "humidity_pct": 65,
+          "altitude_m": 128
+        }
+      }
+    ],
+    "climate_warnings": [],
+    "risk_flags": [
+      "LOW_REST: <3 rest days between matches"
+    ],
+    "source": "Derived from matches.json + venues.json"
+  },
+  "Paraguay": {
+    "team": "Paraguay",
+    "match_count": 3,
+    "total_travel_km": 1480,
+    "avg_rest_days": 3.0,
+    "schedule": [
+      {
+        "match_num": 1,
+        "date": "2026-06-12",
+        "opponent": "USA",
+        "home_away": "A",
+        "venue": "AT&T Stadium",
+        "city": "Dallas",
+        "travel_from_prev_km": 0,
+        "rest_days": 0,
+        "altitude_m": 128,
+        "temp_c": 32,
+        "humidity_pct": 65,
+        "climate_score": 0,
+        "climate_risk_flags": [
+          "HIGH_TEMP_DELTA",
+          "INDOOR_BENEFIT",
+          "LOW_REST_AMPLIFIES"
+        ],
+        "venue_conditions": {
+          "temp_c": 32,
+          "humidity_pct": 65,
+          "altitude_m": 128
+        }
+      },
+      {
+        "match_num": 2,
+        "date": "2026-06-16",
+        "opponent": "T\u00fcrkiye",
+        "home_away": "H",
+        "venue": "NRG Stadium",
+        "city": "Houston",
+        "travel_from_prev_km": 380,
+        "rest_days": 3,
+        "altitude_m": 13,
+        "temp_c": 31,
+        "humidity_pct": 75,
+        "climate_score": 0,
+        "climate_risk_flags": [
+          "INDOOR_BENEFIT"
+        ],
+        "venue_conditions": {
+          "temp_c": 31,
+          "humidity_pct": 75,
+          "altitude_m": 13
+        }
+      },
+      {
+        "match_num": 3,
+        "date": "2026-06-20",
+        "opponent": "Australia",
+        "home_away": "H",
+        "venue": "Mercedes-Benz Stadium",
+        "city": "Atlanta",
+        "travel_from_prev_km": 1100,
+        "rest_days": 3,
+        "altitude_m": 315,
+        "temp_c": 29,
+        "humidity_pct": 72,
+        "climate_score": 0,
+        "climate_risk_flags": [
+          "INDOOR_BENEFIT"
+        ],
+        "venue_conditions": {
+          "temp_c": 29,
+          "humidity_pct": 72,
+          "altitude_m": 315
+        }
+      }
+    ],
+    "climate_warnings": [],
+    "risk_flags": [],
+    "source": "Derived from matches.json + venues.json"
+  },
+  "Australia": {
+    "team": "Australia",
+    "match_count": 3,
+    "total_travel_km": 6900,
+    "avg_rest_days": 2.5,
+    "schedule": [
+      {
+        "match_num": 1,
+        "date": "2026-06-13",
+        "opponent": "T\u00fcrkiye",
+        "home_away": "H",
+        "venue": "Hard Rock Stadium",
+        "city": "Miami",
+        "travel_from_prev_km": 0,
+        "rest_days": 0,
+        "altitude_m": 2,
+        "temp_c": 28,
+        "humidity_pct": 75,
+        "climate_score": 14,
+        "climate_risk_flags": [
+          "HIGH_TEMP_DELTA",
+          "LOW_REST_AMPLIFIES"
+        ],
+        "venue_conditions": {
+          "temp_c": 28,
+          "humidity_pct": 75,
+          "altitude_m": 2
+        }
+      },
+      {
+        "match_num": 2,
+        "date": "2026-06-17",
+        "opponent": "USA",
+        "home_away": "A",
+        "venue": "SoFi Stadium",
+        "city": "Los Angeles",
+        "travel_from_prev_km": 3800,
+        "rest_days": 3,
+        "altitude_m": 7,
+        "temp_c": 24,
+        "humidity_pct": 70,
+        "climate_score": 0,
+        "climate_risk_flags": [
+          "INDOOR_BENEFIT"
+        ],
+        "venue_conditions": {
+          "temp_c": 24,
+          "humidity_pct": 70,
+          "altitude_m": 7
+        }
+      },
+      {
+        "match_num": 3,
+        "date": "2026-06-20",
+        "opponent": "Paraguay",
+        "home_away": "A",
+        "venue": "Mercedes-Benz Stadium",
+        "city": "Atlanta",
+        "travel_from_prev_km": 3100,
+        "rest_days": 2,
+        "altitude_m": 315,
+        "temp_c": 29,
+        "humidity_pct": 72,
+        "climate_score": 6,
+        "climate_risk_flags": [
+          "EXTREME_TEMP_DELTA",
+          "INDOOR_BENEFIT",
+          "LOW_REST_AMPLIFIES"
+        ],
+        "venue_conditions": {
+          "temp_c": 29,
+          "humidity_pct": 72,
+          "altitude_m": 315
+        }
+      }
+    ],
+    "climate_warnings": [],
+    "risk_flags": [
+      "LOW_REST: <3 rest days between matches"
+    ],
+    "source": "Derived from matches.json + venues.json"
+  },
+  "T\u00fcrkiye": {
+    "team": "T\u00fcrkiye",
+    "match_count": 3,
+    "total_travel_km": 1930,
+    "avg_rest_days": 2.5,
+    "schedule": [
+      {
+        "match_num": 1,
+        "date": "2026-06-13",
+        "opponent": "Australia",
+        "home_away": "A",
+        "venue": "Hard Rock Stadium",
+        "city": "Miami",
+        "travel_from_prev_km": 0,
+        "rest_days": 0,
+        "altitude_m": 2,
+        "temp_c": 28,
+        "humidity_pct": 75,
+        "climate_score": 0,
+        "climate_risk_flags": [
+          "LOW_REST_AMPLIFIES"
+        ],
+        "venue_conditions": {
+          "temp_c": 28,
+          "humidity_pct": 75,
+          "altitude_m": 2
+        }
+      },
+      {
+        "match_num": 2,
+        "date": "2026-06-16",
+        "opponent": "Paraguay",
+        "home_away": "A",
+        "venue": "NRG Stadium",
+        "city": "Houston",
+        "travel_from_prev_km": 1550,
+        "rest_days": 2,
+        "altitude_m": 13,
+        "temp_c": 31,
+        "humidity_pct": 75,
+        "climate_score": 0,
+        "climate_risk_flags": [
+          "HIGH_TEMP_DELTA",
+          "INDOOR_BENEFIT",
+          "LOW_REST_AMPLIFIES"
+        ],
+        "venue_conditions": {
+          "temp_c": 31,
+          "humidity_pct": 75,
+          "altitude_m": 13
+        }
+      },
+      {
+        "match_num": 3,
+        "date": "2026-06-20",
+        "opponent": "USA",
+        "home_away": "H",
+        "venue": "AT&T Stadium",
+        "city": "Dallas",
+        "travel_from_prev_km": 380,
+        "rest_days": 3,
+        "altitude_m": 128,
+        "temp_c": 32,
+        "humidity_pct": 65,
+        "climate_score": 0,
+        "climate_risk_flags": [
+          "HIGH_TEMP_DELTA",
+          "INDOOR_BENEFIT"
+        ],
+        "venue_conditions": {
+          "temp_c": 32,
+          "humidity_pct": 65,
+          "altitude_m": 128
+        }
+      }
+    ],
+    "climate_warnings": [],
+    "risk_flags": [
+      "LOW_REST: <3 rest days between matches"
+    ],
+    "source": "Derived from matches.json + venues.json"
+  },
+  "England": {
+    "team": "England",
+    "match_count": 3,
+    "total_travel_km": 2200,
+    "avg_rest_days": 2.5,
+    "schedule": [
+      {
+        "match_num": 1,
+        "date": "2026-06-17",
+        "opponent": "Croatia",
+        "home_away": "H",
+        "venue": "Lincoln Financial Field",
+        "city": "Philadelphia",
+        "travel_from_prev_km": 0,
+        "rest_days": 0,
+        "altitude_m": 12,
+        "temp_c": 27,
+        "humidity_pct": 70,
+        "climate_score": 14,
+        "climate_risk_flags": [
+          "HIGH_TEMP_DELTA",
+          "LOW_REST_AMPLIFIES"
+        ],
+        "venue_conditions": {
+          "temp_c": 27,
+          "humidity_pct": 70,
+          "altitude_m": 12
+        }
+      },
+      {
+        "match_num": 2,
+        "date": "2026-06-21",
+        "opponent": "Ghana",
+        "home_away": "A",
+        "venue": "Mercedes-Benz Stadium",
+        "city": "Atlanta",
+        "travel_from_prev_km": 1050,
+        "rest_days": 3,
+        "altitude_m": 315,
+        "temp_c": 29,
+        "humidity_pct": 72,
+        "climate_score": 5,
+        "climate_risk_flags": [
+          "EXTREME_TEMP_DELTA",
+          "INDOOR_BENEFIT"
+        ],
+        "venue_conditions": {
+          "temp_c": 29,
+          "humidity_pct": 72,
+          "altitude_m": 315
+        }
+      },
+      {
+        "match_num": 3,
+        "date": "2026-06-24",
+        "opponent": "Panama",
+        "home_away": "A",
+        "venue": "AT&T Stadium",
+        "city": "Dallas",
+        "travel_from_prev_km": 1150,
+        "rest_days": 2,
+        "altitude_m": 128,
+        "temp_c": 32,
+        "humidity_pct": 65,
+        "climate_score": 6,
+        "climate_risk_flags": [
+          "EXTREME_TEMP_DELTA",
+          "INDOOR_BENEFIT",
+          "LOW_REST_AMPLIFIES"
+        ],
+        "venue_conditions": {
+          "temp_c": 32,
+          "humidity_pct": 65,
+          "altitude_m": 128
+        }
+      }
+    ],
+    "climate_warnings": [],
+    "risk_flags": [
+      "LOW_REST: <3 rest days between matches"
+    ],
+    "source": "Derived from matches.json + venues.json"
+  },
+  "Croatia": {
+    "team": "Croatia",
+    "match_count": 3,
+    "total_travel_km": 2150,
+    "avg_rest_days": 2.5,
+    "schedule": [
+      {
+        "match_num": 1,
+        "date": "2026-06-17",
+        "opponent": "England",
+        "home_away": "A",
+        "venue": "Lincoln Financial Field",
+        "city": "Philadelphia",
+        "travel_from_prev_km": 0,
+        "rest_days": 0,
+        "altitude_m": 12,
+        "temp_c": 27,
+        "humidity_pct": 70,
+        "climate_score": 0,
+        "climate_risk_flags": [
+          "LOW_REST_AMPLIFIES"
+        ],
+        "venue_conditions": {
+          "temp_c": 27,
+          "humidity_pct": 70,
+          "altitude_m": 12
+        }
+      },
+      {
+        "match_num": 2,
+        "date": "2026-06-20",
+        "opponent": "Panama",
+        "home_away": "A",
+        "venue": "Mercedes-Benz Stadium",
+        "city": "Atlanta",
+        "travel_from_prev_km": 1050,
+        "rest_days": 2,
+        "altitude_m": 315,
+        "temp_c": 29,
+        "humidity_pct": 72,
+        "climate_score": 0,
+        "climate_risk_flags": [
+          "HIGH_TEMP_DELTA",
+          "INDOOR_BENEFIT",
+          "LOW_REST_AMPLIFIES"
+        ],
+        "venue_conditions": {
+          "temp_c": 29,
+          "humidity_pct": 72,
+          "altitude_m": 315
+        }
+      },
+      {
+        "match_num": 3,
+        "date": "2026-06-24",
+        "opponent": "Ghana",
+        "home_away": "H",
+        "venue": "NRG Stadium",
+        "city": "Houston",
+        "travel_from_prev_km": 1100,
+        "rest_days": 3,
+        "altitude_m": 13,
+        "temp_c": 31,
+        "humidity_pct": 75,
+        "climate_score": 0,
+        "climate_risk_flags": [
+          "HIGH_TEMP_DELTA",
+          "INDOOR_BENEFIT"
+        ],
+        "venue_conditions": {
+          "temp_c": 31,
+          "humidity_pct": 75,
+          "altitude_m": 13
+        }
+      }
+    ],
+    "climate_warnings": [],
+    "risk_flags": [
+      "LOW_REST: <3 rest days between matches"
+    ],
+    "source": "Derived from matches.json + venues.json"
+  },
+  "Ghana": {
+    "team": "Ghana",
+    "match_count": 3,
+    "total_travel_km": 2150,
+    "avg_rest_days": 3.0,
+    "schedule": [
+      {
+        "match_num": 1,
+        "date": "2026-06-16",
+        "opponent": "Panama",
+        "home_away": "H",
+        "venue": "Lincoln Financial Field",
+        "city": "Philadelphia",
+        "travel_from_prev_km": 0,
+        "rest_days": 0,
+        "altitude_m": 12,
+        "temp_c": 27,
+        "humidity_pct": 70,
+        "climate_score": 0,
+        "climate_risk_flags": [
+          "LOW_REST_AMPLIFIES"
+        ],
+        "venue_conditions": {
+          "temp_c": 27,
+          "humidity_pct": 70,
+          "altitude_m": 12
+        }
+      },
+      {
+        "match_num": 2,
+        "date": "2026-06-21",
+        "opponent": "England",
+        "home_away": "H",
+        "venue": "Mercedes-Benz Stadium",
+        "city": "Atlanta",
+        "travel_from_prev_km": 1050,
+        "rest_days": 4,
+        "altitude_m": 315,
+        "temp_c": 29,
+        "humidity_pct": 72,
+        "climate_score": 0,
+        "climate_risk_flags": [
+          "INDOOR_BENEFIT"
+        ],
+        "venue_conditions": {
+          "temp_c": 29,
+          "humidity_pct": 72,
+          "altitude_m": 315
+        }
+      },
+      {
+        "match_num": 3,
+        "date": "2026-06-24",
+        "opponent": "Croatia",
+        "home_away": "A",
+        "venue": "NRG Stadium",
+        "city": "Houston",
+        "travel_from_prev_km": 1100,
+        "rest_days": 2,
+        "altitude_m": 13,
+        "temp_c": 31,
+        "humidity_pct": 75,
+        "climate_score": 0,
+        "climate_risk_flags": [
+          "INDOOR_BENEFIT",
+          "LOW_REST_AMPLIFIES"
+        ],
+        "venue_conditions": {
+          "temp_c": 31,
+          "humidity_pct": 75,
+          "altitude_m": 13
+        }
+      }
+    ],
+    "climate_warnings": [],
+    "risk_flags": [
+      "LOW_REST: <3 rest days between matches"
+    ],
+    "source": "Derived from matches.json + venues.json"
+  },
+  "Panama": {
+    "team": "Panama",
+    "match_count": 3,
+    "total_travel_km": 2200,
+    "avg_rest_days": 3.0,
+    "schedule": [
+      {
+        "match_num": 1,
+        "date": "2026-06-16",
+        "opponent": "Ghana",
+        "home_away": "A",
+        "venue": "Lincoln Financial Field",
+        "city": "Philadelphia",
+        "travel_from_prev_km": 0,
+        "rest_days": 0,
+        "altitude_m": 12,
+        "temp_c": 27,
+        "humidity_pct": 70,
+        "climate_score": 0,
+        "climate_risk_flags": [
+          "LOW_REST_AMPLIFIES"
+        ],
+        "venue_conditions": {
+          "temp_c": 27,
+          "humidity_pct": 70,
+          "altitude_m": 12
+        }
+      },
+      {
+        "match_num": 2,
+        "date": "2026-06-20",
+        "opponent": "Croatia",
+        "home_away": "H",
+        "venue": "Mercedes-Benz Stadium",
+        "city": "Atlanta",
+        "travel_from_prev_km": 1050,
+        "rest_days": 3,
+        "altitude_m": 315,
+        "temp_c": 29,
+        "humidity_pct": 72,
+        "climate_score": 0,
+        "climate_risk_flags": [
+          "INDOOR_BENEFIT"
+        ],
+        "venue_conditions": {
+          "temp_c": 29,
+          "humidity_pct": 72,
+          "altitude_m": 315
+        }
+      },
+      {
+        "match_num": 3,
+        "date": "2026-06-24",
+        "opponent": "England",
+        "home_away": "H",
+        "venue": "AT&T Stadium",
+        "city": "Dallas",
+        "travel_from_prev_km": 1150,
+        "rest_days": 3,
+        "altitude_m": 128,
+        "temp_c": 32,
+        "humidity_pct": 65,
+        "climate_score": 0,
+        "climate_risk_flags": [
+          "INDOOR_BENEFIT"
+        ],
+        "venue_conditions": {
+          "temp_c": 32,
+          "humidity_pct": 65,
+          "altitude_m": 128
+        }
+      }
+    ],
+    "climate_warnings": [],
+    "risk_flags": [],
+    "source": "Derived from matches.json + venues.json"
+  }
+}

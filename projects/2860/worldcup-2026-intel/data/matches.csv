@@ -1,0 +1,13 @@
+match_id,group,date,time_utc,team_home,team_away,venue,stage,market_odds_home,market_odds_draw,market_odds_away,last_updated
+1,D,2026-06-12,19:00,United States,Paraguay,Atlanta,Group Stage,,,,
+2,D,2026-06-12,22:00,Australia,Türkiye,Atlanta,Group Stage,,,,
+3,D,2026-06-17,16:00,Paraguay,Australia,Atlanta,Group Stage,,,,
+4,D,2026-06-17,19:00,Türkiye,United States,Atlanta,Group Stage,,,,
+5,D,2026-06-22,19:00,United States,Australia,Atlanta,Group Stage,,,,
+6,D,2026-06-22,19:00,Paraguay,Türkiye,Atlanta,Group Stage,,,,
+7,L,2026-06-13,16:00,England,Croatia,New York,Group Stage,,,,
+8,L,2026-06-13,19:00,Ghana,Panama,New York,Group Stage,,,,
+9,L,2026-06-18,16:00,Croatia,Ghana,New York,Group Stage,,,,
+10,L,2026-06-18,19:00,Panama,England,New York,Group Stage,,,,
+11,L,2026-06-23,19:00,England,Ghana,New York,Group Stage,,,,
+12,L,2026-06-23,19:00,Croatia,Panama,New York,Group Stage,,,,

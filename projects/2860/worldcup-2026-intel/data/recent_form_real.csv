@@ -1,0 +1,88 @@
+team,match_date,opponent,result,score,competition,source,source_url
+United States,2025-06-29,Costa Rica,W,2-2 (4-3 p),CONCACAF Gold Cup,Wikipedia,https://en.wikipedia.org/wiki/United_States_men%27s_national_soccer_team_results
+United States,2025-07-02,Guatemala,W,2-1,CONCACAF Gold Cup,Wikipedia,https://en.wikipedia.org/wiki/United_States_men%27s_national_soccer_team_results
+United States,2025-07-06,Mexico,L,1-2,CONCACAF Gold Cup,Wikipedia,https://en.wikipedia.org/wiki/United_States_men%27s_national_soccer_team_results
+United States,2025-09-06,South Korea,L,0-2,Friendly,Wikipedia,https://en.wikipedia.org/wiki/United_States_men%27s_national_soccer_team_results
+United States,2025-09-09,Japan,W,2-0,Friendly,Wikipedia,https://en.wikipedia.org/wiki/United_States_men%27s_national_soccer_team_results
+United States,2025-10-10,Ecuador,D,1-1,Friendly,Wikipedia,https://en.wikipedia.org/wiki/United_States_men%27s_national_soccer_team_results
+United States,2025-10-14,Australia,W,2-1,Friendly,Wikipedia,https://en.wikipedia.org/wiki/United_States_men%27s_national_soccer_team_results
+United States,2025-11-15,Paraguay,W,2-1,Friendly,Wikipedia,https://en.wikipedia.org/wiki/United_States_men%27s_national_soccer_team_results
+United States,2025-11-18,Uruguay,W,5-1,Friendly,Wikipedia,https://en.wikipedia.org/wiki/United_States_men%27s_national_soccer_team_results
+United States,2026-03-28,Belgium,L,2-5,Friendly,ESPN,https://www.espn.com/soccer/match/_/gameId/762258/belgium-united-states
+United States,2026-03-31,Portugal,L,0-2,Friendly,ESPN,https://www.espn.com/soccer/match/_/gameId/762259/portugal-united-states
+United States,2026-05-31,Senegal,W,3-2,Friendly,ESPN,https://www.espn.com/soccer/match/_/gameId/762592/senegal-united-states
+Paraguay,2025-06-05,Uruguay,W,2-0,World Cup Qualifier,Wikipedia,https://en.wikipedia.org/wiki/Paraguay_national_football_team
+Paraguay,2025-06-10,Brazil,L,0-1,World Cup Qualifier,Wikipedia,https://en.wikipedia.org/wiki/Paraguay_national_football_team
+Paraguay,2025-09-04,Ecuador,D,0-0,World Cup Qualifier,Wikipedia,https://en.wikipedia.org/wiki/Paraguay_national_football_team
+Paraguay,2025-09-09,Peru,W,1-0,World Cup Qualifier,Wikipedia,https://en.wikipedia.org/wiki/Paraguay_national_football_team
+Paraguay,2025-10-10,Japan,D,2-2,Kirin Challenge Cup,Wikipedia,https://en.wikipedia.org/wiki/Paraguay_national_football_team
+Paraguay,2025-10-14,South Korea,L,0-2,Friendly,Wikipedia,https://en.wikipedia.org/wiki/Paraguay_national_football_team
+Paraguay,2025-11-15,United States,L,1-2,Friendly,Wikipedia,https://en.wikipedia.org/wiki/Paraguay_national_football_team
+Paraguay,2025-11-18,Mexico,W,2-1,Friendly,Wikipedia,https://en.wikipedia.org/wiki/Paraguay_national_football_team
+Paraguay,2026-03-27,Greece,W,1-0,Friendly,ESPN,https://www.espn.com/soccer/match/_/gameId/401861598/paraguay-greece
+Paraguay,2026-03-31,Morocco,L,1-2,Friendly,ESPN,https://www.espn.co.uk/football/match/_/gameId/401860937/paraguay-morocco
+Australia,2025-06-05,Japan,W,1-0,World Cup Qualifier,Wikipedia,https://en.wikipedia.org/wiki/2025_Australia_national_soccer_team_season
+Australia,2025-06-10,Saudi Arabia,W,2-1,World Cup Qualifier,Wikipedia,https://en.wikipedia.org/wiki/2025_Australia_national_soccer_team_season
+Australia,2025-09-05,New Zealand,W,1-0,Friendly,Wikipedia,https://en.wikipedia.org/wiki/2025_Australia_national_soccer_team_season
+Australia,2025-09-09,New Zealand,W,3-1,Friendly,Wikipedia,https://en.wikipedia.org/wiki/2025_Australia_national_soccer_team_season
+Australia,2025-10-10,Canada,W,1-0,Friendly,Wikipedia,https://en.wikipedia.org/wiki/2025_Australia_national_soccer_team_season
+Australia,2025-10-14,United States,L,1-2,Friendly,Wikipedia,https://en.wikipedia.org/wiki/2025_Australia_national_soccer_team_season
+Australia,2025-11-15,Venezuela,L,0-1,Friendly,Wikipedia,https://en.wikipedia.org/wiki/2025_Australia_national_soccer_team_season
+Australia,2025-11-18,Colombia,L,0-3,Friendly,Wikipedia,https://en.wikipedia.org/wiki/2025_Australia_national_soccer_team_season
+Australia,2026-03-27,Cameroon,W,1-0,FIFA Series,Wikipedia,https://en.wikipedia.org/wiki/2026_Australia_national_soccer_team_season
+Australia,2026-03-31,Curaçao,W,5-1,FIFA Series,Wikipedia,https://en.wikipedia.org/wiki/2026_Australia_national_soccer_team_season
+Australia,2026-05-30,Mexico,L,0-1,Friendly,ESPN,https://www.espn.com/soccer/match/_/gameId/401861775/australia-mexico
+Türkiye,2025-06-07,United States,W,2-1,Friendly,Wikipedia,https://en.wikipedia.org/wiki/Turkey_national_football_team
+Türkiye,2025-06-10,Mexico,L,0-1,Friendly,Wikipedia,https://en.wikipedia.org/wiki/Turkey_national_football_team
+Türkiye,2025-09-04,Georgia,W,3-2,World Cup Qualifier,UEFA,https://de.uefa.com/european-qualifiers/news/0294-1c916a81655d-47c1bac26fb9-1000--european-qualifiers-for-2026-world-cup-all-the-results/
+Türkiye,2025-09-07,Spain,L,0-6,World Cup Qualifier,UEFA,https://de.uefa.com/european-qualifiers/news/0294-1c916a81655d-47c1bac26fb9-1000--european-qualifiers-for-2026-world-cup-all-the-results/
+Türkiye,2025-10-11,Bulgaria,W,6-1,World Cup Qualifier,UEFA,https://de.uefa.com/european-qualifiers/news/0294-1c916a81655d-47c1bac26fb9-1000--european-qualifiers-for-2026-world-cup-all-the-results/
+Türkiye,2025-10-14,Georgia,W,4-1,World Cup Qualifier,UEFA,https://de.uefa.com/european-qualifiers/news/0294-1c916a81655d-47c1bac26fb9-1000--european-qualifiers-for-2026-world-cup-all-the-results/
+Türkiye,2025-11-15,Bulgaria,W,2-0,World Cup Qualifier,UEFA,https://de.uefa.com/european-qualifiers/news/0294-1c916a81655d-47c1bac26fb9-1000--european-qualifiers-for-2026-world-cup-all-the-results/
+Türkiye,2025-11-18,Spain,D,2-2,World Cup Qualifier,UEFA,https://de.uefa.com/european-qualifiers/news/0294-1c916a81655d-47c1bac26fb9-1000--european-qualifiers-for-2026-world-cup-all-the-results/
+Türkiye,2026-03-26,Romania,W,1-0,World Cup Qualifying Play-off,UEFA,https://de.uefa.com/european-qualifiers/news/0294-1c916a81655d-47c1bac26fb9-1000--european-qualifiers-for-2026-world-cup-all-the-results/
+Türkiye,2026-03-31,Kosovo,W,1-0,World Cup Qualifying Play-off,UEFA,https://de.uefa.com/european-qualifiers/news/0294-1c916a81655d-47c1bac26fb9-1000--european-qualifiers-for-2026-world-cup-all-the-results/
+Türkiye,2026-06-01,North Macedonia,W,4-0,Friendly,ESPN,https://www.espn.com/soccer/match/_/gameId/401871359/north-macedonia-turkiye
+England,2025-06-07,Andorra,W,1-0,World Cup Qualifier,UEFA,https://de.uefa.com/european-qualifiers/news/0294-1c916a81655d-47c1bac26fb9-1000--european-qualifiers-for-2026-world-cup-all-the-results/
+England,2025-06-10,Senegal,L,1-3,Friendly,ESPN,https://www.espn.co.uk/football/team/results/_/id/448/eng
+England,2025-09-06,Andorra,W,2-0,World Cup Qualifier,UEFA,https://de.uefa.com/european-qualifiers/news/0294-1c916a81655d-47c1bac26fb9-1000--european-qualifiers-for-2026-world-cup-all-the-results/
+England,2025-09-09,Serbia,W,5-0,World Cup Qualifier,UEFA,https://de.uefa.com/european-qualifiers/news/0294-1c916a81655d-47c1bac26fb9-1000--european-qualifiers-for-2026-world-cup-all-the-results/
+England,2025-10-09,Wales,W,3-0,Friendly,Sky Sports,https://www.skysports.com/football/albania-vs-england/stats/525720
+England,2025-10-14,Latvia,W,5-0,World Cup Qualifier,UEFA,https://de.uefa.com/european-qualifiers/news/0294-1c916a81655d-47c1bac26fb9-1000--european-qualifiers-for-2026-world-cup-all-the-results/
+England,2025-11-13,Serbia,W,2-0,World Cup Qualifier,UEFA,https://de.uefa.com/european-qualifiers/news/0294-1c916a81655d-47c1bac26fb9-1000--european-qualifiers-for-2026-world-cup-all-the-results/
+England,2025-11-16,Albania,W,2-0,World Cup Qualifier,England Football,https://www.englandfootball.com/england/mens-senior-team/fixtures-results/2025-26/World-Cup-Qualifiers/albania-v-england-european-qualifiers-sunday-16-november-2025-match-centre
+England,2026-03-27,Uruguay,D,1-1,Friendly,England Football,https://www.englandfootball.com/england/mens-senior-team/fixtures-results/2025-26/internationals/england-v-uruguay-international-match-friday-27-march-2026-match-centre
+England,2026-03-31,Japan,L,0-1,Friendly,The Guardian,https://www.theguardian.com/football/live/2026/mar/31/england-v-japan-mens-international-football-friendly-live
+Croatia,2025-06-06,Gibraltar,W,7-0,World Cup Qualifier,UEFA,https://de.uefa.com/european-qualifiers/news/0294-1c916a81655d-47c1bac26fb9-1000--european-qualifiers-for-2026-world-cup-all-the-results/
+Croatia,2025-06-09,Czechia,W,5-1,World Cup Qualifier,UEFA,https://de.uefa.com/european-qualifiers/news/0294-1c916a81655d-47c1bac26fb9-1000--european-qualifiers-for-2026-world-cup-all-the-results/
+Croatia,2025-09-05,Faroe Islands,W,1-0,World Cup Qualifier,UEFA,https://de.uefa.com/european-qualifiers/news/0294-1c916a81655d-47c1bac26fb9-1000--european-qualifiers-for-2026-world-cup-all-the-results/
+Croatia,2025-09-08,Montenegro,W,4-0,World Cup Qualifier,UEFA,https://de.uefa.com/european-qualifiers/news/0294-1c916a81655d-47c1bac26fb9-1000--european-qualifiers-for-2026-world-cup-all-the-results/
+Croatia,2025-10-09,Czechia,D,0-0,World Cup Qualifier,UEFA,https://de.uefa.com/european-qualifiers/news/0294-1c916a81655d-47c1bac26fb9-1000--european-qualifiers-for-2026-world-cup-all-the-results/
+Croatia,2025-10-12,Gibraltar,W,3-0,World Cup Qualifier,UEFA,https://de.uefa.com/european-qualifiers/news/0294-1c916a81655d-47c1bac26fb9-1000--european-qualifiers-for-2026-world-cup-all-the-results/
+Croatia,2025-11-14,Faroe Islands,W,3-1,World Cup Qualifier,UEFA,https://de.uefa.com/european-qualifiers/news/0294-1c916a81655d-47c1bac26fb9-1000--european-qualifiers-for-2026-world-cup-all-the-results/
+Croatia,2025-11-17,Montenegro,W,3-2,World Cup Qualifier,UEFA,https://de.uefa.com/european-qualifiers/news/0294-1c916a81655d-47c1bac26fb9-1000--european-qualifiers-for-2026-world-cup-all-the-results/
+Croatia,2026-03-26,Colombia,W,2-1,Friendly,ESPN,https://www.espn.com/soccer/match/_/gameId/401847048/croatia-colombia
+Croatia,2026-03-31,Brazil,L,1-3,Friendly,ESPN,https://www.espn.com/soccer/match/_/gameId/401843261/croatia-brazil
+Croatia,2026-06-02,Belgium,L,0-2,Friendly,Reuters,https://www.reuters.com/sports/soccer/lukaku-returns-style-with-90th-goal-belgium-2026-06-02/
+Ghana,2025-09-04,Chad,D,1-1,World Cup Qualifier,ESPN,https://www.espn.com/soccer/team/results/_/id/4469/ghana
+Ghana,2025-09-08,Mali,W,1-0,World Cup Qualifier,ESPN,https://www.espn.com/soccer/team/results/_/id/4469/ghana
+Ghana,2025-10-08,Central African Republic,W,5-0,World Cup Qualifier,ESPN,https://www.espn.com/soccer/team/results/_/id/4469/ghana
+Ghana,2025-10-12,Comoros,W,1-0,World Cup Qualifier,ESPN,https://www.espn.com/soccer/team/results/_/id/4469/ghana
+Ghana,2025-11-14,Japan,L,0-2,Friendly,ESPN,https://www.espn.com/soccer/team/results/_/id/4469/ghana
+Ghana,2025-11-18,South Korea,L,0-1,Friendly,ESPN,https://www.espn.com/soccer/team/results/_/id/4469/ghana
+Ghana,2026-03-27,Austria,L,1-5,Friendly,ESPN,https://www.espn.com/soccer/team/results/_/id/4469/ghana
+Ghana,2026-03-30,Germany,L,1-2,Friendly,ESPN,https://www.espn.com/soccer/team/results/_/id/4469/ghana
+Ghana,2026-05-22,Mexico,L,0-2,Friendly,Reuters,https://www.reuters.com/sports/soccer/mexico-ease-past-ghana-world-cup-warm-up-puebla-2026-05-23/
+Ghana,2026-06-02,Wales,D,1-1,Friendly,Reuters,https://www.reuters.com/sports/soccer/wales-equalise-late-draw-with-world-cup-bound-ghana-2026-06-02/
+Panama,2025-06-28,Honduras,L,1-1 (4-5 p),CONCACAF Gold Cup,FOX Sports,https://www.foxsports.com/soccer/gold-cup-panama-vs-honduras-jun-28-2025-game-boxscore-626252
+Panama,2025-09-04,Suriname,D,0-0,World Cup Qualifier,International Football,https://www.international-football.net/country?datemax=2026-01-22&team=Panama
+Panama,2025-09-08,Guatemala,D,1-1,World Cup Qualifier,International Football,https://www.international-football.net/country?datemax=2026-01-22&team=Panama
+Panama,2025-10-10,El Salvador,W,1-0,World Cup Qualifier,International Football,https://www.international-football.net/country?datemax=2026-01-22&team=Panama
+Panama,2025-10-14,Suriname,D,1-1,World Cup Qualifier,International Football,https://www.international-football.net/country?datemax=2026-01-22&team=Panama
+Panama,2025-11-13,Guatemala,W,3-2,World Cup Qualifier,International Football,https://www.international-football.net/country?datemax=2026-01-22&team=Panama
+Panama,2025-11-18,El Salvador,W,3-0,World Cup Qualifier,ESPN,https://www.espn.co.uk/football/team/results/_/id/2659/pan
+Panama,2026-01-18,Bolivia,D,1-1,Friendly,International Football,https://www.international-football.net/country?datemax=2026-01-22&team=Panama
+Panama,2026-01-23,Mexico,L,0-1,Friendly,ESPN,https://www.espn.co.uk/football/team/results/_/id/2659/pan
+Panama,2026-03-31,South Africa,W,2-1,Friendly,ESPN,https://www.espn.co.uk/football/team/results/_/id/2659/pan
+Panama,2026-05-31,Brazil,L,2-6,Friendly,Reuters,https://www.reuters.com/sports/soccer/vinicius-brings-maracana-curtain-raiser-life-brazil-rout-panama-6-2-2026-05-31/
+Panama,2026-06-04,Dominican Republic,W,4-2,Friendly,ESPN,https://www.espn.co.uk/football/match/_/gameId/401870075/dominican-republic-panama

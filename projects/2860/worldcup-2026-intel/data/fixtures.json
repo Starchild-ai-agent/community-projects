@@ -1,0 +1,186 @@
+{
+  "United States": [
+    {
+      "date": "2026-06-12",
+      "opponent": "Paraguay",
+      "venue": "Lincoln Financial Field, Philadelphia",
+      "time": "TBD",
+      "source": "Wikipedia Group D"
+    },
+    {
+      "date": "2026-06-19",
+      "opponent": "Australia",
+      "venue": "TBD",
+      "time": "TBD",
+      "source": "Wikipedia Group D"
+    },
+    {
+      "date": "2026-06-25",
+      "opponent": "T\u00fcrkiye",
+      "venue": "TBD",
+      "time": "TBD",
+      "source": "Wikipedia Group D"
+    }
+  ],
+  "Paraguay": [
+    {
+      "date": "2026-06-12",
+      "opponent": "United States",
+      "venue": "Lincoln Financial Field, Philadelphia",
+      "time": "TBD",
+      "source": "Wikipedia Group D"
+    },
+    {
+      "date": "2026-06-16",
+      "opponent": "T\u00fcrkiye",
+      "venue": "TBD",
+      "time": "TBD",
+      "source": "Wikipedia Group D"
+    },
+    {
+      "date": "2026-06-22",
+      "opponent": "Australia",
+      "venue": "TBD",
+      "time": "TBD",
+      "source": "Wikipedia Group D"
+    }
+  ],
+  "Australia": [
+    {
+      "date": "2026-06-16",
+      "opponent": "T\u00fcrkiye",
+      "venue": "BC Place, Vancouver",
+      "time": "TBD",
+      "source": "Wikipedia Group D"
+    },
+    {
+      "date": "2026-06-19",
+      "opponent": "United States",
+      "venue": "TBD",
+      "time": "TBD",
+      "source": "Wikipedia Group D"
+    },
+    {
+      "date": "2026-06-22",
+      "opponent": "Paraguay",
+      "venue": "TBD",
+      "time": "TBD",
+      "source": "Wikipedia Group D"
+    }
+  ],
+  "T\u00fcrkiye": [
+    {
+      "date": "2026-06-16",
+      "opponent": "Australia",
+      "venue": "BC Place, Vancouver",
+      "time": "TBD",
+      "source": "Wikipedia Group D"
+    },
+    {
+      "date": "2026-06-19",
+      "opponent": "Paraguay",
+      "venue": "TBD",
+      "time": "TBD",
+      "source": "Wikipedia Group D"
+    },
+    {
+      "date": "2026-06-25",
+      "opponent": "United States",
+      "venue": "TBD",
+      "time": "TBD",
+      "source": "Wikipedia Group D"
+    }
+  ],
+  "England": [
+    {
+      "date": "2026-06-17",
+      "opponent": "Croatia",
+      "venue": "AT&T Stadium, Arlington, Texas",
+      "time": "21:00 BST",
+      "source": "Wikipedia Group L / Sky Sports"
+    },
+    {
+      "date": "2026-06-23",
+      "opponent": "Ghana",
+      "venue": "Gillette Stadium, Boston",
+      "time": "TBD",
+      "source": "Wikipedia Group L / Sky Sports"
+    },
+    {
+      "date": "2026-06-27",
+      "opponent": "Panama",
+      "venue": "MetLife Stadium, East Rutherford, NJ",
+      "time": "22:00 BST",
+      "source": "Wikipedia Group L / Sky Sports"
+    }
+  ],
+  "Croatia": [
+    {
+      "date": "2026-06-17",
+      "opponent": "England",
+      "venue": "AT&T Stadium, Arlington, Texas",
+      "time": "21:00 BST",
+      "source": "Wikipedia Group L / Sky Sports"
+    },
+    {
+      "date": "2026-06-23",
+      "opponent": "Panama",
+      "venue": "TBD",
+      "time": "TBD",
+      "source": "Wikipedia Group L"
+    },
+    {
+      "date": "2026-06-27",
+      "opponent": "Ghana",
+      "venue": "Lincoln Financial Field, Philadelphia",
+      "time": "TBD",
+      "source": "Wikipedia Group L / ESPN"
+    }
+  ],
+  "Ghana": [
+    {
+      "date": "2026-06-17",
+      "opponent": "Panama",
+      "venue": "BMO Field, Toronto",
+      "time": "TBD",
+      "source": "Wikipedia Group L / Yahoo Sports"
+    },
+    {
+      "date": "2026-06-23",
+      "opponent": "England",
+      "venue": "Gillette Stadium, Boston",
+      "time": "TBD",
+      "source": "Wikipedia Group L / Sky Sports"
+    },
+    {
+      "date": "2026-06-27",
+      "opponent": "Croatia",
+      "venue": "Lincoln Financial Field, Philadelphia",
+      "time": "TBD",
+      "source": "Wikipedia Group L / ESPN"
+    }
+  ],
+  "Panama": [
+    {
+      "date": "2026-06-17",
+      "opponent": "Ghana",
+      "venue": "BMO Field, Toronto",
+      "time": "TBD",
+      "source": "Wikipedia Group L / Yahoo Sports"
+    },
+    {
+      "date": "2026-06-23",
+      "opponent": "Croatia",
+      "venue": "TBD",
+      "time": "TBD",
+      "source": "Wikipedia Group L"
+    },
+    {
+      "date": "2026-06-27",
+      "opponent": "England",
+      "venue": "MetLife Stadium, East Rutherford, NJ",
+      "time": "17:00 ET",
+      "source": "Wikipedia Group L / ESPN"
+    }
+  ]
+}

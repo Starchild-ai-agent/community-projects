@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WC 2026 Market Desk • All Groups (Priority D + L)</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /* minimal overrides for structure only - design in style.css */
+    body { padding: 32px; max-width: 1280px; margin: 0 auto; }
+    .header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 24px; }
+    .view-toggle { display: flex; gap: 8px; }
+    .view-toggle button { padding: 8px 16px; background: var(--surface); border: 1px solid var(--border); color: var(--text-secondary); border-radius: 8px; font-size: 12px; font-weight: 600; cursor: pointer; }
+    .view-toggle button.active { background: var(--orange); color: #000; border-color: var(--orange); }
+    .section-title { font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--text-tertiary); margin: 24px 0 8px; }
+    #form-modal { position: fixed; inset: 0; background: rgba(0,0,0,0.85); display: none; align-items: center; justify-content: center; z-index: 100; }
+    #form-modal.flex { display: flex; }
+    .modal-inner { background: var(--surface); border: 2px solid var(--orange); border-radius: 16px; width: 92%; max-width: 720px; padding: 28px; }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div>
+      <div style="display:flex; align-items:center; gap:12px;">
+        <div style="font-size:42px; font-weight:900; letter-spacing:-2px; color:#F84600;">WC 2026</div>
+        <div style="font-size:10px; padding:2px 10px; border:1px solid #F84600; color:#F84600; border-radius:999px; font-weight:700; letter-spacing:1px;">PAPER DESK</div>
+      </div>
+      <div style="font-size:22px; color:#fff; margin-top:-6px;">Market Intelligence • All 12 Groups</div>
+      <div style="font-size:12px; color:#71717a; margin-top:4px;">Priority: Groups D + L (8 teams) highlighted in orange • Real historical H2H + form • Data as single source of truth</div>
+    </div>
+    <div>
+      <div class="view-toggle">
+        <button id="btn-cards" onclick="switchView('cards')">CARDS</button>
+        <button id="btn-table" onclick="switchView('table')">TABLE</button>
+        <button id="btn-schedule" onclick="switchView('schedule')">SCHEDULE</button>
+        <button id="btn-matrix" onclick="switchView('matrix')">MATRIX</button>
+      </div>
+      <div id="group-filter-bar" style="display:none; gap:6px; margin:12px 0 4px; align-items:center; flex-wrap:wrap;">
+        <span style="font-size:10px; color:#71717a; margin-right:4px;">FILTER:</span>
+        <button onclick="setGroupFilter(null)" class="filter-btn active" id="filter-all">ALL</button>
+        <button onclick="setGroupFilter('A')" class="filter-btn" id="filter-A">A</button>
+        <button onclick="setGroupFilter('B')" class="filter-btn" id="filter-B">B</button>
+        <button onclick="setGroupFilter('C')" class="filter-btn" id="filter-C">C</button>
+        <button onclick="setGroupFilter('D')" class="filter-btn" id="filter-D">D</button>
+        <button onclick="setGroupFilter('E')" class="filter-btn" id="filter-E">E</button>
+        <button onclick="setGroupFilter('F')" class="filter-btn" id="filter-F">F</button>
+        <button onclick="setGroupFilter('G')" class="filter-btn" id="filter-G">G</button>
+        <button onclick="setGroupFilter('H')" class="filter-btn" id="filter-H">H</button>
+        <input id="team-search" type="text" placeholder="Search team..." 
+               style="background:#0a0a0a; border:1px solid var(--border-strong); color:#fff; padding:4px 8px; border-radius:6px; font-size:12px; margin-left:12px; width:160px;"
+               oninput="applySearch(this.value)">
+      </div>
+      <div style="text-align:right; font-size:11px; color:#71717a; margin-top:6px;">Views logged: <span id="stat-views" style="color:#F84600; font-weight:700;">0</span></div>
+      <div style="font-size:10px; color:#3f3f46; margin-top:4px;">Data covers 48 teams with H2H + form. D + L remain the priority focus. Sources: Wikipedia, ESPN, FIFA.</div>
+    </div>
+  </div>
+
+  <div id="view-cards">
+    <div class="section-title">ALL GROUPS • D + L PRIORITY (ORANGE BADGES + WHITE MARKET % PROMINENT)</div>
+    <div id="group-cards-container"></div>
+  </div>
+
+  <div id="view-table" class="hidden">
+    <div class="section-title">TABLE VIEW • EDITABLE PAPER PROBS</div>
+    <table style="width:100%; border-collapse:collapse; font-size:14px; table-layout:fixed;">
+      <thead>
+        <tr style="border-bottom:1px solid #27272a; color:#71717a; font-size:11px; text-transform:uppercase; letter-spacing:0.5px;">
+          <th style="text-align:left; padding:10px 14px 8px; font-weight:500; width:42px;">GRP</th>
+          <th style="text-align:left; padding:10px 10px 8px; font-weight:500;">TEAM</th>
+          <th style="text-align:right; padding:10px 14px 8px; font-weight:500; width:78px;">MARKET %</th>
+          <th style="text-align:right; padding:10px 14px 8px; font-weight:500; width:72px;">YOUR PROB</th>
+          <th style="text-align:right; padding:10px 14px 8px; font-weight:500; width:58px;">EDGE</th>
+          <th style="text-align:left; padding:10px 14px 8px; font-weight:500; color:#14b8a6;">NEXT FIXTURE</th>
+        </tr>
+      </thead>
+      <tbody id="group-table-body" style="font-size:15px;"></tbody>
+    </table>
+  </div>
+
+  <div id="view-schedule" class="hidden">
+    <div class="section-title">FULL SCHEDULE • GROUPS D + L (24 MATCHES • CLICK ANY OPPONENT FOR WIKIPEDIA)</div>
+    <div id="schedule-container" style="background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:16px;"></div>
+  </div>
+
+  <div id="view-matrix" class="hidden">
+    <div class="section-title">PROBABILITY MATRIX • D + L TEAMS (MARKET VS YOUR EDGE)</div>
+    <div id="matrix-container" style="background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:16px;"></div>
+  </div>
+
+  <div id="match-modal" class="hidden" style="position:fixed; inset:0; background:rgba(0,0,0,0.85); display:none; align-items:center; justify-content:center; z-index:200;">
+    <div class="modal-inner" style="max-width:520px; width:92%; background:var(--surface); border:2px solid var(--orange); border-radius:16px; padding:24px;">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+        <div id="match-modal-title" style="font-size:16px; font-weight:700; color:#fff;"></div>
+        <button onclick="closeMatchModal()" style="background:none; border:none; color:#71717a; font-size:22px; cursor:pointer; line-height:1;">×</button>
+      </div>
+      <div id="match-modal-body" style="font-size:14px; color:#a1a1aa; line-height:1.6;"></div>
+    </div>
+  </div>
+
+  <div class="section-title" style="margin-top:32px;">EDGE TRACKER (PRIORITY D + L ONLY) • YOUR EDGE VS MARKET</div>
+  <div id="edge-tracker" style="display:grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap:12px;"></div>
+
+  <div id="h2h-drawer" class="hidden" style="position:fixed; top:0; right:0; width:380px; height:100vh; background:#111113; border-left:1px solid #27272a; z-index:100; overflow-y:auto; padding:20px 24px; box-shadow:-4px 0 20px rgba(0,0,0,0.4);">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+      <div style="font-size:14px; font-weight:700; color:#fff;">HEAD-TO-HEAD</div>
+      <button onclick="closeH2HDrawer()" style="background:none; border:none; color:#71717a; font-size:20px; cursor:pointer; line-height:1;">×</button>
+    </div>
+    <div id="h2h-content"></div>
+  </div>
+
+  <!-- BACKUP: team-profile-drawer v0 - 2026-06-05 (new, additive, no existing drawer replaced) -->
+  <div id="team-profile-drawer" class="hidden" style="position:fixed; top:0; right:0; width:380px; height:100vh; background:#111113; border-left:1px solid #27272a; z-index:110; overflow-y:auto; padding:20px 24px; box-shadow:-4px 0 20px rgba(0,0,0,0.4);">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+      <div style="font-size:14px; font-weight:700; color:#fff;">TEAM PROFILE</div>
+      <button onclick="closeTeamProfileDrawer()" style="background:none; border:none; color:#71717a; font-size:20px; cursor:pointer; line-height:1;">×</button>
+    </div>
+    <div id="team-profile-content"></div>
+  </div>
+
+  <div class="section-title" style="margin-top:32px;">PAPER LEDGER • LOG YOUR CALLS (EVIDENCE ONLY)</div>
+  <div style="background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:16px; margin-bottom:12px;">
+    <div style="display:flex; gap:8px; flex-wrap:wrap;">
+      <select id="ledger-group" style="background:#0a0a0a; border:1px solid var(--border-strong); color:#fff; padding:6px 10px; border-radius:8px;">
+        <option value="D">D</option><option value="L">L</option>
+      </select>
+      <input id="ledger-team" placeholder="Team (e.g. England)" style="background:#0a0a0a; border:1px solid var(--border-strong); color:#fff; padding:6px 10px; border-radius:8px; flex:1; min-width:140px;">
+      <input id="ledger-prob" type="number" step="0.01" placeholder="Your prob 0.55" style="background:#0a0a0a; border:1px solid var(--border-strong); color:#fff; padding:6px 10px; border-radius:8px; width:110px;">
+      <input id="ledger-market" type="number" step="0.01" placeholder="Market 0.52" style="background:#0a0a0a; border:1px solid var(--border-strong); color:#fff; padding:6px 10px; border-radius:8px; width:110px;">
+      <input id="ledger-notes" placeholder="Notes / source" style="background:#0a0a0a; border:1px solid var(--border-strong); color:#fff; padding:6px 10px; border-radius:8px; flex:2; min-width:160px;">
+      <button onclick="addLedgerEntry()" style="background:#F84600; color:#000; border:none; padding:6px 18px; border-radius:8px; font-weight:700; cursor:pointer;">LOG CALL</button>
+      <button onclick="exportLedgerCSV()" style="background:var(--surface-2); color:#fff; border:1px solid var(--border); padding:6px 14px; border-radius:8px; font-size:12px;">EXPORT CSV</button>
+    </div>
+  </div>
+  <table style="width:100%; font-size:13px;">
+    <thead><tr style="color:#71717a; font-size:11px;"><th style="text-align:left;">DATE</th><th>G</th><th>TEAM</th><th style="text-align:right;">YOUR %</th><th style="text-align:right;">MKT %</th><th>EDGE</th><th>RESULT</th><th>NOTES</th></tr></thead>
+    <tbody id="ledger-body"></tbody>
+  </table>
+
+  <!-- MODAL -->
+  <div id="form-modal">
+    <div class="modal-inner">
+      <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:16px;">
+        <div>
+          <div id="modal-team-name" style="font-size:28px; font-weight:800; color:#fff;"></div>
+          <div id="modal-team-subtitle" style="font-size:13px; color:#71717a;"></div>
+        </div>
+        <button onclick="closeModal()" style="font-size:28px; line-height:1; color:#71717a; background:none; border:none; cursor:pointer;">×</button>
+      </div>
+
+      <div style="display:flex; gap:16px; border-bottom:1px solid var(--border); margin-bottom:16px;">
+        <div onclick="switchModalTab(this, 'form')" class="modal-tab active" style="padding:8px 20px; font-size:12px; font-weight:600; cursor:pointer; border-bottom:2px solid #F84600;">RECENT FORM + H2H</div>
+        <div onclick="switchModalTab(this, 'fix')" class="modal-tab" style="padding:8px 20px; font-size:12px; font-weight:600; cursor:pointer; color:#71717a;">FIXTURES (HISTORICAL + 2026)</div>
+      </div>
+
+      <table class="modal-table" style="width:100%; font-size:13px;">
+        <thead id="modal-table-head"></thead>
+        <tbody id="modal-form-body"></tbody>
+      </table>
+
+      <div style="margin-top:16px; font-size:10px; color:#71717a;">Sources: Wikipedia, ESPN, FIFA official schedule. All data real historical unless marked 2026 upcoming. Click links for verification.</div>
+    </div>
+  </div>
+
+  <div style="margin-top:48px; font-size:10px; color:#52525b; text-align:center;">
+    Data source of truth: data/*.json + data/*.csv • Only Groups D + L shown (priority per plan) • Paper first — no live capital. Hard refresh after edits.
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
