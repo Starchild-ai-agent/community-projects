@@ -1,6 +1,19 @@
 [
   {
     "type": "service",
+    "user_id": "1463",
+    "slug": "bazi-fortune",
+    "version": "1.0.1",
+    "description": "生辰八字算命服务 — 基于中国传统八字命理，输入出生年月日时返回四柱八字、日主五行、五行强度分析及命理解读。通过 x402 按次付费（$0.01 USDC/次）。",
+    "tags": [],
+    "author": "user-1463",
+    "license": "MIT",
+    "github_url": "https://github.com/Starchild-ai-agent/community-projects/tree/main/projects/1463/bazi-fortune",
+    "updated_at": "2026-07-07T02:06:07.234Z",
+    "created_at": "2026-07-07T02:06:07.234Z"
+  },
+  {
+    "type": "service",
     "user_id": "2860",
     "slug": "worldcup-2026-intel",
     "version": "0.4.0",

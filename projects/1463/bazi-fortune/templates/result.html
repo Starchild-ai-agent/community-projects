@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>算命结果</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: "Microsoft YaHei", "PingFang SC", sans-serif;
+            background: radial-gradient(ellipse at top, #1a1a2e 0%, #0f0f1e 60%, #000 100%);
+            min-height: 100vh;
+            padding: 30px 20px;
+            color: #d4af37;
+        }
+        .container {
+            max-width: 720px;
+            margin: 0 auto;
+            background: rgba(20, 20, 35, 0.85);
+            border: 1px solid #d4af37;
+            border-radius: 12px;
+            padding: 35px;
+            box-shadow: 0 0 30px rgba(212, 175, 55, 0.25);
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 26px;
+            letter-spacing: 4px;
+            color: #ffd700;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.4);
+        }
+        .subtitle {
+            text-align: center;
+            margin-bottom: 25px;
+            font-size: 14px;
+            color: #b8941f;
+        }
+        .bazi-table {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            margin-bottom: 30px;
+        }
+        .pillar-card {
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid #6b5b1e;
+            border-radius: 8px;
+            padding: 18px 8px;
+            text-align: center;
+        }
+        .pillar-label {
+            font-size: 12px;
+            color: #8b7a3a;
+            margin-bottom: 10px;
+            letter-spacing: 2px;
+        }
+        .pillar-chars {
+            font-size: 36px;
+            font-weight: bold;
+            color: #ffd700;
+            letter-spacing: 4px;
+            font-family: "STKaiti", "KaiTi", serif;
+        }
+        .day-pillar {
+            border-color: #ffd700;
+            box-shadow: 0 0 12px rgba(255, 215, 0, 0.3);
+        }
+        .section {
+            margin-bottom: 25px;
+            padding: 18px;
+            background: rgba(0, 0, 0, 0.3);
+            border-left: 3px solid #d4af37;
+            border-radius: 4px;
+        }
+        .section-title {
+            font-size: 16px;
+            color: #ffd700;
+            margin-bottom: 12px;
+            letter-spacing: 2px;
+        }
+        .day-master {
+            font-size: 18px;
+            color: #ffd700;
+        }
+        .day-master .big {
+            font-size: 32px;
+            font-weight: bold;
+            font-family: "STKaiti", "KaiTi", serif;
+            margin-right: 8px;
+        }
+        .elements-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 10px;
+            text-align: center;
+        }
+        .element-item {
+            padding: 12px 6px;
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid #6b5b1e;
+            border-radius: 6px;
+        }
+        .element-emoji {
+            font-size: 24px;
+        }
+        .element-name {
+            font-size: 13px;
+            color: #e8c547;
+            margin: 4px 0;
+        }
+        .element-count {
+            font-size: 18px;
+            color: #ffd700;
+            font-weight: bold;
+        }
+        .analysis-text {
+            line-height: 1.8;
+            color: #e8c547;
+            font-size: 15px;
+        }
+        .strength-tag {
+            display: inline-block;
+            padding: 3px 12px;
+            background: linear-gradient(135deg, #d4af37, #8b6914);
+            color: #1a1a2e;
+            border-radius: 12px;
+            font-weight: bold;
+            font-size: 13px;
+            margin-left: 8px;
+        }
+        .btn-back {
+            display: block;
+            width: 200px;
+            margin: 20px auto 0;
+            padding: 12px;
+            background: linear-gradient(135deg, #d4af37, #8b6914);
+            color: #1a1a2e;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 6px;
+            font-size: 15px;
+            font-weight: bold;
+            letter-spacing: 4px;
+            transition: box-shadow 0.2s;
+        }
+        .btn-back:hover {
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.6);
+        }
+        .error-box {
+            text-align: center;
+            padding: 30px;
+            color: #ff6b6b;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🌟 命 盘 解 析 🌟</h1>
+
+        {% if error %}
+            <div class="error-box">⚠ {{ error }}</div>
+            <a href="." class="btn-back">返 回 重 试</a>
+        {% else %}
+            {% set r = result %}
+            <div class="subtitle">
+                出生时间：公历 {{ r.year }} 年 {{ r.month }} 月 {{ r.day }} 日
+            </div>
+
+            <div class="bazi-table">
+                <div class="pillar-card">
+                    <div class="pillar-label">年 柱</div>
+                    <div class="pillar-chars">{{ r.year_pillar }}</div>
+                </div>
+                <div class="pillar-card">
+                    <div class="pillar-label">月 柱</div>
+                    <div class="pillar-chars">{{ r.month_pillar }}</div>
+                </div>
+                <div class="pillar-card day-pillar">
+                    <div class="pillar-label">日 柱</div>
+                    <div class="pillar-chars">{{ r.day_pillar }}</div>
+                </div>
+                <div class="pillar-card">
+                    <div class="pillar-label">时 柱</div>
+                    <div class="pillar-chars">{{ r.hour_pillar }}</div>
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="section-title">☯ 日主（日柱天干）</div>
+                <div class="day-master">
+                    <span class="big">{{ r.day_master }}</span>
+                    五行属 <strong>{{ r.day_master_element }}</strong>
+                    <span class="strength-tag">{{ r.strength }}</span>
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="section-title">🌀 五行分布</div>
+                <div class="elements-grid">
+                    {% set emoji_map = {'金': '⚙️', '木': '🌳', '水': '💧', '火': '🔥', '土': '⛰️'} %}
+                    {% for elem in ['金', '木', '水', '火', '土'] %}
+                    <div class="element-item">
+                        <div class="element-emoji">{{ emoji_map[elem] }}</div>
+                        <div class="element-name">{{ elem }}</div>
+                        <div class="element-count">{{ r.elements[elem] }}</div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="section-title">📜 命理分析</div>
+                <div class="analysis-text">{{ r.analysis }}</div>
+            </div>
+
+            <a href="." class="btn-back">🔄 重 新 推 算</a>
+        {% endif %}
+    </div>
+</body>
+</html>

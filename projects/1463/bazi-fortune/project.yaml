@@ -1,0 +1,14 @@
+name: bazi-fortune
+version: 1.0.1
+type: service
+license: MIT
+entry: app.py
+port: 5000
+description: 生辰八字算命服务 — 基于中国传统八字命理，输入出生年月日时返回四柱八字、日主五行、五行强度分析及命理解读。通过 x402 按次付费（$0.01
+  USDC/次）。
+env_required: []
+sc_proxy: false
+publisher:
+  code_slug: bazi-fortune
+  public_slug: bazi-api
+author: user-1463
