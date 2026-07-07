@@ -1,0 +1,22 @@
+name: earnings-surprise-detector
+type: script
+version: 1.0.1
+description: 'Verify actual quarterly earnings against analyst/research expectations
+  BEFORE acting on a stock recommendation. Pulls real 扣非归母净利润同比 / 营收同比 / EPS via mx-data
+  (东方财富), compares to expected growth, and gates the recommendation: PASS → proceed,
+  WARN → size down, FAIL → exclude or downweight.
+
+  '
+tags:
+- investing
+- a-shares
+- earnings
+- verification
+- risk-management
+- mx-data
+env_required:
+- MX_APIKEY
+sc_proxy: false
+license: MIT
+entry: src/verify_earnings.py
+author: user-3182
