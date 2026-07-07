@@ -1,12 +1,7 @@
 ---
 name: earnings-surprise-detector
-version: 1.0.0
-description: |
-  Verify actual quarterly earnings against analyst/research expectations BEFORE acting on a stock recommendation.
-  Pulls real 扣非归母净利润同比 / 营收同比 / EPS via mx-data (东方财富), compares to expected growth,
-  and gates the recommendation: PASS → proceed, WARN → size down, FAIL → exclude or downweight.
-  Use when evaluating any A-share recommendation that cites expected earnings growth, before stating entry prices or position sizing.
-  Prevents expensive failures (太辰光 actual -17% vs research +80-120%, 英维克 -82% vs +150%).
+version: 1.0.1
+description: Verify actual quarterly earnings (扣非归母净利润同比/营收同比/EPS) against analyst/research expectations BEFORE acting on a stock recommendation. Pulls real data via mx-data (东方财富), compares to expected growth, gates with PASS/WARN/FAIL. Use when evaluating any A-share recommendation that cites expected earnings growth, before stating entry prices or position sizing. Prevents expensive failures (太辰光 actual -17% vs research +80-120%, 英维克 -82% vs +150%).
 author: agentway
 tags: [investing, a-shares, earnings, verification, risk-management, mx-data, earnings-surprise]
 metadata:
