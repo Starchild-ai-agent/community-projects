@@ -1,25 +1,45 @@
 name: realtime-voice-preview
 type: service
-version: 1.0.0
-description: 'OpenAI Realtime API voice interface for Starchild agents. WebRTC-based
-  real-time
-
-  voice conversation with function calling bridge to the Starchild Agent runtime.
-
-  '
+version: 1.4.0
+description: |
+  Starchild Live: an OpenAI Realtime API (WebRTC) voice interface for Starchild
+  agents. Uses one temporary-first thread route list and supports synchronous or
+  resumable background ask_starchild jobs with polling, cancellation, and
+  reconnect recovery. The Realtime model only handles speech, VAD, interruption
+  and turn-taking; understanding, memory and tools are delegated to the agent
+  through ask_starchild.
+features:
+  - realtime-voice-webrtc
+  - function-calling-bridge
+  - ask-starchild-gateway
+  - temporary-first-thread-route
+  - persistent-voice-thread
+  - recent-work-thread-picker
+  - async-background-jobs
+  - job-polling-and-cancellation
+  - reconnect-recovery
+  - exactly-once-result-delivery
+  - thread-level-serialization
+  - rolling-context-for-temporary-mode
+  - verbatim-relay-no-paraphrase
 env_required:
-- OPENAI_REALTIME_API_KEY
+  - OPENAI_REALTIME_API_KEY
 sc_proxy: true
 license: MIT
 entry: src/server.py
 port: 8765
+author: user-2004
 tags:
-- voice
-- realtime
-- openai
-- webrtc
-- agent-bridge
+  - voice
+  - realtime
+  - openai
+  - webrtc
+  - starchild
+  - agent-bridge
+  - background-jobs
+  - thread-selection
+  - opus-2025
+  - byok
 publisher:
   code_slug: realtime-voice-preview
   public_slug: realtime-voice-preview
-author: user-2004

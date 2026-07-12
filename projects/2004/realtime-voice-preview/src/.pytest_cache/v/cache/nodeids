@@ -1,0 +1,18 @@
+[
+  "test_background_jobs.py::BackgroundJobsTest::test_cancel_request_never_claims_early_cancel",
+  "test_background_jobs.py::BackgroundJobsTest::test_context_injected_only_in_temporary_mode",
+  "test_background_jobs.py::BackgroundJobsTest::test_different_active_job_same_thread_rejected",
+  "test_background_jobs.py::BackgroundJobsTest::test_failure_is_terminal_and_sanitized",
+  "test_background_jobs.py::BackgroundJobsTest::test_format_recent_context_caps_to_last_six_turns",
+  "test_background_jobs.py::BackgroundJobsTest::test_format_recent_context_handles_empty_and_malformed",
+  "test_background_jobs.py::BackgroundJobsTest::test_http_background_lifecycle_and_unknown_404",
+  "test_background_jobs.py::BackgroundJobsTest::test_http_bridge_forwards_context_end_to_end",
+  "test_background_jobs.py::BackgroundJobsTest::test_http_wait_auto_defers_before_gateway_timeout",
+  "test_background_jobs.py::BackgroundJobsTest::test_http_wait_returns_completed_result_within_budget",
+  "test_background_jobs.py::BackgroundJobsTest::test_mode_selection",
+  "test_background_jobs.py::BackgroundJobsTest::test_same_question_deduplicates",
+  "test_background_jobs.py::BackgroundJobsTest::test_start_complete_and_sanitize",
+  "test_background_jobs.py::BackgroundJobsTest::test_temporary_route_is_safe_default",
+  "test_background_jobs.py::BackgroundJobsTest::test_unknown_run",
+  "test_background_jobs.py::BackgroundJobsTest::test_voice_source_marker_is_written_into_user_message"
+]

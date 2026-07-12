@@ -1,36 +1,10 @@
-import asyncio, json, base64, wave, os
-from pathlib import Path
+import asyncio, json, base64, wave
 
-# Load API key: env vars win, then project-local .env, then cwd/.env.
-# Mirrors server.py — no machine-specific paths.
 key = None
-for k in ("OPENAI_REALTIME_API_KEY", "OPENAI_API_KEY"):
-    val = os.environ.get(k)
-    if val:
-        key = val.strip().strip('"').strip("'")
-        break
-if not key:
-    for env_path in (Path(__file__).resolve().parent.parent / ".env", Path.cwd() / ".env"):
-        if not env_path.exists():
-            continue
-        for raw in env_path.read_bytes().splitlines():
-            if b"=" not in raw:
-                continue
-            name, val = raw.split(b"=", 1)
-            try:
-                key_name = name.decode("utf-8")
-            except UnicodeDecodeError:
-                continue
-            if key_name not in ("OPENAI_REALTIME_API_KEY", "OPENAI_API_KEY"):
-                continue
-            if val[:1] in (b'"', b"'") and val[-1:] == val[:1]:
-                val = val[1:-1]
-            key = val.decode("utf-8", errors="strict").strip()
-            if key:
-                break
-        if key:
-            break
-assert key, "Set OPENAI_REALTIME_API_KEY in env or in a .env at project root"
+for line in open('.env'):
+    if line.startswith('OPENAI_REALTIME_API_KEY='):
+        key = line.split('=',1)[1].strip().strip('"').strip("'")
+assert key
 
 import websockets
 
@@ -49,7 +23,7 @@ async def main():
         await ws.send(json.dumps({
             "type": "conversation.item.create",
             "item": {"type": "message", "role": "user",
-                     "content": [{"type": "input_text", "text": "Say hello and confirm the realtime link works, in English then Chinese."}]}}))
+                     "content": [{"type": "input_text", "text": "Say hello to Leon and confirm the realtime link works, in English then Chinese."}]}}))
         await ws.send(json.dumps({"type": "response.create"}))
         async for msg in ws:
             ev = json.loads(msg); t = ev["type"]
@@ -66,9 +40,9 @@ async def main():
         print("transcript:", transcript)
         print("audio bytes:", len(audio))
         if audio:
-            with wave.open("hello.wav","wb") as w:
+            with wave.open("output/realtime_test/hello.wav","wb") as w:
                 w.setnchannels(1); w.setsampwidth(2); w.setframerate(24000)
                 w.writeframes(bytes(audio))
-            print("saved hello.wav")
+            print("saved output/realtime_test/hello.wav")
 
 asyncio.run(main())

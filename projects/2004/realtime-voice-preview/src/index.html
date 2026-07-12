@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Starchild Voice — Realtime Voice Test</title>
+  <title>Starchild Live — Realtime Agent Control</title>
   <style>
     :root {
       --bg: #070707;
@@ -220,9 +220,9 @@
 </head>
 <body>
   <header class="topbar" role="banner">
-    <div class="brand" aria-label="Starchild Voice">
+    <div class="brand" aria-label="Starchild Live">
       <span class="brand-mark" aria-hidden="true">S</span>
-      <span>Starchild Voice</span>
+      <span>Starchild Live</span>
     </div>
     <div class="topbar-meta" id="topbarMeta" role="status" aria-live="polite">
       <span class="status-chip" id="statusChip" data-kind="">
@@ -297,8 +297,8 @@
       <section class="panel" aria-label="Starchild Agent bridge">
         <h2>Starchild Agent</h2>
         <div class="bridge-line">
-          <span class="lbl">Bridge status</span>
-          <span class="val" id="bridgePanelStatus">Real Agent connected</span>
+          <span class="lbl">Active routing</span>
+          <span class="val" id="bridgePanelStatus">Loading Agent and thread…</span>
         </div>
         <p class="hint" style="margin: 10px 0 0;">
           OpenAI Realtime only handles voice and turn-taking. Starchild handles reasoning, context, and tools through <code>ask_starchild</code>.
@@ -312,12 +312,14 @@
             <label>Main model
               <select id="cfgModel"><option value="">Starchild default</option></select>
             </label>
-            <label>Voice thread
-              <select id="cfgThreadMode">
-                <option value="isolated">Isolated temporary thread</option>
+            <label>Thread route
+              <select id="cfgThreadRoute">
+                <option value="temporary">Temporary — do not enter an existing thread</option>
                 <option value="persistent">Persistent voice thread</option>
               </select>
+              <span class="settings-status" id="cfgThreadRouteStatus">Loading recent work threads…</span>
             </label>
+            <p class="hint" id="cfgThreadHelp" style="margin:6px 0 0;font-size:12px;line-height:1.4;">Temporary is the safe default: every request starts fresh and is not written into an existing thread.</p>
             <label>Additional instructions (optional)
               <textarea id="cfgSystemPrompt" maxlength="4000" placeholder="Voice-answer style or task-specific instructions"></textarea>
             </label>
@@ -327,6 +329,12 @@
             </div>
           </div>
         </details>
+        <div class="bridge-line" style="margin-top:14px;align-items:flex-start;">
+          <span class="lbl">Background jobs</span>
+          <div class="val" id="backgroundJobs" style="display:grid;gap:7px;text-align:left;min-width:0;">
+            <span class="hint">No background jobs.</span>
+          </div>
+        </div>
       </section>
     </aside>
   </main>
@@ -354,6 +362,21 @@
 
     let pc = null, dc = null, localStream = null, audioEl = null;
     let muted = false, connecting = false, connected = false;
+    // A function result may be ready before the response that requested it has
+    // fully ended. Queue one continuation and create it only after response.done.
+    let responseActive = false;
+    let continuationPending = false;
+    // Rolling transcript of the live voice session. Sent as `context` with each
+    // ask_starchild call so the agent can resolve follow-up references in
+    // Temporary mode (which has no persisted thread history). Capped to the last
+    // 12 turns; the server further trims to the last 6.
+    const recentTurns = [];
+    function pushTurn(role, text) {
+      const t = (text || "").trim();
+      if (!t) return;
+      recentTurns.push({ role, text: t });
+      if (recentTurns.length > 12) recentTurns.splice(0, recentTurns.length - 12);
+    }
 
     /* ---------------- cost (gpt-realtime-2.1 per-1M-token USD) ---------------- */
     const RATE = {
@@ -552,11 +575,127 @@
 
     function sendEvent(ev) {
       if (!dc || dc.readyState !== "open") {
-        log("data channel not open, drop event", ev);
-        return;
+        log("data channel not open, keep event pending", ev);
+        return false;
       }
       dc.send(JSON.stringify(ev));
+      return true;
     }
+
+    /* ---------------- background Agent jobs ---------------- */
+    const JOBS_KEY = "starchild.live.pendingJobs.v1";
+    const DELIVERED_KEY = "starchild.live.deliveredRuns.v1";
+    const pendingJobs = new Map();
+    const deliveredRuns = new Set();
+    let jobPollTimer = null;
+    let jobPollBusy = false;
+
+    function loadJobState() {
+      try {
+        const pending = JSON.parse(localStorage.getItem(JOBS_KEY) || "[]");
+        for (const job of pending) if (job && job.run_id) pendingJobs.set(job.run_id, job);
+      } catch (e) { log("pending job restore failed", { message: e.message }); }
+      try {
+        const delivered = JSON.parse(localStorage.getItem(DELIVERED_KEY) || "[]");
+        for (const id of delivered) if (typeof id === "string") deliveredRuns.add(id);
+      } catch (e) { log("delivered job restore failed", { message: e.message }); }
+    }
+    function saveJobState() {
+      const pending = Array.from(pendingJobs.values()).slice(-50);
+      const delivered = Array.from(deliveredRuns).slice(-100);
+      localStorage.setItem(JOBS_KEY, JSON.stringify(pending));
+      localStorage.setItem(DELIVERED_KEY, JSON.stringify(delivered));
+    }
+    function routeLabel(job) {
+      if (job.is_temporary || job.thread_mode === "isolated") return "Temporary";
+      if (job.thread_mode === "persistent") return "Persistent voice";
+      const id = job.thread_id || "work thread";
+      return "Thread " + id.slice(0, 8) + (id.length > 8 ? "…" : "");
+    }
+    function renderJobs() {
+      const wrap = $("backgroundJobs");
+      const jobs = Array.from(pendingJobs.values()).sort((a, b) => String(b.created_at || "").localeCompare(String(a.created_at || "")));
+      wrap.innerHTML = "";
+      if (!jobs.length) {
+        const empty = document.createElement("span"); empty.className = "hint"; empty.textContent = "No background jobs."; wrap.appendChild(empty); return;
+      }
+      for (const job of jobs.slice(0, 8)) {
+        const row = document.createElement("div"); row.style.cssText = "display:flex;gap:8px;align-items:center;flex-wrap:wrap;font-size:12px;";
+        const text = document.createElement("span");
+        text.textContent = (job.run_id || "run").slice(0, 12) + " · " + (job.status || "unknown") + " · " + routeLabel(job);
+        text.title = job.run_id || ""; row.appendChild(text);
+        if (["queued", "running", "cancel_requested"].includes(job.status)) {
+          const btn = document.createElement("button"); btn.className = "btn"; btn.textContent = "Cancel"; btn.style.padding = "4px 8px";
+          btn.addEventListener("click", () => cancelBackgroundJob(job.run_id, btn)); row.appendChild(btn);
+        }
+        wrap.appendChild(row);
+      }
+    }
+    function rememberJob(job) {
+      if (!job || !job.run_id) return;
+      pendingJobs.set(job.run_id, { ...(pendingJobs.get(job.run_id) || {}), ...job });
+      saveJobState(); renderJobs(); ensureJobPolling();
+    }
+    function terminalJob(job) { return job && ["completed", "failed", "cancelled"].includes(job.status); }
+    function deliverBackgroundJob(job) {
+      if (!terminalJob(job) || deliveredRuns.has(job.run_id)) return false;
+      if (!dc || dc.readyState !== "open") return false;
+      let text;
+      if (job.status === "completed") text = "Background Starchild job " + job.run_id + " completed. Verified result:\n" + (job.result || "No result text was returned.");
+      else if (job.status === "cancelled") text = "Background Starchild job " + job.run_id + " was cancelled.";
+      else text = "Background Starchild job " + job.run_id + " failed: " + (job.error || "unknown error");
+      const sent = sendEvent({ type: "conversation.item.create", item: { type: "message", role: "user", content: [{ type: "input_text", text }] } });
+      if (!sent) return false;
+      deliveredRuns.add(job.run_id);
+      pendingJobs.delete(job.run_id);
+      saveJobState(); renderJobs();
+      activityAdd(job.status === "completed" ? "tool" : "err", text);
+      continuationPending = true;
+      maybeCreateContinuation();
+      return true;
+    }
+    async function pollBackgroundJobs() {
+      if (jobPollBusy) return;
+      jobPollBusy = true;
+      try {
+        const ids = Array.from(pendingJobs.keys());
+        for (const runId of ids) {
+          try {
+            const r = await fetch("agent_jobs?run_id=" + encodeURIComponent(runId), { cache: "no-store" });
+            if (r.status === 404) { pendingJobs.delete(runId); saveJobState(); continue; }
+            const job = await r.json();
+            if (!r.ok) throw new Error(job.error || ("HTTP " + r.status));
+            rememberJob(job); if (terminalJob(job)) deliverBackgroundJob(job);
+          } catch (e) { log("job poll error", { run_id: runId, message: e.message }); }
+        }
+      } finally { jobPollBusy = false; renderJobs(); }
+    }
+    function ensureJobPolling() {
+      if (jobPollTimer) return;
+      jobPollTimer = setInterval(pollBackgroundJobs, 2000);
+    }
+    async function recoverBackgroundJobs() {
+      try {
+        const r = await fetch("agent_jobs", { cache: "no-store" });
+        const data = await r.json();
+        if (!r.ok) throw new Error(data.error || ("HTTP " + r.status));
+        for (const job of (data.jobs || [])) {
+          if (["queued", "running", "cancel_requested"].includes(job.status) || pendingJobs.has(job.run_id)) rememberJob(job);
+        }
+      } catch (e) { log("job recovery error", { message: e.message }); }
+      await pollBackgroundJobs();
+    }
+    async function cancelBackgroundJob(runId, button) {
+      if (button) button.disabled = true;
+      try {
+        const r = await fetch("agent_jobs/cancel", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ run_id: runId }) });
+        const data = await r.json();
+        if (!r.ok || !data.job) throw new Error(data.error || ("HTTP " + r.status));
+        rememberJob(data.job);
+      } catch (e) { activityAdd("err", "Cancel failed for " + runId + ": " + e.message); }
+      finally { if (button) button.disabled = false; }
+    }
+    loadJobState(); renderJobs(); ensureJobPolling();
 
     /* ---------------- function-call dispatch (robust across Realtime event shapes) ---------------- */
     // Map of output item id -> { name, call_id, arguments }
@@ -651,13 +790,27 @@
       }
     }
 
+    function maybeCreateContinuation() {
+      if (!continuationPending || responseActive || inflightFunctions.size > 0) return;
+      if (!dc || dc.readyState !== "open") return;
+      continuationPending = false;
+      // Set this optimistically; response.created will confirm it. This closes
+      // the small window where two completed tools could both create a response.
+      responseActive = true;
+      sendEvent({ type: "response.create" });
+      log("continuation response requested");
+    }
+
     function sendFunctionCallOutput(callId, payload) {
       const output = typeof payload === "string" ? payload : JSON.stringify(payload);
       sendEvent({
         type: "conversation.item.create",
         item: { type: "function_call_output", call_id: callId, output },
       });
-      sendEvent({ type: "response.create" });
+      // Never create a continuation while the response that emitted this tool
+      // call is still active. Multiple tool results are batched into one follow-up.
+      continuationPending = true;
+      maybeCreateContinuation();
     }
 
     async function dispatchFunctionCall(rawItem, sourceLabel) {
@@ -701,6 +854,7 @@
           item_id: target.id,
         });
         dispatchedFunctions.add(dedupeKey);
+        maybeCreateContinuation();
         return;
       }
       inflightFunctions.add(dedupeKey);
@@ -725,6 +879,7 @@
           item_id: target.id,
         });
         inflightFunctions.delete(dedupeKey);
+        maybeCreateContinuation();
         return;
       }
 
@@ -744,21 +899,31 @@
           log("function call: missing question arg", { args });
         } else {
           try {
+            const executionMode = (typeof args.execution_mode === "string" && ["auto", "wait", "background"].includes(args.execution_mode)) ? args.execution_mode : "auto";
             const r = await fetch("agent_bridge", {
               method: "POST",
               headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({
-                question: q,
-                thread_id: "voice-realtime-2004",
-              }),
+              body: JSON.stringify({ question: q, execution_mode: executionMode, context: recentTurns.slice(0, -1) }),
             });
-            const data = await r.json();
-            if (!r.ok || !data.ok || !data.result) {
-              throw new Error(data.error || ("Starchild Agent HTTP " + r.status));
+            const responseText = await r.text();
+            let data;
+            try {
+              data = JSON.parse(responseText);
+            } catch (_) {
+              const kind = (r.headers.get("content-type") || "").split(";", 1)[0] || "unknown content";
+              throw new Error("Bridge returned " + kind + " instead of JSON (HTTP " + r.status + "). The request may have exceeded the Preview gateway timeout.");
             }
-            output = data.result;
-            activityAdd("tool", "Starchild returned a real result");
-            log("bridge result", { ok: true, agent_id: data.agent_id, turns: data.turns, usage: data.usage });
+            if (r.status === 202 && data.ok && data.accepted && data.run_id) {
+              rememberJob(data);
+              output = { ok: true, accepted: true, run_id: data.run_id, status: data.status, message: "Starchild accepted this as a background job. Tell the user it is running; the verified result will be delivered automatically." };
+              activityAdd("tool", "Background job accepted: " + data.run_id);
+              log("bridge background accepted", { run_id: data.run_id, status: data.status });
+            } else {
+              if (!r.ok || !data.ok || !data.result) throw new Error(data.error || ("Starchild Agent HTTP " + r.status));
+              output = data.result;
+              activityAdd("tool", "Starchild returned a real result");
+              log("bridge result", { ok: true, agent_id: data.agent_id, turns: data.turns, usage: data.usage });
+            }
           } catch (e) {
             output = "bridge error: " + e.message;
             log("bridge error", { message: e.message });
@@ -772,6 +937,7 @@
 
       sendFunctionCallOutput(target.callId, output);
       inflightFunctions.delete(dedupeKey);
+      maybeCreateContinuation();
     }
 
     function wireDataChannel(channel) {
@@ -782,6 +948,7 @@
         const textOnly = /(text-only|only text|text fallback)/i.test(statusText.textContent);
         setStatus("live", textOnly ? "Connected — text only, you can type" : "Connected — speak freely");
         setStageSub("Connection is live. Just speak; type below if you prefer.");
+        recoverBackgroundJobs();
       });
       dc.addEventListener("close", () => { log("data channel close"); connected = false; });
       dc.addEventListener("message", async (e) => {
@@ -791,13 +958,16 @@
 
         if (t === "session.created" || t === "session.updated") {
           log(t, { model: ev.session && ev.session.model, tools: (ev.session && ev.session.tools || []).map(x => x.name || x.type) });
+        } else if (t === "response.created") {
+          responseActive = true;
+          log("response.created", { response_id: ev.response && ev.response.id });
         } else if (t === "response.output_audio_transcript.done") {
           const txt = ev.transcript || "";
-          if (txt) activityAdd("assistant", "Assistant: " + txt);
+          if (txt) { activityAdd("assistant", "Assistant: " + txt); pushTurn("assistant", txt); }
           log("assistant transcript", txt);
         } else if (t === "conversation.item.input_audio_transcription.completed") {
           const txt = ev.transcript || "";
-          if (txt) activityAdd("user", "You: " + txt);
+          if (txt) { activityAdd("user", "You: " + txt); pushTurn("user", txt); }
           log("user transcript", txt);
         } else if (t === "response.output_item.added") {
           // Track function-call items early so we can correlate later *_arguments.done
@@ -819,28 +989,37 @@
         } else if (t === "response.function_call_arguments.done") {
           await dispatchFunctionCall(ev, "response.function_call_arguments.done");
         } else if (t === "error") {
-          log("ERROR", ev.error || ev);
-          setStatus("err", "Error (see log)");
-          setStageSub("An error occurred. Open \"Debug & diagnostics\" at the bottom for details.");
+          const err = ev.error || ev;
+          log("ERROR", err);
+          if (err.code === "conversation_already_has_active_response") {
+            // A continuation raced the response that requested the tool. Keep
+            // the pending flag; response.done will retry exactly once.
+            responseActive = true;
+            continuationPending = true;
+            log("continuation deferred until active response finishes");
+          } else {
+            setStatus("err", "Error (see log)");
+            setStageSub("An error occurred. Open \"Debug & diagnostics\" at the bottom for details.");
+          }
         } else if (t === "response.done") {
+          responseActive = false;
           log("response.done", { status: ev.response && ev.response.status, usage: ev.response && ev.response.usage });
           try { if (ev.response && ev.response.usage) applyUsage(ev.response.usage); }
           catch (e) { log("cost calc error", { message: e.message }); }
-          // Final fallback: any function_call items on the response that
-          // did not produce a *_arguments.done or output_item.done dispatch.
+          // Final fallback: register every function call first, then dispatch
+          // them concurrently. This keeps inflightFunctions non-empty until all
+          // results are ready, so multiple tools produce one continuation.
           try {
             const out = ev.response && ev.response.output;
             if (Array.isArray(out)) {
-              for (const it of out) {
-                if (it && it.type === "function_call") {
-                  rememberFunctionCallItem(it);
-                  await dispatchFunctionCall(it, "response.done.fallback");
-                }
-              }
+              const calls = out.filter(it => it && it.type === "function_call");
+              calls.forEach(rememberFunctionCallItem);
+              await Promise.all(calls.map(it => dispatchFunctionCall(it, "response.done.fallback")));
             }
           } catch (e) {
             log("response.done fallback error", { message: e.message });
           }
+          maybeCreateContinuation();
         } else if (
           t.endsWith(".delta") ||
           t === "rate_limits.updated" ||
@@ -1030,6 +1209,7 @@
       if (audioEl) { audioEl.srcObject = null; audioEl.remove(); }
       pc = null; dc = null; localStream = null; audioEl = null;
       muted = false; connected = false;
+      responseActive = false; continuationPending = false;
       $("btnMute").textContent = "Mute mic";
       $("btnConnect").disabled = false;
       $("btnDisconnect").disabled = true;
@@ -1060,6 +1240,7 @@
         type: "conversation.item.create",
         item: { type: "message", role: "user", content: [{ type: "input_text", text }] },
       });
+      responseActive = true;
       sendEvent({ type: "response.create" });
       log("sent text", { text });
       activityAdd("user", "You: " + text);
@@ -1179,74 +1360,75 @@
     }
 
     /* ---------------- Agent bridge settings ---------------- */
-    function modelLabel(m) {
-      return m.display_name || m.name || m.alias || m.model_id || m.id || "Unknown model";
-    }
+    function modelLabel(m) { return m.display_name || m.name || m.alias || m.model_id || m.id || "Unknown model"; }
     function modelValue(m) { return m.model_id || m.id || m.name || ""; }
+    function routeFromConfig(cfg) {
+      if (cfg.thread_mode === "persistent") return "persistent";
+      if (cfg.thread_mode === "selected" && cfg.thread_id) return "thread:" + cfg.thread_id;
+      return "temporary";
+    }
+    function describeRoute(route) {
+      if (route === "temporary") return "Temporary is the safe default: every request starts fresh and is not written into an existing thread.";
+      if (route === "persistent") return "Persistent voice keeps context in a dedicated voice-only thread, separate from your work threads.";
+      return "This sends voice requests into the selected work thread, sharing and updating its context and tools.";
+    }
+    async function refreshThreadRoutes(agentId, preferredRoute) {
+      const select = $("cfgThreadRoute");
+      const status = $("cfgThreadRouteStatus");
+      select.innerHTML = "";
+      const temporary = document.createElement("option"); temporary.value = "temporary"; temporary.textContent = "Temporary — do not enter an existing thread"; select.appendChild(temporary);
+      const persistent = document.createElement("option"); persistent.value = "persistent"; persistent.textContent = "Persistent voice thread"; select.appendChild(persistent);
+      status.textContent = "Loading recent work threads…";
+      try {
+        const r = await fetch("bridge_threads?agent_id=" + encodeURIComponent(agentId), { cache: "no-store" });
+        const data = await r.json();
+        if (!r.ok) throw new Error(data.error || ("HTTP " + r.status));
+        for (const t of (data.threads || [])) {
+          const opt = document.createElement("option"); opt.value = "thread:" + t.thread_id;
+          const count = typeof t.message_count === "number" ? " · " + t.message_count + " messages" : "";
+          opt.textContent = (t.title || "Untitled conversation") + count;
+          opt.title = t.title || "Untitled conversation";
+          select.appendChild(opt);
+        }
+        if (preferredRoute && !Array.from(select.options).some(o => o.value === preferredRoute) && preferredRoute.startsWith("thread:")) {
+          const opt = document.createElement("option"); opt.value = preferredRoute; opt.textContent = "Previously selected conversation"; select.appendChild(opt);
+        }
+        select.value = Array.from(select.options).some(o => o.value === preferredRoute) ? preferredRoute : "temporary";
+        status.textContent = (data.threads || []).length + " recent work thread" + ((data.threads || []).length === 1 ? "" : "s") + ".";
+      } catch (e) {
+        select.value = preferredRoute === "persistent" ? "persistent" : "temporary";
+        status.textContent = "Work threads unavailable: " + e.message;
+      }
+      $("cfgThreadHelp").textContent = describeRoute(select.value);
+    }
     async function loadBridgeConfig() {
       const status = $("cfgStatus");
       try {
         const r = await fetch("bridge_config", { cache: "no-store" });
         const data = await r.json();
         if (!r.ok || !data.config) throw new Error(data.error || ("HTTP " + r.status));
-        const cfg = data.config;
-        $("cfgAgentId").value = cfg.agent_id || "main";
-        $("cfgThreadMode").value = cfg.thread_mode || "isolated";
-        $("cfgSystemPrompt").value = cfg.system_prompt || "";
-        const select = $("cfgModel");
-        select.innerHTML = "";
-        const def = document.createElement("option");
-        def.value = "";
-        const runtime = data.runtime_models || {};
-        def.textContent = runtime.default_model ? "Starchild default (" + runtime.default_model + ")" : "Starchild default";
-        select.appendChild(def);
-        for (const m of (runtime.models || [])) {
-          const value = modelValue(m);
-          if (!value) continue;
-          const opt = document.createElement("option");
-          opt.value = value;
-          opt.textContent = modelLabel(m);
-          select.appendChild(opt);
-        }
-        if (cfg.model && !Array.from(select.options).some(o => o.value === cfg.model)) {
-          const opt = document.createElement("option");
-          opt.value = cfg.model; opt.textContent = cfg.model;
-          select.appendChild(opt);
-        }
+        const cfg = data.config; $("cfgAgentId").value = cfg.agent_id || "main"; $("cfgSystemPrompt").value = cfg.system_prompt || "";
+        const select = $("cfgModel"); select.innerHTML = "";
+        const runtime = data.runtime_models || {}; const def = document.createElement("option"); def.value = ""; def.textContent = runtime.default_model ? "Starchild default (" + runtime.default_model + ")" : "Starchild default"; select.appendChild(def);
+        for (const m of (runtime.models || [])) { const value = modelValue(m); if (!value) continue; const opt = document.createElement("option"); opt.value = value; opt.textContent = modelLabel(m); select.appendChild(opt); }
+        if (cfg.model && !Array.from(select.options).some(o => o.value === cfg.model)) { const opt = document.createElement("option"); opt.value = cfg.model; opt.textContent = cfg.model; select.appendChild(opt); }
         select.value = cfg.model || "";
-        $("bridgePanelStatus").textContent = (cfg.agent_id || "main") + " · " + (cfg.model || runtime.default_model || "default model");
-        status.textContent = runtime.error ? "Models unavailable; current config loaded." : "";
-      } catch (e) {
-        status.textContent = "Could not load settings: " + e.message;
-        log("bridge config load error", { message: e.message });
-      }
+        const route = routeFromConfig(cfg); await refreshThreadRoutes(cfg.agent_id || "main", route);
+        const routeText = $("cfgThreadRoute").selectedOptions[0] ? $("cfgThreadRoute").selectedOptions[0].textContent : "Temporary";
+        $("bridgePanelStatus").textContent = (cfg.agent_id || "main") + " · " + routeText + " · " + (cfg.model || runtime.default_model || "default model");
+        $("bridgePanelStatus").title = ""; status.textContent = runtime.error ? "Models unavailable; current config loaded." : "";
+      } catch (e) { status.textContent = "Could not load settings: " + e.message; log("bridge config load error", { message: e.message }); }
     }
     async function saveBridgeConfig() {
-      const status = $("cfgStatus");
-      $("btnSaveAgent").disabled = true;
-      status.textContent = "Saving…";
+      const status = $("cfgStatus"); const route = $("cfgThreadRoute").value || "temporary";
+      const payload = { agent_id: $("cfgAgentId").value.trim(), model: $("cfgModel").value || null, route, system_prompt: $("cfgSystemPrompt").value };
+      $("btnSaveAgent").disabled = true; status.textContent = "Saving…";
       try {
-        const r = await fetch("bridge_config", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            agent_id: $("cfgAgentId").value.trim(),
-            model: $("cfgModel").value || null,
-            thread_mode: $("cfgThreadMode").value,
-            system_prompt: $("cfgSystemPrompt").value,
-          }),
-        });
-        const data = await r.json();
-        if (!r.ok || !data.ok) throw new Error(data.error || ("HTTP " + r.status));
-        status.textContent = "Saved";
-        await loadBridgeConfig();
-        status.textContent = "Saved";
-      } catch (e) {
-        status.textContent = "Save failed: " + e.message;
-        log("bridge config save error", { message: e.message });
-      } finally {
-        $("btnSaveAgent").disabled = false;
-      }
+        const r = await fetch("bridge_config", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) });
+        const data = await r.json(); if (!r.ok || !data.ok) throw new Error(data.error || ("HTTP " + r.status));
+        await loadBridgeConfig(); status.textContent = "Saved";
+      } catch (e) { status.textContent = "Save failed: " + e.message; log("bridge config save error", { message: e.message }); }
+      finally { $("btnSaveAgent").disabled = false; }
     }
 
     /* ---------------- wire-up ---------------- */
@@ -1271,8 +1453,12 @@
     $("btnCopyLog").addEventListener("click", copyLogToClipboard);
     $("btnSaveAgent").addEventListener("click", saveBridgeConfig);
 
+    $("cfgAgentId").addEventListener("change", () => refreshThreadRoutes($("cfgAgentId").value.trim() || "main", "temporary"));
+    $("cfgThreadRoute").addEventListener("change", () => { $("cfgThreadHelp").textContent = describeRoute($("cfgThreadRoute").value); });
+
     // Initial state
     loadBridgeConfig();
+    recoverBackgroundJobs();
     log("ready — click Start to connect to OpenAI Realtime.");
   </script>
 </body>
