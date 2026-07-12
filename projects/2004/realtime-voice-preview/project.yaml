@@ -1,0 +1,25 @@
+name: realtime-voice-preview
+type: service
+version: 1.0.0
+description: 'OpenAI Realtime API voice interface for Starchild agents. WebRTC-based
+  real-time
+
+  voice conversation with function calling bridge to the Starchild Agent runtime.
+
+  '
+env_required:
+- OPENAI_REALTIME_API_KEY
+sc_proxy: true
+license: MIT
+entry: src/server.py
+port: 8765
+tags:
+- voice
+- realtime
+- openai
+- webrtc
+- agent-bridge
+publisher:
+  code_slug: realtime-voice-preview
+  public_slug: realtime-voice-preview
+author: user-2004

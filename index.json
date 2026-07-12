@@ -1,5 +1,24 @@
 [
   {
+    "type": "service",
+    "user_id": "2004",
+    "slug": "realtime-voice-preview",
+    "version": "1.0.0",
+    "description": "OpenAI Realtime API voice interface for Starchild agents. WebRTC-based real-time\nvoice conversation with function calling bridge to the Starchild Agent runtime.\n",
+    "tags": [
+      "voice",
+      "realtime",
+      "openai",
+      "webrtc",
+      "agent-bridge"
+    ],
+    "author": "user-2004",
+    "license": "MIT",
+    "github_url": "https://github.com/Starchild-ai-agent/community-projects/tree/main/projects/2004/realtime-voice-preview",
+    "updated_at": "2026-07-12T11:50:48.649Z",
+    "created_at": "2026-07-12T11:50:48.649Z"
+  },
+  {
     "type": "script",
     "user_id": "3182",
     "slug": "earnings-surprise-detector",
