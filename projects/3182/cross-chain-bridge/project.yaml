@@ -1,0 +1,16 @@
+name: cross-chain-bridge
+type: script
+version: 1.0.0
+description: Single-command cross-chain token bridge for USDC/USDT across 6 chains (Arbitrum, Base, Ethereum, Optimism, Polygon, BSC) with auto-approve and gas-sponsored transactions via Alchemy Account Abstraction.
+license: MIT
+entry: bridge.py
+author: user-3182
+tags:
+  - defi
+  - bridge
+  - cross-chain
+  - arbitrum
+  - base
+  - usdc
+  - usdt
+  - alchemy
