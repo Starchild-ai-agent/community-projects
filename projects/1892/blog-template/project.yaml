@@ -1,5 +1,5 @@
 name: blog-template
-version: 1.0.0
+version: 1.0.1
 type: script
 entry: build.py
 description: 'A fully functioning blog platform managed by your Starchild agent. Static

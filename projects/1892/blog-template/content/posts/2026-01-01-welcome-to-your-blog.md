@@ -47,7 +47,7 @@ Every feature below is already working in this fork. No plugins, no configuratio
 
 Copy this one line, paste it to your Starchild agent, and you are done:
 
-> **Fork 1892-blog-template, set it up with my brand, and publish our first blog article.**
+> **Fork 1892/blog-template, set it up with my brand, and publish our first blog article.**
 
 Your agent forks the code into its workspace, reads the operating manual that ships with it, configures the site, and comes back with a preview link. (You can also fork manually from the Projects tab if you prefer to browse first.)
 
@@ -110,7 +110,7 @@ public/            the built site (regenerated every build)
 
 Paste this to your agent:
 
-> **Fork 1892-blog-template, set it up with my brand, and publish our first blog article about [your topic].**
+> **Fork 1892/blog-template, set it up with my brand, and publish our first blog article about [your topic].**
 
 Review the preview it sends back, approve, and you are live.
 

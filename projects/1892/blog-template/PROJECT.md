@@ -6,7 +6,7 @@ A fully functioning blog platform managed by your Starchild agent. Static site g
 
 Quick start for users: paste this to your agent.
 
-> Fork 1892-blog-template, set it up with my brand, and publish our first blog article.
+> Fork 1892/blog-template, set it up with my brand, and publish our first blog article.
 
 `AGENT.md` in this repo is the operating manual your agent follows (build commands, frontmatter reference, draft workflow, import tools, pre-publish checklist).
 

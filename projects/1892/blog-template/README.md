@@ -21,7 +21,7 @@ Built-in and working out of the box:
 
 Paste this to your agent:
 
-> Fork 1892-blog-template, set it up with my brand, and publish our first blog article.
+> Fork 1892/blog-template, set it up with my brand, and publish our first blog article.
 
 That's the whole setup. Your agent forks the code, reads `AGENT.md` (the operating manual in this repo), configures the site, and sends you a preview to approve.
 
