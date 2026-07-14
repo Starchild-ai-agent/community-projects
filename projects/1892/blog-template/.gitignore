@@ -1,0 +1,17 @@
+# Build output
+public/
+
+# User config (keep example tracked, ignore personal copy)
+config.py
+
+# Python
+__pycache__/
+*.pyc
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+.idea/

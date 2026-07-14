@@ -1,0 +1,20 @@
+name: blog-template
+version: 1.0.0
+type: script
+entry: build.py
+description: 'A fully functioning blog platform managed by your Starchild agent. Static
+  site generator in ~1,000 lines of Python: markdown posts, draft workflow, RSS, sitemap,
+  JSON-LD SEO, auto-generated Open Graph cards, UTM-tagged links, and an HTML article
+  importer. Fork it, tell your agent what to write, everything else is handled.
+
+  '
+license: MIT
+tags:
+- blog
+- static-site
+- content
+- seo
+- template
+env_required: []
+sc_proxy: false
+author: user-1892

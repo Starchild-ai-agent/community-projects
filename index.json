@@ -1,6 +1,25 @@
 [
   {
     "type": "script",
+    "user_id": "1892",
+    "slug": "blog-template",
+    "version": "1.0.0",
+    "description": "A fully functioning blog platform managed by your Starchild agent. Static site generator in ~1,000 lines of Python: markdown posts, draft workflow, RSS, sitemap, JSON-LD SEO, auto-generated Open Graph cards, UTM-tagged links, and an HTML article importer. Fork it, tell your agent what to write, everything else is handled.\n",
+    "tags": [
+      "blog",
+      "static-site",
+      "content",
+      "seo",
+      "template"
+    ],
+    "author": "user-1892",
+    "license": "MIT",
+    "github_url": "https://github.com/Starchild-ai-agent/community-projects/tree/main/projects/1892/blog-template",
+    "updated_at": "2026-07-14T02:45:07.030Z",
+    "created_at": "2026-07-14T02:45:07.030Z"
+  },
+  {
+    "type": "script",
     "user_id": "3182",
     "slug": "cross-chain-bridge",
     "version": "1.0.0",
