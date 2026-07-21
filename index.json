@@ -1,6 +1,25 @@
 [
   {
     "type": "script",
+    "user_id": "3182",
+    "slug": "menu-decoder",
+    "version": "1.0.2",
+    "description": "Decode any foreign-language restaurant menu from a photo. Extracts all dishes, prices, and descriptions; translates to the user's language; and recommends what to order based on preferences.",
+    "tags": [
+      "food",
+      "translation",
+      "travel",
+      "vision",
+      "ai"
+    ],
+    "author": "3182",
+    "license": "MIT",
+    "github_url": "https://github.com/Starchild-ai-agent/community-projects/tree/main/projects/3182/menu-decoder",
+    "updated_at": "2026-07-21T15:44:51.801Z",
+    "created_at": "2026-07-21T15:44:51.801Z"
+  },
+  {
+    "type": "script",
     "user_id": "1892",
     "slug": "blog-template",
     "version": "1.0.1",

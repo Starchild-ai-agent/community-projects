@@ -1,0 +1,2 @@
+model: google/gemini-3.5-flash
+caller_id: chat:menu-decoder

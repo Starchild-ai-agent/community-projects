@@ -1,0 +1,21 @@
+name: menu-decoder
+version: 1.0.2
+description: Decode any foreign-language restaurant menu from a photo. Extracts all
+  dishes, prices, and descriptions; translates to the user's language; and recommends
+  what to order based on preferences.
+type: script
+category: productivity
+tags:
+- food
+- translation
+- travel
+- vision
+- ai
+author: '3182'
+license: MIT
+entry: exports.py
+files:
+- SKILL.md
+- exports.py
+- config/menu-decoder.yaml
+- PROJECT.md
