@@ -1,56 +1,76 @@
-# Earnings Surprise Detector
+# Earnings Surprise Detector 📊
 
 ## What
 
-Verify actual quarterly earnings against analyst/research expectations BEFORE acting on a stock recommendation. Pulls real 扣非归母净利润同比 / 营收同比 / EPS via mx-data (东方财富权威数据), compares to the expected growth range, and gates the recommendation:
+Verify actual quarterly earnings (扣非归母净利润同比/营收同比/EPS) against analyst/research expectations BEFORE acting on a thesis. Prevents building positions on false growth assumptions.
 
-- ✅ **PASS** — actual ≥ expected → proceed with recommendation
-- ⚠️ **WARN** — actual slightly below → size down 50%
-- ❌ **FAIL** — actual significantly below or negative → exclude, do not recommend entry
+## Why This Exists
 
-**Why this exists:** Acting on unverified research expectations is expensive. Documented failures:
-- 太辰光: research said +80-120%, actual was -17% (~100pp gap)
-- 英维克: research said +150%, actual was -82% (~230pp gap)
-- 欧陆通: research said +180%, actual was a loss (>180pp gap)
+Documented failures from trusting research reports without verification:
 
-In every case, the agent trusted research reports without pulling actuals. This skill makes verification mechanical: always pull, always compare, then act.
+| Stock | Research Expected | Actual | Gap |
+|-------|-------------------|--------|-----|
+| 太辰光 (300570) | +80~120% 扣非同比 | -17% | ~100pp |
+| 英维克 (002837) | +150% 扣非同比 | -82% | ~230pp |
+| 欧陆通 (300870) | +180% 扣非同比 | Loss | >180pp |
+
+**Pattern:** In all cases, the agent trusted research reports without pulling actuals. The fix is mechanical: always verify via mx-data before acting.
+
+## How It Works
+
+```
+verify_earnings.py --stock "太辰光" --code 300570 \
+    --expected-min 80 --expected-max 120 --metric 扣非归母净利润同比
+      │
+      ├─ Query mx-data (东方财富) for actual quarterly earnings
+      ├─ Compare actual vs. expected range
+      ├─ Verdict: PASS (✅) / WARN (⚠️) / FAIL (❌)
+      └─ Output JSON with actuals, expected, gap, recommendation
+```
 
 ## Required env
 
-| Variable | Description |
-|----------|-------------|
-| `MX_APIKEY` | 东方财富妙想 API key. Get it from https://dl.dfcfs.com/m/itc4 |
+- `MX_APIKEY` — 妙想/东方财富 API key (set via `request_env_input`)
 
 ## How to start
 
 ```bash
-# Install dependency
-pip install openpyxl
-
-# Set API key
-export MX_APIKEY=your_key_here
-
-# Run verification
-python3 scripts/verify_earnings.py \
-  --stock "太辰光" \
-  --code 300570 \
-  --expected-min 80 \
-  --expected-max 120 \
-  --metric 扣非归母净利润同比
+cd /data/workspace
+python3 skills/earnings-surprise-detector/scripts/verify_earnings.py \
+    --stock "太辰光" --code 300570 \
+    --expected-min 80 --expected-max 120 \
+    --metric 扣非归母净利润同比
 ```
-
-Exit codes: `0` = PASS, `1` = WARN, `2` = FAIL
 
 ## Outputs
 
-- **stdout**: Human-readable verdict report + JSON output
-- **JSON fields**: stock, code, metric, expected_min, expected_max, actual, report_date, source, verdict, reason, action
+```json
+{
+  "stock": "太辰光",
+  "code": "300570",
+  "metric": "扣非归母净利润同比",
+  "actual": -17.0,
+  "expected_min": 80,
+  "expected_max": 120,
+  "gap": -97.0,
+  "verdict": "FAIL",
+  "recommendation": "Do not build position. Actual earnings contradict thesis."
+}
+```
+
+| Verdict | Condition | Action |
+|---------|-----------|--------|
+| ✅ PASS | Actual ≥ expected-min | Thesis confirmed, proceed |
+| ⚠️ WARN | Actual within 20% below expected-min | Investigate before acting |
+| ❌ FAIL | Actual > 20% below expected-min | Stop. Do not build position. |
 
 ## Troubleshooting
 
-| Issue | Cause | Fix |
-|-------|-------|-----|
-| `MX_APIKEY not set` | Env var missing | Export MX_APIKEY or add to workspace/.env |
-| `mx-data API quota exhausted` | Daily call limit reached | Use linqi-data skill as backup, or wait for quota reset |
-| `Could not parse mx-data output` | API response format changed | Run `python3 skills/mx-data/mx_data.py "太辰光 扣非归母净利润同比"` manually to inspect raw output |
-| `No numeric values found` | Data not available for this stock/period | Try a different metric or check if the stock has recent earnings reports |
+| Problem | Fix |
+|---------|-----|
+| "MX_APIKEY not set" | Set via `request_env_input` or workspace/.env |
+| "mx-data query timed out" | Retry; mx-data has rate limits |
+| "调用次数已达上限" | Daily quota exhausted (500/day, resets 00:10) |
+| Wrong stock data | Always cross-check code + name against user's exact text |
+
+License: MIT

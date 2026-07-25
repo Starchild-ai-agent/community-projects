@@ -1,22 +1,20 @@
 name: earnings-surprise-detector
+version: 1.0.2
+description: Verify actual quarterly earnings against analyst/research expectations
+  before acting on a thesis. Prevents building positions on false growth assumptions.
 type: script
-version: 1.0.3
-description: Verify actual quarterly earnings (扣非归母净利润同比/营收同比/EPS) against analyst/research
-  expectations BEFORE acting on a stock recommendation. Pulls real data via mx-data
-  (东方财富), compares to expected growth, gates with PASS/WARN/FAIL. Use when evaluating
-  any A-share recommendation that cites expected earnings growth, before stating entry
-  prices or position sizing. Prevents expensive failures (太辰光 actual -17% vs research
-  +80-120%, 英维克 -82% vs +150%).
+category: finance
 tags:
-- investing
 - a-shares
 - earnings
 - verification
 - risk-management
 - mx-data
-env_required:
-- MX_APIKEY
-sc_proxy: false
+author: '3182'
 license: MIT
-entry: src/verify_earnings.py
-author: user-3182
+entry: scripts/verify_earnings.py
+files:
+- SKILL.md
+- scripts/verify_earnings.py
+- references/expected-growth-sources.md
+- PROJECT.md

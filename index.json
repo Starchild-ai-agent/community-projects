@@ -2,6 +2,25 @@
   {
     "type": "script",
     "user_id": "3182",
+    "slug": "earnings-surprise-detector",
+    "version": "1.0.2",
+    "description": "Verify actual quarterly earnings against analyst/research expectations before acting on a thesis. Prevents building positions on false growth assumptions.",
+    "tags": [
+      "a-shares",
+      "earnings",
+      "verification",
+      "risk-management",
+      "mx-data"
+    ],
+    "author": "3182",
+    "license": "MIT",
+    "github_url": "https://github.com/Starchild-ai-agent/community-projects/tree/main/projects/3182/earnings-surprise-detector",
+    "updated_at": "2026-07-25T16:44:15.902Z",
+    "created_at": "2026-07-07T09:13:16.866Z"
+  },
+  {
+    "type": "script",
+    "user_id": "3182",
     "slug": "menu-decoder",
     "version": "1.0.2",
     "description": "Decode any foreign-language restaurant menu from a photo. Extracts all dishes, prices, and descriptions; translates to the user's language; and recommends what to order based on preferences.",
@@ -82,26 +101,6 @@
     "github_url": "https://github.com/Starchild-ai-agent/community-projects/tree/main/projects/2004/realtime-voice-preview",
     "updated_at": "2026-07-12T13:57:01.932Z",
     "created_at": "2026-07-12T11:50:48.649Z"
-  },
-  {
-    "type": "script",
-    "user_id": "3182",
-    "slug": "earnings-surprise-detector",
-    "version": "1.0.3",
-    "description": "Verify actual quarterly earnings (扣非归母净利润同比/营收同比/EPS) against analyst/research expectations BEFORE acting on a stock recommendation. Pulls real data via mx-data (东方财富), compares to expected growth, gates with PASS/WARN/FAIL. Use when evaluating any A-share recommendation that cites expected earnings growth, before stating entry prices or position sizing. Prevents expensive failures (太辰光 actual -17% vs research +80-120%, 英维克 -82% vs +150%).",
-    "tags": [
-      "investing",
-      "a-shares",
-      "earnings",
-      "verification",
-      "risk-management",
-      "mx-data"
-    ],
-    "author": "user-3182",
-    "license": "MIT",
-    "github_url": "https://github.com/Starchild-ai-agent/community-projects/tree/main/projects/3182/earnings-surprise-detector",
-    "updated_at": "2026-07-07T09:21:44.150Z",
-    "created_at": "2026-07-07T09:13:16.866Z"
   },
   {
     "type": "service",

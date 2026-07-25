@@ -1,7 +1,0 @@
-.env
-__pycache__/
-*.pyc
-output/
-mx_data_*.xlsx
-mx_data_*.json
-mx_data_*.txt
