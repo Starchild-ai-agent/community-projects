@@ -1,5 +1,16 @@
-# One gift code per line. Only lines starting with SC- are loaded.
-# Rename this file to codes.txt and drop your real codes in.
+# Gift code pool — one code per line, handed out top to bottom.
+#
+# Only lines starting with the prefix (default "SC-", set GIFT_PREFIX to change)
+# are loaded, so you can leave notes and blank lines anywhere in this file.
+# Duplicate lines are ignored automatically.
+#
+# Copy this file to codes.txt and paste your real codes in. codes.txt is
+# gitignored so your live codes never end up in a commit.
+#
+# You can APPEND more codes while the server is running — they are picked up on
+# the next claim, no restart needed. Never reorder or delete existing lines:
+# positions are what already-claimed visitors are mapped to.
+
 SC-AAAA-BBBB-CCCC
 SC-DDDD-EEEE-FFFF
 SC-GGGG-HHHH-IIII

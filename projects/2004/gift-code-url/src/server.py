@@ -10,8 +10,10 @@ so the page can say "all claimed" instead of handing someone a code that
 another person already redeemed.
 
 Config via env:
-  GIFT_SITE  registration URL prefix (default https://iamstarchild.com)
-  GIFT_PORT  listen port (default 9091)
+  GIFT_SITE    registration URL prefix (default https://iamstarchild.com)
+  GIFT_PORT    listen port (default 9091)
+  GIFT_PREFIX  only lines starting with this are treated as codes (default SC-),
+               which lets you keep comments and notes inside codes.txt
 """
 import json, os, threading
 from http.server import HTTPServer, BaseHTTPRequestHandler
@@ -23,11 +25,22 @@ LOCK = threading.Lock()
 
 SITE = os.environ.get("GIFT_SITE", "https://iamstarchild.com")
 PORT = int(os.environ.get("GIFT_PORT", "9091"))
+PREFIX = os.environ.get("GIFT_PREFIX", "SC-")
 
 
 def load_codes():
+    """Read the pool, in file order. Duplicates are dropped so a copy-paste
+    slip cannot hand the same code to two people."""
+    if not os.path.exists(CODES):
+        return []
+    seen, out = set(), []
     with open(CODES) as f:
-        return [l.strip() for l in f if l.strip().startswith("SC-")]
+        for line in f:
+            c = line.strip()
+            if c.startswith(PREFIX) and c not in seen:
+                seen.add(c)
+                out.append(c)
+    return out
 
 
 def load_state():
@@ -63,8 +76,8 @@ class H(BaseHTTPRequestHandler):
             "/index.html": ("index.html", "text/html; charset=utf-8"),
             "/qr": ("qr.html", "text/html; charset=utf-8"),
             "/qr.html": ("qr.html", "text/html; charset=utf-8"),
-            "/qr.png": ("qr.png", "image/png"),
-            "/qr-print.png": ("qr-print.png", "image/png"),
+            "/vendor/qrcode.min.js": ("vendor/qrcode.min.js",
+                                      "application/javascript; charset=utf-8"),
         }
         if path in static:
             fname, ctype = static[path]

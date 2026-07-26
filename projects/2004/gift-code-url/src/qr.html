@@ -41,8 +41,8 @@ h1 em{font-style:normal;color:#f84600}
 <h1>Scan and get <em>$10</em> of credits</h1>
 <div class="value"><b>$5</b> gift card <s>+</s> <b>$5</b> new-user bonus <s>·</s> free to start</div>
 
-<div class="qrwrap"><img src="qr.png" alt="Scan to claim your gift card"></div>
-<div class="url">2004-gift-url.community.iamstarchild.com</div>
+<div class="qrwrap" id="qrwrap"></div>
+<div class="url" id="url"></div>
 
 <div class="steps">
   <div><span>1</span>Scan</div>
@@ -54,7 +54,23 @@ h1 em{font-style:normal;color:#f84600}
 <div class="bar"><i id="bar"></i></div>
 <div class="foot">One gift card per device · redeemed automatically after sign-up</div>
 
+<script src="vendor/qrcode.min.js"></script>
 <script>
+// The QR encodes the claim page of whatever host is serving this file, so the
+// same code works on localhost, a tunnel, or your production domain with no edit.
+// Override by adding ?url=https://your-domain.com to this page's address.
+(function(){
+  const target=new URLSearchParams(location.search).get('url')
+    || location.origin + location.pathname.replace(/qr(\.html)?$/,'');
+  const qr=qrcode(0,'M');
+  qr.addData(target);
+  qr.make();
+  document.getElementById('qrwrap').innerHTML=qr.createSvgTag({cellSize:6,margin:0,scalable:true});
+  const svg=document.querySelector('#qrwrap svg');
+  if(svg){svg.style.width='min(23vw,152px)';svg.style.height='auto';svg.style.display='block'}
+  document.getElementById('url').textContent=target.replace(/^https?:\/\//,'').replace(/\/$/,'');
+})();
+
 async function tick(){
   try{
     const d=await (await fetch('api/stats',{cache:'no-store'})).json();

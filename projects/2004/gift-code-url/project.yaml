@@ -1,7 +1,7 @@
 name: gift-code-url
 slug: gift-code-url
 type: service
-version: 1.0.1
+version: 1.1.1
 author: user-2004
 description: Scan-to-claim gift code page — each visitor gets a unique code embedded
   directly in the signup URL, no typing required
