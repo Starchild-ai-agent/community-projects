@@ -1,0 +1,5 @@
+# One gift code per line. Only lines starting with SC- are loaded.
+# Rename this file to codes.txt and drop your real codes in.
+SC-AAAA-BBBB-CCCC
+SC-DDDD-EEEE-FFFF
+SC-GGGG-HHHH-IIII

@@ -1,0 +1,6 @@
+codes.txt
+state.json
+state.json.tmp
+.env
+__pycache__/
+*.pyc

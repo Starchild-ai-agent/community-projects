@@ -1,0 +1,18 @@
+name: gift-code-url
+slug: gift-code-url
+type: service
+version: 1.0.1
+author: user-2004
+description: Scan-to-claim gift code page — each visitor gets a unique code embedded
+  directly in the signup URL, no typing required
+tags:
+- event
+- qr
+- onboarding
+- growth
+- python
+entry: src/server.py
+command: python3 src/server.py
+port: 9091
+license: MIT
+env_required: []

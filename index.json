@@ -1,5 +1,24 @@
 [
   {
+    "type": "service",
+    "user_id": "2004",
+    "slug": "gift-code-url",
+    "version": "1.0.1",
+    "description": "Scan-to-claim gift code page — each visitor gets a unique code embedded directly in the signup URL, no typing required",
+    "tags": [
+      "event",
+      "qr",
+      "onboarding",
+      "growth",
+      "python"
+    ],
+    "author": "user-2004",
+    "license": "MIT",
+    "github_url": "https://github.com/Starchild-ai-agent/community-projects/tree/main/projects/2004/gift-code-url",
+    "updated_at": "2026-07-26T08:37:08.774Z",
+    "created_at": "2026-07-26T08:37:08.774Z"
+  },
+  {
     "type": "script",
     "user_id": "3182",
     "slug": "earnings-surprise-detector",

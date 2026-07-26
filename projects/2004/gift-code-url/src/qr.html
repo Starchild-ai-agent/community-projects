@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Starchild · Scan to Claim</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:radial-gradient(120% 90% at 50% 0%,#161821 0%,#0b0c0f 60%);color:#e6e8ea;
+  font-family:-apple-system,'Segoe UI',Roboto,sans-serif;min-height:100dvh;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px 24px;text-align:center}
+.brand{display:flex;align-items:center;gap:clamp(10px,1.4vw,18px);margin-bottom:clamp(18px,2.4vh,30px)}
+.brand .mark{width:clamp(64px,8vw,128px);height:clamp(34px,3.4vw,54px);border-radius:14px;
+  background:linear-gradient(140deg,#FF7A3D,#F84600);box-shadow:0 10px 34px rgba(248,70,0,.45);
+  display:flex;align-items:center;justify-content:center;font-size:clamp(19px,1.9vw,30px)}
+.brand .wm{font-size:clamp(85px,10vw,170px);font-weight:800;letter-spacing:-.02em;color:#fff;line-height:1}
+h1{font-size:clamp(24px,3.4vw,40px);font-weight:800;line-height:1.15;margin-bottom:14px}
+h1 em{font-style:normal;color:#f84600}
+.value{display:inline-flex;align-items:center;gap:10px;font-size:clamp(14px,1.5vw,17px);color:#c8cdd4;
+  background:#14151a;border:1px solid #2b2f36;border-radius:999px;padding:9px 20px;margin-bottom:30px}
+.value b{color:#fff}
+.value s{color:#565d68;text-decoration:none}
+.qrwrap{position:relative;background:#fff;border-radius:20px;padding:18px;
+  box-shadow:0 0 0 1px #2b2f36,0 26px 70px rgba(248,70,0,.16)}
+.qrwrap img{display:block;width:min(23vw,152px);height:auto}
+.url{margin-top:22px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:clamp(12px,1.2vw,15px);
+  color:#929aa5;word-break:break-all}
+.steps{display:flex;gap:clamp(14px,3vw,40px);margin-top:30px;flex-wrap:wrap;justify-content:center}
+.steps div{font-size:clamp(12px,1.3vw,15px);color:#c8cdd4;display:flex;align-items:center;gap:8px}
+.steps span{width:22px;height:22px;border-radius:50%;background:#f84600;color:#fff;font-size:12px;font-weight:700;
+  display:flex;align-items:center;justify-content:center;flex:0 0 auto}
+.left{margin-top:26px;font-size:clamp(13px,1.4vw,16px);color:#e6e8ea}
+.left b{color:#f84600;font-variant-numeric:tabular-nums}
+.bar{width:min(320px,70vw);height:4px;border-radius:4px;background:#22252c;margin:12px auto 0;overflow:hidden}
+.bar i{display:block;height:100%;background:#f84600;width:0;transition:width .6s}
+.foot{color:#565d68;font-size:12px;margin-top:20px;line-height:1.7}
+</style>
+</head>
+<body>
+<div class="brand"><div class="mark">⭐</div><div class="wm">Starchild</div></div>
+<h1>Scan and get <em>$10</em> of credits</h1>
+<div class="value"><b>$5</b> gift card <s>+</s> <b>$5</b> new-user bonus <s>·</s> free to start</div>
+
+<div class="qrwrap"><img src="qr.png" alt="Scan to claim your gift card"></div>
+<div class="url">2004-gift-url.community.iamstarchild.com</div>
+
+<div class="steps">
+  <div><span>1</span>Scan</div>
+  <div><span>2</span>Sign up</div>
+  <div><span>3</span>Credits land</div>
+</div>
+
+<div class="left" id="left">First come, first served</div>
+<div class="bar"><i id="bar"></i></div>
+<div class="foot">One gift card per device · redeemed automatically after sign-up</div>
+
+<script>
+async function tick(){
+  try{
+    const d=await (await fetch('api/stats',{cache:'no-store'})).json();
+    const left=Math.max(0,d.total-d.claimed);
+    document.getElementById('left').innerHTML=left
+      ? '<b>'+left+'</b> of '+d.total+' gift cards left'
+      : 'All gift cards claimed — thanks everyone';
+    document.getElementById('bar').style.width=(d.claimed/d.total*100)+'%';
+  }catch(e){}
+}
+tick();setInterval(tick,5000);
+</script>
+</body>
+</html>
