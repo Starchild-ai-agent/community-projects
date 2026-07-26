@@ -76,8 +76,11 @@ function show(code,url,repeat){
     const d=await r.json();
     if(r.ok&&d.code){show(d.code,d.url,d.repeat)}
     else if(r.status===409){
-      $('code').textContent='All claimed';
-      $('hint').textContent='Every gift card has been taken — you can still sign up below.';
+      const setup=d.error==='not_configured';
+      $('code').textContent=setup?'Not ready':'All claimed';
+      $('hint').textContent=setup
+        ? 'No gift cards loaded yet — the organiser still needs to fill codes.txt. You can sign up below.'
+        : 'Every gift card has been taken — you can still sign up below.';
       $('auto').style.display='none';
       const go=$('go');go.href=SITE;go.textContent='Sign up anyway →';go.classList.remove('disabled');
     }

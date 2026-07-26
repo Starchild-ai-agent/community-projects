@@ -74,6 +74,53 @@ the `cid → code` map; every visitor gets a fresh code from the top.
 `codes.txt` and `state.json` are both gitignored — live codes and visitor IDs
 never end up in a commit.
 
+## The two pages
+
+The service serves exactly two pages and they have completely different jobs.
+Mixing them up is the most common setup mistake, so:
+
+### `/qr` — the projector page (you show this)
+
+Goes on the big screen behind you, or on a printed standee. Nobody claims
+anything here. It shows:
+
+- a large QR code,
+- the human-readable URL underneath (for people who'd rather type it),
+- a live **"N of M gift cards left"** counter with a progress bar, polling
+  `/api/stats` every 5 seconds — this is what creates the urgency in the room.
+
+**The QR is generated in the browser, not stored as an image.** It encodes the
+claim page of whatever host is serving the file, so the same file works on
+localhost, a tunnel, and production with no edit. Open it via your *public* URL
+or the QR will point at `localhost` and nobody outside your laptop can scan it.
+
+Need it to point somewhere else — a shortlink, a different domain? Override:
+`/qr?url=https://your-domain.com`.
+
+Everything on this page is display-only text in `qr.html`: the headline, the
+`$5 + $5` value line, the 3-step strip. Edit them to match your offer.
+
+### `/` — the claim page (attendees land here)
+
+This is what the QR opens. It claims a code **immediately on load** — no button,
+no form. Then it shows the code and a **"Sign up"** button whose link already has
+the code embedded (`{SITE}/?gift=SC-XXXX-...`), so the visitor never types it.
+That embedding is the whole point of the project; a page that just prints a code
+to copy converts far worse.
+
+- A visitor is identified by `cid`, a random UUID in `localStorage`. Reloading or
+  reopening returns the **same** code instead of burning a new one.
+- Pool empty because you haven't loaded codes → `409 not_configured`, the page
+  says **"Not ready"**.
+- Pool genuinely used up → `409 exhausted`, the page says **"All claimed"** and
+  still offers a plain signup link. It never recycles.
+
+### In practice
+
+Put `/qr` on the projector, let the room scan into `/`, and watch the counter on
+your own screen to know when to stop pitching. Both are plain HTML files in
+`src/` — restyle freely, the API contract is just `/api/stats` and `/api/claim`.
+
 ## Required env
 
 All optional; defaults work out of the box.
@@ -104,14 +151,16 @@ your slide at that address.
 | GET | `/` | claim page |
 | GET | `/qr` | projector QR page with a live "N of M left" counter |
 | GET | `/api/stats` | `{total, claimed}` |
-| POST | `/api/claim` | `{code, url, repeat}` · `409 {error:"exhausted"}` when dry |
+| POST | `/api/claim` | `{code, url, repeat}` · `409 {error:"exhausted"}` when the pool is used up · `409 {error:"not_configured"}` when no pool was ever loaded |
 
 On disk it writes exactly one file, `src/state.json`.
 
 ## Troubleshooting
 
-**`{"error":"no codes"}`** — `src/codes.txt` is missing, or no line starts with
-the prefix. `codes.example.txt` must be *copied to* `codes.txt`, not just edited.
+**Page says "Not ready" / `409 not_configured`** — `src/codes.txt` is missing, or
+no line in it starts with the prefix. `codes.example.txt` must be *copied to*
+`codes.txt`, not just edited — the example file is never read. The server also
+prints this warning at startup, so check the console before the page.
 
 **Everyone gets the same code.** Their browsers share a `cid` — usually because
 you copied a `state.json` between machines. Delete it and reclaim.

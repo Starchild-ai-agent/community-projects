@@ -3,7 +3,7 @@
     "type": "service",
     "user_id": "2004",
     "slug": "gift-code-url",
-    "version": "1.1.1",
+    "version": "1.1.2",
     "description": "Scan-to-claim gift code page — each visitor gets a unique code embedded directly in the signup URL, no typing required",
     "tags": [
       "event",
@@ -15,7 +15,7 @@
     "author": "user-2004",
     "license": "MIT",
     "github_url": "https://github.com/Starchild-ai-agent/community-projects/tree/main/projects/2004/gift-code-url",
-    "updated_at": "2026-07-26T09:49:15.621Z",
+    "updated_at": "2026-07-26T12:18:55.873Z",
     "created_at": "2026-07-26T08:37:08.774Z"
   },
   {

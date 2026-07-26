@@ -111,7 +111,12 @@ class H(BaseHTTPRequestHandler):
             s = load_state()
             codes = load_codes()
             if not codes:
-                return self._json(500, {"error": "no codes"})
+                # Pool file missing or empty — a setup problem, not a server
+                # fault. Say so explicitly so the page can tell the operator
+                # what to do instead of silently doing nothing.
+                return self._json(409, {"error": "not_configured",
+                                        "detail": f"no codes in {os.path.basename(CODES)} "
+                                                  f"(lines must start with {PREFIX!r})"})
             if cid in s["claims"]:
                 code = s["claims"][cid]
                 repeat = True
@@ -132,5 +137,12 @@ class H(BaseHTTPRequestHandler):
 
 
 if __name__ == "__main__":
+    n = len(load_codes())
+    if n:
+        print(f"gift-code-url: pool loaded — {n} code(s) from {CODES}")
+    else:
+        print("gift-code-url: WARNING — pool is empty, nobody can claim.")
+        print(f"  fix: cp {os.path.join(BASE, 'codes.example.txt')} {CODES}")
+        print(f"  then put one code per line, each starting with {PREFIX!r}.")
     print(f"gift-code-url listening on 0.0.0.0:{PORT}  site={SITE}")
     HTTPServer(("0.0.0.0", PORT), H).serve_forever()
