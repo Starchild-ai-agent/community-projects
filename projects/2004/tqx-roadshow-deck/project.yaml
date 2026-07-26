@@ -1,0 +1,18 @@
+name: tqx-roadshow-deck
+slug: tqx-roadshow-deck
+type: service
+version: 1.0.2
+author: user-2004
+description: Bilingual keyboard-driven presentation deck built as plain HTML/CSS/JS
+  — no framework, no build step, works offline
+tags:
+- deck
+- presentation
+- static
+- bilingual
+- html
+entry: src/index.html
+command: python3 -m http.server 8080 --directory src
+port: 8080
+license: MIT
+env_required: []

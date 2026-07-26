@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1280">
+<title>Starchild × TQX — 15min Talk</title>
+<link rel="stylesheet" href="styles.css?v=28">
+<style>
+/* ---- deck-local additions ---- */
+.hero-qr{display:flex;align-items:center;gap:64px;margin-top:26px}
+.hero-qr img{width:300px;height:300px;border-radius:20px;background:#fff;padding:14px;box-shadow:0 0 60px rgba(248,70,0,.35)}
+.hero-qr .money{font-family:var(--fd);font-weight:800;font-size:112px;line-height:1;letter-spacing:-.03em}
+.hero-qr .money span{background:linear-gradient(100deg,#FF7A3D,#F84600);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero-qr .mt{font-size:24px;color:var(--muted);margin-top:16px;line-height:1.5}
+.hero-qr .mt b{color:#fff;font-weight:700}
+.hero-qr .left{flex:1}
+
+.loop{display:flex;align-items:stretch;gap:0;margin-top:30px}
+.loop .step{flex:1;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px 20px;position:relative}
+.loop .step .n{font-family:var(--fd);font-weight:800;font-size:13px;letter-spacing:.18em;color:var(--orange)}
+.loop .step b{display:block;font-family:var(--fd);font-weight:700;font-size:30px;margin:8px 0 10px}
+.loop .step p{font-size:16.5px;line-height:1.6;color:var(--muted)}
+.loop .ar{display:flex;align-items:center;justify-content:center;width:52px;font-size:28px;color:var(--orange);opacity:.75}
+.loopback{margin-top:14px;border:1px dashed rgba(248,70,0,.45);border-radius:12px;padding:11px 18px;text-align:center;
+  font-size:17px;color:var(--orange-b);background:rgba(248,70,0,.05)}
+.loopkey{margin-top:18px;font-size:20px;color:var(--muted)}
+.loopkey b{color:#fff}
+
+.steps4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:24px}
+.steps4 .s{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px 16px}
+.steps4 .s .n{font-family:var(--fd);font-weight:800;color:var(--orange);font-size:12.5px;letter-spacing:.16em}
+.steps4 .s b{display:block;font-size:21px;font-weight:700;margin:7px 0 8px}
+.steps4 .s p{font-size:15px;line-height:1.55;color:var(--muted)}
+.quoteline{margin-top:22px;background:rgba(255,255,255,.04);border-left:3px solid var(--orange);border-radius:0 12px 12px 0;
+  padding:16px 22px;font-size:22px;color:#fff;font-family:var(--fc)}
+.resrow{display:flex;gap:14px;margin-top:18px;align-items:stretch}
+.resrow .r{flex:1;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:15px 18px}
+.resrow .r .k{font-size:14px;color:var(--faint)}
+.resrow .r .v{font-family:var(--fd);font-weight:800;font-size:34px;margin-top:4px}
+.resrow .r .v.dn{color:#FF5252}.resrow .r .v.up{color:#28C76F}
+.punch{margin-top:18px;font-size:23px;color:var(--orange-b);font-weight:600}
+
+.demo-slide{align-items:center;justify-content:center;text-align:center}
+.demo-slide .kicker{font-family:var(--fd);font-weight:800;letter-spacing:.34em;font-size:16px;color:var(--orange)}
+.demo-slide .big{font-family:var(--fd);font-weight:900;font-size:150px;line-height:1;letter-spacing:-.04em;margin:14px 0 30px}
+.demo-slide .big span{background:linear-gradient(100deg,#FF7A3D,#F84600);-webkit-background-clip:text;background-clip:text;color:transparent}
+.demolist{display:flex;gap:16px}
+.demolist .d{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px 22px;width:300px;text-align:left}
+.demolist .d .n{color:var(--orange);font-weight:800;font-size:13px;letter-spacing:.16em;font-family:var(--fd)}
+.demolist .d b{display:block;font-size:20px;margin:6px 0 8px}
+.demolist .d p{font-size:15px;color:var(--muted);line-height:1.55}
+
+.eco{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:26px}
+.eco .e{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px}
+.eco .e b{display:block;font-size:21px;font-weight:700;margin-bottom:8px}
+.eco .e p{font-size:15.5px;line-height:1.6;color:var(--muted)}
+.eco .e.hi{border-color:rgba(248,70,0,.45);background:rgba(248,70,0,.07)}
+.closing{margin-top:26px;display:flex;flex-direction:column;gap:12px}
+.closing div{font-size:26px;color:var(--muted)}
+.closing div b{color:#fff}
+</style>
+</head>
+<body class="lang-cn">
+<canvas id="stars"></canvas>
+<div id="cursor-glow"></div>
+<div class="progress" id="progress"></div>
+<div class="langbtn"><button id="bEN">EN</button><button id="bCN" class="on">中文</button></div>
+<div class="deck" id="deck">
+<div class="stage" id="stage">
+
+<!-- 0 FULLSCREEN QR — PROJECTOR SCAN -->
+<section class="slide cover active" style="justify-content:center;background:radial-gradient(120% 90% at 50% 0%,#161821 0%,#0b0c0f 60%)">
+  <div class="glow g1" style="width:560px;height:560px;background:rgba(255,107,26,.16);top:-200px;right:-140px"></div>
+  <div class="glow g2" style="width:420px;height:420px;background:rgba(217,78,8,.12);bottom:-200px;left:-120px;opacity:.65"></div>
+  <div style="position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:clamp(20px,4vh,50px)">
+    <div style="font-size:clamp(68px,10vw,140px);font-weight:800;letter-spacing:-.02em;text-align:center">Starchild</div>
+    <div style="font-size:clamp(16px,2vw,24px);color:#929aa5;text-align:center;max-width:600px">
+      Scan now<br><span style="color:#f84600">$10 of credits</span> in your account
+    </div>
+    <img src="assets/qr-gift.png?v=2" alt="Scan to claim" style="width:min(45vw,340px);height:auto;border-radius:20px;background:#fff;padding:16px;box-shadow:0 0 0 1px #2b2f36,0 26px 70px rgba(248,70,0,.16)">
+    <div style="font-size:14px;color:#565d68;text-align:center;max-width:500px;line-height:1.6">
+      <b style="color:#fff">$5</b> gift card + <b style="color:#fff">$5</b> new-user bonus · One gift card per device<br>
+      50 cards — first come, first served
+    </div>
+  </div>
+</section>
+
+<!-- 1 COVER -->
+<section class="slide cover">
+  <div class="glow g1"></div><div class="glow g2"></div>
+  <div class="logo z d1"><img class="lgfull" src="assets/logo-full.svg" alt="Starchild"></div>
+  <div class="type an d2 en">From idea to <span class="hot">done</span> — one sentence away.</div>
+  <div class="type an d2 cn">想法到落地，<span class="hot">只差一句话</span>。</div>
+  <div class="below an d3 en">Starchild × TQX · a cloud AI agent platform — mostly live demo today.</div>
+  <div class="below an d3 cn">Starchild × TQX 量化比赛 · 云端 AI Agent 平台 · 今天以现场演示为主</div>
+</section>
+
+<!-- 2 GIFT / HOOK -->
+<section class="slide" style="justify-content:center">
+  <div class="tag an d1"><span class="dot"></span><span class="en">First things first</span><span class="cn">开场先发福利</span></div>
+  <h2 class="an d2 en" style="margin-top:16px">Scan now — <span class="grad">$10 of credits</span> in your account.</h2>
+  <h2 class="an d2 cn" style="margin-top:16px">现在就扫 —— <span class="grad">10 美金 credit</span> 直接到账。</h2>
+  <div class="hero-qr an d3">
+    <div style="text-align:center">
+      <img src="assets/qr-gift.png?v=2" alt="Gift card QR">
+      <div style="margin-top:12px;font:600 15px ui-monospace,SFMono-Regular,Menlo,monospace;color:#929aa5;letter-spacing:-.01em">2004-gift-url.community.iamstarchild.com</div>
+    </div>
+    <div class="left">
+      <div class="money"><span>$5 + $5</span></div>
+      <div class="mt en"><b>$5</b> gift card, auto-credited after sign-up<br><b>$5</b> more just for being a new user<br>50 cards only — first come, first served.</div>
+      <div class="mt cn"><b>5 美金</b> 礼品卡，注册后自动到账<br>新用户注册<b>再送 5 美金</b><br>一共 50 张，先到先得 · 边听边扫</div>
+    </div>
+  </div>
+  <div class="pmark">02</div>
+</section>
+
+<!-- 3 THE LOOP -->
+<section class="slide" style="justify-content:center">
+  <div class="tag an d1"><span class="dot"></span><span class="en">The core</span><span class="cn">核心</span></div>
+  <h2 class="an d2 en" style="margin-top:14px">One loop that <span class="grad">never stops turning.</span></h2>
+  <h2 class="an d2 cn" style="margin-top:14px">一个<span class="grad">不会停的循环</span>。</h2>
+  <div class="loop an d3">
+    <div class="step">
+      <div class="n">01</div>
+      <b class="en">Build</b><b class="cn">开发</b>
+      <p class="en">You say it. The agent splits the task, writes the code and runs it to working — on its own machine, not yours.</p>
+      <p class="cn">你说一句话，Agent 自己拆任务、写代码、在它自己的机器上跑到能用为止。</p>
+    </div>
+    <div class="ar">→</div>
+    <div class="step">
+      <div class="n">02</div>
+      <b class="en">Verify</b><b class="cn">验证</b>
+      <p class="en">Built-in web preview refreshes on every change. Numbers, curves, buttons — you see it, right now.</p>
+      <p class="cn">自带网页预览，它每改一次页面刷新一次。数据、曲线、交互，当场看得见。</p>
+    </div>
+    <div class="ar">→</div>
+    <div class="step">
+      <div class="n">03</div>
+      <b class="en">Ship</b><b class="cn">发布</b>
+      <p class="en">One sentence → a public URL anyone can open on their phone, or a skill others install in one click.</p>
+      <p class="cn">一句话生成公开网址，任何人手机可开；或发布到市场，别人一键装上。</p>
+    </div>
+    <div class="ar">→</div>
+    <div class="step">
+      <div class="n">04</div>
+      <b class="en">Feedback</b><b class="cn">反馈</b>
+      <p class="en">Real users hit it, you spot the gap, say "change this" — and the loop turns again.</p>
+      <p class="cn">别人用了、问题浮现，你说一句"这里改一下"，循环再转一圈。</p>
+    </div>
+  </div>
+  <div class="loopback an d4"><span class="en">↻ back to Build — minutes per lap, not weeks</span><span class="cn">↻ 回到开发 —— 一圈几分钟，不是几周</span></div>
+  <div class="loopkey an d5 en">The whole lap lives in <b>one chat box</b>. And it can turn <b>while you sleep</b> — on a schedule, pushing results to you.</div>
+  <div class="loopkey an d5 cn">整个循环压进<b>一个对话框</b>。还能<b>定时自己转</b>——你睡觉时它照跑，跑完主动推给你。</div>
+  <div class="pmark">03</div>
+</section>
+
+<!-- 4 TQX -->
+<section class="slide" style="justify-content:center">
+  <div class="tag an d1"><span class="dot"></span><span class="en">On TQX</span><span class="cn">落到 TQX</span></div>
+  <h2 class="an d2 en" style="margin-top:12px">The same loop, aimed at <span class="grad">real money.</span></h2>
+  <h2 class="an d2 cn" style="margin-top:12px">同一个循环，用来<span class="grad">做交易、赚钱</span>。</h2>
+  <div class="steps4 an d3">
+    <div class="s"><div class="n">01</div><b class="en">Install</b><b class="cn">装技能</b>
+      <p class="en"><code>tqx</code> is live on the skill market — one click.</p>
+      <p class="cn"><code>tqx</code> 已在技能市场，一键安装。</p></div>
+    <div class="s"><div class="n">02</div><b class="en">Connect</b><b class="cn">连账号</b>
+      <p class="en">Credentials via secure input, never in chat. Token auto-renews.</p>
+      <p class="cn">账号走安全输入框，不进聊天记录；token 自动续期。</p></div>
+    <div class="s"><div class="n">03</div><b class="en">Say it</b><b class="cn">说人话</b>
+      <p class="en">Plain-language strategy → factor / strategy backtest, submitted and watched.</p>
+      <p class="cn">一句话描述策略 → 因子/策略回测，自动提交并盯完。</p></div>
+    <div class="s"><div class="n">04</div><b class="en">Read it</b><b class="cn">看结果</b>
+      <p class="en">Equity curve, drawdown, fills — on a page, every run archived.</p>
+      <p class="cn">收益曲线、回撤、成交，全画在页面上，每次自动留档。</p></div>
+  </div>
+  <div class="quoteline an d4 en">"Backtest a 5/20 MA crossover on AAPL for all of 2025, $1M capital."</div>
+  <div class="quoteline an d4 cn">"用 AAPL 回测 5 日/20 日双均线策略，2025 全年，本金 100 万美金。"</div>
+  <div class="resrow an d5">
+    <div class="r"><div class="k en">Strategy return</div><div class="k cn">策略区间收益</div><div class="v dn">−11.7%</div></div>
+    <div class="r"><div class="k en">Benchmark buy &amp; hold</div><div class="k cn">基准买入持有</div><div class="v up">+11.9%</div></div>
+    <div class="r"><div class="k en">Fills</div><div class="k cn">成交笔数</div><div class="v">18</div></div>
+    <div class="r"><div class="k en">Time to this answer</div><div class="k cn">得到结论耗时</div><div class="v">≈ 5 min</div></div>
+  </div>
+  <div class="punch an d5 en">Killing an idea in minutes beats proving one in days.</div>
+  <div class="punch an d5 cn">几分钟否掉一个想法，比几天验证一个想法值钱。</div>
+  <div class="pmark">04</div>
+</section>
+
+<!-- 5 LIVE DEMO -->
+<section class="slide demo-slide">
+  <div class="glow g1"></div><div class="glow g2"></div>
+  <div class="kicker z d1">● LIVE</div>
+  <div class="big z d1"><span>DEMO</span></div>
+  <div class="demolist an d2">
+    <div class="d"><div class="n">A</div><b class="en">Test an idea</b><b class="cn">验证一个想法</b>
+      <p class="en">NVDA 20-day momentum, 2025 — backtest and chart it, from one sentence.</p>
+      <p class="cn">一句话回测 NVDA 2025 年 20 日动量策略，并画出收益曲线。</p></div>
+    <div class="d"><div class="n">B</div><b class="en">Change the product</b><b class="cn">改产品</b>
+      <p class="en">Add an "excess return vs benchmark" column to the page — and re-publish.</p>
+      <p class="cn">给页面加一列"相对基准超额收益"，改完重新发布。</p></div>
+    <div class="d"><div class="n">C</div><b class="en">Let it run alone</b><b class="cn">让它自己转</b>
+      <p class="en">Scan the watchlist after every US close and push me the signals.</p>
+      <p class="cn">每个交易日收盘后自动扫自选股，有信号主动推送。</p></div>
+  </div>
+</section>
+
+<!-- 6 ECOSYSTEM -->
+<section class="slide" style="justify-content:center">
+  <div class="tag an d1"><span class="dot"></span><span class="en">What makes the loop cheap</span><span class="cn">让循环跑得更省</span></div>
+  <h2 class="an d2 en" style="margin-top:14px">Everything around it is <span class="grad">already handled.</span></h2>
+  <h2 class="an d2 cn" style="margin-top:14px">周边的事，<span class="grad">平台都替你办了</span>。</h2>
+  <div class="eco an d3">
+    <div class="e"><b class="en">50+ official skills</b><b class="cn">50+ 官方技能</b>
+      <p class="en">CoinGecko, TwelveData, Coinglass, TAAPI, charts, video, social — auth and config pre-wrapped.</p>
+      <p class="cn">行情、衍生品、技术指标、画图、视频、社交媒体——第三方鉴权配置全封装好。</p></div>
+    <div class="e"><b class="en">Skill market</b><b class="cn">技能市场</b>
+      <p class="en">What your agent learns, others install in one click. <code>tqx</code> came from exactly this.</p>
+      <p class="cn">你的 Agent 学会的东西可以发布，别人一键装上。tqx 就是这么来的。</p></div>
+    <div class="e hi"><b class="en">One balance for everything</b><b class="cn">一个余额管全部</b>
+      <p class="en">Every model call and every third-party API bills to the same credit balance. No separate top-ups, no key hunting, no stack of invoices.</p>
+      <p class="cn">所有模型调用、所有第三方接口，全走同一个 credit 余额。不用逐家充值、逐个申请 key、管好几份账单。</p></div>
+    <div class="e"><b class="en">x402 on-chain billing</b><b class="cn">x402 链上收费</b>
+      <p class="en">Turn a signal feed or dashboard into a paid service — USDC per call, from humans or other agents.</p>
+      <p class="cn">把信号源、数据面板挂上链按次收 USDC，人和 Agent 都能付费调用。</p></div>
+    <div class="e"><b class="en">Memory &amp; scheduling</b><b class="cn">记忆与定时</b>
+      <p class="en">It remembers your habits and past calls, and wakes itself up on schedule.</p>
+      <p class="cn">记得你的习惯和过往决定，还能到点自己醒来干活。</p></div>
+    <div class="e"><b class="en">Check-in &amp; quests</b><b class="cn">签到与任务</b>
+      <p class="en">Daily check-ins and quests convert to credits — keep the loop running at near-zero cost.</p>
+      <p class="cn">每天签到做任务换 credit，礼品卡烧完还能接着攒，上手基本零成本。</p></div>
+  </div>
+  <div class="pmark">06</div>
+</section>
+
+<!-- 7 CTA -->
+<section class="slide cta">
+  <div class="glow g1"></div><div class="glow g2"></div>
+  <div class="big z d1 en">Put your agent <span class="grad">to work on the market.</span></div>
+  <div class="big z d1 cn">让你的 Agent <span class="grad">替你去市场里挣钱。</span></div>
+  <div class="closing an d2">
+    <div class="en"><b>Build</b> — handled for you.</div>
+    <div class="en"><b>Verify</b> — down to minutes.</div>
+    <div class="en"><b>Ship</b> — one sentence, and it circulates.</div>
+    <div class="cn"><b>开发</b>，帮你做掉了。</div>
+    <div class="cn"><b>验证</b>，压到几分钟。</div>
+    <div class="cn"><b>发布</b>，一句话的事，做出来还能流通。</div>
+  </div>
+  <div class="url an d3">iamstarchild.com</div>
+  <div class="cta-qr an d4">
+    <img src="assets/qr-gift.png?v=2" alt="Gift card QR">
+    <div class="cta-qr-tip"><span class="en">Scan — $10 credits + install <code>tqx</code></span><span class="cn">扫码领 10 美金 · 装上 tqx 直接开跑</span></div>
+  </div>
+</section>
+
+</div>
+</div>
+
+<div class="nav">
+  <button id="prev">‹</button>
+  <span class="pg" id="pg">1 / 7</span>
+  <button id="next">›</button>
+</div>
+
+<div class="qr-corner"><img src="assets/qr-gift.png?v=2" alt="Gift card QR"><div class="qr-tip"><span class="en">Scan for a gift card 🎁</span><span class="cn">扫码领礼品卡 🎁</span></div></div>
+
+<script src="script.js?v=28"></script>
+</body>
+</html>
