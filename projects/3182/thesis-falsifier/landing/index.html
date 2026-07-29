@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Thesis Falsifier — kill your bad ideas before they cost you</title>
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --surface: #13131a;
+    --surface-2: #1c1c26;
+    --border: #2a2a38;
+    --text: #e8e8f0;
+    --text-dim: #9090a8;
+    --accent: #ff4757;
+    --accent-dim: #ff6b7a;
+    --gold: #ffd93d;
+    --green: #2ed573;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.65;
+    overflow-x: hidden;
+  }
+  .container { max-width: 820px; margin: 0 auto; padding: 0 24px; }
+
+  /* Hero */
+  .hero {
+    padding: 80px 0 60px;
+    text-align: center;
+    position: relative;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 50%;
+    width: 600px; height: 600px;
+    transform: translateX(-50%);
+    background: radial-gradient(circle, rgba(255,71,87,0.08) 0%, transparent 60%);
+    pointer-events: none;
+  }
+  .hero-emoji { font-size: 48px; margin-bottom: 16px; }
+  .hero h1 {
+    font-size: 42px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    margin-bottom: 16px;
+    background: linear-gradient(135deg, var(--text) 0%, var(--text-dim) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .hero .tagline {
+    font-size: 20px;
+    color: var(--text-dim);
+    margin-bottom: 8px;
+  }
+  .hero .subtitle {
+    font-size: 15px;
+    color: var(--text-dim);
+    opacity: 0.7;
+    margin-bottom: 32px;
+  }
+  .hero-badge {
+    display: inline-block;
+    padding: 6px 14px;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    font-size: 13px;
+    color: var(--text-dim);
+    margin-bottom: 32px;
+  }
+  .hero-badge .dot {
+    display: inline-block;
+    width: 6px; height: 6px;
+    background: var(--green);
+    border-radius: 50%;
+    margin-right: 6px;
+    vertical-align: middle;
+  }
+
+  /* CTA buttons */
+  .cta-row {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 40px;
+  }
+  .btn {
+    display: inline-block;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .btn:hover { transform: translateY(-1px); }
+  .btn-primary {
+    background: var(--accent);
+    color: #fff;
+    box-shadow: 0 4px 20px rgba(255,71,87,0.3);
+  }
+  .btn-primary:hover { box-shadow: 0 6px 28px rgba(255,71,87,0.45); }
+  .btn-secondary {
+    background: var(--surface-2);
+    color: var(--text);
+    border: 1px solid var(--border);
+  }
+
+  /* Problem section */
+  .section { padding: 60px 0; }
+  .section-label {
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 12px;
+  }
+  .section h2 {
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    margin-bottom: 20px;
+  }
+  .section p {
+    font-size: 17px;
+    color: var(--text-dim);
+    margin-bottom: 16px;
+  }
+  .quote-block {
+    background: var(--surface);
+    border-left: 3px solid var(--accent);
+    padding: 24px 28px;
+    border-radius: 0 8px 8px 0;
+    margin: 24px 0;
+    font-size: 18px;
+    font-style: italic;
+    color: var(--text);
+  }
+
+  /* Steps */
+  .steps {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+  .step {
+    display: flex;
+    gap: 20px;
+    padding: 24px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .step:last-child { border-bottom: none; }
+  .step-num {
+    flex-shrink: 0;
+    width: 40px; height: 40px;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--accent);
+  }
+  .step-body h3 {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 6px;
+  }
+  .step-body p {
+    font-size: 15px;
+    color: var(--text-dim);
+    margin: 0;
+  }
+
+  /* Code block */
+  .code-block {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 20px 24px;
+    margin: 20px 0;
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 13px;
+    color: var(--text-dim);
+    overflow-x: auto;
+    white-space: pre;
+  }
+  .code-block .kw { color: var(--accent); }
+  .code-block .str { color: var(--green); }
+  .code-block .cmt { color: #555568; }
+
+  /* Verdict scale */
+  .verdict {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 12px;
+    margin: 24px 0;
+  }
+  .verdict-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 20px;
+    text-align: center;
+  }
+  .verdict-card .delta {
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+  .verdict-card .label {
+    font-size: 13px;
+    color: var(--text-dim);
+  }
+  .verdict-card .action {
+    font-size: 13px;
+    font-weight: 600;
+    margin-top: 10px;
+    padding: 4px 10px;
+    border-radius: 4px;
+    display: inline-block;
+  }
+  .v-red .delta { color: var(--accent); }
+  .v-red .action { background: rgba(255,71,87,0.15); color: var(--accent); }
+  .v-yellow .delta { color: var(--gold); }
+  .v-yellow .action { background: rgba(255,217,61,0.15); color: var(--gold); }
+  .v-green .delta { color: var(--green); }
+  .v-green .action { background: rgba(46,213,115,0.15); color: var(--green); }
+
+  /* Footer */
+  footer {
+    padding: 40px 0 60px;
+    text-align: center;
+    border-top: 1px solid var(--border);
+    margin-top: 40px;
+  }
+  footer p { font-size: 14px; color: var(--text-dim); }
+  footer a { color: var(--accent-dim); text-decoration: none; }
+
+  @media (max-width: 600px) {
+    .hero h1 { font-size: 32px; }
+    .verdict { grid-template-columns: 1fr; }
+    .step { flex-direction: column; gap: 8px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="container">
+    <div class="hero-emoji">🗡️</div>
+    <div class="hero-badge"><span class="dot"></span>Starchild Skill · v1.0.0</div>
+    <h1>Thesis Falsifier</h1>
+    <p class="tagline">Kill your bad investment ideas before they cost you money.</p>
+    <p class="subtitle">逆向证伪器 — a structured workflow that tries to destroy your thesis before you act on it.</p>
+    <div class="cta-row">
+      <a class="btn btn-primary" href="#how-it-works">See the workflow</a>
+      <a class="btn btn-secondary" href="https://github.com/Starchild-ai-agent/community-projects/commit/04b80af924d821b3f926e6cce4d3c90f6e542a2b" target="_blank" rel="noopener">View source ↗</a>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="container">
+    <div class="section-label">The problem</div>
+    <h2>Most theses can't be wrong — so they're worthless.</h2>
+    <p>"AI will drive growth" — can this ever be falsified? No. It's a narrative, not a thesis. It feels smart, it sounds specific, but there's no evidence that could prove it wrong. So it never gets tested. It just sits there, generating conviction without earning it.</p>
+    <div class="quote-block">
+      "A thesis that survives an honest assassination attempt is worth acting on. One that doesn't survive was confirmation bias dressed up as analysis."
+    </div>
+    <p>This skill's job: take your thesis, make it falsifiable, then try to kill it. If it lives — you act with real conviction. If it dies — you just saved yourself money.</p>
+    <p style="text-align:center; margin-top:28px;"><strong>Both outcomes win.</strong></p>
+  </div>
+</div>
+
+<div class="section" id="how-it-works">
+  <div class="container">
+    <div class="section-label">The workflow</div>
+    <h2>Six steps from conviction to clarity.</h2>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <h3>证伪化改写 — Make it falsifiable</h3>
+          <p>Break "buy X because Y" into three testable claims: Is Y actually true? Is Y already priced in? Will Y persist long enough to matter? Find the load-bearing claim — the one where if it's wrong, the whole thing collapses.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <h3>最弱环节 — Find the weak link</h3>
+          <p>Of the three claims, which is most uncertain AND most checkable? That's the attack surface. Don't attack the strong claims — attack the weak one. A thesis is only as strong as its weakest load-bearing claim.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <h3>主动猎杀 — Active counter-evidence hunt</h3>
+          <p>Run adversarial web searches: bear cases, short theses, "overvalued" takes, negative earnings surprises. Report what you find honestly. Finding nothing negative is itself a warning — either you didn't look hard enough, or the crowd hasn't noticed yet.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-body">
+          <h3>钢铁人对方 — Steel-man the bear</h3>
+          <p>Write the strongest 3-sentence version of the opposite thesis. NOT a strawman — the version a smart bear would sign their name to. If it doesn't scare you a little, rebuild it.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">5</div>
+        <div class="step-body">
+          <h3>代价量化 — Survival check</h3>
+          <p>If the thesis is wrong: what's the max realistic downside? Can you survive being wrong at current position sizing? Define the invalidation signal upfront — what price or event proves the thesis wrong and forces exit?</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">6</div>
+        <div class="step-body">
+          <h3>证伪后信念 — Re-rate confidence</h3>
+          <p>Re-rate your conviction 1–10 after all the above. The delta tells you what to do.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="container">
+    <div class="section-label">The verdict</div>
+    <h2>Three outcomes. All of them useful.</h2>
+    <div class="verdict">
+      <div class="verdict-card v-red">
+        <div class="delta">↓ ≥3</div>
+        <div class="label">Confidence dropped hard</div>
+        <div class="action">Don't act. Confirmation bias.</div>
+      </div>
+      <div class="verdict-card v-yellow">
+        <div class="delta">↓ 1-2</div>
+        <div class="label">Confidence dipped slightly</div>
+        <div class="action">Proceed with eyes open.</div>
+      </div>
+      <div class="verdict-card v-green">
+        <div class="delta">→ or ↑</div>
+        <div class="label">Confidence held or rose</div>
+        <div class="action">Back it with real size.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="container">
+    <div class="section-label">Try it</div>
+    <h2>One line to run it.</h2>
+    <p>Install the skill, then tell your Starchild agent:</p>
+    <div class="code-block"><span class="cmt"># Install</span>
+npx skills add <span class="str">@3182/thesis-falsifier@1.0.0</span>
+
+<span class="cmt"># Then in any agent session:</span>
+<span class="kw">"I'm thinking of buying X because Y. Run the thesis falsifier on it."</span></div>
+    <p>The agent executes all six steps and returns a structured 证伪报告 — the claims, the counter-evidence, the steel-manned bear case, the survival math, and the re-rated confidence.</p>
+    <p style="margin-top:20px; font-size:15px;">Works on <strong>any asset</strong>: stocks, crypto, macro bets, career decisions — anything with an "I should do X because Y" structure.</p>
+  </div>
+</div>
+
+<footer>
+  <div class="container">
+    <p>Thesis Falsifier · MIT License · <a href="https://github.com/Starchild-ai-agent/community-projects/commit/04b80af924d821b3f926e6cce4d3c90f6e542a2b" target="_blank" rel="noopener">Source on GitHub</a></p>
+    <p style="margin-top:8px; opacity:0.5;">A Starchild community skill by Agentway</p>
+  </div>
+</footer>
+
+</body>
+</html>

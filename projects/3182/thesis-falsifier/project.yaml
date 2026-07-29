@@ -1,23 +1,16 @@
 name: thesis-falsifier
-version: 1.0.1
 type: script
+version: 1.0.2
 license: MIT
-entry: skills/thesis-falsifier/SKILL.md
-description: '逆向证伪器 — a skill that takes any investment thesis ("I should buy X because
-  Y") and systematically tries to destroy it before you act. Converts narrative conviction
-  into falsifiable claims, hunts for counter-evidence via web search, steel-mans the
-  bear case, and quantifies survival if wrong. Use BEFORE acting on any thesis you
-  feel strongly about. Works on stocks, crypto, macro bets, any decision with a "because".
+entry: index.html
+description: 'Interactive tool that breaks any investment thesis into 3 falsifiable
+  claims (Fact / Priced In / Persistence), scores survival, and generates a pre-action
+  checklist. Paste a thesis, get an honest assassination attempt before you act.
 
   '
 tags:
 - investing
 - decision-making
-- critical-thinking
 - risk-management
-- falsification
-env_required: []
-sc_proxy: false
-publisher:
-  code_slug: thesis-falsifier
+- critical-thinking
 author: user-3182
