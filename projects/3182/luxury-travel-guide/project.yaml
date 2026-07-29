@@ -1,0 +1,16 @@
+name: luxury-travel-guide
+version: 1.0.0
+type: script
+author: user-3182
+entry: exports.py
+description: >
+  Generate interactive luxury travel guide web apps for any city — fine dining,
+  spa & wellness, omakase, and pro tips. Dark-gold luxury theme, tabbed HTML,
+  mobile responsive. Includes render_guide() function + research workflow.
+tags:
+  - travel
+  - luxury
+  - html
+  - template
+  - guide
+license: MIT

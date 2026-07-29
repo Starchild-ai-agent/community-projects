@@ -2,6 +2,25 @@
   {
     "type": "script",
     "user_id": "3182",
+    "slug": "luxury-travel-guide",
+    "version": "1.0.0",
+    "description": "Generate interactive luxury travel guide web apps for any city — fine dining, spa & wellness, omakase, and pro tips. Dark-gold luxury theme, tabbed HTML, mobile responsive. Includes render_guide() function + research workflow.\n",
+    "tags": [
+      "travel",
+      "luxury",
+      "html",
+      "template",
+      "guide"
+    ],
+    "author": "user-3182",
+    "license": "MIT",
+    "github_url": "https://github.com/Starchild-ai-agent/community-projects/tree/main/projects/3182/luxury-travel-guide",
+    "updated_at": "2026-07-29T13:37:10.117Z",
+    "created_at": "2026-07-29T13:37:10.117Z"
+  },
+  {
+    "type": "script",
+    "user_id": "3182",
     "slug": "thesis-falsifier",
     "version": "1.0.2",
     "description": "Interactive tool that breaks any investment thesis into 3 falsifiable claims (Fact / Priced In / Persistence), scores survival, and generates a pre-action checklist. Paste a thesis, get an honest assassination attempt before you act.\n",
