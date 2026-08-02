@@ -23,17 +23,35 @@
     <div>
       <div style="display:flex; align-items:center; gap:12px;">
         <div style="font-size:42px; font-weight:900; letter-spacing:-2px; color:#F84600;">WC 2026</div>
-        <div style="font-size:10px; padding:2px 10px; border:1px solid #F84600; color:#F84600; border-radius:999px; font-weight:700; letter-spacing:1px;">PAPER DESK</div>
+        <div style="font-size:10px; padding:2px 10px; border:1px solid #F84600; color:#F84600; border-radius:999px; font-weight:700; letter-spacing:1px;">ARCHIVE</div>
       </div>
-      <div style="font-size:22px; color:#fff; margin-top:-6px;">Market Intelligence • All 12 Groups</div>
-      <div style="font-size:12px; color:#71717a; margin-top:4px;">Priority: Groups D + L (8 teams) highlighted in orange • Real historical H2H + form • Data as single source of truth</div>
+      <div style="font-size:22px; color:#fff; margin-top:-6px;">Tournament Archive • Spain champions</div>
+      <div style="font-size:12px; color:#71717a; margin-top:4px;">Final 19 Jul 2026 • Spain 1-0 Argentina (AET) • England 3rd • Priority D+L post-mortem included</div>
     </div>
     <div>
       <div class="view-toggle">
+        <button id="btn-archive" onclick="switchView('archive')">ARCHIVE</button>
+        <button id="btn-bracket" onclick="switchView('bracket')">BRACKET</button>
+        <button id="btn-postmortem" onclick="switchView('postmortem')">POST-MORTEM</button>
         <button id="btn-cards" onclick="switchView('cards')">CARDS</button>
         <button id="btn-table" onclick="switchView('table')">TABLE</button>
-        <button id="btn-schedule" onclick="switchView('schedule')">SCHEDULE</button>
+        <button id="btn-schedule" onclick="switchView('schedule')">RESULTS</button>
         <button id="btn-matrix" onclick="switchView('matrix')">MATRIX</button>
+      </div>
+      <div style="display:flex; justify-content:flex-end; gap:8px; margin-top:8px;">
+        <button onclick="downloadEvidencePack('all')" style="background:#111; border:1px solid #F84600; color:#F84600; border-radius:8px; padding:6px 12px; font-size:11px; font-weight:700; letter-spacing:0.5px; cursor:pointer;">EXPORT EVIDENCE PACK</button>
+        <select id="evidence-team-select" onchange="if(this.value) downloadEvidencePack(this.value)" style="background:#111; border:1px solid var(--border-strong); color:#fff; border-radius:8px; padding:6px 10px; font-size:11px; max-width:180px;">
+          <option value="">Team pack…</option>
+          <option value="United States">United States</option>
+          <option value="Paraguay">Paraguay</option>
+          <option value="Australia">Australia</option>
+          <option value="Türkiye">Türkiye</option>
+          <option value="England">England</option>
+          <option value="Croatia">Croatia</option>
+          <option value="Ghana">Ghana</option>
+          <option value="Panama">Panama</option>
+          <option value="Spain">Spain</option>
+        </select>
       </div>
       <div id="group-filter-bar" style="display:none; gap:6px; margin:12px 0 4px; align-items:center; flex-wrap:wrap;">
         <span style="font-size:10px; color:#71717a; margin-right:4px;">FILTER:</span>
@@ -55,7 +73,22 @@
     </div>
   </div>
 
-  <div id="view-cards">
+  <div id="view-archive">
+    <div class="section-title">TOURNAMENT ARCHIVE • PODIUM + KNOCKOUT PATH</div>
+    <div id="archive-container"></div>
+  </div>
+
+  <div id="view-bracket" class="hidden">
+    <div class="section-title">KNOCKOUT BRACKET • R32 → FINAL</div>
+    <div id="bracket-container"></div>
+  </div>
+
+  <div id="view-postmortem" class="hidden">
+    <div class="section-title">POST-MORTEM • PRIORITY D + L SIGNAL GRADE</div>
+    <div id="postmortem-container"></div>
+  </div>
+
+  <div id="view-cards" class="hidden">
     <div class="section-title">ALL GROUPS • D + L PRIORITY (ORANGE BADGES + WHITE MARKET % PROMINENT)</div>
     <div id="group-cards-container"></div>
   </div>
@@ -78,7 +111,7 @@
   </div>
 
   <div id="view-schedule" class="hidden">
-    <div class="section-title">FULL SCHEDULE • GROUPS D + L (24 MATCHES • CLICK ANY OPPONENT FOR WIKIPEDIA)</div>
+    <div class="section-title">GROUP RESULTS • ALL 72 MATCHES WITH SCORES</div>
     <div id="schedule-container" style="background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:16px;"></div>
   </div>
 

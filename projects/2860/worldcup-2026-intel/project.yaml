@@ -1,21 +1,23 @@
 name: worldcup-2026-intel
 type: service
-version: 0.4.0
+version: 1.1.0
 license: MIT
 entry: index.html
-port: 9082
-description: Complete 48-team information advantage engine for FIFA World Cup 2026.
-  Group standings, climate impact, historical WC records, travel/rest analysis, H2H,
-  recent form, and edge calculator. All data sourced and linked.
+port: 9083
+description: 'FIFA World Cup 2026 tournament archive and priority D+L post-mortem.
+  Full group results (72), knockout bracket R32 to Final, Spain champions, evidence-pack
+  export, and graded travel/climate signal review.
+
+  '
 tags:
 - worldcup
 - football
+- archive
 - analytics
-- data
 - dashboard
 env_required: []
 sc_proxy: false
 publisher:
   code_slug: worldcup-2026-intel
-  public_slug: wc2026-market-desk
+  public_slug: wc2026-archive
 author: user-2860

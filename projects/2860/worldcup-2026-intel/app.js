@@ -6,10 +6,14 @@ let recentFormData = {};
 let venuesData = {};
 let historicalData = {};
 let groupStandingsData = {};
+let knockoutData = null;
+let archiveData = null;
+let postmortemData = null;
 let userProbs = {};
 let ledgerEntries = [];
 let currentGroupFilter = null;
 let currentSearchTerm = '';
+let currentView = 'archive';
 
 const REAL_TEAMS = ["United States","Paraguay","Australia","Türkiye","England","Croatia","Ghana","Panama"];
 
@@ -185,13 +189,16 @@ function updateStats() {
 
 async function loadData() {
   try {
-    const [groupsRes, h2hRes, matchesRes, recentRes, standingsRes, ledgerRes] = await Promise.all([
+    const [groupsRes, h2hRes, matchesRes, recentRes, standingsRes, ledgerRes, koRes, archRes, pmRes] = await Promise.all([
       fetch('data/groups.json'),
       fetch('data/head_to_head.json'),
       fetch('data/matches.json'),
       fetch('data/recent_form.json'),
       fetch('data/group_standings.json'),
-      fetch('data/paper_ledger.csv').then(r => r.text())
+      fetch('data/paper_ledger.csv').then(r => r.text()),
+      fetch('data/knockout_results.json'),
+      fetch('data/tournament_archive.json'),
+      fetch('data/postmortem.json')
     ]);
     groupsData = await groupsRes.json();
     headToHeadData = await h2hRes.json();
@@ -199,9 +206,9 @@ async function loadData() {
     recentFormData = await recentRes.json();
     groupStandingsData = await standingsRes.json();
     ledgerEntries = parseLedgerCSV(ledgerRes);
-
-    // All groups loaded (full 12 groups from data source). D + L are priority (orange badges + prominent in UI) per spec.
-    // No filter — user wants all groups visible now.
+    knockoutData = await koRes.json();
+    archiveData = await archRes.json();
+    postmortemData = await pmRes.json();
 
     loadUserProbs();
     loadVenues();
@@ -234,43 +241,37 @@ function parseLedgerCSV(text) {
 }
 
 function renderAll() {
+  renderArchive();
+  renderBracket();
+  renderPostmortem();
   renderCards();
   renderTable();
   renderEdgeTracker();
   renderLedger();
+  renderSchedule();
   updateStats();
 }
 
 function switchView(view) {
+  currentView = view;
   document.querySelectorAll('[id^="view-"]').forEach(el => el.classList.add('hidden'));
   const target = document.getElementById('view-' + view);
   if (target) target.classList.remove('hidden');
 
-  // show/hide filter bar only on table and schedule
+  document.querySelectorAll('.view-toggle button').forEach(b => b.classList.remove('active'));
+  const btn = document.getElementById('btn-' + view);
+  if (btn) btn.classList.add('active');
+
   const filterBar = document.getElementById('group-filter-bar');
   if (filterBar) filterBar.style.display = (view === 'table' || view === 'schedule') ? 'flex' : 'none';
 
-  if (view === 'table') {
-    // Ensure table renders when user switches to it
-    setTimeout(() => {
-      if (typeof renderTable === 'function') renderTable();
-    }, 50);
-  }
-  if (view === 'cards') {
-    setTimeout(() => {
-      if (typeof renderCards === 'function') renderCards();
-    }, 50);
-  }
-  if (view === 'schedule') {
-    setTimeout(() => {
-      if (typeof renderSchedule === 'function') renderSchedule();
-    }, 50);
-  }
-  if (view === 'matrix') {
-    setTimeout(() => {
-      if (typeof renderMatrix === 'function') renderMatrix();
-    }, 50);
-  }
+  if (view === 'archive' && typeof renderArchive === 'function') renderArchive();
+  if (view === 'bracket' && typeof renderBracket === 'function') renderBracket();
+  if (view === 'postmortem' && typeof renderPostmortem === 'function') renderPostmortem();
+  if (view === 'table' && typeof renderTable === 'function') renderTable();
+  if (view === 'cards' && typeof renderCards === 'function') renderCards();
+  if (view === 'schedule' && typeof renderSchedule === 'function') renderSchedule();
+  if (view === 'matrix' && typeof renderMatrix === 'function') renderMatrix();
 }
 
 function getInitials(name) {
@@ -702,8 +703,7 @@ function showGroupSchedule(groupLetter) {
 
 // Boot
 loadData().then(() => {
-  const bc = document.getElementById('btn-cards');
-  if (bc) bc.classList.add('active');
+  switchView('archive');
   setupTeamClicks();
 });
 
@@ -735,47 +735,6 @@ function applySearch(term) {
   currentSearchTerm = (term || '').toLowerCase().trim();
   if (currentView === 'table' && typeof renderTable === 'function') renderTable();
   if (currentView === 'schedule' && typeof renderSchedule === 'function') renderSchedule();
-}
-
-// BACKUP: renderSchedule v0 - 2026-06-05 (new function, no existing render replaced)
-function renderSchedule() {
-  const container = document.getElementById('schedule-container');
-  if (!container) return;
-  container.innerHTML = '';
-
-  // BACKUP: renderSchedule group filter - 2026-06-05 (now supports all groups)
-  let priorityGroups = groupsData;
-  if (currentGroupFilter) priorityGroups = groupsData.filter(g => g.group === currentGroupFilter);
-  const teams = [];
-  priorityGroups.forEach(g => g.teams.forEach(t => teams.push({ group: g.group, name: t.name })));
-
-  let html = '';
-  teams.forEach(team => {
-    if (currentSearchTerm && !team.name.toLowerCase().includes(currentSearchTerm)) return;
-    const fixtures = fixturesData[team.name] || [];
-    html += `<div style="margin-bottom:18px; padding-bottom:12px; border-bottom:1px solid #27272a;">`;
-    html += `<div style="font-weight:700; color:#fff; margin-bottom:6px; display:flex; align-items:center; gap:8px;">
-      <span style="color:#F84600; font-family:monospace;">${team.group}</span> ${team.name}
-    </div>`;
-    if (fixtures.length === 0) {
-      html += `<div style="color:#52525b; font-size:12px;">No fixtures loaded</div>`;
-    } else {
-      fixtures.forEach(f => {
-        const d = new Date(f.date);
-        const dateStr = d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
-        const wiki = `https://en.wikipedia.org/wiki/${f.opponent.replace(/ /g, '_')}_national_football_team`;
-// BACKUP: Step 3 - Travel & rest v1 - 2026-06-08 (all 48 teams, additive)
-        html += `<div style="display:flex; align-items:center; gap:10px; font-size:13px; padding:4px 0;">
-          <span style="color:#71717a; width:70px;">${dateStr}</span>
-          <a href="${wiki}" target="_blank" style="color:#14b8a6; text-decoration:none;">${f.opponent} ↗</a>
-          <span style="color:#52525b; font-size:11px;">${f.competition || ''}</span>
-        </div>`;
-      });
-    }
-    html += `</div>`;
-  });
-
-  container.innerHTML = html;
 }
 
 function showMatchModal(teamName, match) {
@@ -1127,7 +1086,7 @@ function renderMatrix() {
   container.innerHTML = html;
 }
 
-// === LIVE FIXTURES (matches.json) ===
+// === GROUP RESULTS (matches.json with scores) ===
 function renderSchedule() {
   const container = document.getElementById('schedule-container');
   if (!container) return;
@@ -1151,27 +1110,27 @@ function renderSchedule() {
   });
 
   const groupLetters = Object.keys(byGroup).sort();
-
   let html = `<div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(320px,1fr)); gap:20px;">`;
 
   groupLetters.forEach(letter => {
     const matches = byGroup[letter];
-    html += `<div style="background:#111113; border:1px solid #27272a; border-radius:12px; padding:16px;">`;
+    html += `<div style="background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:16px;">`;
     html += `<div style="font-size:13px; color:#F84600; font-weight:700; margin-bottom:12px; letter-spacing:1px;">GROUP ${letter}</div>`;
 
     matches.forEach(m => {
       const dateStr = m.date || 'TBD';
-      const timeStr = m.timeLocal || '';
+      const score = m.score || '—';
+      const wikiHome = `https://en.wikipedia.org/wiki/${encodeURIComponent(m.home.replace(/ /g, '_'))}_national_football_team`;
+      const wikiAway = `https://en.wikipedia.org/wiki/${encodeURIComponent(m.away.replace(/ /g, '_'))}_national_football_team`;
       html += `
-        <div style="display:flex; justify-content:space-between; align-items:center; padding:8px 0; border-bottom:1px solid #27272a; font-size:13px;">
-          <div style="color:#fff;">
-            <span style="color:#a1a1aa;">${m.home}</span>
-            <span style="color:#52525b; margin:0 6px;">vs</span>
-            <span style="color:#fff;">${m.away}</span>
+        <div style="display:flex; justify-content:space-between; align-items:center; padding:8px 0; border-bottom:1px solid var(--border); font-size:13px; gap:10px;">
+          <div style="color:var(--text-primary); flex:1; min-width:0;">
+            <a href="${wikiHome}" target="_blank" rel="noopener" style="color:var(--text-secondary); text-decoration:none;">${m.home}</a>
+            <span style="color:var(--text-tertiary); margin:0 6px;">vs</span>
+            <a href="${wikiAway}" target="_blank" rel="noopener" style="color:var(--text-primary); text-decoration:none;">${m.away}</a>
           </div>
-          <div style="text-align:right; color:#71717a; font-size:11px; white-space:nowrap;">
-            ${dateStr} ${timeStr}
-          </div>
+          <div style="font-family:monospace; font-weight:700; color:#fff; min-width:42px; text-align:center;">${score}</div>
+          <div style="text-align:right; color:var(--text-tertiary); font-size:11px; white-space:nowrap; min-width:72px;">${dateStr}</div>
         </div>
       `;
     });
@@ -1180,5 +1139,457 @@ function renderSchedule() {
   });
 
   html += `</div>`;
+  container.innerHTML = html;
+}
+
+function esc(s) {
+  return String(s == null ? '' : s)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+function gradeColor(g) {
+  if (g === 'HIT') return '#22c55e';
+  if (g === 'MISS') return '#ef4444';
+  if (g === 'MIXED') return '#eab308';
+  return '#71717a';
+}
+
+function renderArchive() {
+  const container = document.getElementById('archive-container');
+  if (!container) return;
+  if (!knockoutData || !archiveData) {
+    container.innerHTML = `<div style="color:#71717a; padding:24px;">Archive data not loaded.</div>`;
+    return;
+  }
+
+  const meta = knockoutData.metadata || {};
+  const rounds = knockoutData.rounds || {};
+  const sources = (meta.sources || []).map(s =>
+    `<a href="${esc(s.url)}" target="_blank" rel="noopener" style="color:#14b8a6; text-decoration:none; margin-right:12px;">${esc(s.name)} ↗</a>`
+  ).join('');
+
+  let html = '';
+  html += `<div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(140px,1fr)); gap:12px; margin-bottom:20px;">
+    <div style="background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:14px;">
+      <div style="font-size:10px; color:#71717a; letter-spacing:1px;">CHAMPION</div>
+      <div style="font-size:22px; font-weight:900; color:#F84600;">${esc(meta.champion)}</div>
+    </div>
+    <div style="background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:14px;">
+      <div style="font-size:10px; color:#71717a; letter-spacing:1px;">RUNNER-UP</div>
+      <div style="font-size:18px; font-weight:700; color:#fff;">${esc(meta.runner_up)}</div>
+    </div>
+    <div style="background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:14px;">
+      <div style="font-size:10px; color:#71717a; letter-spacing:1px;">THIRD</div>
+      <div style="font-size:18px; font-weight:700; color:#fff;">${esc(meta.third)}</div>
+    </div>
+    <div style="background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:14px;">
+      <div style="font-size:10px; color:#71717a; letter-spacing:1px;">FOURTH</div>
+      <div style="font-size:18px; font-weight:700; color:#fff;">${esc(meta.fourth)}</div>
+    </div>
+    <div style="background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:14px; grid-column: span 1;">
+      <div style="font-size:10px; color:#71717a; letter-spacing:1px;">FINAL</div>
+      <div style="font-size:16px; font-weight:700; color:#fff;">${esc(meta.final_score)} ${meta.final_detail ? '('+esc(meta.final_detail)+')' : ''}</div>
+      <div style="font-size:11px; color:#71717a; margin-top:4px;">${esc(meta.final_date)} · ${esc(meta.final_venue)}</div>
+    </div>
+  </div>`;
+
+  html += `<div style="font-size:12px; color:#71717a; margin-bottom:18px;">Sources: ${sources}</div>`;
+
+  // Champion path
+  const cpath = archiveData.champion_path || [];
+  if (cpath.length) {
+    html += `<div style="background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:16px; margin-bottom:18px;">
+      <div style="font-size:12px; color:#F84600; font-weight:700; letter-spacing:1px; margin-bottom:10px;">SPAIN PATH TO THE TITLE</div>
+      <div style="display:flex; flex-wrap:wrap; gap:8px;">`;
+    cpath.forEach(p => {
+      html += `<div style="border:1px solid var(--border); border-radius:8px; padding:8px 10px; min-width:120px;">
+        <div style="font-size:10px; color:#71717a;">${esc(p.round)}</div>
+        <div style="font-size:13px; color:#fff; font-weight:600;">vs ${esc(p.opponent)}</div>
+        <div style="font-family:monospace; color:#22c55e;">${esc(p.score)}${p.detail ? ' · '+esc(p.detail) : ''} · ${esc(p.result)}</div>
+      </div>`;
+    });
+    html += `</div></div>`;
+  }
+
+  // Priority paths
+  html += `<div style="font-size:12px; color:#F84600; font-weight:700; letter-spacing:1px; margin-bottom:10px;">PRIORITY D+L PATHS</div>`;
+  html += `<div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:12px; margin-bottom:22px;">`;
+  const paths = archiveData.priority_paths || {};
+  Object.keys(paths).forEach(team => {
+    const info = paths[team];
+    const exit = info.exit_round || 'Group';
+    html += `<div style="background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:14px;">
+      <div style="display:flex; justify-content:space-between; align-items:baseline; gap:8px;">
+        <div style="font-weight:700; color:#fff;">${esc(team)}</div>
+        <div style="font-size:11px; color:#F84600; font-family:monospace;">G${esc(info.group)} #${esc(info.group_finish)} · ${esc(exit)}</div>
+      </div>`;
+    if (!info.path || !info.path.length) {
+      html += `<div style="font-size:12px; color:#71717a; margin-top:8px;">Group stage exit</div>`;
+    } else {
+      html += `<div style="margin-top:8px;">`;
+      info.path.forEach(p => {
+        const col = p.result === 'W' ? '#22c55e' : (p.result === 'L' ? '#ef4444' : '#eab308');
+        html += `<div style="display:flex; justify-content:space-between; font-size:12px; padding:3px 0; border-bottom:1px solid var(--border);">
+          <span style="color:#a1a1aa;">${esc(p.round)} vs ${esc(p.opponent)}</span>
+          <span style="font-family:monospace; color:${col};">${esc(p.score)}${p.detail ? ' '+esc(p.detail) : ''} ${esc(p.result)}</span>
+        </div>`;
+      });
+      html += `</div>`;
+    }
+    html += `</div>`;
+  });
+  html += `</div>`;
+
+  // Knockout rounds
+  const order = [
+    ['round_of_32', 'ROUND OF 32'],
+    ['round_of_16', 'ROUND OF 16'],
+    ['quarterfinals', 'QUARTERFINALS'],
+    ['semifinals', 'SEMIFINALS'],
+    ['third_place', 'THIRD PLACE'],
+    ['final', 'FINAL'],
+  ];
+  order.forEach(([key, label]) => {
+    const list = rounds[key] || [];
+    if (!list.length) return;
+    html += `<div style="margin-bottom:16px;">
+      <div style="font-size:12px; color:#F84600; font-weight:700; letter-spacing:1px; margin-bottom:8px;">${label}</div>
+      <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:8px;">`;
+    list.forEach(m => {
+      const src = m.source ? `<a href="${esc(m.source)}" target="_blank" rel="noopener" style="color:#14b8a6; text-decoration:none; font-size:10px;">src ↗</a>` : '';
+      html += `<div style="background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:10px 12px; display:flex; justify-content:space-between; gap:10px; align-items:center;">
+        <div style="min-width:0;">
+          <div style="font-size:13px; color:#fff;"><span style="color:#a1a1aa;">${esc(m.home)}</span> <span style="color:#52525b;">vs</span> ${esc(m.away)}</div>
+          <div style="font-size:11px; color:#71717a;">${esc(m.date)} · winner ${esc(m.winner || '—')} ${src}</div>
+        </div>
+        <div style="font-family:monospace; font-weight:700; color:#fff; white-space:nowrap;">${esc(m.score)}${m.detail ? '<div style="font-size:10px; color:#71717a; font-weight:500;">'+esc(m.detail)+'</div>' : ''}</div>
+      </div>`;
+    });
+    html += `</div></div>`;
+  });
+
+  container.innerHTML = html;
+}
+
+function shortTeam(name) {
+  const map = {
+    'United States': 'USA',
+    'Bosnia and Herzegovina': 'Bosnia',
+    'South Africa': 'S. Africa',
+    'Ivory Coast': "Côte d'Ivoire",
+    "Côte d'Ivoire": "Côte d'Ivoire",
+    'DR Congo': 'DR Congo',
+    'Cape Verde': 'Cape Verde',
+    'Switzerland': 'Swiss',
+    'Netherlands': 'Neth.',
+    'Argentina': 'Argentina',
+    'England': 'England',
+    'France': 'France',
+    'Spain': 'Spain',
+    'Belgium': 'Belgium',
+    'Portugal': 'Portugal',
+    'Morocco': 'Morocco',
+    'Paraguay': 'Paraguay',
+    'Australia': 'Australia',
+    'Croatia': 'Croatia',
+    'Ghana': 'Ghana',
+    'Norway': 'Norway',
+    'Brazil': 'Brazil',
+    'Mexico': 'Mexico',
+    'Canada': 'Canada',
+    'Colombia': 'Colombia',
+    'Egypt': 'Egypt',
+    'Germany': 'Germany',
+    'Japan': 'Japan',
+    'Sweden': 'Sweden',
+    'Austria': 'Austria',
+    'Algeria': 'Algeria',
+    'Senegal': 'Senegal',
+  };
+  return map[name] || name;
+}
+
+function isPriorityTeam(name) {
+  return REAL_TEAMS.includes(name) || name === 'United States' || name === 'USA';
+}
+
+function renderMatchCard(m, compact) {
+  if (!m) {
+    return `<div class="bracket-slot empty">TBD</div>`;
+  }
+  const src = m.source
+    ? `<a href="${esc(m.source)}" target="_blank" rel="noopener" class="bracket-src">src</a>`
+    : '';
+  const priHome = isPriorityTeam(m.home);
+  const priAway = isPriorityTeam(m.away);
+  const winHome = m.winner === m.home;
+  const winAway = m.winner === m.away;
+  return `<div class="bracket-slot${compact ? ' compact' : ''}">
+    <div class="bracket-row${winHome ? ' winner' : ''}${priHome ? ' priority' : ''}">
+      <span class="bracket-team">${esc(shortTeam(m.home))}</span>
+      <span class="bracket-score">${esc((m.score || '—').split('-')[0] || '—')}</span>
+    </div>
+    <div class="bracket-row${winAway ? ' winner' : ''}${priAway ? ' priority' : ''}">
+      <span class="bracket-team">${esc(shortTeam(m.away))}</span>
+      <span class="bracket-score">${esc((m.score || '—').split('-')[1] || '—')}</span>
+    </div>
+    <div class="bracket-meta">${esc(m.date || '')}${m.detail ? ' · ' + esc(m.detail) : ''} ${src}</div>
+  </div>`;
+}
+
+function renderBracket() {
+  const container = document.getElementById('bracket-container');
+  if (!container) return;
+  if (!knockoutData) {
+    container.innerHTML = `<div style="color:#71717a; padding:24px;">Bracket data not loaded.</div>`;
+    return;
+  }
+
+  const r = knockoutData.rounds || {};
+  const r32 = r.round_of_32 || [];
+  const r16 = r.round_of_16 || [];
+  const qf = r.quarterfinals || [];
+  const sf = r.semifinals || [];
+  const third = (r.third_place || [])[0];
+  const final = (r.final || [])[0];
+  const meta = knockoutData.metadata || {};
+
+  // Build tree by winner progression (robust if source order drifts)
+  function findMatch(list, a, b) {
+    const set = new Set([a, b].filter(Boolean));
+    return (list || []).find(m => set.has(m.home) && set.has(m.away))
+      || (list || []).find(m => m.winner === a || m.winner === b)
+      || null;
+  }
+
+  // Two halves of 8 R32 each → 4 R16 → 2 QF → 1 SF
+  const leftR32 = r32.slice(0, 8);
+  const rightR32 = r32.slice(8, 16);
+
+  function col(matches, label) {
+    let h = `<div class="bracket-col"><div class="bracket-col-label">${esc(label)}</div>`;
+    matches.forEach(m => { h += renderMatchCard(m, true); });
+    h += `</div>`;
+    return h;
+  }
+
+  // Prefer data order; fall back to sequential pairing
+  const leftR16 = r16.slice(0, 4);
+  const rightR16 = r16.slice(4, 8);
+  const leftQF = qf.slice(0, 2);
+  const rightQF = qf.slice(2, 4);
+  const leftSF = sf[0] || null;
+  const rightSF = sf[1] || null;
+
+  let html = '';
+  html += `<div style="display:flex; flex-wrap:wrap; gap:12px; align-items:center; margin-bottom:14px;">
+    <div style="font-size:13px; color:#a1a1aa;">Champion <strong style="color:#F84600;">${esc(meta.champion || 'Spain')}</strong>
+      · Final ${esc(meta.final_score || '')} ${meta.final_detail ? '(' + esc(meta.final_detail) + ')' : ''}
+      · ${esc(meta.final_date || '')}</div>
+    <div style="font-size:11px; color:#71717a;">Priority D+L teams highlighted · click src for source</div>
+    <button onclick="downloadEvidencePack('all')" style="margin-left:auto; background:#111; border:1px solid #F84600; color:#F84600; border-radius:8px; padding:6px 12px; font-size:11px; font-weight:700; cursor:pointer;">EXPORT EVIDENCE</button>
+  </div>`;
+
+  html += `<div class="bracket-scroll">
+    <div class="bracket-tree">
+      ${col(leftR32, 'R32')}
+      ${col(leftR16, 'R16')}
+      ${col(leftQF, 'QF')}
+      <div class="bracket-col center-col">
+        <div class="bracket-col-label">SF / FINAL</div>
+        ${renderMatchCard(leftSF, true)}
+        <div class="bracket-final-wrap">
+          <div class="bracket-col-label" style="margin-top:8px;">FINAL</div>
+          ${renderMatchCard(final, false)}
+          <div style="text-align:center; margin-top:8px; font-size:12px; color:#F84600; font-weight:800; letter-spacing:1px;">★ ${esc(meta.champion || 'SPAIN')}</div>
+        </div>
+        ${renderMatchCard(rightSF, true)}
+        <div style="margin-top:12px;">
+          <div class="bracket-col-label">3RD PLACE</div>
+          ${renderMatchCard(third, true)}
+        </div>
+      </div>
+      ${col(rightQF, 'QF')}
+      ${col(rightR16, 'R16')}
+      ${col(rightR32, 'R32')}
+    </div>
+  </div>`;
+
+  // Flat fallback list for mobile clarity
+  html += `<div style="margin-top:18px;">
+    <div style="font-size:11px; color:#71717a; margin-bottom:8px;">FULL KO LIST (same data)</div>
+    <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:8px;">`;
+  [['R32', r32], ['R16', r16], ['QF', qf], ['SF', sf], ['3rd', third ? [third] : []], ['Final', final ? [final] : []]].forEach(([label, list]) => {
+    (list || []).forEach(m => {
+      html += `<div style="background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:10px 12px; font-size:12px;">
+        <div style="color:#F84600; font-size:10px; font-weight:700; letter-spacing:1px;">${label}</div>
+        <div style="color:#fff; margin-top:4px;">${esc(m.home)} <span style="color:#52525b;">vs</span> ${esc(m.away)}</div>
+        <div style="font-family:monospace; color:#e4e4e7; margin-top:2px;">${esc(m.score)}${m.detail ? ' · ' + esc(m.detail) : ''} → ${esc(m.winner || '—')}</div>
+      </div>`;
+    });
+  });
+  html += `</div></div>`;
+
+  container.innerHTML = html;
+}
+
+function buildEvidencePack(teamFilter) {
+  const meta = (knockoutData && knockoutData.metadata) || {};
+  const sources = (meta.sources || []).map(s => `- ${s.name}: ${s.url}`).join('\n');
+  const teams = teamFilter && teamFilter !== 'all'
+    ? [teamFilter]
+    : [...REAL_TEAMS, 'Spain'];
+
+  let md = `# WC 2026 Evidence Pack\n\n`;
+  md += `Generated: ${new Date().toISOString().slice(0, 10)}\n`;
+  md += `Tournament: complete · Champion: ${meta.champion || 'Spain'} · Final: ${meta.final_score || '1-0'} ${meta.final_detail || 'AET'} (${meta.final_date || '2026-07-19'})\n`;
+  md += `Podium: 1 ${meta.champion || 'Spain'} · 2 ${meta.runner_up || 'Argentina'} · 3 ${meta.third || 'England'} · 4 ${meta.fourth || 'France'}\n\n`;
+  md += `## Sources\n${sources || '- Yahoo / Wikipedia / FIFA'}\n\n`;
+
+  if (postmortemData && postmortemData.summary && (teamFilter === 'all' || !teamFilter)) {
+    const s = postmortemData.summary;
+    md += `## Desk grade (priority 8)\n`;
+    md += `${s.hits || 0} HIT · ${s.misses || 0} MISS · ${s.mixed || 0} MIXED · ${s.na || 0} N/A\n\n`;
+    md += `${s.headline || ''}\n\n`;
+    md += `### Keep\n${(s.keep || []).map(x => `- ${x}`).join('\n')}\n\n`;
+    md += `### Drop\n${(s.drop || []).map(x => `- ${x}`).join('\n')}\n\n`;
+  }
+
+  teams.forEach(team => {
+    const arch = (archiveData && archiveData.priority_paths && archiveData.priority_paths[team])
+      || (team === 'Spain' ? { group: '—', group_finish: '—', exit_round: 'Champion', path: (archiveData && archiveData.champion_path) || [] } : null);
+    const pm = postmortemData && postmortemData.teams && postmortemData.teams[team];
+
+    md += `---\n\n## ${team}\n\n`;
+    if (arch) {
+      md += `- Group: ${arch.group || '—'} finish #${arch.group_finish || '—'}\n`;
+      md += `- Exit: ${arch.exit_round || '—'}\n`;
+      if (arch.path && arch.path.length) {
+        md += `- Path:\n`;
+        arch.path.forEach(p => {
+          md += `  - ${p.round} vs ${p.opponent}: ${p.score}${p.detail ? ' ' + p.detail : ''} (${p.result})\n`;
+        });
+      } else {
+        md += `- Path: group stage exit\n`;
+      }
+    } else {
+      md += `- No archive path row (outside priority set)\n`;
+    }
+
+    if (pm) {
+      md += `- Signal grade: **${pm.signal_grade}**\n`;
+      md += `- Travel risk: ${pm.travel_risk} · avg rest ${pm.avg_rest_days}d · climate max ${pm.max_climate_score}\n`;
+      md += `- Thesis: ${pm.thesis}\n`;
+      md += `- Reality: ${pm.reality}\n`;
+      md += `- Lesson: ${pm.lesson}\n`;
+      if (pm.travel_flags && pm.travel_flags.length) {
+        md += `- Travel flags: ${pm.travel_flags.join(', ')}\n`;
+      }
+      if (pm.climate_flags && pm.climate_flags.length) {
+        md += `- Climate flags: ${pm.climate_flags.join(', ')}\n`;
+      }
+    }
+
+    // Group matches involving team
+    const gms = (matchesData || []).filter(m => m.home === team || m.away === team);
+    if (gms.length) {
+      md += `\n### Group matches\n`;
+      gms.forEach(m => {
+        md += `- ${m.date || ''} ${m.home} ${m.score || '—'} ${m.away} (G${m.group || '?'})\n`;
+      });
+    }
+    md += `\n`;
+  });
+
+  md += `---\n\n_Not betting advice. Closed tournament archive + graded information layer for Groups D+L priority desk._\n`;
+  return md;
+}
+
+function downloadEvidencePack(teamFilter) {
+  try {
+    const md = buildEvidencePack(teamFilter || 'all');
+    const blob = new Blob([md], { type: 'text/markdown;charset=utf-8' });
+    const a = document.createElement('a');
+    const tag = (!teamFilter || teamFilter === 'all') ? 'full' : teamFilter.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+    a.href = URL.createObjectURL(blob);
+    a.download = `wc2026-evidence-${tag}.md`;
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(() => {
+      URL.revokeObjectURL(a.href);
+      a.remove();
+    }, 500);
+    const sel = document.getElementById('evidence-team-select');
+    if (sel) sel.value = '';
+  } catch (e) {
+    console.error('evidence pack failed', e);
+    alert('Evidence pack failed — check console.');
+  }
+}
+
+function renderPostmortem() {
+  const container = document.getElementById('postmortem-container');
+  if (!container) return;
+  if (!postmortemData) {
+    container.innerHTML = `<div style="color:#71717a; padding:24px;">Post-mortem data not loaded.</div>`;
+    return;
+  }
+
+  const s = postmortemData.summary || {};
+  const teams = postmortemData.teams || {};
+  let html = '';
+
+  html += `<div style="background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:16px; margin-bottom:16px;">
+    <div style="display:flex; flex-wrap:wrap; gap:16px; margin-bottom:12px;">
+      <div><div style="font-size:10px; color:#71717a;">HIT</div><div style="font-size:28px; font-weight:900; color:#22c55e;">${esc(s.hits)}</div></div>
+      <div><div style="font-size:10px; color:#71717a;">MISS</div><div style="font-size:28px; font-weight:900; color:#ef4444;">${esc(s.misses)}</div></div>
+      <div><div style="font-size:10px; color:#71717a;">MIXED</div><div style="font-size:28px; font-weight:900; color:#eab308;">${esc(s.mixed)}</div></div>
+      <div><div style="font-size:10px; color:#71717a;">N/A</div><div style="font-size:28px; font-weight:900; color:#71717a;">${esc(s.na)}</div></div>
+    </div>
+    <div style="font-size:14px; color:#e4e4e7; line-height:1.55;">${esc(s.headline)}</div>
+  </div>`;
+
+  html += `<div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:18px;">
+    <div style="background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:14px;">
+      <div style="font-size:11px; color:#22c55e; font-weight:700; margin-bottom:8px;">KEEP</div>
+      <ul style="margin:0; padding-left:18px; color:#a1a1aa; font-size:13px; line-height:1.5;">
+        ${(s.keep || []).map(x => `<li>${esc(x)}</li>`).join('')}
+      </ul>
+    </div>
+    <div style="background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:14px;">
+      <div style="font-size:11px; color:#ef4444; font-weight:700; margin-bottom:8px;">DROP</div>
+      <ul style="margin:0; padding-left:18px; color:#a1a1aa; font-size:13px; line-height:1.5;">
+        ${(s.drop || []).map(x => `<li>${esc(x)}</li>`).join('')}
+      </ul>
+    </div>
+  </div>`;
+
+  html += `<div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:12px;">`;
+  Object.keys(teams).forEach(name => {
+    const t = teams[name];
+    const gc = gradeColor(t.signal_grade);
+    html += `<div style="background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:14px;">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+        <div style="font-weight:700; color:#fff;">${esc(name)}</div>
+        <div style="font-size:11px; font-weight:800; letter-spacing:1px; color:${gc}; border:1px solid ${gc}; border-radius:999px; padding:2px 8px;">${esc(t.signal_grade)}</div>
+      </div>
+      <div style="font-size:11px; color:#71717a; margin-bottom:8px; font-family:monospace;">
+        G${esc(t.group)} #${esc(t.group_finish)} · exit ${esc(t.exit_round)} · travel ${esc(t.travel_risk)} · rest ${esc(t.avg_rest_days)}d · climate max ${esc(t.max_climate_score)}
+      </div>
+      <div style="font-size:12px; color:#a1a1aa; line-height:1.45; margin-bottom:6px;"><span style="color:#71717a;">Thesis:</span> ${esc(t.thesis)}</div>
+      <div style="font-size:12px; color:#a1a1aa; line-height:1.45; margin-bottom:6px;"><span style="color:#71717a;">Reality:</span> ${esc(t.reality)}</div>
+      <div style="font-size:12px; color:#e4e4e7; line-height:1.45;"><span style="color:#71717a;">Lesson:</span> ${esc(t.lesson)}</div>
+    </div>`;
+  });
+  html += `</div>`;
+
+  const podium = s.final_podium || {};
+  if (podium.final) {
+    html += `<div style="margin-top:16px; font-size:12px; color:#71717a;">Podium check: ${esc(podium.champion)} > ${esc(podium.runner_up)} · 3rd ${esc(podium.third)} · 4th ${esc(podium.fourth)} · ${esc(podium.final)}</div>`;
+  }
+
   container.innerHTML = html;
 }

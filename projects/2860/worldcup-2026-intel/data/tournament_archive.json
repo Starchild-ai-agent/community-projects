@@ -1,0 +1,342 @@
+{
+  "metadata": {
+    "status": "complete",
+    "champion": "Spain",
+    "runner_up": "Argentina",
+    "third": "England",
+    "fourth": "France",
+    "updated": "2026-07-20",
+    "sources": [
+      {
+        "name": "Yahoo Sports",
+        "url": "https://sports.yahoo.com/soccer/article/2026-world-cup-results-standings-and-schedule-live-scores-group-stage-updates-and-how-to-watch-050724193.html"
+      },
+      {
+        "name": "Wikipedia knockout",
+        "url": "https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_knockout_stage"
+      },
+      {
+        "name": "FIFA final",
+        "url": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/final"
+      },
+      {
+        "name": "CBS standings (group)",
+        "url": "https://www.cbssports.com/soccer/news/world-cup-group-standings-table-results/"
+      }
+    ]
+  },
+  "priority_paths": {
+    "United States": {
+      "group": "D",
+      "group_finish": 1,
+      "group_pts": 6,
+      "group_record": {
+        "pos": 1,
+        "team": "USA",
+        "mp": 3,
+        "w": 2,
+        "d": 0,
+        "l": 1,
+        "gf": 8,
+        "ga": 4,
+        "gd": 4,
+        "pts": 6
+      },
+      "advanced_from_group": true,
+      "exit_round": "R16",
+      "path": [
+        {
+          "round": "R32",
+          "opponent": "Bosnia and Herzegovina",
+          "score": "2-0",
+          "detail": null,
+          "result": "W",
+          "date": "2026-07-01"
+        },
+        {
+          "round": "R16",
+          "opponent": "Belgium",
+          "score": "4-1",
+          "detail": null,
+          "result": "L",
+          "date": "2026-07-06"
+        }
+      ],
+      "notes": ""
+    },
+    "Paraguay": {
+      "group": "D",
+      "group_finish": 3,
+      "group_pts": 4,
+      "group_record": {
+        "pos": 3,
+        "team": "Paraguay",
+        "mp": 3,
+        "w": 1,
+        "d": 1,
+        "l": 1,
+        "gf": 2,
+        "ga": 4,
+        "gd": -2,
+        "pts": 4
+      },
+      "advanced_from_group": true,
+      "exit_round": "R16",
+      "path": [
+        {
+          "round": "R32",
+          "opponent": "Germany",
+          "score": "1-1",
+          "detail": "PEN 3-4",
+          "result": "W",
+          "date": "2026-06-29"
+        },
+        {
+          "round": "R16",
+          "opponent": "France",
+          "score": "1-0",
+          "detail": null,
+          "result": "L",
+          "date": "2026-07-04"
+        }
+      ],
+      "notes": ""
+    },
+    "Australia": {
+      "group": "D",
+      "group_finish": 2,
+      "group_pts": 4,
+      "group_record": {
+        "pos": 2,
+        "team": "Australia",
+        "mp": 3,
+        "w": 1,
+        "d": 1,
+        "l": 1,
+        "gf": 2,
+        "ga": 2,
+        "gd": 0,
+        "pts": 4
+      },
+      "advanced_from_group": true,
+      "exit_round": "R32",
+      "path": [
+        {
+          "round": "R32",
+          "opponent": "Egypt",
+          "score": "1-1",
+          "detail": "PEN 4-2",
+          "result": "L",
+          "date": "2026-07-03"
+        }
+      ],
+      "notes": ""
+    },
+    "Türkiye": {
+      "group": "D",
+      "group_finish": 4,
+      "group_pts": 3,
+      "group_record": {
+        "pos": 4,
+        "team": "Türkiye",
+        "mp": 3,
+        "w": 0,
+        "d": 1,
+        "l": 2,
+        "gf": 3,
+        "ga": 5,
+        "gd": -2,
+        "pts": 3
+      },
+      "advanced_from_group": false,
+      "exit_round": "Group",
+      "path": [],
+      "notes": ""
+    },
+    "England": {
+      "group": "L",
+      "group_finish": 1,
+      "group_pts": 7,
+      "group_record": {
+        "pos": 1,
+        "team": "England",
+        "mp": 3,
+        "w": 2,
+        "d": 1,
+        "l": 0,
+        "gf": 6,
+        "ga": 2,
+        "gd": 4,
+        "pts": 7
+      },
+      "advanced_from_group": true,
+      "exit_round": "3rd",
+      "path": [
+        {
+          "round": "R32",
+          "opponent": "DR Congo",
+          "score": "2-1",
+          "detail": null,
+          "result": "W",
+          "date": "2026-07-01"
+        },
+        {
+          "round": "R16",
+          "opponent": "Mexico",
+          "score": "3-2",
+          "detail": null,
+          "result": "W",
+          "date": "2026-07-05"
+        },
+        {
+          "round": "QF",
+          "opponent": "Norway",
+          "score": "2-1",
+          "detail": "AET",
+          "result": "W",
+          "date": "2026-07-11"
+        },
+        {
+          "round": "SF",
+          "opponent": "Argentina",
+          "score": "2-1",
+          "detail": null,
+          "result": "L",
+          "date": "2026-07-15"
+        },
+        {
+          "round": "3rd",
+          "opponent": "France",
+          "score": "6-4",
+          "detail": null,
+          "result": "W",
+          "date": "2026-07-18"
+        }
+      ],
+      "notes": ""
+    },
+    "Croatia": {
+      "group": "L",
+      "group_finish": 2,
+      "group_pts": 7,
+      "group_record": {
+        "pos": 2,
+        "team": "Croatia",
+        "mp": 3,
+        "w": 2,
+        "d": 1,
+        "l": 0,
+        "gf": 5,
+        "ga": 5,
+        "gd": 0,
+        "pts": 7
+      },
+      "advanced_from_group": true,
+      "exit_round": "R32",
+      "path": [
+        {
+          "round": "R32",
+          "opponent": "Portugal",
+          "score": "2-1",
+          "detail": null,
+          "result": "L",
+          "date": "2026-07-02"
+        }
+      ],
+      "notes": ""
+    },
+    "Ghana": {
+      "group": "L",
+      "group_finish": 3,
+      "group_pts": 4,
+      "group_record": {
+        "pos": 3,
+        "team": "Ghana",
+        "mp": 3,
+        "w": 1,
+        "d": 1,
+        "l": 1,
+        "gf": 2,
+        "ga": 2,
+        "gd": 0,
+        "pts": 4
+      },
+      "advanced_from_group": true,
+      "exit_round": "R32",
+      "path": [
+        {
+          "round": "R32",
+          "opponent": "Colombia",
+          "score": "1-0",
+          "detail": null,
+          "result": "L",
+          "date": "2026-07-03"
+        }
+      ],
+      "notes": ""
+    },
+    "Panama": {
+      "group": "L",
+      "group_finish": 4,
+      "group_pts": 0,
+      "group_record": {
+        "pos": 4,
+        "team": "Panama",
+        "mp": 3,
+        "w": 0,
+        "d": 0,
+        "l": 3,
+        "gf": 0,
+        "ga": 4,
+        "gd": -4,
+        "pts": 0
+      },
+      "advanced_from_group": false,
+      "exit_round": "Group",
+      "path": [],
+      "notes": ""
+    }
+  },
+  "champion_path": [
+    {
+      "round": "R32",
+      "opponent": "Austria",
+      "score": "3-0",
+      "detail": null,
+      "result": "W",
+      "date": "2026-07-02"
+    },
+    {
+      "round": "R16",
+      "opponent": "Portugal",
+      "score": "1-0",
+      "detail": null,
+      "result": "W",
+      "date": "2026-07-06"
+    },
+    {
+      "round": "QF",
+      "opponent": "Belgium",
+      "score": "2-1",
+      "detail": null,
+      "result": "W",
+      "date": "2026-07-10"
+    },
+    {
+      "round": "SF",
+      "opponent": "France",
+      "score": "2-0",
+      "detail": null,
+      "result": "W",
+      "date": "2026-07-14"
+    },
+    {
+      "round": "Final",
+      "opponent": "Argentina",
+      "score": "1-0",
+      "detail": "AET",
+      "result": "W",
+      "date": "2026-07-19"
+    }
+  ]
+}

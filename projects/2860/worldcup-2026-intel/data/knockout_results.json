@@ -1,0 +1,343 @@
+{
+  "metadata": {
+    "tournament": "2026 FIFA World Cup",
+    "champion": "Spain",
+    "runner_up": "Argentina",
+    "third": "England",
+    "fourth": "France",
+    "final_score": "1-0",
+    "final_detail": "AET",
+    "final_date": "2026-07-19",
+    "final_venue": "MetLife Stadium",
+    "final_city": "East Rutherford",
+    "sources": [
+      {
+        "name": "Yahoo Sports results",
+        "url": "https://sports.yahoo.com/soccer/article/2026-world-cup-results-standings-and-schedule-live-scores-group-stage-updates-and-how-to-watch-050724193.html"
+      },
+      {
+        "name": "Wikipedia knockout stage",
+        "url": "https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_knockout_stage"
+      },
+      {
+        "name": "Wikipedia final",
+        "url": "https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_final"
+      },
+      {
+        "name": "FIFA final",
+        "url": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/final"
+      }
+    ],
+    "updated": "2026-07-20",
+    "counts": {
+      "round_of_32": 16,
+      "round_of_16": 8,
+      "quarterfinals": 4,
+      "semifinals": 2,
+      "third_place": 1,
+      "final": 1
+    }
+  },
+  "rounds": {
+    "round_of_32": [
+      {
+        "date": "2026-06-28",
+        "home": "Canada",
+        "away": "South Africa",
+        "score": "1-0",
+        "detail": null,
+        "winner": "Canada",
+        "source": "https://sports.yahoo.com/soccer/article/2026-world-cup-results-standings-and-schedule-live-scores-group-stage-updates-and-how-to-watch-050724193.html"
+      },
+      {
+        "date": "2026-06-29",
+        "home": "Brazil",
+        "away": "Japan",
+        "score": "2-1",
+        "detail": null,
+        "winner": "Brazil",
+        "source": "https://sports.yahoo.com/soccer/article/2026-world-cup-results-standings-and-schedule-live-scores-group-stage-updates-and-how-to-watch-050724193.html"
+      },
+      {
+        "date": "2026-06-29",
+        "home": "Germany",
+        "away": "Paraguay",
+        "score": "1-1",
+        "detail": "PEN 3-4",
+        "winner": "Paraguay",
+        "source": "https://sports.yahoo.com/soccer/article/2026-world-cup-results-standings-and-schedule-live-scores-group-stage-updates-and-how-to-watch-050724193.html"
+      },
+      {
+        "date": "2026-06-29",
+        "home": "Netherlands",
+        "away": "Morocco",
+        "score": "1-1",
+        "detail": "PEN 2-3",
+        "winner": "Morocco",
+        "source": "https://sports.yahoo.com/soccer/article/2026-world-cup-results-standings-and-schedule-live-scores-group-stage-updates-and-how-to-watch-050724193.html"
+      },
+      {
+        "date": "2026-06-30",
+        "home": "Norway",
+        "away": "Ivory Coast",
+        "score": "2-1",
+        "detail": null,
+        "winner": "Norway",
+        "source": "https://sports.yahoo.com/soccer/article/2026-world-cup-results-standings-and-schedule-live-scores-group-stage-updates-and-how-to-watch-050724193.html"
+      },
+      {
+        "date": "2026-06-30",
+        "home": "France",
+        "away": "Sweden",
+        "score": "3-0",
+        "detail": null,
+        "winner": "France",
+        "source": "https://sports.yahoo.com/soccer/article/2026-world-cup-results-standings-and-schedule-live-scores-group-stage-updates-and-how-to-watch-050724193.html"
+      },
+      {
+        "date": "2026-06-30",
+        "home": "Mexico",
+        "away": "Ecuador",
+        "score": "2-0",
+        "detail": null,
+        "winner": "Mexico",
+        "source": "https://sports.yahoo.com/soccer/article/2026-world-cup-results-standings-and-schedule-live-scores-group-stage-updates-and-how-to-watch-050724193.html"
+      },
+      {
+        "date": "2026-07-01",
+        "home": "England",
+        "away": "DR Congo",
+        "score": "2-1",
+        "detail": null,
+        "winner": "England",
+        "source": "https://sports.yahoo.com/soccer/article/2026-world-cup-results-standings-and-schedule-live-scores-group-stage-updates-and-how-to-watch-050724193.html"
+      },
+      {
+        "date": "2026-07-01",
+        "home": "Belgium",
+        "away": "Senegal",
+        "score": "3-2",
+        "detail": "AET",
+        "winner": "Belgium",
+        "source": "https://sports.yahoo.com/soccer/article/2026-world-cup-results-standings-and-schedule-live-scores-group-stage-updates-and-how-to-watch-050724193.html"
+      },
+      {
+        "date": "2026-07-01",
+        "home": "United States",
+        "away": "Bosnia and Herzegovina",
+        "score": "2-0",
+        "detail": null,
+        "winner": "United States",
+        "source": "https://sports.yahoo.com/soccer/article/2026-world-cup-results-standings-and-schedule-live-scores-group-stage-updates-and-how-to-watch-050724193.html"
+      },
+      {
+        "date": "2026-07-02",
+        "home": "Spain",
+        "away": "Austria",
+        "score": "3-0",
+        "detail": null,
+        "winner": "Spain",
+        "source": "https://sports.yahoo.com/soccer/article/2026-world-cup-results-standings-and-schedule-live-scores-group-stage-updates-and-how-to-watch-050724193.html"
+      },
+      {
+        "date": "2026-07-02",
+        "home": "Portugal",
+        "away": "Croatia",
+        "score": "2-1",
+        "detail": null,
+        "winner": "Portugal",
+        "source": "https://sports.yahoo.com/soccer/article/2026-world-cup-results-standings-and-schedule-live-scores-group-stage-updates-and-how-to-watch-050724193.html"
+      },
+      {
+        "date": "2026-07-02",
+        "home": "Switzerland",
+        "away": "Algeria",
+        "score": "2-0",
+        "detail": null,
+        "winner": "Switzerland",
+        "source": "https://sports.yahoo.com/soccer/article/2026-world-cup-results-standings-and-schedule-live-scores-group-stage-updates-and-how-to-watch-050724193.html"
+      },
+      {
+        "date": "2026-07-03",
+        "home": "Egypt",
+        "away": "Australia",
+        "score": "1-1",
+        "detail": "PEN 4-2",
+        "winner": "Egypt",
+        "source": "https://sports.yahoo.com/soccer/article/2026-world-cup-results-standings-and-schedule-live-scores-group-stage-updates-and-how-to-watch-050724193.html"
+      },
+      {
+        "date": "2026-07-03",
+        "home": "Argentina",
+        "away": "Cape Verde",
+        "score": "3-2",
+        "detail": "AET",
+        "winner": "Argentina",
+        "source": "https://sports.yahoo.com/soccer/article/2026-world-cup-results-standings-and-schedule-live-scores-group-stage-updates-and-how-to-watch-050724193.html"
+      },
+      {
+        "date": "2026-07-03",
+        "home": "Colombia",
+        "away": "Ghana",
+        "score": "1-0",
+        "detail": null,
+        "winner": "Colombia",
+        "source": "https://sports.yahoo.com/soccer/article/2026-world-cup-results-standings-and-schedule-live-scores-group-stage-updates-and-how-to-watch-050724193.html"
+      }
+    ],
+    "round_of_16": [
+      {
+        "date": "2026-07-04",
+        "home": "Morocco",
+        "away": "Canada",
+        "score": "3-0",
+        "detail": null,
+        "winner": "Morocco",
+        "source": "https://sports.yahoo.com/soccer/article/2026-world-cup-results-standings-and-schedule-live-scores-group-stage-updates-and-how-to-watch-050724193.html"
+      },
+      {
+        "date": "2026-07-04",
+        "home": "France",
+        "away": "Paraguay",
+        "score": "1-0",
+        "detail": null,
+        "winner": "France",
+        "source": "https://sports.yahoo.com/soccer/article/2026-world-cup-results-standings-and-schedule-live-scores-group-stage-updates-and-how-to-watch-050724193.html"
+      },
+      {
+        "date": "2026-07-05",
+        "home": "Norway",
+        "away": "Brazil",
+        "score": "2-1",
+        "detail": null,
+        "winner": "Norway",
+        "source": "https://sports.yahoo.com/soccer/article/2026-world-cup-results-standings-and-schedule-live-scores-group-stage-updates-and-how-to-watch-050724193.html"
+      },
+      {
+        "date": "2026-07-05",
+        "home": "England",
+        "away": "Mexico",
+        "score": "3-2",
+        "detail": null,
+        "winner": "England",
+        "source": "https://sports.yahoo.com/soccer/article/2026-world-cup-results-standings-and-schedule-live-scores-group-stage-updates-and-how-to-watch-050724193.html"
+      },
+      {
+        "date": "2026-07-06",
+        "home": "Spain",
+        "away": "Portugal",
+        "score": "1-0",
+        "detail": null,
+        "winner": "Spain",
+        "source": "https://sports.yahoo.com/soccer/article/2026-world-cup-results-standings-and-schedule-live-scores-group-stage-updates-and-how-to-watch-050724193.html"
+      },
+      {
+        "date": "2026-07-06",
+        "home": "Belgium",
+        "away": "United States",
+        "score": "4-1",
+        "detail": null,
+        "winner": "Belgium",
+        "source": "https://sports.yahoo.com/soccer/article/2026-world-cup-results-standings-and-schedule-live-scores-group-stage-updates-and-how-to-watch-050724193.html"
+      },
+      {
+        "date": "2026-07-07",
+        "home": "Argentina",
+        "away": "Egypt",
+        "score": "3-2",
+        "detail": null,
+        "winner": "Argentina",
+        "source": "https://sports.yahoo.com/soccer/article/2026-world-cup-results-standings-and-schedule-live-scores-group-stage-updates-and-how-to-watch-050724193.html"
+      },
+      {
+        "date": "2026-07-07",
+        "home": "Switzerland",
+        "away": "Colombia",
+        "score": "0-0",
+        "detail": "PEN 4-3",
+        "winner": "Switzerland",
+        "source": "https://sports.yahoo.com/soccer/article/2026-world-cup-results-standings-and-schedule-live-scores-group-stage-updates-and-how-to-watch-050724193.html"
+      }
+    ],
+    "quarterfinals": [
+      {
+        "date": "2026-07-09",
+        "home": "France",
+        "away": "Morocco",
+        "score": "2-0",
+        "detail": null,
+        "winner": "France",
+        "source": "https://sports.yahoo.com/soccer/article/2026-world-cup-results-standings-and-schedule-live-scores-group-stage-updates-and-how-to-watch-050724193.html"
+      },
+      {
+        "date": "2026-07-10",
+        "home": "Spain",
+        "away": "Belgium",
+        "score": "2-1",
+        "detail": null,
+        "winner": "Spain",
+        "source": "https://sports.yahoo.com/soccer/article/2026-world-cup-results-standings-and-schedule-live-scores-group-stage-updates-and-how-to-watch-050724193.html"
+      },
+      {
+        "date": "2026-07-11",
+        "home": "England",
+        "away": "Norway",
+        "score": "2-1",
+        "detail": "AET",
+        "winner": "England",
+        "source": "https://sports.yahoo.com/soccer/article/2026-world-cup-results-standings-and-schedule-live-scores-group-stage-updates-and-how-to-watch-050724193.html"
+      },
+      {
+        "date": "2026-07-11",
+        "home": "Argentina",
+        "away": "Switzerland",
+        "score": "3-1",
+        "detail": "AET",
+        "winner": "Argentina",
+        "source": "https://sports.yahoo.com/soccer/article/2026-world-cup-results-standings-and-schedule-live-scores-group-stage-updates-and-how-to-watch-050724193.html"
+      }
+    ],
+    "semifinals": [
+      {
+        "date": "2026-07-14",
+        "home": "Spain",
+        "away": "France",
+        "score": "2-0",
+        "detail": null,
+        "winner": "Spain",
+        "source": "https://sports.yahoo.com/soccer/article/2026-world-cup-results-standings-and-schedule-live-scores-group-stage-updates-and-how-to-watch-050724193.html"
+      },
+      {
+        "date": "2026-07-15",
+        "home": "Argentina",
+        "away": "England",
+        "score": "2-1",
+        "detail": null,
+        "winner": "Argentina",
+        "source": "https://sports.yahoo.com/soccer/article/2026-world-cup-results-standings-and-schedule-live-scores-group-stage-updates-and-how-to-watch-050724193.html"
+      }
+    ],
+    "third_place": [
+      {
+        "date": "2026-07-18",
+        "home": "England",
+        "away": "France",
+        "score": "6-4",
+        "detail": null,
+        "winner": "England",
+        "source": "https://sports.yahoo.com/soccer/article/2026-world-cup-results-standings-and-schedule-live-scores-group-stage-updates-and-how-to-watch-050724193.html"
+      }
+    ],
+    "final": [
+      {
+        "date": "2026-07-19",
+        "home": "Spain",
+        "away": "Argentina",
+        "score": "1-0",
+        "detail": "AET",
+        "winner": "Spain",
+        "source": "https://sports.yahoo.com/soccer/article/2026-world-cup-results-standings-and-schedule-live-scores-group-stage-updates-and-how-to-watch-050724193.html"
+      }
+    ]
+  }
+}
