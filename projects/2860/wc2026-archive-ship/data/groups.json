@@ -1,0 +1,110 @@
+[
+  {
+    "group": "A",
+    "teams": [
+      { "name": "Mexico", "market": 0.52, "user": 0 },
+      { "name": "South Africa", "market": 0.06, "user": 0 },
+      { "name": "South Korea", "market": 0.28, "user": 0 },
+      { "name": "Czechia", "market": 0.12, "user": 0 }
+    ]
+  },
+  {
+    "group": "B",
+    "teams": [
+      { "name": "Canada", "market": 0.38, "user": 0 },
+      { "name": "Bosnia & Herzegovina", "market": 0.18, "user": 0 },
+      { "name": "Qatar", "market": 0.22, "user": 0 },
+      { "name": "Switzerland", "market": 0.22, "user": 0 }
+    ]
+  },
+  {
+    "group": "C",
+    "teams": [
+      { "name": "Brazil", "market": 0.68, "user": 0 },
+      { "name": "Morocco", "market": 0.18, "user": 0 },
+      { "name": "Haiti", "market": 0.04, "user": 0 },
+      { "name": "Scotland", "market": 0.10, "user": 0 }
+    ]
+  },
+  {
+    "group": "D",
+    "teams": [
+      { "name": "United States", "market": 0.48, "user": 0 },
+      { "name": "Paraguay", "market": 0.22, "user": 0 },
+      { "name": "Australia", "market": 0.18, "user": 0 },
+      { "name": "Türkiye", "market": 0.12, "user": 0 }
+    ]
+  },
+  {
+    "group": "E",
+    "teams": [
+      { "name": "Germany", "market": 0.62, "user": 0 },
+      { "name": "Curaçao", "market": 0.05, "user": 0 },
+      { "name": "Ivory Coast", "market": 0.22, "user": 0 },
+      { "name": "Ecuador", "market": 0.22, "user": 0 }
+    ]
+  },
+  {
+    "group": "F",
+    "teams": [
+      { "name": "Netherlands", "market": 0.45, "user": 0 },
+      { "name": "Japan", "market": 0.22, "user": 0 },
+      { "name": "Sweden", "market": 0.13, "user": 0 },
+      { "name": "Tunisia", "market": 0.09, "user": 0 }
+    ]
+  },
+  {
+    "group": "G",
+    "teams": [
+      { "name": "Belgium", "market": 0.52, "user": 0 },
+      { "name": "Egypt", "market": 0.11, "user": 0 },
+      { "name": "Iran", "market": 0.10, "user": 0 },
+      { "name": "New Zealand", "market": 0.10, "user": 0 }
+    ]
+  },
+  {
+    "group": "H",
+    "teams": [
+      { "name": "Spain", "market": 0.48, "user": 0 },
+      { "name": "Cape Verde", "market": 0.08, "user": 0 },
+      { "name": "Saudi Arabia", "market": 0.08, "user": 0 },
+      { "name": "Uruguay", "market": 0.35, "user": 0 }
+    ]
+  },
+  {
+    "group": "I",
+    "teams": [
+      { "name": "France", "market": 0.58, "user": 0 },
+      { "name": "Senegal", "market": 0.24, "user": 0 },
+      { "name": "Iraq", "market": 0.07, "user": 0 },
+      { "name": "Norway", "market": 0.15, "user": 0 }
+    ]
+  },
+  {
+    "group": "J",
+    "teams": [
+      { "name": "Argentina", "market": 0.72, "user": 0 },
+      { "name": "Algeria", "market": 0.10, "user": 0 },
+      { "name": "Austria", "market": 0.15, "user": 0 },
+      { "name": "Jordan", "market": 0.04, "user": 0 }
+    ]
+  },
+  {
+    "group": "K",
+    "teams": [
+      { "name": "Portugal", "market": 0.58, "user": 0 },
+      { "name": "Congo DR", "market": 0.10, "user": 0 },
+      { "name": "Uzbekistan", "market": 0.10, "user": 0 },
+      { "name": "Colombia", "market": 0.28, "user": 0 }
+    ]
+  },
+  {
+    "group": "L",
+    "teams": [
+      { "name": "England", "market": 0.52, "user": 0 },
+      { "name": "Croatia", "market": 0.28, "user": 0 },
+      { "name": "Ghana", "market": 0.25, "user": 0 },
+      { "name": "Panama", "market": 0.25, "user": 0 }
+    ]
+  }
+]

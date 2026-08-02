@@ -1,0 +1,23 @@
+name: wc2026-archive-ship
+type: service
+version: 1.0.1
+license: MIT
+entry: index.html
+port: 9091
+description: 'FIFA World Cup 2026 closed tournament archive and Groups D+L post-mortem.
+  Full 72 group scores, knockout bracket R32 to Final, Spain champions, evidence-pack
+  export, and graded travel/climate signal review. Static desk.
+
+  '
+tags:
+- worldcup
+- football
+- archive
+- analytics
+- dashboard
+env_required: []
+sc_proxy: false
+publisher:
+  code_slug: wc2026-archive-ship
+  public_slug: wc2026-desk
+author: user-2860

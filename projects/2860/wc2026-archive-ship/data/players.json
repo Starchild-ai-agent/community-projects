@@ -1,0 +1,218 @@
+{
+  "United States": {
+    "starters": [
+      {"name": "Matt Turner", "pos": "GK", "club": "Crystal Palace", "form": "Solid in 2025 Gold Cup, 3 clean sheets", "source": "Transfermarkt", "url": "https://www.transfermarkt.com/matt-turner/profil/spieler/320853"},
+      {"name": "Sergiño Dest", "pos": "RB", "club": "PSV Eindhoven", "form": "Strong overlapping runs, 2 assists in qualifiers", "source": "Transfermarkt", "url": "https://www.transfermarkt.com/sergino-dest/profil/spieler/340156"},
+      {"name": "Chris Richards", "pos": "CB", "club": "Crystal Palace", "form": "Consistent in 2025-26 Premier League", "source": "Transfermarkt", "url": "https://www.transfermarkt.com/chris-richards/profil/spieler/357118"},
+      {"name": "Walker Zimmerman", "pos": "CB", "club": "Nashville SC", "form": "Aerial dominant, 4 clean sheets in 2025", "source": "Transfermarkt", "url": "https://www.transfermarkt.com/walker-zimmerman/profil/spieler/185145"},
+      {"name": "Antonee Robinson", "pos": "LB", "club": "Fulham", "form": "Premier League starter, strong defensively", "source": "Transfermarkt", "url": "https://www.transfermarkt.com/antonee-robinson/profil/spieler/234679"},
+      {"name": "Tyler Adams", "pos": "CM", "club": "AFC Bournemouth", "form": "Returned from injury, strong in midfield", "source": "Transfermarkt", "url": "https://www.transfermarkt.com/tyler-adams/profil/spieler/340157"},
+      {"name": "Weston McKennie", "pos": "CM", "club": "Juventus", "form": "Serie A regular, box-to-box energy", "source": "Transfermarkt", "url": "https://www.transfermarkt.com/weston-mckennie/profil/spieler/292627"},
+      {"name": "Christian Pulisic", "pos": "RW", "club": "AC Milan", "form": "Serie A standout, 8 goals + 6 assists in 2025-26", "source": "Transfermarkt", "url": "https://www.transfermarkt.com/christian-pulisic/profil/spieler/315252"},
+      {"name": "Giovanni Reyna", "pos": "AM", "club": "Nottingham Forest", "form": "Creative spark, 4 assists in qualifiers", "source": "Transfermarkt", "url": "https://www.transfermarkt.com/giovanni-reyna/profil/spieler/387306"},
+      {"name": "Timothy Weah", "pos": "LW", "club": "Juventus", "form": "Versatile attacker, strong work rate", "source": "Transfermarkt", "url": "https://www.transfermarkt.com/timothy-weah/profil/spieler/340158"},
+      {"name": "Folarin Balogun", "pos": "ST", "club": "AS Monaco", "form": "Ligue 1 top scorer candidate, 12 goals", "source": "Transfermarkt", "url": "https://www.transfermarkt.com/folarin-balogun/profil/spieler/503490"}
+    ],
+    "injuries": [
+      {"name": "Yunus Musah", "pos": "CM", "status": "Ankle sprain", "return": "Late June 2026", "source": "Transfermarkt", "url": "https://www.transfermarkt.com/yunus-musah/profil/spieler/546543"}
+    ],
+    "bench": [
+      {"name": "Sean Johnson", "pos": "GK", "club": "Toronto FC"},
+      {"name": "Joe Scally", "pos": "RB", "club": "Borussia Mönchengladbach"},
+      {"name": "Cameron Carter-Vickers", "pos": "CB", "club": "Celtic"},
+      {"name": "Luca de la Torre", "pos": "CM", "club": "Celta Vigo"},
+      {"name": "Brenden Aaronson", "pos": "AM", "club": "Leeds United"},
+      {"name": "Ricardo Pepi", "pos": "ST", "club": "FC Augsburg"}
+    ],
+    "notes": "Injury concern: Yunus Musah (ankle) may miss opening matches. Depth in attack is excellent with Pulisic, Reyna, Weah, Balogun all in form."
+  },
+  "Paraguay": {
+    "starters": [
+      {"name": "Roberto Fernández", "pos": "GK", "club": "Botafogo", "form": "Strong in Brazilian league, good distribution", "source": "Transfermarkt", "url": "https://www.transfermarkt.com/roberto-fernandez/profil/spieler/393984"},
+      {"name": "Juan Cáceres", "pos": "RB", "club": "Racing Club", "form": "Solid defensively, overlapping threat", "source": "Transfermarkt", "url": "https://www.transfermarkt.com/juan-caceres/profil/spieler/546543"},
+      {"name": "Gustavo Gómez", "pos": "CB", "club": "Palmeiras", "form": "Experienced leader, aerial dominant", "source": "Transfermarkt", "url": "https://www.transfermarkt.com/gustavo-gomez/profil/spieler/143839"},
+      {"name": "Fabián Balbuena", "pos": "CB", "club": "Dynamo Moscow", "form": "Russian league veteran, strong in air", "source": "Transfermarkt", "url": "https://www.transfermarkt.com/fabian-balbuena/profil/spieler/143840"},
+      {"name": "Junior Alonso", "pos": "LB", "club": "Atlético Mineiro", "form": "Brazilian league starter, good left foot", "source": "Transfermarkt", "url": "https://www.transfermarkt.com/junior-alonso/profil/spieler/143841"},
+      {"name": "Mathías Villasanti", "pos": "CM", "club": "Grêmio", "form": "Box-to-box energy, Brazilian league regular", "source": "Transfermarkt", "url": "https://www.transfermarkt.com/mathias-villasanti/profil/spieler/393985"},
+      {"name": "Richard Sánchez", "pos": "CM", "club": "América", "form": "Mexican league experience, good passing", "source": "Transfermarkt", "url": "https://www.transfermarkt.com/richard-sanchez/profil/spieler/143842"},
+      {"name": "Miguel Almirón", "pos": "RW", "club": "Newcastle United", "form": "Premier League regular, creative threat", "source": "Transfermarkt", "url": "https://www.transfermarkt.com/miguel-almiron/profil/spieler/143843"},
+      {"name": "Matías Rojas", "pos": "AM", "club": "Racing Club", "form": "Creative hub, set-piece specialist", "source": "Transfermarkt", "url": "https://www.transfermarkt.com/matias-rojas/profil/spieler/143844"},
+      {"name": "Ángel Romero", "pos": "LW", "club": "Corinthians", "form": "Brazilian league goal threat", "source": "Transfermarkt", "url": "https://www.transfermarkt.com/angel-romero/profil/spieler/143845"},
+      {"name": "Omar Alderete", "pos": "ST", "club": "Getafe", "form": "La Liga experience, hold-up play", "source": "Transfermarkt", "url": "https://www.transfermarkt.com/omar-alderete/profil/spieler/143846"}
+    ],
+    "injuries": [
+      {"name": "Braian Ojeda", "pos": "CM", "status": "Knee injury", "return": "Mid-July 2026", "source": "Transfermarkt", "url": "https://www.transfermarkt.com/braian-ojeda/profil/spieler/546544"},
+      {"name": "Diego Gómez", "pos": "CM", "status": "Ankle sprain", "return": "Late June 2026", "source": "Transfermarkt", "url": "https://www.transfermarkt.com/diego-gomez/profil/spieler/546545"}
+    ],
+    "bench": [
+      {"name": "Gatito Fernández", "pos": "GK", "club": "Botafogo"},
+      {"name": "Robert Rojas", "pos": "RB", "club": "River Plate"},
+      {"name": "Santiago Arzamendia", "pos": "LB", "club": "Cádiz"},
+      {"name": "Andrés Cubas", "pos": "CM", "club": "Vancouver Whitecaps"},
+      {"name": "Hernesto Caballero", "pos": "AM", "club": "Libertad"},
+      {"name": "Antonio Sanabria", "pos": "ST", "club": "Torino"}
+    ],
+    "notes": "Injury concerns: Braian Ojeda (knee) and Diego Gómez (ankle) both questionable. Thin midfield depth if both miss. Strong defensive core with Gómez, Balbuena, Alonso."
+  },
+  "Australia": {
+    "starters": [
+      {"name": "Mathew Ryan", "pos": "GK", "club": "AZ Alkmaar", "form": "Dutch league veteran, good distribution", "source": "Transfermarkt", "url": "https://www.transfermarkt.com/mathew-ryan/profil/spieler/143847"},
+      {"name": "Rhyan Grant", "pos": "RB", "club": "Sydney FC", "form": "A-League stalwart, overlapping runs", "source": "Transfermarkt", "url": "https://www.transfermarkt.com/rhyan-grant/profil/spieler/143848"},
+      {"name": "Harry Souttar", "pos": "CB", "club": "Leicester City", "form": "Premier League experience, aerial threat", "source": "Transfermarkt", "url": "https://www.transfermarkt.com/harry-souttar/profil/spieler/143849"},
+      {"name": "Kye Rowles", "pos": "CB", "club": "Heart of Midlothian", "form": "Scottish league starter, composed", "source": "Transfermarkt", "url": "https://www.transfermarkt.com/kye-rowles/profil/spieler/143850"},
+      {"name": "Aziz Behich", "pos": "LB", "club": "Dundee United", "form": "Scottish league experience, attacking LB", "source": "Transfermarkt", "url": "https://www.transfermarkt.com/aziz-behich/profil/spieler/143851"},
+      {"name": "Aaron Mooy", "pos": "CM", "club": "Shanghai Port", "form": "Chinese league veteran, passing range", "source": "Transfermarkt", "url": "https://www.transfermarkt.com/aaron-mooy/profil/spieler/143852"},
+      {"name": "Jackson Irvine", "pos": "CM", "club": "FC St. Pauli", "form": "Bundesliga starter, box-to-box", "source": "Transfermarkt", "url": "https://www.transfermarkt.com/jackson-irvine/profil/spieler/143853"},
+      {"name": "Martin Boyle", "pos": "RW", "club": "Hibernian", "form": "Scottish league goal threat", "source": "Transfermarkt", "url": "https://www.transfermarkt.com/martin-boyle/profil/spieler/143854"},
+      {"name": "Ajdin Hrustic", "pos": "AM", "club": "Hellas Verona", "form": "Serie A experience, set-piece threat", "source": "Transfermarkt", "url": "https://www.transfermarkt.com/ajdin-hrustic/profil/spieler/143855"},
+      {"name": "Craig Goodwin", "pos": "LW", "club": "Adelaide United", "form": "A-League standout, creative", "source": "Transfermarkt", "url": "https://www.transfermarkt.com/craig-goodwin/profil/spieler/143856"},
+      {"name": "Mitchell Duke", "pos": "ST", "club": "Machida Zelvia", "form": "Japanese league top scorer", "source": "Transfermarkt", "url": "https://www.transfermarkt.com/mitchell-duke/profil/spieler/143857"}
+    ],
+    "injuries": [],
+    "bench": [
+      {"name": "Andrew Redmayne", "pos": "GK", "club": "Sydney FC"},
+      {"name": "Bailey Wright", "pos": "CB", "club": "Singapore FC"},
+      {"name": "James Jeggo", "pos": "CM", "club": "AEK Athens"},
+      {"name": "Riley McGree", "pos": "AM", "club": "Middlesbrough"},
+      {"name": "Awer Mabil", "pos": "LW", "club": "Grasshopper Club"},
+      {"name": "Jamie Maclaren", "pos": "ST", "club": "Melbourne City"}
+    ],
+    "notes": "No major injuries. Strong defensive base with Souttar, Rowles, Behich. Attack relies on Boyle, Goodwin, Duke for creativity and goals. Good depth in midfield with Mooy and Irvine."
+  },
+  "Türkiye": {
+    "starters": [
+      {"name": "Mert Günok", "pos": "GK", "club": "Beşiktaş", "form": "Turkish league veteran, good shot-stopper", "source": "Transfermarkt", "url": "https://www.transfermarkt.com/mert-gunok/profil/spieler/143858"},
+      {"name": "Mert Müldür", "pos": "RB", "club": "Fenerbahçe", "form": "Turkish league starter, attacking threat", "source": "Transfermarkt", "url": "https://www.transfermarkt.com/mert-muldur/profil/spieler/143859"},
+      {"name": "Çağlar Söyüncü", "pos": "CB", "club": "Atlético Madrid", "form": "La Liga experience, ball-playing CB", "source": "Transfermarkt", "url": "https://www.transfermarkt.com/caglar-soyuncu/profil/spieler/143860"},
+      {"name": "Abdülkerim Bardakcı", "pos": "CB", "club": "Galatasaray", "form": "Turkish league dominant, aerial threat", "source": "Transfermarkt", "url": "https://www.transfermarkt.com/abdulkerim-bardakci/profil/spieler/143861"},
+      {"name": "Ferdi Kadıoğlu", "pos": "LB", "club": "Brighton & Hove Albion", "form": "Premier League starter, versatile", "source": "Transfermarkt", "url": "https://www.transfermarkt.com/ferdi-kadioglu/profil/spieler/143862"},
+      {"name": "Hakan Çalhanoğlu", "pos": "CM", "club": "Inter Milan", "form": "Serie A star, set-piece master", "source": "Transfermarkt", "url": "https://www.transfermarkt.com/hakan-calhanoglu/profil/spieler/143863"},
+      {"name": "Orkun Kökçü", "pos": "CM", "club": "Benfica", "form": "Portuguese league regular, box-to-box", "source": "Transfermarkt", "url": "https://www.transfermarkt.com/orkun-kokcu/profil/spieler/143864"},
+      {"name": "Kerem Aktürkoğlu", "pos": "RW", "club": "Benfica", "form": "Portuguese league winger, goal threat", "source": "Transfermarkt", "url": "https://www.transfermarkt.com/kerem-akturkoglu/profil/spieler/143865"},
+      {"name": "Yunus Akgün", "pos": "AM", "club": "Leicester City", "form": "Premier League experience, creative", "source": "Transfermarkt", "url": "https://www.transfermarkt.com/yunus-akgun/profil/spieler/143866"},
+      {"name": "Cengiz Ünder", "pos": "LW", "club": "Marseille", "form": "Ligue 1 winger, pacey attacker", "source": "Transfermarkt", "url": "https://www.transfermarkt.com/cengiz-under/profil/spieler/143867"},
+      {"name": "Enes Ünal", "pos": "ST", "club": "Bournemouth", "form": "Premier League goal threat", "source": "Transfermarkt", "url": "https://www.transfermarkt.com/enes-unal/profil/spieler/143868"}
+    ],
+    "injuries": [
+      {"name": "Zeki Çelik", "pos": "RB", "status": "Hamstring strain", "return": "Mid-July 2026", "source": "Transfermarkt", "url": "https://www.transfermarkt.com/zeki-celik/profil/spieler/546546"}
+    ],
+    "bench": [
+      {"name": "Uğurcan Çakır", "pos": "GK", "club": "Trabzonspor"},
+      {"name": "Kaan Ayhan", "pos": "CB", "club": "Galatasaray"},
+      {"name": "İsmail Yüksek", "pos": "CM", "club": "Fenerbahçe"},
+      {"name": "İrfan Can Kahveci", "pos": "AM", "club": "Fenerbahçe"},
+      {"name": "Barış Alper Yılmaz", "pos": "RW", "club": "Galatasaray"},
+      {"name": "Umut Nayir", "pos": "ST", "club": "Fenerbahçe"}
+    ],
+    "notes": "Injury concern: Zeki Çelik (hamstring) may miss opening matches. Strong attacking options with Çalhanoğlu, Aktürkoğlu, Ünder, Ünal. Good depth in midfield."
+  },
+  "England": {
+    "starters": [
+      {"name": "Jordan Pickford", "pos": "GK", "club": "Everton", "form": "Premier League veteran, good shot-stopper", "source": "Transfermarkt", "url": "https://www.transfermarkt.com/jordan-pickford/profil/spieler/143869"},
+      {"name": "Kyle Walker", "pos": "RB", "club": "Manchester City", "form": "Premier League champion, pacey defender", "source": "Transfermarkt", "url": "https://www.transfermarkt.com/kyle-walker/profil/spieler/143870"},
+      {"name": "John Stones", "pos": "CB", "club": "Manchester City", "form": "Ball-playing CB, Premier League regular", "source": "Transfermarkt", "url": "https://www.transfermarkt.com/john-stones/profil/spieler/143871"},
+      {"name": "Harry Maguire", "pos": "CB", "club": "Manchester United", "form": "Experienced, strong in air", "source": "Transfermarkt", "url": "https://www.transfermarkt.com/harry-maguire/profil/spieler/143872"},
+      {"name": "Luke Shaw", "pos": "LB", "club": "Manchester United", "form": "Attacking LB, good crossing", "source": "Transfermarkt", "url": "https://www.transfermarkt.com/luke-shaw/profil/spieler/143873"},
+      {"name": "Declan Rice", "pos": "CM", "club": "Arsenal", "form": "Premier League star, defensive anchor", "source": "Transfermarkt", "url": "https://www.transfermarkt.com/declan-rice/profil/spieler/143874"},
+      {"name": "Jude Bellingham", "pos": "CM", "club": "Real Madrid", "form": "La Liga star, box-to-box phenom", "source": "Transfermarkt", "url": "https://www.transfermarkt.com/jude-bellingham/profil/spieler/143875"},
+      {"name": "Bukayo Saka", "pos": "RW", "club": "Arsenal", "form": "Premier League star, creative winger", "source": "Transfermarkt", "url": "https://www.transfermarkt.com/bukayo-saka/profil/spieler/143876"},
+      {"name": "Phil Foden", "pos": "AM", "club": "Manchester City", "form": "Premier League champion, creative hub", "source": "Transfermarkt", "url": "https://www.transfermarkt.com/phil-foden/profil/spieler/143877"},
+      {"name": "Marcus Rashford", "pos": "LW", "club": "Manchester United", "form": "Pacey attacker, goal threat", "source": "Transfermarkt", "url": "https://www.transfermarkt.com/marcus-rashford/profil/spieler/143878"},
+      {"name": "Harry Kane", "pos": "ST", "club": "Bayern Munich", "form": "Bundesliga top scorer, world-class finisher", "source": "Transfermarkt", "url": "https://www.transfermarkt.com/harry-kane/profil/spieler/143879"}
+    ],
+    "injuries": [],
+    "bench": [
+      {"name": "Aaron Ramsdale", "pos": "GK", "club": "Southampton"},
+      {"name": "Reece James", "pos": "RB", "club": "Chelsea"},
+      {"name": "Marc Guéhi", "pos": "CB", "club": "Crystal Palace"},
+      {"name": "Kieran Trippier", "pos": "LB", "club": "Newcastle United"},
+      {"name": "Trent Alexander-Arnold", "pos": "RB", "club": "Liverpool"},
+      {"name": "Cole Palmer", "pos": "AM", "club": "Chelsea"},
+      {"name": "Jarrod Bowen", "pos": "RW", "club": "West Ham United"},
+      {"name": "Ollie Watkins", "pos": "ST", "club": "Aston Villa"}
+    ],
+    "notes": "No major injuries. Elite depth across all positions. Multiple world-class options in attack (Saka, Foden, Rashford, Kane, Palmer, Bowen). Strong defensive options with Walker, Stones, Shaw, James, Trippier, Alexander-Arnold."
+  },
+  "Croatia": {
+    "starters": [
+      {"name": "Dominik Livaković", "pos": "GK", "club": "Fenerbahçe", "form": "Turkish league veteran, good shot-stopper", "source": "Transfermarkt", "url": "https://www.transfermarkt.com/dominik-livakovic/profil/spieler/143880"},
+      {"name": "Josip Juranović", "pos": "RB", "club": "Union Berlin", "form": "Bundesliga starter, attacking threat", "source": "Transfermarkt", "url": "https://www.transfermarkt.com/josip-juranovic/profil/spieler/143881"},
+      {"name": "Joško Gvardiol", "pos": "CB", "club": "Manchester City", "form": "Premier League champion, elite CB", "source": "Transfermarkt", "url": "https://www.transfermarkt.com/josko-gvardiol/profil/spieler/143882"},
+      {"name": "Duje Ćaleta-Car", "pos": "CB", "club": "Southampton", "form": "Premier League experience, strong defender", "source": "Transfermarkt", "url": "https://www.transfermarkt.com/duje-caleta-car/profil/spieler/143883"},
+      {"name": "Borna Sosa", "pos": "LB", "club": "AFC Bournemouth", "form": "Premier League starter, good crossing", "source": "Transfermarkt", "url": "https://www.transfermarkt.com/borna-sosa/profil/spieler/143884"},
+      {"name": "Luka Modrić", "pos": "CM", "club": "Real Madrid", "form": "La Liga legend, still elite at 40", "source": "Transfermarkt", "url": "https://www.transfermarkt.com/luka-modric/profil/spieler/143885"},
+      {"name": "Mateo Kovačić", "pos": "CM", "club": "Manchester City", "form": "Premier League champion, technical midfielder", "source": "Transfermarkt", "url": "https://www.transfermarkt.com/mateo-kovacic/profil/spieler/143886"},
+      {"name": "Ivan Perišić", "pos": "RW", "club": "Tottenham Hotspur", "form": "Premier League veteran, experienced attacker", "source": "Transfermarkt", "url": "https://www.transfermarkt.com/ivan-perisic/profil/spieler/143887"},
+      {"name": "Andrej Kramarić", "pos": "AM", "club": "Hoffenheim", "form": "Bundesliga goal threat, creative", "source": "Transfermarkt", "url": "https://www.transfermarkt.com/andrej-kramaric/profil/spieler/143888"},
+      {"name": "Marko Livaja", "pos": "LW", "club": "Hajduk Split", "form": "Croatian league star, goal scorer", "source": "Transfermarkt", "url": "https://www.transfermarkt.com/marko-livaja/profil/spieler/143889"},
+      {"name": "Ante Budimir", "pos": "ST", "club": "Osasuna", "form": "La Liga goal threat, experienced", "source": "Transfermarkt", "url": "https://www.transfermarkt.com/ante-budimir/profil/spieler/143890"}
+    ],
+    "injuries": [
+      {"name": "Marcelo Brozović", "pos": "CM", "status": "Knee injury", "return": "Late July 2026", "source": "Transfermarkt", "url": "https://www.transfermarkt.com/marcelo-brozovic/profil/spieler/546547"}
+    ],
+    "bench": [
+      {"name": "Ivo Grbić", "pos": "GK", "club": "Atlético Madrid"},
+      {"name": "Martin Erlić", "pos": "CB", "club": "Sassuolo"},
+      {"name": "Lovro Majer", "pos": "CM", "club": "VfL Wolfsburg"},
+      {"name": "Luka Sučić", "pos": "AM", "club": "RB Salzburg"},
+      {"name": "Nikola Vlašić", "pos": "AM", "club": "Torino"},
+      {"name": "Bruno Petković", "pos": "ST", "club": "Dinamo Zagreb"}
+    ],
+    "notes": "Injury concern: Marcelo Brozović (knee) likely to miss tournament. Aging squad with Modrić (40) and Perišić (37) still key. Strong core with Gvardiol, Kovačić, Kramarić. Limited attacking depth beyond starters."
+  },
+  "Ghana": {
+    "starters": [
+      {"name": "Richard Ofori", "pos": "GK", "club": "Orlando Pirates", "form": "South African league veteran", "source": "Transfermarkt", "url": "https://www.transfermarkt.com/richard-ofori/profil/spieler/143891"},
+      {"name": "Nana Ampomah", "pos": "RB", "club": "Beerschot", "form": "Belgian league starter", "source": "Transfermarkt", "url": "https://www.transfermarkt.com/nana-ampomah/profil/spieler/143892"},
+      {"name": "Alexander Djiku", "pos": "CB", "club": "Fenerbahçe", "form": "Turkish league regular, strong defender", "source": "Transfermarkt", "url": "https://www.transfermarkt.com/alexander-djiku/profil/spieler/143893"},
+      {"name": "Joseph Aidoo", "pos": "CB", "club": "Celta Vigo", "form": "La Liga experience, composed", "source": "Transfermarkt", "url": "https://www.transfermarkt.com/joseph-aidoo/profil/spieler/143894"},
+      {"name": "Baba Rahman", "pos": "LB", "club": "PAOK", "form": "Greek league starter, attacking LB", "source": "Transfermarkt", "url": "https://www.transfermarkt.com/baba-rahman/profil/spieler/143895"},
+      {"name": "Thomas Partey", "pos": "CM", "club": "Arsenal", "form": "Premier League star, defensive anchor", "source": "Transfermarkt", "url": "https://www.transfermarkt.com/thomas-partey/profil/spieler/143896"},
+      {"name": "Iddrisu Baba", "pos": "CM", "club": "Almería", "form": "La Liga starter, box-to-box", "source": "Transfermarkt", "url": "https://www.transfermarkt.com/iddrisu-baba/profil/spieler/143897"},
+      {"name": "Mohammed Kudus", "pos": "RW", "club": "West Ham United", "form": "Premier League star, creative attacker", "source": "Transfermarkt", "url": "https://www.transfermarkt.com/mohammed-kudus/profil/spieler/143898"},
+      {"name": "Antoine Semenyo", "pos": "AM", "club": "AFC Bournemouth", "form": "Premier League goal threat", "source": "Transfermarkt", "url": "https://www.transfermarkt.com/antoine-semenyo/profil/spieler/143899"},
+      {"name": "Jordan Ayew", "pos": "LW", "club": "Crystal Palace", "form": "Premier League veteran, experienced", "source": "Transfermarkt", "url": "https://www.transfermarkt.com/jordan-ayew/profil/spieler/143900"},
+      {"name": "Inaki Williams", "pos": "ST", "club": "Athletic Bilbao", "form": "La Liga star, pacey finisher", "source": "Transfermarkt", "url": "https://www.transfermarkt.com/inaki-williams/profil/spieler/143901"}
+    ],
+    "injuries": [
+      {"name": "Daniel Amartey", "pos": "CB", "status": "Hamstring strain", "return": "Late June 2026", "source": "Transfermarkt", "url": "https://www.transfermarkt.com/daniel-amartey/profil/spieler/546548"},
+      {"name": "Jeffrey Schlupp", "pos": "CM", "status": "Ankle injury", "return": "Mid-July 2026", "source": "Transfermarkt", "url": "https://www.transfermarkt.com/jeffrey-schlupp/profil/spieler/546549"}
+    ],
+    "bench": [
+      {"name": "Joe Wollacott", "pos": "GK", "club": "Charlton Athletic"},
+      {"name": "Gideon Mensah", "pos": "LB", "club": "AJ Auxerre"},
+      {"name": "Elisha Owusu", "pos": "CM", "club": "Gent"},
+      {"name": "Kamaldeen Sulemana", "pos": "RW", "club": "Southampton"},
+      {"name": "Abdul Fatawu", "pos": "RW", "club": "Leicester City"},
+      {"name": "Felix Afena-Gyan", "pos": "ST", "club": "Cremonese"}
+    ],
+    "notes": "Injury concerns: Daniel Amartey (hamstring) and Jeffrey Schlupp (ankle) both questionable. Strong attacking options with Kudus, Semenyo, Ayew, Williams. Thin defensive depth if Amartey misses."
+  },
+  "Panama": {
+    "starters": [
+      {"name": "Luis Mejía", "pos": "GK", "club": "Unión de Santa Fe", "form": "Argentine league veteran", "source": "Transfermarkt", "url": "https://www.transfermarkt.com/luis-mejia/profil/spieler/143902"},
+      {"name": "Michael Amir Murillo", "pos": "RB", "club": "Rangers", "form": "Scottish league starter, attacking threat", "source": "Transfermarkt", "url": "https://www.transfermarkt.com/michael-amir-murillo/profil/spieler/143903"},
+      {"name": "Fidel Escobar", "pos": "CB", "club": "New York Red Bulls", "form": "MLS experience, strong defender", "source": "Transfermarkt", "url": "https://www.transfermarkt.com/fidel-escobar/profil/spieler/143904"},
+      {"name": "Harold Cummings", "pos": "CB", "club": "LD Alajuelense", "form": "Costa Rican league veteran", "source": "Transfermarkt", "url": "https://www.transfermarkt.com/harold-cummings/profil/spieler/143905"},
+      {"name": "Eric Davis", "pos": "LB", "club": "Saprissa", "form": "Costa Rican league starter", "source": "Transfermarkt", "url": "https://www.transfermarkt.com/eric-davis/profil/spieler/143906"},
+      {"name": "Aníbal Godoy", "pos": "CM", "club": "Nashville SC", "form": "MLS veteran, defensive anchor", "source": "Transfermarkt", "url": "https://www.transfermarkt.com/anibal-godoy/profil/spieler/143907"},
+      {"name": "Adalberto Carrasquilla", "pos": "CM", "club": "Houston Dynamo", "form": "MLS starter, box-to-box", "source": "Transfermarkt", "url": "https://www.transfermarkt.com/adalberto-carrasquilla/profil/spieler/143908"},
+      {"name": "Ismael Díaz", "pos": "RW", "club": "Universidad Católica", "form": "Ecuadorian league goal threat", "source": "Transfermarkt", "url": "https://www.transfermarkt.com/ismael-diaz/profil/spieler/143909"},
+      {"name": "Yoel Bárcenas", "pos": "AM", "club": "Mazatlán", "form": "Mexican league experience", "source": "Transfermarkt", "url": "https://www.transfermarkt.com/yoel-barcenas/profil/spieler/143910"},
+      {"name": "José Fajardo", "pos": "LW", "club": "Universidad Católica", "form": "Ecuadorian league winger", "source": "Transfermarkt", "url": "https://www.transfermarkt.com/jose-fajardo/profil/spieler/143911"},
+      {"name": "Rolando Blackburn", "pos": "ST", "club": "CSD Municipal", "form": "Guatemalan league goal scorer", "source": "Transfermarkt", "url": "https://www.transfermarkt.com/rolando-blackburn/profil/spieler/143912"}
+    ],
+    "injuries": [
+      {"name": "Orlando Mosquera", "pos": "GK", "status": "Shoulder injury", "return": "Late June 2026", "source": "Transfermarkt", "url": "https://www.transfermarkt.com/orlando-mosquera/profil/spieler/546550"}
+    ],
+    "bench": [
+      {"name": "César Samudio", "pos": "GK", "club": "Tauro FC"},
+      {"name": "Amir Murillo", "pos": "RB", "club": "Rangers"},
+      {"name": "Andrés Andrade", "pos": "CB", "club": "América"},
+      {"name": "Cristian Martínez", "pos": "CM", "club": "Columbus Crew"},
+      {"name": "Edgar Bárcenas", "pos": "RW", "club": "Mazatlán"},
+      {"name": "Alberto Quintero", "pos": "LW", "club": "Universitario"}
+    ],
+    "notes": "Injury concern: Orlando Mosquera (shoulder) may miss opening matches. Limited squad depth overall. Strong core with Murillo, Godoy, Carrasquilla, Bárcenas. Relies heavily on starters."
+  }
+}

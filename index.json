@@ -2,6 +2,25 @@
   {
     "type": "service",
     "user_id": "2860",
+    "slug": "wc2026-archive-ship",
+    "version": "1.0.1",
+    "description": "FIFA World Cup 2026 closed tournament archive and Groups D+L post-mortem. Full 72 group scores, knockout bracket R32 to Final, Spain champions, evidence-pack export, and graded travel/climate signal review. Static desk.\n",
+    "tags": [
+      "worldcup",
+      "football",
+      "archive",
+      "analytics",
+      "dashboard"
+    ],
+    "author": "user-2860",
+    "license": "MIT",
+    "github_url": "https://github.com/Starchild-ai-agent/community-projects/tree/main/projects/2860/wc2026-archive-ship",
+    "updated_at": "2026-08-02T16:26:04.301Z",
+    "created_at": "2026-08-02T16:26:04.301Z"
+  },
+  {
+    "type": "service",
+    "user_id": "2860",
     "slug": "worldcup-2026-intel",
     "version": "1.1.0",
     "description": "FIFA World Cup 2026 tournament archive and priority D+L post-mortem. Full group results (72), knockout bracket R32 to Final, Spain champions, evidence-pack export, and graded travel/climate signal review.\n",
