@@ -1,0 +1,17 @@
+name: world-news-digest
+slug: 3182-world-news-digest
+description: Daily AI-curated news timeline with stories, sources, and analysis for
+  global conflicts, economy, politics, and disasters.
+version: 1.0.2
+author: Starchild
+license: MIT
+homepage: https://3182-world-news-digest.community.iamstarchild.com
+type: script
+entry: index.html
+keywords:
+- news
+- timeline
+- ai-analysis
+- global-events
+is_public: true
+marketplace_visibility: public
