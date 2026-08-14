@@ -3,13 +3,13 @@
     "type": "script",
     "user_id": "3182",
     "slug": "world-news-digest",
-    "version": "1.0.3",
+    "version": "1.0.4",
     "description": "Daily AI-curated news timeline with stories, sources, and analysis for global conflicts, economy, politics, and disasters.",
     "tags": [],
     "author": "Starchild",
     "license": "MIT",
     "github_url": "https://github.com/Starchild-ai-agent/community-projects/tree/main/projects/3182/world-news-digest",
-    "updated_at": "2026-08-10T13:54:15.305Z",
+    "updated_at": "2026-08-14T12:03:01.085Z",
     "created_at": "2026-08-06T05:04:51.609Z"
   },
   {
