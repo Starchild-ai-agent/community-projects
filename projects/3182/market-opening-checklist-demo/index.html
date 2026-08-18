@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Market Opening Checklist — Demo</title>
+<style>
+:root{--bg:#0a0e17;--card:#1a2035;--border:#2a3150;--text:#e2e8f0;--muted:#64748b;--blue:#3b82f6;--green:#10b981;--amber:#f59e0b;--red:#ef4444;--purple:#8b5cf6}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--text);line-height:1.6;min-height:100vh;-webkit-font-smoothing:antialiased}
+body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(59,130,246,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(59,130,246,.03) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;z-index:0}
+.app{position:relative;z-index:1;max-width:1120px;margin:0 auto;padding:24px 20px 48px}
+.header{text-align:center;margin-bottom:32px;padding:28px 24px;background:linear-gradient(135deg,rgba(59,130,246,.1),rgba(139,92,246,.05));border:1px solid var(--border);border-radius:16px;box-shadow:0 0 20px rgba(59,130,246,.15)}
+.badge{display:inline-flex;align-items:center;gap:6px;background:rgba(59,130,246,.15);border:1px solid rgba(59,130,246,.3);color:var(--blue);font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;padding:4px 12px;border-radius:20px;margin-bottom:12px}
+.badge .dot{width:6px;height:6px;background:var(--blue);border-radius:50%;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+h1{font-size:26px;font-weight:700;letter-spacing:-.5px;margin-bottom:6px;background:linear-gradient(135deg,#e2e8f0,#94a3b8);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.subtitle{font-size:13px;color:var(--muted)}
+.updated{display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:28px;font-size:12px;color:var(--muted)}
+.updated .time{font-family:monospace;color:#94a3b8}
+.btn{display:inline-flex;align-items:center;gap:5px;background:var(--card);border:1px solid var(--border);color:#94a3b8;font-size:11px;font-weight:500;padding:5px 14px;border-radius:20px;cursor:pointer;transition:all .25s}
+.btn:hover{background:#222a42;color:var(--text);border-color:var(--blue)}
+.btn svg{width:12px;height:12px}
+.sec-title{font-size:14px;font-weight:600;text-transform:uppercase;letter-spacing:1.2px;color:var(--muted);margin-bottom:14px;padding-left:4px;display:flex;align-items:center;gap:8px}
+.sec-title svg{width:16px;height:16px;color:var(--blue)}
+.sec-title .line{flex:1;height:1px;background:var(--border)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:14px;margin-bottom:32px}
+.card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:18px 20px;transition:all .25s;position:relative;overflow:hidden;animation:fadeUp .4s ease-out both}
+.card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--border);transition:all .25s}
+.card:hover{transform:translateY(-2px);border-color:rgba(59,130,246,.4);box-shadow:0 4px 12px rgba(0,0,0,.3),0 0 15px rgba(59,130,246,.08)}
+.card:hover::before{background:var(--blue)}
+.card-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.card-label{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:1px;color:var(--muted)}
+.sig{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:700;padding:2px 10px;border-radius:12px;letter-spacing:.3px}
+.sig.up{background:rgba(16,185,129,.15);color:var(--green);border:1px solid rgba(16,185,129,.3)}
+.sig.mid{background:rgba(245,158,11,.15);color:var(--amber);border:1px solid rgba(245,158,11,.3)}
+.sig.dn{background:rgba(239,68,68,.15);color:var(--red);border:1px solid rgba(239,68,68,.3)}
+.card-val{font-family:monospace;font-size:22px;font-weight:700;color:var(--text);margin-bottom:4px;letter-spacing:-.5px}
+.card-desc{font-size:12px;color:var(--muted);line-height:1.5}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.grid .card:nth-child(1){animation-delay:.05s}.grid .card:nth-child(2){animation-delay:.1s}
+.grid .card:nth-child(3){animation-delay:.15s}.grid .card:nth-child(4){animation-delay:.2s}
+.grid .card:nth-child(5){animation-delay:.25s}.grid .card:nth-child(6){animation-delay:.3s}
+.acard{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:20px;transition:all .25s;position:relative;overflow:hidden;animation:fadeUp .4s ease-out both}
+.acard::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;transition:all .25s}
+.acard:nth-child(1)::before{background:var(--blue)}.acard:nth-child(2)::before{background:var(--purple)}.acard:nth-child(3)::before{background:var(--amber)}
+.acard:hover{transform:translateY(-2px);border-color:rgba(59,130,246,.4);box-shadow:0 4px 12px rgba(0,0,0,.3),0 0 15px rgba(59,130,246,.08)}
+.acard .card-label{display:flex;align-items:center;gap:8px;margin-bottom:12px}
+.acard .card-label svg{width:16px;height:16px;color:var(--blue)}
+.acard p{font-size:13px;color:#94a3b8;line-height:1.7}
+.tbl{width:100%;border-collapse:separate;border-spacing:0;background:var(--card);border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:32px}
+.tbl thead th{background:rgba(59,130,246,.08);border-bottom:1px solid var(--border);padding:12px 18px;text-align:left;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:1px;color:var(--muted)}
+.tbl tbody td{padding:12px 18px;font-size:13px;color:#94a3b8;border-bottom:1px solid rgba(42,49,80,.5);vertical-align:middle}
+.tbl tbody tr:last-child td{border-bottom:none}
+.tbl tbody tr:hover{background:rgba(59,130,246,.04)}
+.ci{display:flex;align-items:center;gap:8px}
+.icon{display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:50%;font-size:11px;font-weight:700;flex-shrink:0}
+.icon.ok{background:rgba(16,185,129,.2);color:var(--green)}
+.icon.wn{background:rgba(245,158,11,.2);color:var(--amber)}
+.icon.x{background:rgba(239,68,68,.2);color:var(--red)}
+.pill{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:600;padding:3px 10px;border-radius:12px}
+.pill.g{background:rgba(16,185,129,.12);color:var(--green)}.pill.y{background:rgba(245,158,11,.12);color:var(--amber)}.pill.r{background:rgba(239,68,68,.12);color:var(--red)}
+.footer{margin-top:36px;padding:16px 20px;background:rgba(239,68,68,.05);border:1px solid rgba(239,68,68,.15);border-radius:12px;text-align:center}
+.footer p{font-size:11px;color:var(--red);line-height:1.6}
+.tag{display:inline-block;margin-top:6px;font-size:10px;color:var(--muted);letter-spacing:1px;text-transform:uppercase}
+@media(max-width:768px){.app{padding:16px 12px 36px}h1{font-size:20px}.grid{grid-template-columns:1fr}.tbl thead{display:none}.tbl tbody tr{display:flex;flex-direction:column;padding:12px 16px;gap:6px}.tbl tbody td{border-bottom:1px solid rgba(42,49,80,.5);padding:4px 0}.tbl tbody tr:last-child td{border-bottom:none}}
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="header">
+    <div class="badge"><span class="dot"></span><span>Live Template</span></div>
+    <h1>Market Opening Checklist</h1>
+    <p class="subtitle">Pre-market signals, risk factors, and sector readiness at a glance</p>
+  </header>
+
+  <div class="updated">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+    Last updated: <span class="time" id="ts">—</span>
+    <button class="btn" onclick="refresh()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 4v6h-6"/><path d="M1 20v-6h6"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+      Refresh
+    </button>
+  </div>
+
+  <div class="sec-title">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+    Market Facts<span class="line"></span>
+  </div>
+
+  <div class="grid">
+    <div class="card">
+      <div class="card-head"><span class="card-label">S&amp;P 500 Futures</span><span class="sig up" id="s1">▲ BULLISH</span></div>
+      <div class="card-val" id="v1">+0.42%</div>
+      <div class="card-desc">Pre-market futures indicating positive open sentiment</div>
+    </div>
+    <div class="card">
+      <div class="card-head"><span class="card-label">VIX Index</span><span class="sig mid" id="s2">● NEUTRAL</span></div>
+      <div class="card-val" id="v2">14.8</div>
+      <div class="card-desc">Market volatility gauge — below 20 suggests calm conditions</div>
+    </div>
+    <div class="card">
+      <div class="card-head"><span class="card-label">10Y Treasury Yield</span><span class="sig up" id="s3">▲ BULLISH</span></div>
+      <div class="card-val" id="v3">4.12%</div>
+      <div class="card-desc">Bond yield movement affecting equity valuations</div>
+    </div>
+    <div class="card">
+      <div class="card-head"><span class="card-label">DXY (Dollar Index)</span><span class="sig mid" id="s4">● NEUTRAL</span></div>
+      <div class="card-val" id="v4">103.6</div>
+      <div class="card-desc">US dollar strength relative to major currencies</div>
+    </div>
+    <div class="card">
+      <div class="card-head"><span class="card-label">WTI Crude Oil</span><span class="sig dn" id="s5">▼ RISK</span></div>
+      <div class="card-val" id="v5">$78.40</div>
+      <div class="card-desc">Energy prices impacting inflation and transport sectors</div>
+    </div>
+    <div class="card">
+      <div class="card-head"><span class="card-label">Earnings Today</span><span class="sig up" id="s6">▲ BULLISH</span></div>
+      <div class="card-val" id="v6">12 Companies</div>
+      <div class="card-desc">Major earnings releases scheduled for today's session</div>
+    </div>
+  </div>
+
+  <div class="sec-title">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
+    Analysis &amp; Insights<span class="line"></span>
+  </div>
+
+  <div class="grid">
+    <div class="acard">
+      <div class="card-label">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12h20"/><path d="M12 2v20"/><path d="m4.93 4.93 14.14 14.14"/><path d="m4.93 19.07 14.14-14.14"/></svg>
+        Macro Backdrop
+      </div>
+      <p>Fed commentary this week suggests a data-dependent stance. Markets are pricing in a 65% probability of a rate hold at the next FOMC meeting. Watch for CPI prints and labor data as key catalysts that could shift positioning.</p>
+    </div>
+    <div class="acard">
+      <div class="card-label">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+        Sector Rotation
+      </div>
+      <p>Technology and communication services showing relative strength in pre-market. Energy sector under pressure from crude pullback. Financials remain range-bound with yield curve dynamics limiting upside conviction.</p>
+    </div>
+    <div class="acard">
+      <div class="card-label">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+        Risk Assessment
+      </div>
+      <p>Key risk: geopolitical headlines overnight could gap opens. Liquidity thinner than usual with partial holiday schedules in some regions. Position sizing should account for potential whipsaw in the first 30 minutes.</p>
+    </div>
+  </div>
+
+  <div class="sec-title">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+    Pre-Open Checklist<span class="line"></span>
+  </div>
+
+  <table class="tbl" aria-label="Pre-market checklist">
+    <thead><tr><th style="width:40%">Check Item</th><th style="width:35%">Status</th><th style="width:25%">Signal</th></tr></thead>
+    <tbody>
+      <tr><td><div class="ci"><span class="icon ok">✓</span>Futures direction confirmed</div></td><td><span class="pill g">Verified</span></td><td style="color:var(--green);font-weight:600;font-size:13px">Positive</td></tr>
+      <tr><td><div class="ci"><span class="icon ok">✓</span>No major overnight gaps</div></td><td><span class="pill g">Clear</span></td><td style="color:var(--green);font-weight:600;font-size:13px">Stable</td></tr>
+      <tr><td><div class="ci"><span class="icon wn">!</span>Earnings calendar reviewed</div></td><td><span class="pill y">Pending</span></td><td style="color:var(--amber);font-weight:600;font-size:13px">Watch</td></tr>
+      <tr><td><div class="ci"><span class="icon ok">✓</span>Economic data releases checked</div></td><td><span class="pill g">Complete</span></td><td style="color:var(--green);font-weight:600;font-size:13px">No surprises</td></tr>
+      <tr><td><div class="ci"><span class="icon x">✕</span>Oil price spike risk</div></td><td><span class="pill r">Alert</span></td><td style="color:var(--red);font-weight:600;font-size:13px">Elevated</td></tr>
+      <tr><td><div class="ci"><span class="icon wn">!</span>Fed speaker schedule</div></td><td><span class="pill y">Pending</span></td><td style="color:var(--amber);font-weight:600;font-size:13px">TBD</td></tr>
+    </tbody>
+  </table>
+
+  <footer class="footer">
+    <p>⚠️ This is a demo template with sample data. It is not financial advice. Do not make trading decisions based on this information alone. Always verify with live data sources.</p>
+    <span class="tag">Market Opening Checklist Demo · v1.0.0</span>
+  </footer>
+</div>
+
+<script>
+const D={futures:{v:['+0.42%','+0.15%','+0.68%','-0.10%','+0.33%'],s:['▲ BULLISH','▲ BULLISH','▲ BULLISH','▼ RISK','▲ BULLISH']},
+vix:{v:['14.8','16.2','13.5','18.9','15.1'],s:['● NEUTRAL','● NEUTRAL','● NEUTRAL','▼ RISK','● NEUTRAL']},
+treasury:{v:['4.12%','4.05%','4.28%','3.98%','4.15%'],s:['▲ BULLISH','▲ BULLISH','▼ RISK','▲ BULLISH','▲ BULLISH']},
+dollar:{v:['103.6','104.1','102.8','103.2','104.5'],s:['● NEUTRAL','● NEUTRAL','● NEUTRAL','● NEUTRAL','● NEUTRAL']},
+oil:{v:['$78.40','$81.20','$76.50','$79.90','$82.10'],s:['▼ RISK','▼ RISK','▲ BULLISH','▼ RISK','▼ RISK']},
+earnings:{v:['12 Companies','8 Companies','15 Companies','5 Companies','20 Companies'],s:['▲ BULLISH','● NEUTRAL','▲ BULLISH','● NEUTRAL','▲ BULLISH']}};
+let i=0;
+function refresh(){
+  i=(i+1)%5;
+  [{k:'futures',v:'v1',s:'s1'},{k:'vix',v:'v2',s:'s2'},{k:'treasury',v:'v3',s:'s3'},{k:'dollar',v:'v4',s:'s4'},{k:'oil',v:'v5',s:'s5'},{k:'earnings',v:'v6',s:'s6'}].forEach(function(x){
+    var ve=document.getElementById(x.v),se=document.getElementById(x.s);
+    if(ve&&se){ve.textContent=D[x.k].v[i];se.textContent=D[x.k].s[i];
+    se.className='sig '+(D[x.k].s[i].indexOf('BULLISH')>-1?'up':D[x.k].s[i].indexOf('RISK')>-1?'dn':'mid');}
+  });
+  var n=new Date();
+  document.getElementById('ts').textContent=n.toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false});
+}
+(function(){var n=new Date();document.getElementById('ts').textContent=n.toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false})})();
+</script>
+</body>
+</html>

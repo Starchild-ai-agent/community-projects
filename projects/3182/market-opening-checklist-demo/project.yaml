@@ -1,0 +1,11 @@
+name: market-opening-checklist-demo
+type: service
+version: 1.0.0
+title: Market Opening Checklist Demo
+slug: market-opening-checklist-demo
+entry: index.html
+license: MIT
+port: 8080
+description: A self-contained demo template that separates observable pre-market facts
+  from analysis and scenarios.
+author: user-3182
