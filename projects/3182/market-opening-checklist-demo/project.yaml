@@ -1,6 +1,6 @@
 name: market-opening-checklist-demo
 type: service
-version: 1.0.0
+version: 1.0.1
 title: Market Opening Checklist Demo
 slug: market-opening-checklist-demo
 entry: index.html

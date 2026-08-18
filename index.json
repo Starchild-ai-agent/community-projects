@@ -3,13 +3,13 @@
     "type": "service",
     "user_id": "3182",
     "slug": "market-opening-checklist-demo",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "A self-contained demo template that separates observable pre-market facts from analysis and scenarios.",
     "tags": [],
     "author": "user-3182",
     "license": "MIT",
     "github_url": "https://github.com/Starchild-ai-agent/community-projects/tree/main/projects/3182/market-opening-checklist-demo",
-    "updated_at": "2026-08-18T17:00:33.812Z",
+    "updated_at": "2026-08-18T17:02:05.878Z",
     "created_at": "2026-08-18T17:00:33.812Z"
   },
   {
