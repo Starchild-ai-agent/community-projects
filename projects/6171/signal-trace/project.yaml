@@ -1,0 +1,13 @@
+type: service
+name: signal-trace
+version: 1.2.0
+license: MIT
+entry: src/index.html
+port: 8765
+publisher:
+  public_slug: signal-trace
+description: 'Standalone dark-tech browser utility for parsing, filtering, and visualizing
+  automation event logs as observable proof of success.
+
+  '
+author: user-6171

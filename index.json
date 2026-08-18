@@ -1,5 +1,18 @@
 [
   {
+    "type": "service",
+    "user_id": "6171",
+    "slug": "signal-trace",
+    "version": "1.2.0",
+    "description": "Standalone dark-tech browser utility for parsing, filtering, and visualizing automation event logs as observable proof of success.\n",
+    "tags": [],
+    "author": "user-6171",
+    "license": "MIT",
+    "github_url": "https://github.com/Starchild-ai-agent/community-projects/tree/main/projects/6171/signal-trace",
+    "updated_at": "2026-08-18T01:06:04.404Z",
+    "created_at": "2026-08-18T01:06:04.404Z"
+  },
+  {
     "type": "script",
     "user_id": "3182",
     "slug": "world-news-digest",

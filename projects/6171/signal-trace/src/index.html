@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Signal Trace</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0a0e17;--surface:#111827;--surface2:#1a2235;--border:#2a3a5c;
+  --cyan:#00f0ff;--amber:#ffb300;--red:#ff3d5a;--green:#00e676;
+  --text:#e2e8f0;--muted:#7a8ba8;--font:monospace;
+}
+html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--font);font-size:14px;line-height:1.5}
+a{color:var(--cyan)}
+h1,h2,h3{letter-spacing:.05em}
+
+/* layout */
+.app{display:grid;grid-template-columns:320px 1fr;grid-template-rows:auto 1fr;gap:0;min-height:100vh}
+@media(max-width:860px){.app{grid-template-columns:1fr;grid-template-rows:auto auto auto}}
+
+/* header */
+.header{grid-column:1/-1;background:var(--surface);border-bottom:1px solid var(--border);padding:12px 24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.header h1{font-size:1.3rem;color:var(--cyan);text-shadow:0 0 8px rgba(0,240,255,.4)}
+.header .tag{font-size:.7rem;color:var(--muted);background:var(--surface2);padding:2px 8px;border-radius:3px}
+
+/* sidebar */
+.sidebar{background:var(--surface);border-right:1px solid var(--border);padding:20px;overflow-y:auto;display:flex;flex-direction:column;gap:16px}
+@media(max-width:860px){.sidebar{border-right:none;border-bottom:1px solid var(--border)}}
+
+/* main */
+.main{padding:20px 24px;overflow-y:auto;display:flex;flex-direction:column;gap:16px}
+
+/* panels */
+.panel{background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:16px;display:flex;flex-direction:column;gap:10px}
+.panel-title{font-size:.75rem;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:2px}
+
+/* textarea */
+#event-input{width:100%;min-height:180px;background:var(--bg);color:var(--text);border:1px solid var(--border);border-radius:4px;padding:10px;font-family:var(--font);font-size:.8rem;resize:vertical;outline:none;transition:border-color .2s}
+#event-input:focus{border-color:var(--cyan)}
+
+/* buttons */
+.btn-row{display:flex;gap:8px;flex-wrap:wrap}
+.btn{background:var(--surface);color:var(--text);border:1px solid var(--border);border-radius:4px;padding:7px 14px;font-family:var(--font);font-size:.8rem;cursor:pointer;transition:all .15s;white-space:nowrap}
+.btn:hover{border-color:var(--cyan);color:var(--cyan)}
+.btn.primary{background:rgba(0,240,255,.12);border-color:var(--cyan);color:var(--cyan)}
+.btn.primary:hover{background:rgba(0,240,255,.22)}
+.btn.warn{background:rgba(255,179,0,.1);border-color:var(--amber);color:var(--amber)}
+.btn.warn:hover{background:rgba(255,179,0,.2)}
+.btn.danger{background:rgba(255,61,90,.1);border-color:var(--red);color:var(--red)}
+.btn.danger:hover{background:rgba(255,61,90,.2)}
+.btn:disabled{opacity:.4;cursor:not-allowed}
+
+/* filters */
+.filter-row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.filter-chip{background:var(--bg);border:1px solid var(--border);border-radius:20px;padding:4px 12px;font-size:.75rem;cursor:pointer;transition:all .15s;color:var(--muted);user-select:none}
+.filter-chip:hover{border-color:var(--muted)}
+.filter-chip.active{border-color:var(--cyan);color:var(--cyan);background:rgba(0,240,255,.08)}
+.filter-chip.active[data-status="pass"]{border-color:var(--green);color:var(--green);background:rgba(0,230,118,.08)}
+.filter-chip.active[data-status="warn"]{border-color:var(--amber);color:var(--amber);background:rgba(255,179,0,.08)}
+.filter-chip.active[data-status="fail"]{border-color:var(--red);color:var(--red);background:rgba(255,61,90,.08)}
+
+/* search */
+.search-box{position:relative}
+.search-box input{width:100%;background:var(--bg);color:var(--text);border:1px solid var(--border);border-radius:4px;padding:7px 10px 7px 30px;font-family:var(--font);font-size:.8rem;outline:none}
+.search-box input:focus{border-color:var(--cyan)}
+.search-box .icon{position:absolute;left:9px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:.8rem;pointer-events:none}
+
+/* summary */
+.summary{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+@media(max-width:500px){.summary{grid-template-columns:repeat(2,1fr)}}
+.stat{background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:12px;text-align:center}
+.stat .num{font-size:1.6rem;font-weight:700;line-height:1}
+.stat .lbl{font-size:.65rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-top:4px}
+.stat.total .num{color:var(--cyan)}
+.stat.pass .num{color:var(--green)}
+.stat.warn .num{color:var(--amber)}
+.stat.fail .num{color:var(--red)}
+
+/* table */
+.table-wrap{overflow-x:auto;border:1px solid var(--border);border-radius:6px}
+table{width:100%;border-collapse:collapse;font-size:.8rem}
+thead th{background:var(--bg);color:var(--muted);text-align:left;padding:8px 12px;font-size:.7rem;text-transform:uppercase;letter-spacing:.06em;border-bottom:1px solid var(--border);white-space:nowrap;cursor:pointer;user-select:none}
+thead th:hover{color:var(--cyan)}
+thead th.sorted-asc::after{content:' ▲';color:var(--cyan)}
+thead th.sorted-desc::after{content:' ▼';color:var(--cyan)}
+tbody tr{border-bottom:1px solid rgba(42,58,92,.5);transition:background .1s}
+tbody tr:last-child{border-bottom:none}
+tbody tr:hover{background:rgba(0,240,255,.04)}
+td{padding:8px 12px;vertical-align:top;max-width:280px}
+td.time{color:var(--muted);white-space:nowrap;font-size:.75rem}
+td.step{font-weight:600}
+.status-badge{display:inline-block;padding:2px 8px;border-radius:3px;font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em}
+.status-badge.pass{background:rgba(0,230,118,.12);color:var(--green);border:1px solid rgba(0,230,118,.3)}
+.status-badge.warn{background:rgba(255,179,0,.12);color:var(--amber);border:1px solid rgba(255,179,0,.3)}
+.status-badge.fail{background:rgba(255,61,90,.12);color:var(--red);border:1px solid rgba(255,61,90,.3)}
+.status-badge.info{background:rgba(0,240,255,.1);color:var(--cyan);border:1px solid rgba(0,240,255,.25)}
+.evidence{color:var(--muted);font-size:.75rem;word-break:break-word}
+.duration{white-space:nowrap;color:var(--muted);font-size:.75rem}
+
+/* empty / error states */
+.empty-state{padding:40px;text-align:center;color:var(--muted);font-size:.85rem}
+.error-msg{background:rgba(255,61,90,.1);border:1px solid rgba(255,61,90,.3);border-radius:4px;padding:10px 14px;color:var(--red);font-size:.8rem}
+.parse-info{background:rgba(0,240,255,.06);border:1px solid rgba(0,240,255,.2);border-radius:4px;padding:8px 14px;color:var(--cyan);font-size:.78rem}
+
+/* toast */
+.toast{position:fixed;bottom:24px;right:24px;background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:10px 18px;font-size:.8rem;color:var(--text);box-shadow:0 8px 24px rgba(0,0,0,.5);transform:translateY(80px);opacity:0;transition:all .25s;z-index:100;pointer-events:none}
+.toast.show{transform:translateY(0);opacity:1}
+.toast.success{border-color:var(--green);color:var(--green)}
+.toast.error{border-color:var(--red);color:var(--red)}
+
+/* scrollbar */
+::-webkit-scrollbar{width:6px;height:6px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
+::-webkit-scrollbar-thumb:hover{background:var(--muted)}
+
+/* focus visible */
+:focus-visible{outline:2px solid var(--cyan);outline-offset:2px}
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="header">
+    <h1>⚡ Signal Trace</h1>
+    <span class="tag">v1.0.0</span>
+    <span class="tag">offline</span>
+  </header>
+
+  <aside class="sidebar" role="complementary" aria-label="Input controls">
+    <div class="panel">
+      <div class="panel-title">Event Input</div>
+      <p style="font-size:.72rem;color:var(--muted);margin-bottom:4px">One JSON object per line, or a single JSON array.</p>
+      <textarea id="event-input" rows="10" aria-label="Paste JSON events here" placeholder='{"step":"login","status":"pass","duration_ms":120}\n{"step":"fetch","status":"warn","evidence":"slow response"}'></textarea>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn primary" id="btn-parse" aria-label="Parse events">Parse</button>
+      <button class="btn warn" id="btn-sample" aria-label="Load sample data">Sample Data</button>
+      <button class="btn danger" id="btn-clear" aria-label="Clear input and results">Clear</button>
+    </div>
+
+    <div id="parse-error" class="error-msg" role="alert" style="display:none"></div>
+    <div id="parse-info" class="parse-info" role="status" style="display:none"></div>
+  </aside>
+
+  <main class="main" role="main">
+    <!-- Summary -->
+    <section class="panel" aria-label="Summary counts">
+      <div class="panel-title">Summary</div>
+      <div class="summary">
+        <div class="stat total"><div class="num" id="count-total">0</div><div class="lbl">Total</div></div>
+        <div class="stat pass"><div class="num" id="count-pass">0</div><div class="lbl">Pass</div></div>
+        <div class="stat warn"><div class="num" id="count-warn">0</div><div class="lbl">Warn</div></div>
+        <div class="stat fail"><div class="num" id="count-fail">0</div><div class="lbl">Fail</div></div>
+      </div>
+    </section>
+
+    <!-- Filters -->
+    <div class="panel">
+      <div class="panel-title">Filters</div>
+      <div class="filter-row" role="group" aria-label="Filter by status">
+        <span class="filter-chip active" data-status="all" tabindex="0" role="checkbox" aria-checked="true">All</span>
+        <span class="filter-chip active" data-status="pass" tabindex="0" role="checkbox" aria-checked="true">Pass</span>
+        <span class="filter-chip active" data-status="warn" tabindex="0" role="checkbox" aria-checked="true">Warn</span>
+        <span class="filter-chip active" data-status="fail" tabindex="0" role="checkbox" aria-checked="true">Fail</span>
+        <span class="filter-chip active" data-status="info" tabindex="0" role="checkbox" aria-checked="true">Info</span>
+      </div>
+      <div class="search-box" style="margin-top:10px">
+        <span class="icon" aria-hidden="true">⌕</span>
+        <input type="search" id="search-input" placeholder="Search events…" aria-label="Search events">
+      </div>
+    </div>
+
+    <!-- Table -->
+    <section class="panel" aria-label="Parsed events timeline">
+      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px">
+        <div class="panel-title" style="margin:0">Timeline</div>
+        <div class="btn-row" style="margin:0">
+          <button class="btn" id="btn-copy" aria-label="Copy report as JSON">Copy Report</button>
+          <button class="btn" id="btn-export" aria-label="Export report as JSON file">Export JSON</button>
+        </div>
+      </div>
+      <div class="table-wrap" style="margin-top:10px">
+        <table id="event-table">
+          <thead>
+            <tr>
+              <th data-sort="timestamp">Timestamp</th>
+              <th data-sort="step">Step</th>
+              <th data-sort="status">Status</th>
+              <th data-sort="evidence">Evidence</th>
+              <th data-sort="duration_ms">Duration</th>
+            </tr>
+          </thead>
+          <tbody id="event-tbody"></tbody>
+        </table>
+      </div>
+      <div id="table-empty" class="empty-state" style="display:none">No events to display. Paste JSON and click Parse.</div>
+    </section>
+  </main>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(function(){
+  "use strict";
+
+  /* ── sample data ── */
+  const SAMPLE = [
+    {timestamp:"2025-01-15T08:00:01Z",step:"init",status:"pass",evidence:"engine started",duration_ms:45},
+    {timestamp:"2025-01-15T08:00:03Z",step:"authenticate",status:"pass",evidence:"token issued",duration_ms:312},
+    {timestamp:"2025-01-15T08:00:04Z",step:"fetch_users",status:"warn",evidence:"response >500ms",duration_ms:680},
+    {timestamp:"2025-01-15T08:00:06Z",step:"validate_schema",status:"pass",evidence:"all fields present",duration_ms:12},
+    {timestamp:"2025-01-15T08:00:07Z",step:"transform",status:"fail",evidence:"null pointer at index 3",duration_ms:0},
+    {timestamp:"2025-01-15T08:00:08Z",step:"retry_transform",status:"pass",evidence:"recovered on attempt 2",duration_ms:205},
+    {timestamp:"2025-01-15T08:00:10Z",step:"persist",status:"pass",evidence:"8 rows written",duration_ms:88},
+    {timestamp:"2025-01-15T08:00:11Z",step:"notify",status:"warn",evidence:"email gateway throttled",duration_ms:1500},
+    {timestamp:"2025-01-15T08:00:13Z",step:"cleanup",status:"pass",evidence:"temp files removed",duration_ms:34},
+    {timestamp:"2025-01-15T08:00:14Z",step:"report",status:"info",evidence:"summary generated",duration_ms:22}
+  ];
+
+  /* ── state ── */
+  let allEvents = [];
+  let activeFilters = new Set(["all","pass","warn","fail","info"]);
+  let searchQuery = "";
+  let sortKey = "timestamp";
+  let sortDir = 1; // 1 asc, -1 desc
+
+  /* ── DOM refs ── */
+  const input = document.getElementById("event-input");
+  const btnParse = document.getElementById("btn-parse");
+  const btnSample = document.getElementById("btn-sample");
+  const btnClear = document.getElementById("btn-clear");
+  const btnCopy = document.getElementById("btn-copy");
+  const btnExport = document.getElementById("btn-export");
+  const searchInput = document.getElementById("search-input");
+  const errorBox = document.getElementById("parse-error");
+  const infoBox = document.getElementById("parse-info");
+  const tbody = document.getElementById("event-tbody");
+  const tableEmpty = document.getElementById("table-empty");
+  const toast = document.getElementById("toast");
+
+  const countTotal = document.getElementById("count-total");
+  const countPass = document.getElementById("count-pass");
+  const countWarn = document.getElementById("count-warn");
+  const countFail = document.getElementById("count-fail");
+
+  /* ── helpers ── */
+  function showToast(msg, type="success"){
+    toast.textContent = msg;
+    toast.className = "toast show " + type;
+    clearTimeout(toast._t);
+    toast._t = setTimeout(()=>{ toast.className = "toast"; }, 2200);
+  }
+
+  function normalizeEvent(raw, idx){
+    const e = {};
+    e._idx = idx;
+    e.timestamp = raw.timestamp || new Date().toISOString();
+    e.step = raw.step || raw.step_name || raw.name || raw.action || ("event-"+idx);
+    const st = String(raw.status || "info").toLowerCase();
+    e.status = ["pass","warn","fail","info"].includes(st) ? st : "info";
+    e.evidence = raw.evidence || raw.message || raw.detail || raw.note || (raw.error ? String(raw.error) : "");
+    e.duration_ms = Number(raw.duration_ms || raw.duration || raw.elapsed_ms || 0) || 0;
+    // keep any extra fields
+    for(const k of Object.keys(raw)){
+      if(!["_idx","timestamp","step","step_name","name","action","status","evidence","message","detail","note","error","duration_ms","duration","elapsed_ms"].includes(k)){
+        e[k] = raw[k];
+      }
+    }
+    return e;
+  }
+
+  function formatDuration(ms){
+    if(ms < 1000) return ms + " ms";
+    return (ms/1000).toFixed(2) + " s";
+  }
+
+  function formatTimestamp(ts){
+    try {
+      const d = new Date(ts);
+      if(isNaN(d)) return String(ts);
+      return d.toLocaleString();
+    } catch{ return String(ts); }
+  }
+
+  /* ── parse ── */
+  function parseInput(){
+    const raw = input.value.trim();
+    if(!raw){ showError("Input is empty. Paste JSON events or load Sample Data."); return; }
+
+    let parsed = [];
+    const lines = raw.split("\n").map(l=>l.trim()).filter(Boolean);
+
+    // try as single JSON array first
+    try {
+      const obj = JSON.parse(raw);
+      if(Array.isArray(obj)){
+        parsed = obj.map((o,i)=>normalizeEvent(typeof o==="object"?o:{}, i));
+      } else if(typeof obj==="object"){
+        parsed = [normalizeEvent(obj, 0)];
+      } else {
+        showError("Parsed JSON is a primitive (not object or array). Expected JSON objects.");
+        return;
+      }
+    } catch(err){
+      // try line-by-line
+      try {
+        const arr = JSON.parse("["+lines.join(",")+"]");
+        parsed = arr.map((o,i)=>normalizeEvent(typeof o==="object"?o:{}, i));
+      } catch(e2){
+        // find first bad line
+        let badLine = -1, badChar = -1;
+        for(let i=0;i<lines.length;i++){
+          try { JSON.parse(lines[i]); } catch(e3){
+            badLine = i+1;
+            badChar = e3.message.match(/position\s+(\d+)/)?.[1] || "?";
+            break;
+          }
+        }
+        showError("JSON parse error at line "+badLine+(badChar?" char "+badChar:"")+". Make sure each line is valid JSON.\n"+(lines[badLine-1]||"")+"");
+        return;
+      }
+    }
+
+    allEvents = parsed;
+    hideError();
+    infoBox.textContent = "Parsed "+parsed.length+" event(s).";
+    infoBox.style.display = "block";
+    render();
+    showToast("Parsed "+parsed.length+" events");
+  }
+
+  function showError(msg){
+    errorBox.textContent = msg;
+    errorBox.style.display = "block";
+    infoBox.style.display = "none";
+  }
+  function hideError(){
+    errorBox.style.display = "none";
+  }
+
+  /* ── filter / search ── */
+  function getFiltered(){
+    return allEvents.filter(e=>{
+      if(!activeFilters.has(e.status)) return false;
+      if(searchQuery){
+        const q = searchQuery.toLowerCase();
+        return JSON.stringify(e).toLowerCase().includes(q);
+      }
+      return true;
+    });
+  }
+
+  function getSorted(events){
+    return events.slice().sort((a,b)=>{
+      let va = a[sortKey], vb = b[sortKey];
+      if(typeof va === "string") va = va.toLowerCase();
+      if(typeof vb === "string") vb = vb.toLowerCase();
+      if(va < vb) return -1*sortDir;
+      if(va > vb) return 1*sortDir;
+      return 0;
+    });
+  }
+
+  /* ── render ── */
+  function render(){
+    // counts
+    const totals = {total:allEvents.length, pass:0, warn:0, fail:0};
+    allEvents.forEach(e=>{ if(totals[e.status]!==undefined) totals[e.status]++; });
+    countTotal.textContent = totals.total;
+    countPass.textContent = totals.pass;
+    countWarn.textContent = totals.warn;
+    countFail.textContent = totals.fail;
+
+    // table
+    const filtered = getFiltered();
+    const sorted = getSorted(filtered);
+    tbody.innerHTML = "";
+    if(sorted.length === 0){
+      tableEmpty.style.display = "block";
+    } else {
+      tableEmpty.style.display = "none";
+      for(const e of sorted){
+        const tr = document.createElement("tr");
+        tr.innerHTML =
+          "<td class=\"time\">"+esc(formatTimestamp(e.timestamp))+"</td>"+
+          "<td class=\"step\">"+esc(String(e.step))+"</td>"+
+          "<td><span class=\"status-badge "+esc(e.status)+"\">"+esc(e.status.toUpperCase())+"</span></td>"+
+          "<td class=\"evidence\">"+esc(String(e.evidence))+"</td>"+
+          "<td class=\"duration\">"+esc(formatDuration(e.duration_ms))+"</td>";
+        tbody.appendChild(tr);
+      }
+    }
+
+    // update sort headers
+    document.querySelectorAll("#event-table thead th").forEach(th=>{
+      th.classList.remove("sorted-asc","sorted-desc");
+      if(th.dataset.sort === sortKey){
+        th.classList.add(sortDir===1?"sorted-asc":"sorted-desc");
+      }
+    });
+  }
+
+  function esc(s){
+    return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+  }
+
+  /* ── copy / export ── */
+  function getReport(){
+    return JSON.stringify({generated_at:new Date().toISOString(), total:allEvents.length, events:allEvents}, null, 2);
+  }
+
+  btnCopy.addEventListener("click", ()=>{
+    if(!allEvents.length){ showToast("No events to copy","error"); return; }
+    const report = getReport();
+    if(navigator.clipboard){
+      navigator.clipboard.writeText(report).then(()=>showToast("Report copied to clipboard")).catch(()=>{ fallbackCopy(report); });
+    } else { fallbackCopy(report); }
+  });
+
+  function fallbackCopy(text){
+    const ta = document.createElement("textarea");
+    ta.value = text; ta.style.position="fixed"; ta.style.opacity="0";
+    document.body.appendChild(ta); ta.select();
+    document.execCommand("copy");
+    document.body.removeChild(ta);
+    showToast("Report copied to clipboard");
+  }
+
+  btnExport.addEventListener("click", ()=>{
+    if(!allEvents.length){ showToast("No events to export","error"); return; }
+    const blob = new Blob([getReport()],{type:"application/json"});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url; a.download = "signal-trace-report-"+Date.now()+".json";
+    document.body.appendChild(a); a.click();
+    setTimeout(()=>{ URL.revokeObjectURL(url); a.remove(); }, 1000);
+    showToast("Report exported");
+  });
+
+  /* ── sample ── */
+  btnSample.addEventListener("click", ()=>{
+    input.value = JSON.stringify(SAMPLE, null, 2);
+    hideError();
+    parseInput();
+  });
+
+  /* ── clear ── */
+  btnClear.addEventListener("click", ()=>{
+    input.value = "";
+    allEvents = [];
+    activeFilters = new Set(["all","pass","warn","fail","info"]);
+    searchQuery = "";
+    searchInput.value = "";
+    hideError(); infoBox.style.display="none";
+    document.querySelectorAll(".filter-chip").forEach(c=>{
+      c.classList.add("active");
+      c.setAttribute("aria-checked","true");
+    });
+    render();
+    showToast("Cleared");
+  });
+
+  /* ── parse button ── */
+  btnParse.addEventListener("click", parseInput);
+
+  /* ── filter chips ── */
+  document.querySelector(".filter-row").addEventListener("click", e=>{
+    const chip = e.target.closest(".filter-chip");
+    if(!chip) return;
+    const st = chip.dataset.status;
+    if(st === "all"){
+      const allActive = activeFilters.size === 5;
+      activeFilters.clear();
+      if(!allActive) ["all","pass","warn","fail","info"].forEach(s=>activeFilters.add(s));
+      document.querySelectorAll(".filter-chip").forEach(c=>{
+        c.classList.toggle("active", !allActive);
+        c.setAttribute("aria-checked", !allActive?"true":"false");
+      });
+    } else {
+      activeFilters.delete("all");
+      document.querySelector('.filter-chip[data-status="all"]').classList.remove("active");
+      document.querySelector('.filter-chip[data-status="all"]').setAttribute("aria-checked","false");
+      if(activeFilters.has(st)){
+        activeFilters.delete(st);
+        chip.classList.remove("active");
+        chip.setAttribute("aria-checked","false");
+      } else {
+        activeFilters.add(st);
+        chip.classList.add("active");
+        chip.setAttribute("aria-checked","true");
+      }
+      if(activeFilters.size === 5){
+        activeFilters.add("all");
+        document.querySelector('.filter-chip[data-status="all"]').classList.add("active");
+        document.querySelector('.filter-chip[data-status="all"]').setAttribute("aria-checked","true");
+      }
+    }
+    render();
+  });
+
+  /* ── search ── */
+  let _st;
+  searchInput.addEventListener("input", ()=>{
+    clearTimeout(_st);
+    _st = setTimeout(()=>{ searchQuery = searchInput.value.trim(); render(); }, 150);
+  });
+
+  /* ── sort ── */
+  document.querySelector("#event-table thead").addEventListener("click", e=>{
+    const th = e.target.closest("th[data-sort]");
+    if(!th) return;
+    const key = th.dataset.sort;
+    if(sortKey === key){ sortDir *= -1; } else { sortKey = key; sortDir = 1; }
+    render();
+  });
+
+  /* ── keyboard: Enter in textarea parses ── */
+  input.addEventListener("keydown", e=>{
+    if(e.key === "Enter" && (e.ctrlKey || e.metaKey)){ parseInput(); }
+  });
+
+})();
+</script>
+</body>
+</html>
