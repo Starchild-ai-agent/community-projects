@@ -1,6 +1,19 @@
 [
   {
     "type": "service",
+    "user_id": "6171",
+    "slug": "signaltrace",
+    "version": "1.0.1",
+    "description": "Browser-only JSON pipeline inspector with validation, snapshot diffs, and explainable signal decisions.",
+    "tags": [],
+    "author": "user-6171",
+    "license": "MIT",
+    "github_url": "https://github.com/Starchild-ai-agent/community-projects/tree/main/projects/6171/signaltrace",
+    "updated_at": "2026-08-25T15:17:54.565Z",
+    "created_at": "2026-08-25T15:17:54.565Z"
+  },
+  {
+    "type": "service",
     "user_id": "3182",
     "slug": "market-opening-checklist-demo",
     "version": "1.0.1",
