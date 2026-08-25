@@ -2,6 +2,19 @@
   {
     "type": "service",
     "user_id": "6171",
+    "slug": "snapshot-signal-lab",
+    "version": "1.0.0",
+    "description": "Browser-only JSON snapshot auditor for pipeline health, coverage, diffs, and signals.",
+    "tags": [],
+    "author": "user-6171",
+    "license": "MIT",
+    "github_url": "https://github.com/Starchild-ai-agent/community-projects/tree/main/projects/6171/snapshot-signal-lab",
+    "updated_at": "2026-08-25T15:24:24.109Z",
+    "created_at": "2026-08-25T15:24:24.109Z"
+  },
+  {
+    "type": "service",
+    "user_id": "6171",
     "slug": "signaltrace",
     "version": "1.0.1",
     "description": "Browser-only JSON pipeline inspector with validation, snapshot diffs, and explainable signal decisions.",

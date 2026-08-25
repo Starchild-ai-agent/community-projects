@@ -1,0 +1,12 @@
+name: snapshot-signal-lab
+version: 1.0.0
+type: service
+description: Browser-only JSON snapshot auditor for pipeline health, coverage, diffs,
+  and signals.
+license: MIT
+entry: index.html
+port: 4173
+env_required: []
+publisher:
+  public_slug: snapshot-signal-lab
+author: user-6171
