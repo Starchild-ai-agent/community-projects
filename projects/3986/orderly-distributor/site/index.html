@@ -197,20 +197,14 @@ footer .big{font-family:var(--black);font-size:clamp(1.6rem,5.5vw,3.4rem);color:
 <nav aria-label="Section index">
   <div class="nav-brand">
     <div class="t">Distributor<br>Program V2</div>
-    <div class="s mono">Mechanics Spec / Draft</div>
+    <div class="s mono">Mechanics / Draft</div>
   </div>
   <ol id="navlist">
-    <li><a href="#s0"><span class="n">00</span><span>Locked</span></a></li>
-    <li><a href="#s1"><span class="n">01</span><span>What changes</span></a></li>
-    <li><a href="#s2"><span class="n">02</span><span>Payout formula</span></a></li>
-    <li><a href="#s3"><span class="n">03</span><span>Stake ladder</span></a></li>
-    <li><a href="#s4"><span class="n">04</span><span>Flat rate</span></a></li>
-    <li><a href="#s5"><span class="n">05</span><span>Sponsorship</span></a></li>
-    <li><a href="#s6"><span class="n">06</span><span>Lifecycle</span></a></li>
-    <li><a href="#s7"><span class="n">07</span><span>Rules</span></a></li>
-    <li><a href="#s8"><span class="n">08</span><span>Program cost</span></a></li>
-    <li><a href="#s9"><span class="n">09</span><span>Migration</span></a></li>
-    <li><a href="#s10"><span class="n">10</span><span>Decisions</span></a></li>
+    <li><a href="#s1"><span class="n">01</span><span>The deal</span></a></li>
+    <li><a href="#s2"><span class="n">02</span><span>The ladder</span></a></li>
+    <li><a href="#s3"><span class="n">03</span><span>Calculator</span></a></li>
+    <li><a href="#s4"><span class="n">04</span><span>Rules</span></a></li>
+    <li><a href="#s5"><span class="n">05</span><span>Cost</span></a></li>
   </ol>
 </nav>
 <main>
@@ -220,8 +214,8 @@ footer .big{font-family:var(--black);font-size:clamp(1.6rem,5.5vw,3.4rem);color:
     <span class="red">● Draft for review</span><span>/</span><span>Rev 2.0</span><span>/</span>
     <span>2026-09-01</span><span>/</span><span>Orderly Network</span>
   </div>
-  <h1>Rate is bought<br>with <em>ORDER</em>.<br>Status is earned<br>with volume.</h1>
-  <p class="lede">v1 lets a distributor reach the top tier on invitee volume alone — <b>the better you perform, the less reason you have to buy the token.</b> v2 has one rule: <b>the rate is bought with ORDER and nothing else.</b> No volume threshold, no cap, no decay, no second ladder.</p>
+  <h1>Your cut is<br>bought with<br><em>ORDER</em>.</h1>
+  <p class="lede">Nothing else moves it. Not volume, not tenure, not status.</p>
 </header>
 
 <div class="meta">
@@ -232,324 +226,122 @@ footer .big{font-family:var(--black);font-size:clamp(1.6rem,5.5vw,3.4rem);color:
   <div><div class="k mono">Blended cost</div><div class="v">≈14% of rev</div></div>
 </div>
 
-<section id="s0">
-  <div class="sec-h"><span class="num">§00</span><h2>Locked</h2></div>
-  <p class="sec-sub">Decisions taken as given. Everything downstream is derived from these.</p>
-  <div class="tw"><table>
-    <thead><tr><th>Parameter</th><th>Decision</th></tr></thead>
-    <tbody>
-      <tr><td class="hi">Gate</td><td>Application, approved by BD. Test = can this applicant actually deliver volume</td></tr>
-      <tr><td class="hi">Payout base</td><td>Orderly's own base-fee revenue from the recruited builder. Taker only</td></tr>
-      <tr><td class="hi">Rate</td><td>10% floor on approval → 50% ceiling</td></tr>
-      <tr class="accent"><td class="hi">Tier driver</td><td><strong>ORDER staking only.</strong> Volume never affects anything — no rate threshold, no cap, no status ladder</td></tr>
-      <tr><td class="hi">Duration</td><td>Perpetual, for the life of the recruited DEX</td></tr>
-      <tr><td class="hi">Migration</td><td>Force-migrate. Only internal BDs are on v1</td></tr>
-      <tr><td class="hi">Depth</td><td>Flat, one level. No sub-distributors</td></tr>
-      <tr><td class="hi">Target profile</td><td>Anyone with access to people who might launch a DEX or bolt perps onto an existing product</td></tr>
-    </tbody>
-  </table></div>
-</section>
-
 <section id="s1">
-  <div class="sec-h"><span class="num">§01</span><h2>What actually changes</h2></div>
-  <p class="sec-sub"><strong>v1 today:</strong> distributor earns the fee <em>spread</em> — <code>max(0.1 bps, invitee base taker fee − distributor base taker fee)</code>. Tier comes from <code>30d aggregate volume OR staking, higher wins</code>, where aggregate volume includes every invitee's volume.</p>
+  <div class="sec-h"><span class="num">§01</span><h2>The deal</h2></div>
+  <p class="lede" style="margin:0 0 8px">Recruit a DEX onto Orderly. Orderly earns a taker fee from it. You take a cut of that fee, forever.</p>
 
-  <div class="grid g3">
-    <div class="card">
-      <div class="idx mono">Problem 01</div>
-      <h3>The tier system is an anti-incentive to stake</h3>
-      <p>Distributor volume includes all invitee volume, so anyone who succeeds at the job hits Diamond on volume alone and never buys a single ORDER. The better you perform, the less reason you have to lock tokens. This is why v1 produces roughly zero staking demand.</p>
-    </div>
-    <div class="card">
-      <div class="idx mono">Problem 02</div>
-      <h3>The spread pays out of margin Orderly can't cap</h3>
-      <p>The spread is a function of two tier tables interacting with each other — not a policy dial anyone can turn.</p>
-    </div>
-    <div class="card">
-      <div class="idx mono">Problem 03</div>
-      <h3>Volume-driven tiers are gameable</h3>
-      <p>Wash volume promotes the distributor's own tier, which widens their spread. The abuse pays for itself.</p>
-    </div>
-  </div>
+<pre><b>your payout</b> = share(ORDER staked) × Orderly's base-fee revenue
 
-  <div class="grid">
-    <div class="card">
-      <div class="idx mono">The whole fix</div>
-      <h3>Rate ← staking only</h3>
-      <p>A clean policy dial from 10% to 50% that Orderly controls directly. Nothing else moves it, and there is no second ladder — volume is not a qualifier for anything.</p>
-    </div>
-  </div>
+<span class="dim">taker side only · no cap · no decay · no expiry</span></pre>
 
   <div class="call">
-    <div class="lab mono">Free consequence</div>
-    <p>With rate decoupled from volume, <strong>wash trading becomes strictly −EV.</strong> A distributor who fakes volume causes the builder to pay 3 bps to Orderly and receives back at most 50% of it. There is no tier left to farm — the entire abuse class from v1 disappears without a detection system.</p>
+    <div class="lab mono">What v1 got wrong</div>
+    <p>v1 let you reach the top tier on invitee volume alone — <strong>the better you performed, the less reason you had to buy the token.</strong> v2 puts the rate on one dial and hands it to Orderly.</p>
   </div>
 </section>
 
 <section id="s2">
-  <div class="sec-h"><span class="num">§02</span><h2>Payout formula</h2></div>
-  <p class="sec-sub">Volume means the notional the fee engine billed, not a reported volume figure. Orderly charges a base fee on the taker side only and every match has exactly one taker side — so this is single-sided by construction and cannot drift with how analytics reports volume.</p>
-<pre>Billed_Taker_Notional(builder, day) = notional on which Orderly billed a base taker fee
-
-<b>Payout</b> = Share%(distributor stake tier) × Notional_Revenue
-       − Sponsorship_Discount_Cost
-       (floored at 0)
-
-where Notional_Revenue = Billed_Taker_Notional × <b>3.00 bps</b>   (the Public rate)</pre>
-  <ul class="spec">
-    <li><strong>Share applies to notional revenue at 3 bps, not actual.</strong> If the invitee earns a cheaper rate through their <em>own</em> volume or staking, the distributor is not punished for their builder succeeding.</li>
-    <li><strong>If the cheaper rate came from distributor sponsorship, the full discount is debited from the distributor's payout.</strong> See §05 — this makes Orderly exactly indifferent to sponsorship, so it can be handed out as a closing tool with no revenue committee in the loop.</li>
-    <li>Maker fees, maker rebates and liquidation fees are out of scope — Orderly charges no maker base fee. RWA and crypto are treated identically, matching the builder table.</li>
-  </ul>
+  <div class="sec-h"><span class="num">§02</span><h2>The ladder</h2></div>
+  <p class="sec-sub">One table. Your stake picks a row; the row is your cut of every dollar.</p>
+  <div class="tw"><table>
+    <thead><tr><th>ORDER staked</th><th class="n">Cost @ $0.0331</th><th class="n">Your cut</th><th class="n">Payback volume</th></tr></thead>
+    <tbody>
+      <tr><td class="hi">0</td><td class="n">$0</td><td class="n">10%</td><td class="n dim">—</td></tr>
+      <tr><td class="hi">100,000</td><td class="n">$3,310</td><td class="n">18%</td><td class="n">$0.14B</td></tr>
+      <tr><td class="hi">300,000</td><td class="n">$9,930</td><td class="n">26%</td><td class="n">$0.28B</td></tr>
+      <tr><td class="hi">1,000,000</td><td class="n">$33,100</td><td class="n">34%</td><td class="n">$0.97B</td></tr>
+      <tr><td class="hi">3,000,000</td><td class="n">$99,300</td><td class="n">42%</td><td class="n">$2.76B</td></tr>
+      <tr class="accent"><td class="hi">7,000,000</td><td class="n">$231,700</td><td class="n">50%</td><td class="n">$5.52B</td></tr>
+    </tbody>
+  </table></div>
+  <p class="t-note">Payback volume = taker volume needed for the extra 8% to repay the extra stake. The stake stays yours.</p>
 </section>
 
 <section id="s3">
-  <div class="sec-h"><span class="num">§03</span><h2>Stake ladder</h2></div>
-  <p class="sec-sub">The rate dial. Thresholds deliberately reuse the Builder Staking anchors (100K / 300K / 3M / 7M) so the ecosystem has <strong>one ORDER ladder</strong>, with 1M inserted to smooth the 300K→3M cliff. Steps are a uniform +8%, so every upgrade is a clean ROI question.</p>
-  <div class="tw"><table>
-    <thead><tr><th>Tier</th><th class="n">ORDER staked</th><th class="n">USD @ $0.0331</th><th class="n">Share of Orderly rev</th><th class="n">Applies to</th></tr></thead>
-    <tbody>
-      <tr><td class="hi">Registered</td><td class="n">0</td><td class="n">$0</td><td class="n">10%</td><td class="n dim">all attributed revenue</td></tr>
-      <tr><td class="hi">Silver</td><td class="n">100,000</td><td class="n">$3,310</td><td class="n">18%</td><td class="n dim">all attributed revenue</td></tr>
-      <tr><td class="hi">Gold</td><td class="n">300,000</td><td class="n">$9,930</td><td class="n">26%</td><td class="n dim">all attributed revenue</td></tr>
-      <tr><td class="hi">Platinum</td><td class="n">1,000,000</td><td class="n">$33,100</td><td class="n">34%</td><td class="n dim">all attributed revenue</td></tr>
-      <tr><td class="hi">Diamond</td><td class="n">3,000,000</td><td class="n">$99,300</td><td class="n">42%</td><td class="n dim">all attributed revenue</td></tr>
-      <tr class="accent"><td class="hi">Vanguard</td><td class="n">7,000,000</td><td class="n">$231,700</td><td class="n">50%</td><td class="n dim">all attributed revenue</td></tr>
-    </tbody>
-  </table></div>
-
-  <h3 style="font-size:1rem;margin:34px 0 4px">Upgrade ROI</h3>
-  <p class="t-note">Each +8% step is worth $2,400 per $100M of monthly taker volume</p>
-  <div class="tw"><table>
-    <thead><tr><th>Upgrade</th><th class="n">Extra ORDER</th><th class="n">Extra USD</th><th class="n">Cumulative taker volume to repay the stake</th></tr></thead>
-    <tbody>
-      <tr><td>Registered → Silver</td><td class="n">100,000</td><td class="n">$3,310</td><td class="n hi">$0.14B</td></tr>
-      <tr><td>Silver → Gold</td><td class="n">200,000</td><td class="n">$6,620</td><td class="n hi">$0.28B</td></tr>
-      <tr><td>Gold → Platinum</td><td class="n">700,000</td><td class="n">$23,170</td><td class="n hi">$0.97B</td></tr>
-      <tr><td>Platinum → Diamond</td><td class="n">2,000,000</td><td class="n">$66,200</td><td class="n hi">$2.76B</td></tr>
-      <tr><td>Diamond → Vanguard</td><td class="n">4,000,000</td><td class="n">$132,400</td><td class="n hi">$5.52B</td></tr>
-    </tbody>
-  </table></div>
-  <p>And the stake is still theirs afterwards — this is payback on a <strong>recoverable asset</strong>, not a fee.</p>
-</section>
-
-<section id="s4">
-  <div class="sec-h"><span class="num">§04</span><h2>What the rate does <em>not</em> depend on</h2></div>
-  <p class="sec-sub">One dial, one input. The share is a pure function of ORDER staked and is applied to every dollar of attributed revenue — the first dollar and the ten-millionth are paid at exactly the same percentage.</p>
-
-<pre>R = attributed Orderly base-fee revenue this month
-<b>payout</b> = share(ORDER_staked) × R
-
-<span class="dim">no volume qualifier · no cap · no quota · no overflow · no decay</span></pre>
-
-  <p>A distributor doing $50M/month and one doing $50B/month at the same stake earn the <strong>same percentage</strong>. The larger one earns more money because they generated more revenue, not because they unlocked a better rate. Volume moves the base, never the multiplier.</p>
+  <div class="sec-h"><span class="num">§03</span><h2>Calculator</h2></div>
+  <p class="sec-sub">The rate is flat: $50M/mo and $50B/mo pay the same percentage.</p>
 
   <div class="calc" id="calc">
     <div class="calc-h">
       <div class="t">▚ Payout calculator</div>
-      <div class="live"><span class="dot" aria-hidden="true"></span><span>Live model · rev/mo basis</span></div>
+      <div class="live"><span class="dot" aria-hidden="true"></span><span>Live model</span></div>
     </div>
     <div class="calc-body">
       <div class="calc-in">
         <div class="field">
-          <div class="field-h"><label class="lab" for="vol">Portfolio monthly taker volume</label><span class="val" id="volOut">$3.30B</span></div>
+          <div class="field-h"><label class="lab" for="vol">Monthly taker volume</label><span class="val" id="volOut">$3.30B</span></div>
           <input type="range" id="vol" min="0" max="100" value="42" step="1" aria-describedby="volOut">
           <div class="ticks"><span>$50M</span><span>$1B</span><span>$10B</span><span>$50B</span></div>
         </div>
         <div class="field">
-          <div class="field-h"><span class="lab">Distributor stake tier</span><span class="val" id="stakeOut">7,000,000 ORDER</span></div>
+          <div class="field-h"><span class="lab">Your stake</span><span class="val" id="stakeOut">7,000,000 ORDER</span></div>
           <div class="tierbtns" id="tierbtns" role="group" aria-label="Stake tier">
-            <button type="button" data-i="0">Reg</button>
-            <button type="button" data-i="1">Silver</button>
-            <button type="button" data-i="2">Gold</button>
-            <button type="button" data-i="3">Plat</button>
-            <button type="button" data-i="4">Diamond</button>
-            <button type="button" data-i="5" aria-pressed="true">Vanguard</button>
+            <button type="button" data-i="0">0</button>
+            <button type="button" data-i="1">100K</button>
+            <button type="button" data-i="2">300K</button>
+            <button type="button" data-i="3">1M</button>
+            <button type="button" data-i="4">3M</button>
+            <button type="button" data-i="5" aria-pressed="true">7M</button>
           </div>
         </div>
         <div class="field">
-          <div class="field-h"><span class="lab">Revenue split</span><span class="val" id="capOut">50% / 50%</span></div>
+          <div class="field-h"><span class="lab">Split</span><span class="val" id="capOut">50% / 50%</span></div>
           <div class="bar" role="img" aria-label="Split of Orderly revenue between distributor and Orderly">
             <i class="base" id="barBase" style="width:50%"></i><i class="over" id="barOver" style="width:50%"></i>
           </div>
           <div class="barleg">
-            <span><i class="base" style="background:var(--red)"></i>Distributor share</span>
-            <span><i class="over" style="background:#5A0C0C"></i>Orderly keeps</span>
+            <span><i class="base" style="background:var(--red)"></i>You</span>
+            <span><i class="over" style="background:#5A0C0C"></i>Orderly</span>
           </div>
         </div>
       </div>
       <div class="calc-out">
         <div class="readout">
           <div class="ro"><div class="k">Orderly revenue</div><div class="v" id="roRev">$990,000</div></div>
-          <div class="ro"><div class="k">Distributor payout</div><div class="v" id="roPay">$495,000</div></div>
-          <div class="ro"><div class="k">Effective rate</div><div class="v" id="roEff">50.0%</div></div>
+          <div class="ro"><div class="k">Your payout</div><div class="v" id="roPay">$495,000</div></div>
+          <div class="ro"><div class="k">Your rate</div><div class="v" id="roEff">50.0%</div></div>
           <div class="ro"><div class="k">Orderly keeps</div><div class="v" id="roKeep">$495,000</div></div>
-          <div class="ro wide"><div class="k">Gain from staking to the top tier</div><div class="v" id="roGap">$0<small id="roGapSub">Already at Vanguard — the ceiling rate</small></div></div>
+          <div class="ro wide"><div class="k">Left on the table</div><div class="v" id="roGap">$0<small id="roGapSub">Top of the ladder</small></div></div>
         </div>
         <div class="verdict" id="verdict"></div>
       </div>
     </div>
   </div>
-
-  <p class="t-note">Worked example · the rate holds flat across three orders of magnitude</p>
-  <div class="tw"><table>
-    <thead><tr><th>Monthly taker volume</th><th class="n">Orderly rev</th><th class="n">Payout @ Registered</th><th class="n">Payout @ Vanguard</th><th class="n">Vanguard rate</th></tr></thead>
-    <tbody>
-      <tr><td>$50M</td><td class="n">$15,000</td><td class="n">$1,500</td><td class="n hi">$7,500</td><td class="n">50.0%</td></tr>
-      <tr><td>$1B</td><td class="n">$300,000</td><td class="n">$30,000</td><td class="n hi">$150,000</td><td class="n">50.0%</td></tr>
-      <tr class="accent"><td>$10B</td><td class="n">$3,000,000</td><td class="n">$300,000</td><td class="n hi">$1,500,000</td><td class="n">50.0%</td></tr>
-      <tr><td>$50B</td><td class="n">$15,000,000</td><td class="n">$1,500,000</td><td class="n hi">$7,500,000</td><td class="n">50.0%</td></tr>
-    </tbody>
-  </table></div>
-
-  <div class="call">
-    <div class="lab mono">The tradeoff this accepts</div>
-    <p>A flat ladder <strong>saturates</strong>. At today's price the whole thing tops out at $231,700, so any distributor large enough to pass a BD application buys Vanguard once and never touches ORDER again — total demand is (number of distributors) × their tier, one time. That is a real limit, and it is the price of the rule that volume must never touch the rate. Demand grows by <strong>recruiting more distributors and moving them up the ladder</strong>, not by any single one scaling. §08 sizes exactly what that is worth.</p>
-  </div>
-
-  <ul class="spec">
-    <li><strong>Staking above 7M buys nothing.</strong> Vanguard is the ceiling; there is no reason to hold more than the top threshold.</li>
-    <li><strong>Settlement is daily</strong> on that day's attributed revenue at that day's rate. No month-to-date accumulator and no true-up — there is nothing to accumulate against.</li>
-    <li><strong>The daily stake snapshot uses the minimum stake held during that day</strong>, so nobody can stake for one snapshot and unstake right after.</li>
-    <li><strong>Crossing a threshold takes effect the next settlement day.</strong> Upgrades apply forward only; no retroactive re-rating of revenue already paid.</li>
-  </ul>
 </section>
 
+<section id="s4">
+  <div class="sec-h"><span class="num">§04</span><h2>Rules</h2></div>
+  <ul class="spec">
+    <li><strong>Entry is by application.</strong> BD approves on one test: can you actually deliver volume. Approved → 10%, live immediately, no stake required.</li>
+    <li><strong>Perpetual, unconditional.</strong> Land one DEX and never work again — you keep that payout for the life of the DEX. Only fraud stops it.</li>
+    <li><strong>Settlement is daily</strong>, at that day's rate, on the minimum stake held that day. Upgrades apply forward only.</li>
+    <li><strong>Staking above 7M buys nothing.</strong> 50% is the ceiling.</li>
+    <li><strong>One distributor per invitee</strong>, bound at or before graduation, immutable once set. No sub-distributors, no reciprocal pairs.</li>
+    <li><strong>Sponsorship:</strong> you can put an invitee on cheaper pricing to win the deal — the full discount comes out of your payout, floored at $0. Orderly is indifferent. Authority caps at Platinum.</li>
+    <li><strong>Migration:</strong> internal BDs auto-enroll at 10%, bindings intact, paid <code>max(v1, v2)</code> for 90 days. Day 91 is v2 only.</li>
+  </ul>
+  <div class="call">
+    <div class="lab mono">Free consequence</div>
+    <p>With rate off volume, <strong>wash trading is strictly −EV.</strong> Faking volume makes the builder pay 3 bps and returns at most half of it. There is no tier left to farm — the whole abuse class from v1 disappears without a detection system.</p>
+  </div>
+</section>
 
 <section id="s5">
-  <div class="sec-h"><span class="num">§05</span><h2>Sponsorship</h2></div>
-  <p class="sec-sub">The closing tool, self-funded. A distributor can sponsor an invitee into better base pricing to win a deal — and the entire discount is debited from their payout, which makes Orderly revenue-neutral on every permitted case.</p>
-  <p class="t-note">$1B monthly taker volume · distributor at Vanguard (50%)</p>
+  <div class="sec-h"><span class="num">§05</span><h2>Cost</h2></div>
+  <p class="sec-sub">$500M monthly taker volume per distributor, invitees on Public (3 bps). Mix: 60% at 0 stake / 20% 100K / 10% 300K / 6% 1M / 3% 3M / 1% 7M.</p>
   <div class="tw"><table>
-    <thead><tr><th>Sponsored builder tier</th><th class="n">Orderly actual rev</th><th class="n">Discount debited</th><th class="n">Distributor payout</th><th class="n">Orderly net</th></tr></thead>
+    <thead><tr><th class="n">Distributors</th><th class="n">Gross rev/mo</th><th class="n">Paid out</th><th class="n">ORDER locked</th><th class="n">% circulating</th></tr></thead>
     <tbody>
-      <tr><td class="hi">Public <span class="dim">3.0 bps</span></td><td class="n">$300,000</td><td class="n">$0</td><td class="n">$150,000</td><td class="n hi">$150,000</td></tr>
-      <tr><td class="hi">Silver <span class="dim">2.75 bps</span></td><td class="n">$275,000</td><td class="n">$25,000</td><td class="n">$125,000</td><td class="n hi">$150,000</td></tr>
-      <tr><td class="hi">Gold <span class="dim">2.5 bps</span></td><td class="n">$250,000</td><td class="n">$50,000</td><td class="n">$100,000</td><td class="n hi">$150,000</td></tr>
-      <tr><td class="hi">Platinum <span class="dim">2.0 bps</span></td><td class="n">$200,000</td><td class="n">$100,000</td><td class="n">$50,000</td><td class="n hi">$150,000</td></tr>
-      <tr class="accent"><td class="hi">Diamond <span class="dim">1.0 bps</span></td><td class="n">$100,000</td><td class="n">$200,000</td><td class="n">−$50,000 → <span class="red">$0</span></td><td class="n">$100,000</td></tr>
+      <tr><td class="n hi">10</td><td class="n">$1,500,000</td><td class="n">$240,000 (16%)</td><td class="n">2,700,000</td><td class="n">0.66%</td></tr>
+      <tr><td class="n hi">50</td><td class="n">$7,500,000</td><td class="n">$1,200,000 (16%)</td><td class="n">13,500,000</td><td class="n">3.30%</td></tr>
+      <tr><td class="n hi">200</td><td class="n">$30,000,000</td><td class="n">$4,800,000 (16%)</td><td class="n">54,000,000</td><td class="n">13.19%</td></tr>
+      <tr class="accent"><td class="n hi">500</td><td class="n">$75,000,000</td><td class="n">$12,000,000 (16%)</td><td class="n">135,000,000</td><td class="n">32.97%</td></tr>
     </tbody>
   </table></div>
-  <p>Orderly nets exactly $150,000 in every permitted case. The distributor decides whether the discount wins a deal worth more than its cost — no approvals, no margin committee.</p>
-
+  <p>Worst case is bounded at 50% by construction, and every dollar is paid on revenue that would not exist otherwise.</p>
   <div class="call">
-    <div class="lab mono">Why depth must be gated</div>
-    <p>That last row is the hole. At 50% share a distributor earns 1.5 bps, but sponsoring Diamond costs 2.0 bps — unbounded, this goes negative and <strong>Orderly eats the difference.</strong> Hence a depth-authority table capped at Platinum, plus a hard zero floor on payout.</p>
-  </div>
-
-  <div class="tw"><table>
-    <thead><tr><th>Distributor tier</th><th>May sponsor invitee up to</th></tr></thead>
-    <tbody>
-      <tr><td class="hi">Registered</td><td class="dim">—</td></tr>
-      <tr><td class="hi">Silver</td><td>Silver</td></tr>
-      <tr><td class="hi">Gold</td><td>Gold</td></tr>
-      <tr><td class="hi">Platinum</td><td>Gold</td></tr>
-      <tr><td class="hi">Diamond</td><td>Platinum</td></tr>
-      <tr><td class="hi">Vanguard</td><td>Platinum</td></tr>
-    </tbody>
-  </table></div>
-  <ul class="spec">
-    <li>Payout floors at $0 and never goes negative.</li>
-    <li>If discount cost exceeds earned share two months running, the sponsorship auto-downgrades one tier with 30 days' notice.</li>
-    <li>Diamond pricing stays a manual Orderly-side strategic assignment — never distributor-granted.</li>
-    <li><strong>This is the second staking driver:</strong> deeper discount authority is a closing weapon, and it is bought with ORDER.</li>
-  </ul>
-</section>
-
-<section id="s6">
-  <div class="sec-h"><span class="num">§06</span><h2>Application &amp; lifecycle</h2></div>
-  <p class="sec-sub">BD is assessing exactly one thing: can this applicant actually deliver volume.</p>
-  <div class="grid g2">
-    <div class="card">
-      <div class="idx mono">Application captures</div>
-      <p>Identity/entity and KYB · distribution channel and reach with evidence · named pipeline of ≥3 prospective builders · target segment · expected time-to-first-graduation · prior BD/partnership track record · conflicts (existing builder ownership, competing infra relationships).</p>
-    </div>
-    <div class="card">
-      <div class="idx mono">Decision</div>
-      <p>Approve / reject / conditional — conditional means approved with a 90-day first-graduation milestone. Target SLA is 5 business days.</p>
-    </div>
-    <div class="card">
-      <div class="idx mono">On approval</div>
-      <p>Registered tier at 10%, immediately live. <strong>No stake required to start</strong> — staking is the upgrade path, never the entry toll.</p>
-    </div>
-    <div class="card">
-      <div class="idx mono">Perpetual is unconditional</div>
-      <p>No dormancy clause, no performance minimum. A distributor who lands one DEX and never works again keeps that payout for the life of the DEX. <strong>Termination for cause</strong> — fraud, wash trading, misrepresentation, ToS breach — is the only path that ever stops a payout.</p>
-    </div>
-  </div>
-</section>
-
-<section id="s7">
-  <div class="sec-h"><span class="num">§07</span><h2>Rules</h2></div>
-  <p class="sec-sub"><strong>Carried from v1:</strong> unidirectional binding (one distributor per invitee) · non-reciprocal (no A↔B) · binding at or before graduation · immutable once set · an EOA registered as distributor cannot later convert to Builder Admin.</p>
-  <ul class="spec">
-    <li><strong>Daily accrual, daily settlement at 00:00 UTC.</strong> Each day's payout uses that day's stake snapshot — no retroactive re-rating.</li>
-    <li><strong>Tier drops the moment an unstake request is submitted</strong>, not when it completes. ORDER staking runs a <strong>7-day unstaking period</strong>; only one active request is allowed, a new request merges with the pending one and resets the full 7 days, and cancelling restakes the entire amount (<a href="https://orderly.network/docs/introduction/tokenomics/order-staking/staking" target="_blank" rel="noopener">Orderly staking documentation</a>). If demotion waited for completion, a distributor would collect 7 days of top-tier payouts on tokens already on the way out — and merge-and-reset would let them roll that indefinitely. Cancelling restores the tier at the next daily snapshot.</li>
-    <li><strong>The 7-day exit is what makes the tier cost anything</strong> — the stake is genuinely at risk through a drawdown.</li>
-    <li><strong>Builder-owner distributors are permitted but must disclose.</strong> Self-referral is economically pointless here — pay 3 bps, receive at most half back — so disclosure plus monitoring is sufficient.</li>
-    <li><strong>No traffic re-binding.</strong> An existing builder's volume cannot be routed through a newly bound entity; the application's materially-new-entity test covers this.</li>
-    <li><strong>Attribution is per-builder, perpetual, and survives distributor tier changes.</strong></li>
-  </ul>
-</section>
-<section id="s8">
-  <div class="sec-h"><span class="num">§08</span><h2>Program cost</h2></div>
-  <p class="sec-sub">Assumes $500M monthly taker volume per distributor, invitees on Public (3 bps). Realistic mix = 60% Registered / 20% Silver / 10% Gold / 6% Platinum / 3% Diamond / 1% Vanguard.</p>
-  <div class="grid g3">
-    <div class="stat"><div class="v red">≈14%</div><div class="k mono">Blended program cost</div><div class="d">Of attributed revenue, at a realistic tier mix</div></div>
-    <div class="stat"><div class="v">50%</div><div class="k mono">Hard worst case</div><div class="d">Bounded by construction — there is no second leak</div></div>
-    <div class="stat"><div class="v">100%</div><div class="k mono">Paid on incremental revenue</div><div class="d">Revenue that would not exist without the distributor</div></div>
-  </div>
-  <div class="tw"><table>
-    <thead><tr><th class="n">Distributors</th><th class="n">Gross Orderly rev/mo</th><th class="n">All at 10%</th><th class="n">All at 50%</th><th class="n">Blended, realistic mix</th></tr></thead>
-    <tbody>
-      <tr><td class="n hi">10</td><td class="n">$1,500,000</td><td class="n dim">$150,000 (10%)</td><td class="n dim">$750,000 (50%)</td><td class="n hi">$214,000 (14%)</td></tr>
-      <tr><td class="n hi">50</td><td class="n">$7,500,000</td><td class="n dim">$750,000 (10%)</td><td class="n dim">$3,750,000 (50%)</td><td class="n hi">$1,070,000 (14%)</td></tr>
-      <tr><td class="n hi">200</td><td class="n">$30,000,000</td><td class="n dim">$3,000,000 (10%)</td><td class="n dim">$15,000,000 (50%)</td><td class="n hi">$4,280,000 (14%)</td></tr>
-    </tbody>
-  </table></div>
-
-  <h3 style="font-size:1rem;margin:34px 0 4px">ORDER staking demand created</h3>
-  <p class="t-note">Same mix · steady state once distributors settle at their chosen tier</p>
-  <div class="tw"><table>
-    <thead><tr><th class="n">Distributors</th><th class="n">ORDER locked</th><th class="n">USD @ $0.0331</th><th class="n">% of circulating</th></tr></thead>
-    <tbody>
-      <tr><td class="n hi">10</td><td class="n">2,700,000</td><td class="n">$89,370</td><td class="n">0.66%</td></tr>
-      <tr><td class="n hi">50</td><td class="n">13,500,000</td><td class="n">$446,850</td><td class="n">3.30%</td></tr>
-      <tr><td class="n hi">200</td><td class="n">54,000,000</td><td class="n">$1,787,400</td><td class="n">13.19%</td></tr>
-      <tr class="accent"><td class="n hi">500</td><td class="n">135,000,000</td><td class="n">$4,468,500</td><td class="n">32.97%</td></tr>
-    </tbody>
-  </table></div>
-  <p>This is the honest ceiling: staking demand from this program is <strong>bounded by distributor count</strong>, not by their volume. 500 distributors at the realistic mix lock ~33% of circulating supply; the same 500 lock no more than that no matter how large they grow. Growth in locked ORDER comes from recruiting more distributors and from more of them climbing the ladder — not from any single one scaling up.</p>
-</section>
-
-<section id="s9">
-  <div class="sec-h"><span class="num">§09</span><h2>Migration</h2></div>
-  <p class="sec-sub">Internal BDs only. Nobody is worse off during transition.</p>
-  <ul class="spec">
-    <li>Snapshot every existing binding and its trailing 90-day earnings under the v1 spread model.</li>
-    <li>Auto-enroll each internal BD as <strong>Registered</strong>, bindings preserved intact.</li>
-    <li><strong>90-day parity guarantee:</strong> pay <code>max(v1 spread, v2 share)</code> per binding.</li>
-    <li>Publish each BD's break-even stake — the ORDER needed for v2 to beat their v1 spread — at migration.</li>
-    <li>Day 91: v2 only.</li>
-    <li>The application gate is <strong>not</strong> retroactive; existing internal BDs are grandfathered as approved.</li>
-  </ul>
-</section>
-
-<section id="s10">
-  <div class="sec-h"><span class="num">§10</span><h2>Decisions closed</h2></div>
-  <div class="tw"><table>
-    <thead><tr><th class="n">#</th><th>Question</th><th>Resolution</th></tr></thead>
-    <tbody>
-      <tr><td class="n dim">1</td><td class="hi">Does volume affect the rate?</td><td><strong>No.</strong> The share is a pure function of ORDER staked. No volume qualifier, no capacity cap, no overflow, no decay (§03, §04)</td></tr>
-      <tr><td class="n dim">2</td><td class="hi">Volume definition</td><td><strong>Billed taker notional</strong> — single-sided by construction, taken from the fee engine, not analytics (§02)</td></tr>
-      <tr><td class="n dim">3</td><td class="hi">ORDER price risk</td><td><strong>No re-pricing clause.</strong> Thresholds are fixed ORDER amounts regardless of price</td></tr>
-      <tr><td class="n dim">4</td><td class="hi">Unstake cooldown</td><td><strong>7 days</strong>, confirmed in Orderly docs. Tier drops on request submission (§07)</td></tr>
-      <tr><td class="n dim">5</td><td class="hi">Dormancy pause</td><td><strong>Removed.</strong> Perpetual is unconditional; only termination for cause stops a payout (§06)</td></tr>
-    </tbody>
-  </table></div>
-  <div class="call">
-    <div class="lab mono">One consequence of #3 worth naming</div>
-    <p>The ladder is ORDER-denominated, so if ORDER appreciates every tier gets more expensive in dollars while buying the same rate. A 10× move makes Vanguard a $2.3M ask and the top of the ladder stops being reachable for mid-size partners. That pressure is good for the token and bad for recruitment, and it resolves in one of two ways when it bites: cut the ORDER thresholds, or accept that the ladder becomes a large-partner instrument and let the 10% floor carry everyone else. Worth deciding deliberately rather than by drift.</p>
+    <div class="lab mono">The tradeoff this accepts</div>
+    <p>A flat ladder <strong>saturates</strong>. The whole thing tops out at $231,700, so a large distributor buys the top row once and never touches ORDER again. Locked supply grows by <strong>recruiting more distributors</strong>, not by any one of them scaling. That is the price of keeping volume off the rate.</p>
   </div>
 </section>
 
@@ -615,7 +407,7 @@ where Notional_Revenue = Billed_Taker_Notional × <b>3.00 bps</b>   (the Public 
 
     if(cur===TOP){
       el.roGap.childNodes[0].nodeValue='$0';
-      el.roGapSub.textContent='Already at Vanguard \u2014 the ceiling rate';
+      el.roGapSub.textContent='Top of the ladder \u2014 50% is the ceiling';
     }else{
       el.roGap.childNodes[0].nodeValue=usdFull(gap)+'/mo';
       var need=top.stake-t.stake;
@@ -625,10 +417,10 @@ where Notional_Revenue = Billed_Taker_Notional × <b>3.00 bps</b>   (the Public 
 
     var msg;
     if(cur===TOP){
-      msg='<b>Vanguard</b> pays <b>50%</b> of every dollar of attributed revenue \u2014 at $50M/mo and at $50B/mo alike. There is no cap to outgrow and no higher tier to buy: 7,000,000 ORDER is the ceiling.';
+      msg='7,000,000 ORDER pays <b>50%</b> of every dollar \u2014 at $50M/mo and at $50B/mo alike. Nothing above this row exists.';
     }else{
       var months = gap>0 ? ((top.stake-t.stake)*PRICE/gap) : 0;
-      msg='At <b>'+t.n+'</b> you earn <b>'+Math.round(t.share*100)+'%</b> flat. Climbing to Vanguard adds <b>'+usdFull(gap)+'/mo</b> at this volume for '+(top.stake-t.stake).toLocaleString('en-US')+' more ORDER (~'+usdFull((top.stake-t.stake)*PRICE)+') \u2014 payback in <b>'+(months>0?months.toFixed(1):'\u2014')+' months</b>, and the stake is still yours afterwards.';
+      msg='You earn <b>'+Math.round(t.share*100)+'%</b> flat. '+(top.stake-t.stake).toLocaleString('en-US')+' more ORDER (~'+usdFull((top.stake-t.stake)*PRICE)+') takes you to 50% and adds <b>'+usdFull(gap)+'/mo</b> here \u2014 payback in <b>'+(months>0?months.toFixed(1):'\u2014')+' months</b>, stake still yours.';
     }
     el.verdict.innerHTML=msg;
   }
