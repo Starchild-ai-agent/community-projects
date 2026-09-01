@@ -1,0 +1,10 @@
+name: signal-lantern
+version: 0.1.0
+type: service
+port: 8800
+description: A local-first decision check-in board for turning uncertainty into one
+  clear next move.
+license: MIT
+entry: src/index.html
+env_required: []
+author: user-3182

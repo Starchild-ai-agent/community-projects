@@ -1,6 +1,19 @@
 [
   {
     "type": "service",
+    "user_id": "3182",
+    "slug": "signal-lantern",
+    "version": "0.1.0",
+    "description": "A local-first decision check-in board for turning uncertainty into one clear next move.",
+    "tags": [],
+    "author": "user-3182",
+    "license": "MIT",
+    "github_url": "https://github.com/Starchild-ai-agent/community-projects/tree/main/projects/3182/signal-lantern",
+    "updated_at": "2026-09-01T00:39:48.978Z",
+    "created_at": "2026-09-01T00:39:48.978Z"
+  },
+  {
+    "type": "service",
     "user_id": "6171",
     "slug": "snapshot-signal-lab",
     "version": "1.0.0",
