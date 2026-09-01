@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Orderly Distributor Program v2 — Mechanics Spec</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;800&family=Archivo+Black&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0A0A0A; --panel:#111111; --line:#262626; --line-hi:#3A3A3A;
+  --fg:#EAEAEA; --dim:#8A8A8A; --dimmer:#5E5E5E;
+  --red:#E61919; --green:#4AF626;
+  --mono:'JetBrains Mono',ui-monospace,SFMono-Regular,Menlo,monospace;
+  --sans:'Archivo','Helvetica Neue',Arial,sans-serif;
+  --black:'Archivo Black','Archivo',Arial,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0;border-radius:0}
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg);color:var(--fg);font-family:var(--sans);
+  font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased;
+}
+body::before{
+  content:"";position:fixed;inset:0;z-index:9999;pointer-events:none;
+  background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,.16) 2px,rgba(0,0,0,.16) 3px);
+  mix-blend-mode:multiply;opacity:.55;
+}
+body::after{
+  content:"";position:fixed;inset:0;z-index:9998;pointer-events:none;opacity:.035;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+::selection{background:var(--red);color:#fff}
+
+/* ── typography primitives ─────────────────────────── */
+.mono{font-family:var(--mono);font-size:.68rem;letter-spacing:.09em;text-transform:uppercase}
+.dim{color:var(--dim)} .red{color:var(--red)}
+h1,h2,h3{font-family:var(--black);text-transform:uppercase;letter-spacing:-.035em;line-height:.9;font-weight:400}
+p{max-width:74ch}
+p+p{margin-top:.9em}
+a{color:var(--fg);text-decoration:none;border-bottom:1px solid var(--red)}
+a:hover{color:var(--red)}
+strong{font-weight:800}
+code,samp{font-family:var(--mono);font-size:.82em}
+
+/* ── shell ─────────────────────────────────────────── */
+.shell{display:grid;grid-template-columns:216px minmax(0,1fr);max-width:1500px;margin:0 auto;
+  border-left:1px solid var(--line);border-right:1px solid var(--line);min-height:100vh}
+nav{border-right:1px solid var(--line);position:sticky;top:0;height:100vh;overflow-y:auto;
+  padding:22px 0 40px;background:var(--bg)}
+.nav-brand{padding:0 16px 18px;border-bottom:1px solid var(--line);margin-bottom:14px}
+.nav-brand .t{font-family:var(--black);font-size:.98rem;letter-spacing:-.02em;line-height:1}
+.nav-brand .s{margin-top:7px;color:var(--dimmer)}
+nav ol{list-style:none;counter-reset:s -1}
+nav a{display:flex;gap:9px;padding:6px 16px;border-bottom:none;color:var(--dim);
+  font-family:var(--mono);font-size:.7rem;letter-spacing:.045em;text-transform:uppercase;transition:color .12s,background .12s}
+nav a .n{color:var(--dimmer);min-width:20px}
+nav a:hover{background:#161616;color:var(--fg)}
+nav a.on{color:var(--fg);background:#1A1A1A;box-shadow:inset 3px 0 0 var(--red)}
+nav a.on .n{color:var(--red)}
+main{min-width:0}
+
+/* ── hero ──────────────────────────────────────────── */
+.hero{padding:76px 40px 34px;border-bottom:1px solid var(--line);position:relative;overflow:hidden}
+.hero .kick{display:flex;gap:14px;flex-wrap:wrap;color:var(--dim);margin-bottom:26px}
+.hero h1{font-size:clamp(2.6rem,7.4vw,6.4rem)}
+.hero h1 em{font-style:normal;color:var(--red)}
+.hero .lede{margin-top:26px;font-size:1.12rem;max-width:64ch;color:#CFCFCF}
+.hero .lede b{color:#fff;font-weight:800}
+.meta{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:1px;background:var(--line);
+  border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.meta div{background:var(--bg);padding:13px 16px}
+.meta .k{color:var(--dimmer);margin-bottom:5px}
+.meta .v{font-family:var(--mono);font-size:.95rem;font-weight:500}
+
+/* ── sections ──────────────────────────────────────── */
+section{padding:56px 40px;border-bottom:1px solid var(--line);scroll-margin-top:0}
+.sec-h{display:flex;align-items:baseline;gap:16px;margin-bottom:8px}
+.sec-h .num{font-family:var(--mono);font-size:.72rem;color:var(--red);letter-spacing:.1em;padding-top:6px}
+.sec-h h2{font-size:clamp(1.55rem,3.3vw,2.5rem)}
+.sec-sub{color:var(--dim);margin-bottom:30px;max-width:76ch}
+.rule{height:1px;background:var(--line);margin:30px 0}
+
+/* ── tables ────────────────────────────────────────── */
+.tw{overflow-x:auto;border:1px solid var(--line);margin:22px 0}
+table{border-collapse:collapse;width:100%;font-family:var(--mono);font-size:.78rem}
+th{background:#151515;color:var(--dim);text-align:left;padding:10px 13px;font-weight:500;
+  font-size:.64rem;letter-spacing:.1em;text-transform:uppercase;border-bottom:1px solid var(--line-hi);white-space:nowrap}
+td{padding:10px 13px;border-bottom:1px solid var(--line);vertical-align:top}
+tbody tr:last-child td{border-bottom:none}
+tbody tr{transition:background .1s}
+tbody tr:hover{background:#151515}
+td.n,th.n{text-align:right;font-variant-numeric:tabular-nums}
+td.hi{color:#fff;font-weight:700}
+tr.accent td{background:rgba(230,25,25,.07)}
+tr.accent:hover td{background:rgba(230,25,25,.12)}
+tr.accent td:first-child{box-shadow:inset 3px 0 0 var(--red)}
+.t-note{color:var(--dimmer);font-family:var(--mono);font-size:.66rem;letter-spacing:.05em;
+  text-transform:uppercase;margin-top:-8px;margin-bottom:22px}
+
+/* ── code block ────────────────────────────────────── */
+pre{background:#0E0E0E;border:1px solid var(--line);border-left:2px solid var(--red);
+  padding:18px 20px;overflow-x:auto;font-family:var(--mono);font-size:.8rem;line-height:1.7;margin:22px 0;color:#D6D6D6}
+pre b{color:var(--red);font-weight:500}
+
+/* ── cards ─────────────────────────────────────────── */
+.grid{display:grid;gap:1px;background:var(--line);border:1px solid var(--line);margin:24px 0}
+.g2{grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}
+.g3{grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
+.card{background:var(--bg);padding:20px}
+.card .idx{font-family:var(--mono);font-size:.64rem;letter-spacing:.1em;color:var(--red);margin-bottom:10px}
+.card h3{font-size:1rem;margin-bottom:9px;letter-spacing:-.01em}
+.card p{font-size:.88rem;color:#B8B8B8}
+.stat{background:var(--bg);padding:22px 20px}
+.stat .v{font-family:var(--black);font-size:clamp(1.7rem,3.6vw,2.5rem);letter-spacing:-.04em;line-height:1}
+.stat .v.red{color:var(--red)}
+.stat .k{margin-top:10px;color:var(--dim)}
+.stat .d{margin-top:6px;font-size:.8rem;color:var(--dimmer);font-family:var(--sans);letter-spacing:0;text-transform:none}
+
+/* ── callout ───────────────────────────────────────── */
+.call{border:1px solid var(--line);border-left:2px solid var(--red);background:#0F0F0F;padding:18px 22px;margin:24px 0}
+.call .lab{font-family:var(--mono);font-size:.64rem;letter-spacing:.12em;color:var(--red);margin-bottom:8px}
+.call p{font-size:.94rem}
+
+/* ── list ──────────────────────────────────────────── */
+ul.spec{list-style:none;margin:20px 0}
+ul.spec li{border-top:1px solid var(--line);padding:13px 0 13px 26px;position:relative;max-width:88ch;font-size:.93rem}
+ul.spec li:last-child{border-bottom:1px solid var(--line)}
+ul.spec li::before{content:"+";position:absolute;left:4px;top:13px;color:var(--red);font-family:var(--mono);font-size:.8rem}
+
+/* ── calculator ────────────────────────────────────── */
+.calc{border:1px solid var(--line-hi);background:#0E0E0E;margin:26px 0}
+.calc-h{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;
+  padding:12px 18px;border-bottom:1px solid var(--line);background:#151515}
+.calc-h .t{font-family:var(--mono);font-size:.68rem;letter-spacing:.12em;text-transform:uppercase}
+.calc-h .live{display:flex;align-items:center;gap:7px;color:var(--dimmer);font-family:var(--mono);font-size:.62rem;letter-spacing:.1em}
+.dot{width:6px;height:6px;background:var(--green);display:inline-block;animation:blink 1.6s steps(1,end) infinite}
+@keyframes blink{0%,60%{opacity:1}61%,100%{opacity:.15}}
+.calc-body{display:grid;grid-template-columns:minmax(280px,1fr) minmax(300px,1.05fr);gap:1px;background:var(--line)}
+.calc-in,.calc-out{background:#0E0E0E;padding:20px}
+.field{margin-bottom:24px}
+.field:last-child{margin-bottom:0}
+.field-h{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:11px}
+.field-h .lab{font-family:var(--mono);font-size:.64rem;letter-spacing:.1em;text-transform:uppercase;color:var(--dim)}
+.field-h .val{font-family:var(--mono);font-size:1.05rem;font-weight:700;font-variant-numeric:tabular-nums}
+input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:2px;background:var(--line-hi);outline:none;cursor:pointer}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:13px;height:20px;background:var(--red);cursor:grab;border:none}
+input[type=range]::-webkit-slider-thumb:active{cursor:grabbing;background:#fff}
+input[type=range]::-moz-range-thumb{width:13px;height:20px;background:var(--red);cursor:grab;border:none;border-radius:0}
+input[type=range]:focus-visible{outline:1px solid var(--red);outline-offset:6px}
+.ticks{display:flex;justify-content:space-between;margin-top:7px;color:var(--dimmer);font-family:var(--mono);font-size:.6rem;letter-spacing:.06em}
+.tierbtns{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line)}
+.tierbtns button{background:#0E0E0E;border:none;color:var(--dim);font-family:var(--mono);font-size:.62rem;
+  letter-spacing:.07em;text-transform:uppercase;padding:10px 4px;cursor:pointer;transition:background .12s,color .12s}
+.tierbtns button:hover{background:#181818;color:var(--fg)}
+.tierbtns button[aria-pressed=true]{background:var(--red);color:#fff;font-weight:700}
+.tierbtns button:focus-visible{outline:1px solid var(--fg);outline-offset:-3px}
+.readout{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line);border:1px solid var(--line)}
+.ro{background:#0E0E0E;padding:15px}
+.ro .k{font-family:var(--mono);font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:var(--dimmer);margin-bottom:7px}
+.ro .v{font-family:var(--mono);font-size:1.32rem;font-weight:700;font-variant-numeric:tabular-nums;line-height:1;transition:color .18s}
+.ro .v small{font-size:.62rem;font-weight:400;color:var(--dim);letter-spacing:.06em;display:block;margin-top:7px}
+.ro.wide{grid-column:1/-1}
+.flash{animation:fl .35s ease-out}
+@keyframes fl{0%{color:var(--red)}100%{color:inherit}}
+.bar{height:26px;display:flex;border:1px solid var(--line);margin-top:16px;background:#0A0A0A}
+.bar i{display:block;height:100%;transition:width .22s cubic-bezier(.2,.7,.3,1)}
+.bar .base{background:var(--red)}
+.bar .over{background:repeating-linear-gradient(45deg,#5A0C0C,#5A0C0C 5px,#3A0808 5px,#3A0808 10px)}
+.barleg{display:flex;gap:18px;margin-top:9px;color:var(--dimmer);font-family:var(--mono);font-size:.6rem;letter-spacing:.07em;text-transform:uppercase;flex-wrap:wrap}
+.barleg i{width:9px;height:9px;display:inline-block;margin-right:6px;vertical-align:-1px}
+.verdict{border-top:1px solid var(--line);margin-top:18px;padding-top:14px;font-size:.86rem;color:#B8B8B8;min-height:44px}
+.verdict b{color:#fff}
+
+/* ── footer ────────────────────────────────────────── */
+footer{padding:44px 40px 60px;color:var(--dimmer)}
+footer .big{font-family:var(--black);font-size:clamp(1.6rem,5.5vw,3.4rem);color:#161616;letter-spacing:-.04em;line-height:.9;margin-bottom:26px}
+
+@media (max-width:900px){
+  .shell{grid-template-columns:1fr}
+  nav{position:static;height:auto;border-right:none;border-bottom:1px solid var(--line);padding-bottom:14px}
+  nav ol{display:flex;flex-wrap:wrap}
+  nav a{padding:6px 12px}
+  nav a.on{box-shadow:inset 0 -2px 0 var(--red)}
+  .hero{padding:44px 20px 26px} section{padding:40px 20px} footer{padding:36px 20px 50px}
+  .calc-body{grid-template-columns:1fr}
+}
+@media (prefers-reduced-motion:reduce){
+  *{animation:none!important;transition:none!important}
+  html{scroll-behavior:auto}
+}
+</style>
+</head>
+<body>
+<div class="shell">
+<nav aria-label="Section index">
+  <div class="nav-brand">
+    <div class="t">Distributor<br>Program V2</div>
+    <div class="s mono">Mechanics Spec / Draft</div>
+  </div>
+  <ol id="navlist">
+    <li><a href="#s0"><span class="n">00</span><span>Locked</span></a></li>
+    <li><a href="#s1"><span class="n">01</span><span>What changes</span></a></li>
+    <li><a href="#s2"><span class="n">02</span><span>Payout formula</span></a></li>
+    <li><a href="#s3"><span class="n">03</span><span>Stake ladder</span></a></li>
+    <li><a href="#s4"><span class="n">04</span><span>Capacity</span></a></li>
+    <li><a href="#s5"><span class="n">05</span><span>Sponsorship</span></a></li>
+    <li><a href="#s6"><span class="n">06</span><span>Performance</span></a></li>
+    <li><a href="#s7"><span class="n">07</span><span>Lifecycle</span></a></li>
+    <li><a href="#s8"><span class="n">08</span><span>Rules</span></a></li>
+    <li><a href="#s9"><span class="n">09</span><span>Program cost</span></a></li>
+    <li><a href="#s10"><span class="n">10</span><span>Migration</span></a></li>
+    <li><a href="#s11"><span class="n">11</span><span>Decisions</span></a></li>
+  </ol>
+</nav>
+<main>
+
+<header class="hero">
+  <div class="kick mono">
+    <span class="red">● Draft for review</span><span>/</span><span>Rev 2.0</span><span>/</span>
+    <span>2026-09-01</span><span>/</span><span>Orderly Network</span>
+  </div>
+  <h1>Rate is bought<br>with <em>ORDER</em>.<br>Status is earned<br>with volume.</h1>
+  <p class="lede">v1 lets a distributor reach the top tier on invitee volume alone — <b>the better you perform, the less reason you have to buy the token.</b> v2 separates the two axes: staking sets the cash rate, volume sets privileges, and a capacity mechanic makes the correct stake a function of how well you are doing.</p>
+</header>
+
+<div class="meta">
+  <div><div class="k mono">ORDER price</div><div class="v">$0.0331</div></div>
+  <div><div class="k mono">Market cap</div><div class="v">$13.5M</div></div>
+  <div><div class="k mono">Circulating</div><div class="v">409.5M</div></div>
+  <div><div class="k mono">Payout band</div><div class="v">10% — 50%</div></div>
+  <div><div class="k mono">Blended cost</div><div class="v">≈14% of rev</div></div>
+</div>
+
+<section id="s0">
+  <div class="sec-h"><span class="num">§00</span><h2>Locked</h2></div>
+  <p class="sec-sub">Decisions taken as given. Everything downstream is derived from these.</p>
+  <div class="tw"><table>
+    <thead><tr><th>Parameter</th><th>Decision</th></tr></thead>
+    <tbody>
+      <tr><td class="hi">Gate</td><td>Application, approved by BD. Test = can this applicant actually deliver volume</td></tr>
+      <tr><td class="hi">Payout base</td><td>Orderly's own base-fee revenue from the recruited builder. Taker only</td></tr>
+      <tr><td class="hi">Rate</td><td>10% floor on approval → 50% ceiling</td></tr>
+      <tr class="accent"><td class="hi">Tier driver</td><td><strong>ORDER staking only.</strong> Volume buys status and privileges, never rate</td></tr>
+      <tr><td class="hi">Duration</td><td>Perpetual, for the life of the recruited DEX</td></tr>
+      <tr><td class="hi">Migration</td><td>Force-migrate. Only internal BDs are on v1</td></tr>
+      <tr><td class="hi">Depth</td><td>Flat, one level. No sub-distributors</td></tr>
+      <tr><td class="hi">Target profile</td><td>Anyone with access to people who might launch a DEX or bolt perps onto an existing product</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section id="s1">
+  <div class="sec-h"><span class="num">§01</span><h2>What actually changes</h2></div>
+  <p class="sec-sub"><strong>v1 today:</strong> distributor earns the fee <em>spread</em> — <code>max(0.1 bps, invitee base taker fee − distributor base taker fee)</code>. Tier comes from <code>30d aggregate volume OR staking, higher wins</code>, where aggregate volume includes every invitee's volume.</p>
+
+  <div class="grid g3">
+    <div class="card">
+      <div class="idx mono">Problem 01</div>
+      <h3>The tier system is an anti-incentive to stake</h3>
+      <p>Distributor volume includes all invitee volume, so anyone who succeeds at the job hits Diamond on volume alone and never buys a single ORDER. The better you perform, the less reason you have to lock tokens. This is why v1 produces roughly zero staking demand.</p>
+    </div>
+    <div class="card">
+      <div class="idx mono">Problem 02</div>
+      <h3>The spread pays out of margin Orderly can't cap</h3>
+      <p>The spread is a function of two tier tables interacting with each other — not a policy dial anyone can turn.</p>
+    </div>
+    <div class="card">
+      <div class="idx mono">Problem 03</div>
+      <h3>Volume-driven tiers are gameable</h3>
+      <p>Wash volume promotes the distributor's own tier, which widens their spread. The abuse pays for itself.</p>
+    </div>
+  </div>
+
+  <div class="grid g2">
+    <div class="card">
+      <div class="idx mono">Axis A / cash</div>
+      <h3>Rate ← staking only</h3>
+      <p>A clean policy dial from 10% to 50% that Orderly controls directly. Nothing else moves it.</p>
+    </div>
+    <div class="card">
+      <div class="idx mono">Axis B / status</div>
+      <h3>Privileges ← volume</h3>
+      <p>Support, co-marketing, sponsorship authority, inbound leads. Costs headcount and attention, never bps.</p>
+    </div>
+  </div>
+
+  <div class="call">
+    <div class="lab mono">Free consequence</div>
+    <p>With rate decoupled from volume, <strong>wash trading becomes strictly −EV.</strong> A distributor who fakes volume causes the builder to pay 3 bps to Orderly and receives back at most 50% of it. There is no tier left to farm — the entire abuse class from v1 disappears without a detection system.</p>
+  </div>
+</section>
+
+<section id="s2">
+  <div class="sec-h"><span class="num">§02</span><h2>Payout formula</h2></div>
+  <p class="sec-sub">Volume means the notional the fee engine billed, not a reported volume figure. Orderly charges a base fee on the taker side only and every match has exactly one taker side — so this is single-sided by construction and cannot drift with how analytics reports volume.</p>
+<pre>Billed_Taker_Notional(builder, day) = notional on which Orderly billed a base taker fee
+
+<b>Payout</b> = Share%(distributor stake tier) × Notional_Revenue
+       − Sponsorship_Discount_Cost
+       (floored at 0)
+
+where Notional_Revenue = Billed_Taker_Notional × <b>3.00 bps</b>   (the Public rate)</pre>
+  <ul class="spec">
+    <li><strong>Share applies to notional revenue at 3 bps, not actual.</strong> If the invitee earns a cheaper rate through their <em>own</em> volume or staking, the distributor is not punished for their builder succeeding.</li>
+    <li><strong>If the cheaper rate came from distributor sponsorship, the full discount is debited from the distributor's payout.</strong> See §05 — this makes Orderly exactly indifferent to sponsorship, so it can be handed out as a closing tool with no revenue committee in the loop.</li>
+    <li>Maker fees, maker rebates and liquidation fees are out of scope — Orderly charges no maker base fee. RWA and crypto are treated identically, matching the builder table.</li>
+  </ul>
+</section>
+
+<section id="s3">
+  <div class="sec-h"><span class="num">§03</span><h2>Stake ladder</h2></div>
+  <p class="sec-sub">The rate dial. Thresholds deliberately reuse the Builder Staking anchors (100K / 300K / 3M / 7M) so the ecosystem has <strong>one ORDER ladder</strong>, with 1M inserted to smooth the 300K→3M cliff. Steps are a uniform +8%, so every upgrade is a clean ROI question.</p>
+  <div class="tw"><table>
+    <thead><tr><th>Tier</th><th class="n">ORDER staked</th><th class="n">USD @ $0.0331</th><th class="n">Share of Orderly rev</th><th class="n">Monthly rev capacity</th><th class="n">Payout at cap</th></tr></thead>
+    <tbody>
+      <tr><td class="hi">Registered</td><td class="n">0</td><td class="n">$0</td><td class="n">10%</td><td class="n dim">unlimited</td><td class="n dim">—</td></tr>
+      <tr><td class="hi">Silver</td><td class="n">100,000</td><td class="n">$3,310</td><td class="n">18%</td><td class="n">$25,000</td><td class="n">$4,500/mo</td></tr>
+      <tr><td class="hi">Gold</td><td class="n">300,000</td><td class="n">$9,930</td><td class="n">26%</td><td class="n">$75,000</td><td class="n">$19,500/mo</td></tr>
+      <tr><td class="hi">Platinum</td><td class="n">1,000,000</td><td class="n">$33,100</td><td class="n">34%</td><td class="n">$250,000</td><td class="n">$85,000/mo</td></tr>
+      <tr><td class="hi">Diamond</td><td class="n">3,000,000</td><td class="n">$99,300</td><td class="n">42%</td><td class="n">$750,000</td><td class="n">$315,000/mo</td></tr>
+      <tr class="accent"><td class="hi">Vanguard</td><td class="n">7,000,000</td><td class="n">$231,700</td><td class="n">50%</td><td class="n">$1,750,000</td><td class="n">$875,000/mo</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3 style="font-size:1rem;margin:34px 0 4px">Upgrade ROI</h3>
+  <p class="t-note">Each +8% step is worth $2,400 per $100M of monthly taker volume</p>
+  <div class="tw"><table>
+    <thead><tr><th>Upgrade</th><th class="n">Extra ORDER</th><th class="n">Extra USD</th><th class="n">Cumulative taker volume to repay the stake</th></tr></thead>
+    <tbody>
+      <tr><td>Registered → Silver</td><td class="n">100,000</td><td class="n">$3,310</td><td class="n hi">$0.14B</td></tr>
+      <tr><td>Silver → Gold</td><td class="n">200,000</td><td class="n">$6,620</td><td class="n hi">$0.28B</td></tr>
+      <tr><td>Gold → Platinum</td><td class="n">700,000</td><td class="n">$23,170</td><td class="n hi">$0.97B</td></tr>
+      <tr><td>Platinum → Diamond</td><td class="n">2,000,000</td><td class="n">$66,200</td><td class="n hi">$2.76B</td></tr>
+      <tr><td>Diamond → Vanguard</td><td class="n">4,000,000</td><td class="n">$132,400</td><td class="n hi">$5.52B</td></tr>
+    </tbody>
+  </table></div>
+  <p>And the stake is still theirs afterwards — this is payback on a <strong>recoverable asset</strong>, not a fee.</p>
+</section>
+
+<section id="s4">
+  <div class="sec-h"><span class="num">§04</span><h2>The capacity mechanic</h2></div>
+  <p class="sec-sub">A plain ladder saturates. At today's price the whole thing tops out at $231,700 — any distributor serious enough to pass a BD application buys Vanguard on day one and never touches ORDER again. Total demand = (number of large distributors) × 7M, one time. That is not a flywheel, it is a toll booth.</p>
+
+  <p><strong>Fix:</strong> each tier gives you a rate <em>and</em> a quota of monthly revenue that rate applies to. Overflow drops exactly one step — never cascades further, never falls to the 10% floor.</p>
+<pre>capacity_usd_per_month = <b>0.25</b> × ORDER_staked
+
+R = attributed Orderly revenue this month
+<b>payout</b> = share × min(R, capacity)
+       + share_one_tier_down × max(0, R − capacity)</pre>
+
+  <div class="calc" id="calc">
+    <div class="calc-h">
+      <div class="t">▚ Capacity simulator</div>
+      <div class="live"><span class="dot" aria-hidden="true"></span><span>Live model · rev/mo basis</span></div>
+    </div>
+    <div class="calc-body">
+      <div class="calc-in">
+        <div class="field">
+          <div class="field-h"><label class="lab" for="vol">Portfolio monthly taker volume</label><span class="val" id="volOut">$3.30B</span></div>
+          <input type="range" id="vol" min="0" max="100" value="42" step="1" aria-describedby="volOut">
+          <div class="ticks"><span>$50M</span><span>$1B</span><span>$10B</span><span>$50B</span></div>
+        </div>
+        <div class="field">
+          <div class="field-h"><span class="lab">Distributor stake tier</span><span class="val" id="stakeOut">7,000,000 ORDER</span></div>
+          <div class="tierbtns" id="tierbtns" role="group" aria-label="Stake tier">
+            <button type="button" data-i="0">Reg</button>
+            <button type="button" data-i="1">Silver</button>
+            <button type="button" data-i="2">Gold</button>
+            <button type="button" data-i="3">Plat</button>
+            <button type="button" data-i="4">Diamond</button>
+            <button type="button" data-i="5" aria-pressed="true">Vanguard</button>
+          </div>
+        </div>
+        <div class="field">
+          <div class="field-h"><span class="lab">Revenue split against capacity</span><span class="val" id="capOut">$1.75M cap</span></div>
+          <div class="bar" role="img" aria-label="Share of revenue inside versus above capacity">
+            <i class="base" id="barBase" style="width:100%"></i><i class="over" id="barOver" style="width:0%"></i>
+          </div>
+          <div class="barleg">
+            <span><i class="base" style="background:var(--red)"></i>Inside capacity · headline rate</span>
+            <span><i class="over" style="background:#5A0C0C"></i>Overflow · one step down</span>
+          </div>
+        </div>
+      </div>
+      <div class="calc-out">
+        <div class="readout">
+          <div class="ro"><div class="k">Orderly revenue</div><div class="v" id="roRev">$990,000</div></div>
+          <div class="ro"><div class="k">Distributor payout</div><div class="v" id="roPay">$495,000</div></div>
+          <div class="ro"><div class="k">Effective rate</div><div class="v" id="roEff">50.0%</div></div>
+          <div class="ro"><div class="k">Orderly keeps</div><div class="v" id="roKeep">$495,000</div></div>
+          <div class="ro wide"><div class="k">Left on the table vs. fully-staked</div><div class="v" id="roGap">$0<small id="roGapSub">Capacity covers the whole portfolio at the headline rate</small></div></div>
+        </div>
+        <div class="verdict" id="verdict"></div>
+      </div>
+    </div>
+  </div>
+
+  <p class="t-note">Worked example · Vanguard, 7M ORDER, $1.75M capacity</p>
+  <div class="tw"><table>
+    <thead><tr><th>Monthly Orderly rev</th><th class="n">Within capacity @ 50%</th><th class="n">Overflow @ 42%</th><th class="n">Payout</th><th class="n">Effective rate</th></tr></thead>
+    <tbody>
+      <tr><td>$1.00M <span class="dim">($3.3B vol)</span></td><td class="n">$1.00M → $500,000</td><td class="n dim">—</td><td class="n hi">$500,000</td><td class="n">50.0%</td></tr>
+      <tr><td>$1.75M <span class="dim">($5.8B vol)</span></td><td class="n">$1.75M → $875,000</td><td class="n dim">—</td><td class="n hi">$875,000</td><td class="n">50.0%</td></tr>
+      <tr class="accent"><td>$3.00M <span class="dim">($10B vol)</span></td><td class="n">$1.75M → $875,000</td><td class="n">$1.25M → $525,000</td><td class="n hi">$1,400,000</td><td class="n">46.7%</td></tr>
+      <tr><td>$9.00M <span class="dim">($30B vol)</span></td><td class="n">$1.75M → $875,000</td><td class="n">$7.25M → $3,045,000</td><td class="n hi">$3,920,000</td><td class="n">43.6%</td></tr>
+    </tbody>
+  </table></div>
+
+  <div class="call">
+    <div class="lab mono">Why this is the whole design</div>
+    <p>The distributor at $10B/mo is leaving <strong>$100,000 per month</strong> on the table. Closing it costs 5M more ORDER — about $165,000 — so <strong>payback lands under two months and the stake is still theirs.</strong> The correct move is always "stake more," and how much you should stake is a function of how well you are doing. Staking demand grows with the program instead of stopping at 7M.</p>
+  </div>
+
+  <ul class="spec">
+    <li><strong>Stake above 7M keeps buying capacity</strong> at 0.25 USD/ORDER at the 50% rate. No ceiling — that is the point.</li>
+    <li><strong>Settlement stays daily, on a month-to-date accumulator.</strong> Each day's revenue fills remaining capacity at the headline rate; the rest pays at the step-down. Resets at month start.</li>
+    <li><strong>The daily stake snapshot uses the minimum stake held during that day</strong>, so nobody can stake for one snapshot and unstake right after.</li>
+    <li>Scale check: at 3 bps, $1 of capacity ≈ $3,333 of monthly taker volume. <strong>Vanguard covers $5.8B/month fully at 50%</strong> — the cap does not bite at all below that. It only engages for the handful of partners large enough that their staking decision moves the token.</li>
+  </ul>
+</section>
+
+
+<section id="s5">
+  <div class="sec-h"><span class="num">§05</span><h2>Sponsorship</h2></div>
+  <p class="sec-sub">The closing tool, self-funded. A distributor can sponsor an invitee into better base pricing to win a deal — and the entire discount is debited from their payout, which makes Orderly revenue-neutral on every permitted case.</p>
+  <p class="t-note">$1B monthly taker volume · distributor at Vanguard (50%)</p>
+  <div class="tw"><table>
+    <thead><tr><th>Sponsored builder tier</th><th class="n">Orderly actual rev</th><th class="n">Discount debited</th><th class="n">Distributor payout</th><th class="n">Orderly net</th></tr></thead>
+    <tbody>
+      <tr><td class="hi">Public <span class="dim">3.0 bps</span></td><td class="n">$300,000</td><td class="n">$0</td><td class="n">$150,000</td><td class="n hi">$150,000</td></tr>
+      <tr><td class="hi">Silver <span class="dim">2.75 bps</span></td><td class="n">$275,000</td><td class="n">$25,000</td><td class="n">$125,000</td><td class="n hi">$150,000</td></tr>
+      <tr><td class="hi">Gold <span class="dim">2.5 bps</span></td><td class="n">$250,000</td><td class="n">$50,000</td><td class="n">$100,000</td><td class="n hi">$150,000</td></tr>
+      <tr><td class="hi">Platinum <span class="dim">2.0 bps</span></td><td class="n">$200,000</td><td class="n">$100,000</td><td class="n">$50,000</td><td class="n hi">$150,000</td></tr>
+      <tr class="accent"><td class="hi">Diamond <span class="dim">1.0 bps</span></td><td class="n">$100,000</td><td class="n">$200,000</td><td class="n">−$50,000 → <span class="red">$0</span></td><td class="n">$100,000</td></tr>
+    </tbody>
+  </table></div>
+  <p>Orderly nets exactly $150,000 in every permitted case. The distributor decides whether the discount wins a deal worth more than its cost — no approvals, no margin committee.</p>
+
+  <div class="call">
+    <div class="lab mono">Why depth must be gated</div>
+    <p>That last row is the hole. At 50% share a distributor earns 1.5 bps, but sponsoring Diamond costs 2.0 bps — unbounded, this goes negative and <strong>Orderly eats the difference.</strong> Hence a depth-authority table capped at Platinum, plus a hard zero floor on payout.</p>
+  </div>
+
+  <div class="tw"><table>
+    <thead><tr><th>Distributor tier</th><th>May sponsor invitee up to</th></tr></thead>
+    <tbody>
+      <tr><td class="hi">Registered</td><td class="dim">—</td></tr>
+      <tr><td class="hi">Silver</td><td>Silver</td></tr>
+      <tr><td class="hi">Gold</td><td>Gold</td></tr>
+      <tr><td class="hi">Platinum</td><td>Gold</td></tr>
+      <tr><td class="hi">Diamond</td><td>Platinum</td></tr>
+      <tr><td class="hi">Vanguard</td><td>Platinum</td></tr>
+    </tbody>
+  </table></div>
+  <ul class="spec">
+    <li>Payout floors at $0 and never goes negative.</li>
+    <li>If discount cost exceeds earned share two months running, the sponsorship auto-downgrades one tier with 30 days' notice.</li>
+    <li>Diamond pricing stays a manual Orderly-side strategic assignment — never distributor-granted.</li>
+    <li><strong>This is the second staking driver:</strong> deeper discount authority is a closing weapon, and it is bought with ORDER.</li>
+  </ul>
+</section>
+
+<section id="s6">
+  <div class="sec-h"><span class="num">§06</span><h2>Performance ladder</h2></div>
+  <p class="sec-sub">Volume → status, never cash. Measured on 30d attributed taker volume across graduated invitees. Everything here costs Orderly headcount and attention, not bps — and because it is the only thing volume buys, there is no reason to fake volume for it.</p>
+  <div class="tw"><table>
+    <thead><tr><th>Level</th><th>Trigger</th><th>Unlocks</th></tr></thead>
+    <tbody>
+      <tr><td class="hi">Registered</td><td>Approved</td><td>Dashboard, codes and links, self-serve collateral, Telegram support</td></tr>
+      <tr><td class="hi">Active</td><td>1 graduated DEX</td><td>Named BD contact, deal-desk review, co-branded materials</td></tr>
+      <tr><td class="hi">Scaled</td><td>$250M/mo or 3 graduated DEXs</td><td>Inbound lead sharing, co-marketing, launch RT/QT, quarterly pipeline review</td></tr>
+      <tr><td class="hi">Strategic</td><td>$1B/mo or 8 graduated DEXs</td><td>Dedicated account manager, joint campaigns, PR and paid media, roadmap input</td></tr>
+      <tr class="accent"><td class="hi">Flagship</td><td>$5B/mo or 20 graduated DEXs</td><td>Advisory board seat, event slots, first look at new products and chains, custom terms</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section id="s7">
+  <div class="sec-h"><span class="num">§07</span><h2>Application &amp; lifecycle</h2></div>
+  <p class="sec-sub">BD is assessing exactly one thing: can this applicant actually deliver volume.</p>
+  <div class="grid g2">
+    <div class="card">
+      <div class="idx mono">Application captures</div>
+      <p>Identity/entity and KYB · distribution channel and reach with evidence · named pipeline of ≥3 prospective builders · target segment · expected time-to-first-graduation · prior BD/partnership track record · conflicts (existing builder ownership, competing infra relationships).</p>
+    </div>
+    <div class="card">
+      <div class="idx mono">Decision</div>
+      <p>Approve / reject / conditional — conditional means approved with a 90-day first-graduation milestone. Target SLA is 5 business days.</p>
+    </div>
+    <div class="card">
+      <div class="idx mono">On approval</div>
+      <p>Registered tier at 10%, immediately live. <strong>No stake required to start</strong> — staking is the upgrade path, never the entry toll.</p>
+    </div>
+    <div class="card">
+      <div class="idx mono">Perpetual is unconditional</div>
+      <p>No dormancy clause, no performance minimum. A distributor who lands one DEX and never works again keeps that payout for the life of the DEX. <strong>Termination for cause</strong> — fraud, wash trading, misrepresentation, ToS breach — is the only path that ever stops a payout.</p>
+    </div>
+  </div>
+</section>
+
+<section id="s8">
+  <div class="sec-h"><span class="num">§08</span><h2>Rules</h2></div>
+  <p class="sec-sub"><strong>Carried from v1:</strong> unidirectional binding (one distributor per invitee) · non-reciprocal (no A↔B) · binding at or before graduation · immutable once set · an EOA registered as distributor cannot later convert to Builder Admin.</p>
+  <ul class="spec">
+    <li><strong>Daily accrual, daily settlement at 00:00 UTC.</strong> Each day's payout uses that day's stake snapshot — no retroactive re-rating.</li>
+    <li><strong>Tier drops the moment an unstake request is submitted</strong>, not when it completes. ORDER staking runs a <strong>7-day unstaking period</strong>; only one active request is allowed, a new request merges with the pending one and resets the full 7 days, and cancelling restakes the entire amount (<a href="https://orderly.network/docs/introduction/tokenomics/order-staking/staking" target="_blank" rel="noopener">Orderly staking documentation</a>). If demotion waited for completion, a distributor would collect 7 days of top-tier payouts on tokens already on the way out — and merge-and-reset would let them roll that indefinitely. Cancelling restores the tier at the next daily snapshot.</li>
+    <li><strong>The 7-day exit is what makes the tier cost anything</strong> — the stake is genuinely at risk through a drawdown.</li>
+    <li><strong>Builder-owner distributors are permitted but must disclose.</strong> Self-referral is economically pointless here — pay 3 bps, receive at most half back — so disclosure plus monitoring is sufficient.</li>
+    <li><strong>No traffic re-binding.</strong> An existing builder's volume cannot be routed through a newly bound entity; the application's materially-new-entity test covers this.</li>
+    <li><strong>Attribution is per-builder, perpetual, and survives distributor tier changes.</strong></li>
+  </ul>
+</section>
+<section id="s9">
+  <div class="sec-h"><span class="num">§09</span><h2>Program cost</h2></div>
+  <p class="sec-sub">Assumes $500M monthly taker volume per distributor, invitees on Public (3 bps). Realistic mix = 60% Registered / 20% Silver / 10% Gold / 6% Platinum / 3% Diamond / 1% Vanguard.</p>
+  <div class="grid g3">
+    <div class="stat"><div class="v red">≈14%</div><div class="k mono">Blended program cost</div><div class="d">Of attributed revenue, at a realistic tier mix</div></div>
+    <div class="stat"><div class="v">50%</div><div class="k mono">Hard worst case</div><div class="d">Bounded by construction — there is no second leak</div></div>
+    <div class="stat"><div class="v">100%</div><div class="k mono">Paid on incremental revenue</div><div class="d">Revenue that would not exist without the distributor</div></div>
+  </div>
+  <div class="tw"><table>
+    <thead><tr><th class="n">Distributors</th><th class="n">Gross Orderly rev/mo</th><th class="n">All at 10%</th><th class="n">All at 50%</th><th class="n">Blended, realistic mix</th></tr></thead>
+    <tbody>
+      <tr><td class="n hi">10</td><td class="n">$1,500,000</td><td class="n dim">$150,000 (10%)</td><td class="n dim">$750,000 (50%)</td><td class="n hi">$214,000 (14%)</td></tr>
+      <tr><td class="n hi">50</td><td class="n">$7,500,000</td><td class="n dim">$750,000 (10%)</td><td class="n dim">$3,750,000 (50%)</td><td class="n hi">$1,070,000 (14%)</td></tr>
+      <tr><td class="n hi">200</td><td class="n">$30,000,000</td><td class="n dim">$3,000,000 (10%)</td><td class="n dim">$15,000,000 (50%)</td><td class="n hi">$4,280,000 (14%)</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3 style="font-size:1rem;margin:34px 0 4px">ORDER staking demand created</h3>
+  <p class="t-note">Same mix · before any capacity-driven top-ups</p>
+  <div class="tw"><table>
+    <thead><tr><th class="n">Distributors</th><th class="n">ORDER locked</th><th class="n">USD @ $0.0331</th><th class="n">% of circulating</th></tr></thead>
+    <tbody>
+      <tr><td class="n hi">10</td><td class="n">2,700,000</td><td class="n">$89,370</td><td class="n">0.66%</td></tr>
+      <tr><td class="n hi">50</td><td class="n">13,500,000</td><td class="n">$446,850</td><td class="n">3.30%</td></tr>
+      <tr><td class="n hi">200</td><td class="n">54,000,000</td><td class="n">$1,787,400</td><td class="n">13.19%</td></tr>
+      <tr class="accent"><td class="n hi">500</td><td class="n">135,000,000</td><td class="n">$4,468,500</td><td class="n">32.97%</td></tr>
+    </tbody>
+  </table></div>
+  <p>Plus capacity-driven top-ups from any distributor above ~$5.8B/mo — that is the part that keeps growing after launch.</p>
+</section>
+
+<section id="s10">
+  <div class="sec-h"><span class="num">§10</span><h2>Migration</h2></div>
+  <p class="sec-sub">Internal BDs only. Nobody is worse off during transition.</p>
+  <ul class="spec">
+    <li>Snapshot every existing binding and its trailing 90-day earnings under the v1 spread model.</li>
+    <li>Auto-enroll each internal BD as <strong>Registered</strong>, bindings preserved intact.</li>
+    <li><strong>90-day parity guarantee:</strong> pay <code>max(v1 spread, v2 share)</code> per binding.</li>
+    <li>Publish each BD's break-even stake — the ORDER needed for v2 to beat their v1 spread — at migration.</li>
+    <li>Day 91: v2 only.</li>
+    <li>The application gate is <strong>not</strong> retroactive; existing internal BDs are grandfathered as approved.</li>
+  </ul>
+</section>
+
+<section id="s11">
+  <div class="sec-h"><span class="num">§11</span><h2>Decisions closed</h2></div>
+  <div class="tw"><table>
+    <thead><tr><th class="n">#</th><th>Question</th><th>Resolution</th></tr></thead>
+    <tbody>
+      <tr><td class="n dim">1</td><td class="hi">Capacity mechanic</td><td><strong>In v1.</strong> Mechanics fully specified in §04</td></tr>
+      <tr><td class="n dim">2</td><td class="hi">Volume definition</td><td><strong>Billed taker notional</strong> — single-sided by construction, taken from the fee engine, not analytics (§02)</td></tr>
+      <tr><td class="n dim">3</td><td class="hi">ORDER price risk</td><td><strong>No re-pricing clause.</strong> Thresholds are fixed ORDER amounts regardless of price</td></tr>
+      <tr><td class="n dim">4</td><td class="hi">Unstake cooldown</td><td><strong>7 days</strong>, confirmed in Orderly docs. Tier drops on request submission (§08)</td></tr>
+      <tr><td class="n dim">5</td><td class="hi">Dormancy pause</td><td><strong>Removed.</strong> Perpetual is unconditional; only termination for cause stops a payout (§07)</td></tr>
+    </tbody>
+  </table></div>
+  <div class="call">
+    <div class="lab mono">One consequence of #3 worth naming</div>
+    <p>Capacity is USD-denominated while the ladder is ORDER-denominated, so if ORDER appreciates the ladder gets more expensive in dollars <em>and</em> buys the same capacity — the program tightens on itself. That is the right direction for the token, but a 10× move makes Vanguard a $2.3M ask. If that needs absorbing later, raise the capacity coefficient (0.25 → higher) rather than touching the tier table.</p>
+  </div>
+</section>
+
+<footer>
+  <div class="big">END OF SPEC<br>REV 2.0 ///</div>
+  <div class="mono">Orderly Distributor Program v2 · Draft for review · 2026-09-01<br>
+  Reference price ORDER $0.0331 (CoinGecko, 2026-09-01) · every table regenerates from <samp>model.py</samp><br>
+  Staking mechanics from <a href="https://orderly.network/docs/introduction/tokenomics/order-staking/staking" target="_blank" rel="noopener">Orderly staking documentation</a> · fee tiers from <a href="https://orderly.network/docs/introduction/trade-on-orderly/trading-basics/trading-fees" target="_blank" rel="noopener">Orderly trading fees</a></div>
+</footer>
+
+</main>
+</div>
+
+<script>
+(function(){
+  var TIERS=[
+    {n:'Registered',stake:0,share:0.10},
+    {n:'Silver',stake:100000,share:0.18},
+    {n:'Gold',stake:300000,share:0.26},
+    {n:'Platinum',stake:1000000,share:0.34},
+    {n:'Diamond',stake:3000000,share:0.42},
+    {n:'Vanguard',stake:7000000,share:0.50}
+  ];
+  var CAP_PER_ORDER=0.25, BPS=3.0/10000, PRICE=0.0331, cur=5;
+  var vol=document.getElementById('vol');
+  var ids=['volOut','stakeOut','capOut','roRev','roPay','roEff','roKeep','roGap','roGapSub','barBase','barOver','verdict'];
+  var el={}; ids.forEach(function(i){el[i]=document.getElementById(i);});
+
+  function usd(v){
+    if(v>=1e9) return '$'+(v/1e9).toFixed(2)+'B';
+    if(v>=1e6) return '$'+(v/1e6).toFixed(2)+'M';
+    if(v>=1e3) return '$'+Math.round(v/1e3)+'K';
+    return '$'+Math.round(v);
+  }
+  function usdFull(v){return '$'+Math.round(v).toLocaleString('en-US');}
+  function volFromSlider(p){
+    var lo=Math.log(5e7), hi=Math.log(5e10);
+    return Math.exp(lo+(hi-lo)*(p/100));
+  }
+  function payout(rev,i){
+    var t=TIERS[i];
+    if(i===0) return rev*t.share;
+    var cap=t.stake*CAP_PER_ORDER;
+    if(rev<=cap) return rev*t.share;
+    return cap*t.share + (rev-cap)*TIERS[i-1].share;
+  }
+  var reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function flash(node){
+    if(reduce) return;
+    node.classList.remove('flash'); void node.offsetWidth; node.classList.add('flash');
+  }
+
+  function render(){
+    var v=volFromSlider(+vol.value), rev=v*BPS, t=TIERS[cur];
+    var cap = cur===0 ? Infinity : t.stake*CAP_PER_ORDER;
+    var pay=payout(rev,cur), eff = rev>0 ? pay/rev : t.share;
+    var inside=Math.min(rev,cap), over=Math.max(0,rev-cap);
+    var gap=rev*t.share - pay;
+
+    el.volOut.textContent=usd(v);
+    el.stakeOut.textContent=t.stake.toLocaleString('en-US')+' ORDER';
+    el.capOut.textContent = cur===0 ? 'no cap · 10% flat' : usd(cap)+' cap';
+    el.roRev.textContent=usdFull(rev);
+    el.roPay.textContent=usdFull(pay);
+    el.roEff.textContent=(eff*100).toFixed(1)+'%';
+    el.roKeep.textContent=usdFull(rev-pay);
+    flash(el.roPay); flash(el.roEff);
+
+    var pct = rev>0 ? (inside/rev)*100 : 100;
+    el.barBase.style.width=pct+'%';
+    el.barOver.style.width=(100-pct)+'%';
+
+    if(gap<1){
+      el.roGap.childNodes[0].nodeValue='$0';
+      el.roGapSub.textContent = cur===0
+        ? 'Registered has no capacity — 10% applies to everything'
+        : 'Capacity covers the whole portfolio at the headline rate';
+    }else{
+      el.roGap.childNodes[0].nodeValue=usdFull(gap)+'/mo';
+      var need=Math.ceil((rev/CAP_PER_ORDER - t.stake)/100000)*100000;
+      el.roGapSub.textContent='+'+need.toLocaleString('en-US')+' ORDER (~'+usdFull(need*PRICE)+') to uncap';
+      flash(el.roGap);
+    }
+
+    var msg;
+    if(cur===0){
+      var lift=payout(rev,5)-pay;
+      msg='At <b>Registered</b> you stake nothing and earn the 10% floor. Vanguard costs 7,000,000 ORDER (~$231,700) and adds <b>'+usdFull(lift)+'/mo</b> at this volume — payback in <b>'+(lift>0?(231700/lift).toFixed(1):'—')+' months</b>, with the stake still yours.';
+    }else if(over<1){
+      var head=cap-rev;
+      msg='Fully inside capacity — every dollar earns the headline <b>'+Math.round(t.share*100)+'%</b>. You have <b>'+usd(head)+'/mo</b> of revenue headroom before overflow starts, which is about <b>'+usd(head/BPS)+'</b> of extra monthly taker volume.';
+    }else{
+      msg='<b>'+usd(over)+'/mo</b> of revenue is overflowing to the '+TIERS[cur-1].n+' rate ('+Math.round(TIERS[cur-1].share*100)+'%). Effective rate has slipped to <b>'+(eff*100).toFixed(1)+'%</b> — topping up the stake recovers <b>'+usdFull(gap)+'/mo</b>.';
+    }
+    el.verdict.innerHTML=msg;
+  }
+
+  vol.addEventListener('input',render);
+  var btns=Array.prototype.slice.call(document.querySelectorAll('#tierbtns button'));
+  btns.forEach(function(b){
+    b.addEventListener('click',function(){
+      cur=+b.getAttribute('data-i');
+      btns.forEach(function(x){x.setAttribute('aria-pressed', x===b?'true':'false');});
+      render();
+    });
+  });
+  render();
+
+  var links=Array.prototype.slice.call(document.querySelectorAll('#navlist a'));
+  var byId={}; links.forEach(function(a){byId[a.getAttribute('href').slice(1)]=a;});
+  var obs=new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){
+        links.forEach(function(a){a.classList.remove('on');});
+        var a=byId[e.target.id]; if(a) a.classList.add('on');
+      }
+    });
+  },{rootMargin:'-15% 0px -70% 0px'});
+  document.querySelectorAll('section[id]').forEach(function(s){obs.observe(s);});
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,15 @@
+name: orderly-distributor
+type: service
+version: 1.0.0
+license: MIT
+port: 9083
+description: Orderly Distributor Program v2 — mechanics spec. Rate is bought with
+  ORDER staking, status is earned with volume, and a capacity mechanic makes the correct
+  stake a function of how well the distributor is doing. Single-page spec with a live
+  capacity simulator.
+entry: site/index.html
+tags:
+- orderly
+- tokenomics
+- spec
+author: user-3986
