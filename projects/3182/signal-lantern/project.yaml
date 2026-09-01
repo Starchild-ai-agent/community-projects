@@ -8,3 +8,6 @@ license: MIT
 entry: src/index.html
 env_required: []
 author: user-3182
+publisher:
+  public_slug: "3182-signal-lantern"
+  code_slug: "signal-lantern"
