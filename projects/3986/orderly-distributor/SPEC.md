@@ -216,14 +216,14 @@ Staking demand from this program is **bounded by distributor count**, not by the
 
 ---
 
-## 9. Migration (internal BDs only)
+## 9. Migration
 
 1. Snapshot every existing binding and its trailing 90-day earnings under the v1 spread model.
-2. Auto-enroll each internal BD as **Registered**, bindings preserved intact.
+2. Auto-enroll every existing distributor at 10%, bindings preserved intact.
 3. **90-day parity guarantee:** pay `max(v1 spread, v2 share)` per binding. Nobody is worse off during transition.
-4. Publish each BD's break-even stake — the ORDER needed for v2 to beat their v1 spread — at migration.
+4. Publish each distributor's break-even stake — the ORDER needed for v2 to beat their v1 spread — at migration.
 5. Day 91: v2 only.
-6. Application gate is **not** retroactive; existing internal BDs are grandfathered as approved.
+6. The application gate is not retroactive; everyone already bound is grandfathered as approved.
 
 ---
 

@@ -244,7 +244,7 @@ footer .big{font-family:var(--black);font-size:clamp(1.6rem,5.5vw,3.4rem);color:
   <div class="sec-h"><span class="num">§02</span><h2>The ladder</h2></div>
   <p class="sec-sub">One table. Your stake picks a row; the row is your cut of every dollar.</p>
   <div class="tw"><table>
-    <thead><tr><th>ORDER staked</th><th class="n">Cost @ $0.0331</th><th class="n">Your cut</th><th class="n">Payback volume</th></tr></thead>
+    <thead><tr><th>ORDER staked</th><th class="n">Cost @ $0.0331</th><th class="n">Your cut</th><th class="n">Volume to break even</th></tr></thead>
     <tbody>
       <tr><td class="hi">0</td><td class="n">$0</td><td class="n">10%</td><td class="n dim">—</td></tr>
       <tr><td class="hi">100,000</td><td class="n">$3,310</td><td class="n">18%</td><td class="n">$0.14B</td></tr>
@@ -254,7 +254,7 @@ footer .big{font-family:var(--black);font-size:clamp(1.6rem,5.5vw,3.4rem);color:
       <tr class="accent"><td class="hi">7,000,000</td><td class="n">$231,700</td><td class="n">50%</td><td class="n">$5.52B</td></tr>
     </tbody>
   </table></div>
-  <p class="t-note">Payback volume = taker volume needed for the extra 8% to repay the extra stake. The stake stays yours.</p>
+  <p class="t-note">Break-even = the taker volume that row has to produce before the extra 8% has paid back what the extra ORDER cost. Cross it and the upgrade is free — and the stake is still yours, unstakeable any time.</p>
 </section>
 
 <section id="s3">
@@ -317,13 +317,8 @@ footer .big{font-family:var(--black);font-size:clamp(1.6rem,5.5vw,3.4rem);color:
     <li><strong>Settlement is daily</strong>, at that day's rate, on the minimum stake held that day. Upgrades apply forward only.</li>
     <li><strong>Staking above 7M buys nothing.</strong> 50% is the ceiling.</li>
     <li><strong>One distributor per invitee</strong>, bound at or before graduation, immutable once set. No sub-distributors, no reciprocal pairs.</li>
-    <li><strong>Sponsorship:</strong> you can put an invitee on cheaper pricing to win the deal — the full discount comes out of your payout, floored at $0. Orderly is indifferent. Authority caps at Platinum.</li>
-    <li><strong>Migration:</strong> internal BDs auto-enroll at 10%, bindings intact, paid <code>max(v1, v2)</code> for 90 days. Day 91 is v2 only.</li>
+    <li><strong>Sponsorship:</strong> you can put an invitee on cheaper pricing to win the deal. The discount comes out of your cut, so you decide whether it is worth it — no approvals.</li>
   </ul>
-  <div class="call">
-    <div class="lab mono">Free consequence</div>
-    <p>With rate off volume, <strong>wash trading is strictly −EV.</strong> Faking volume makes the builder pay 3 bps and returns at most half of it. There is no tier left to farm — the whole abuse class from v1 disappears without a detection system.</p>
-  </div>
 </section>
 
 <section id="s5">
