@@ -206,12 +206,11 @@ footer .big{font-family:var(--black);font-size:clamp(1.6rem,5.5vw,3.4rem);color:
     <li><a href="#s3"><span class="n">03</span><span>Stake ladder</span></a></li>
     <li><a href="#s4"><span class="n">04</span><span>Flat rate</span></a></li>
     <li><a href="#s5"><span class="n">05</span><span>Sponsorship</span></a></li>
-    <li><a href="#s6"><span class="n">06</span><span>Performance</span></a></li>
-    <li><a href="#s7"><span class="n">07</span><span>Lifecycle</span></a></li>
-    <li><a href="#s8"><span class="n">08</span><span>Rules</span></a></li>
-    <li><a href="#s9"><span class="n">09</span><span>Program cost</span></a></li>
-    <li><a href="#s10"><span class="n">10</span><span>Migration</span></a></li>
-    <li><a href="#s11"><span class="n">11</span><span>Decisions</span></a></li>
+    <li><a href="#s6"><span class="n">06</span><span>Lifecycle</span></a></li>
+    <li><a href="#s7"><span class="n">07</span><span>Rules</span></a></li>
+    <li><a href="#s8"><span class="n">08</span><span>Program cost</span></a></li>
+    <li><a href="#s9"><span class="n">09</span><span>Migration</span></a></li>
+    <li><a href="#s10"><span class="n">10</span><span>Decisions</span></a></li>
   </ol>
 </nav>
 <main>
@@ -222,7 +221,7 @@ footer .big{font-family:var(--black);font-size:clamp(1.6rem,5.5vw,3.4rem);color:
     <span>2026-09-01</span><span>/</span><span>Orderly Network</span>
   </div>
   <h1>Rate is bought<br>with <em>ORDER</em>.<br>Status is earned<br>with volume.</h1>
-  <p class="lede">v1 lets a distributor reach the top tier on invitee volume alone — <b>the better you perform, the less reason you have to buy the token.</b> v2 separates the two axes: <b>staking sets the cash rate, volume only sets privileges.</b> The percentage is bought with ORDER and nothing else — no volume threshold, no cap, no decay.</p>
+  <p class="lede">v1 lets a distributor reach the top tier on invitee volume alone — <b>the better you perform, the less reason you have to buy the token.</b> v2 has one rule: <b>the rate is bought with ORDER and nothing else.</b> No volume threshold, no cap, no decay, no second ladder.</p>
 </header>
 
 <div class="meta">
@@ -242,7 +241,7 @@ footer .big{font-family:var(--black);font-size:clamp(1.6rem,5.5vw,3.4rem);color:
       <tr><td class="hi">Gate</td><td>Application, approved by BD. Test = can this applicant actually deliver volume</td></tr>
       <tr><td class="hi">Payout base</td><td>Orderly's own base-fee revenue from the recruited builder. Taker only</td></tr>
       <tr><td class="hi">Rate</td><td>10% floor on approval → 50% ceiling</td></tr>
-      <tr class="accent"><td class="hi">Tier driver</td><td><strong>ORDER staking only.</strong> Volume buys status and privileges, never rate</td></tr>
+      <tr class="accent"><td class="hi">Tier driver</td><td><strong>ORDER staking only.</strong> Volume never affects anything — no rate threshold, no cap, no status ladder</td></tr>
       <tr><td class="hi">Duration</td><td>Perpetual, for the life of the recruited DEX</td></tr>
       <tr><td class="hi">Migration</td><td>Force-migrate. Only internal BDs are on v1</td></tr>
       <tr><td class="hi">Depth</td><td>Flat, one level. No sub-distributors</td></tr>
@@ -273,16 +272,11 @@ footer .big{font-family:var(--black);font-size:clamp(1.6rem,5.5vw,3.4rem);color:
     </div>
   </div>
 
-  <div class="grid g2">
+  <div class="grid">
     <div class="card">
-      <div class="idx mono">Axis A / cash</div>
+      <div class="idx mono">The whole fix</div>
       <h3>Rate ← staking only</h3>
-      <p>A clean policy dial from 10% to 50% that Orderly controls directly. Nothing else moves it.</p>
-    </div>
-    <div class="card">
-      <div class="idx mono">Axis B / status</div>
-      <h3>Privileges ← volume</h3>
-      <p>Support, co-marketing, sponsorship authority, inbound leads. Costs headcount and attention, never bps.</p>
+      <p>A clean policy dial from 10% to 50% that Orderly controls directly. Nothing else moves it, and there is no second ladder — volume is not a qualifier for anything.</p>
     </div>
   </div>
 
@@ -410,7 +404,7 @@ where Notional_Revenue = Billed_Taker_Notional × <b>3.00 bps</b>   (the Public 
 
   <div class="call">
     <div class="lab mono">The tradeoff this accepts</div>
-    <p>A flat ladder <strong>saturates</strong>. At today's price the whole thing tops out at $231,700, so any distributor large enough to pass a BD application buys Vanguard once and never touches ORDER again — total demand is (number of distributors) × their tier, one time. That is a real limit, and it is the price of the rule that volume must never touch the rate. Demand grows by <strong>recruiting more distributors and moving them up the ladder</strong>, not by any single one scaling. §09 sizes exactly what that is worth.</p>
+    <p>A flat ladder <strong>saturates</strong>. At today's price the whole thing tops out at $231,700, so any distributor large enough to pass a BD application buys Vanguard once and never touches ORDER again — total demand is (number of distributors) × their tier, one time. That is a real limit, and it is the price of the rule that volume must never touch the rate. Demand grows by <strong>recruiting more distributors and moving them up the ladder</strong>, not by any single one scaling. §08 sizes exactly what that is worth.</p>
   </div>
 
   <ul class="spec">
@@ -463,22 +457,7 @@ where Notional_Revenue = Billed_Taker_Notional × <b>3.00 bps</b>   (the Public 
 </section>
 
 <section id="s6">
-  <div class="sec-h"><span class="num">§06</span><h2>Performance ladder</h2></div>
-  <p class="sec-sub">Volume → status, never cash. Measured on 30d attributed taker volume across graduated invitees. Everything here costs Orderly headcount and attention, not bps — and because it is the only thing volume buys, there is no reason to fake volume for it.</p>
-  <div class="tw"><table>
-    <thead><tr><th>Level</th><th>Trigger</th><th>Unlocks</th></tr></thead>
-    <tbody>
-      <tr><td class="hi">Registered</td><td>Approved</td><td>Dashboard, codes and links, self-serve collateral, Telegram support</td></tr>
-      <tr><td class="hi">Active</td><td>1 graduated DEX</td><td>Named BD contact, deal-desk review, co-branded materials</td></tr>
-      <tr><td class="hi">Scaled</td><td>$250M/mo or 3 graduated DEXs</td><td>Inbound lead sharing, co-marketing, launch RT/QT, quarterly pipeline review</td></tr>
-      <tr><td class="hi">Strategic</td><td>$1B/mo or 8 graduated DEXs</td><td>Dedicated account manager, joint campaigns, PR and paid media, roadmap input</td></tr>
-      <tr class="accent"><td class="hi">Flagship</td><td>$5B/mo or 20 graduated DEXs</td><td>Advisory board seat, event slots, first look at new products and chains, custom terms</td></tr>
-    </tbody>
-  </table></div>
-</section>
-
-<section id="s7">
-  <div class="sec-h"><span class="num">§07</span><h2>Application &amp; lifecycle</h2></div>
+  <div class="sec-h"><span class="num">§06</span><h2>Application &amp; lifecycle</h2></div>
   <p class="sec-sub">BD is assessing exactly one thing: can this applicant actually deliver volume.</p>
   <div class="grid g2">
     <div class="card">
@@ -500,8 +479,8 @@ where Notional_Revenue = Billed_Taker_Notional × <b>3.00 bps</b>   (the Public 
   </div>
 </section>
 
-<section id="s8">
-  <div class="sec-h"><span class="num">§08</span><h2>Rules</h2></div>
+<section id="s7">
+  <div class="sec-h"><span class="num">§07</span><h2>Rules</h2></div>
   <p class="sec-sub"><strong>Carried from v1:</strong> unidirectional binding (one distributor per invitee) · non-reciprocal (no A↔B) · binding at or before graduation · immutable once set · an EOA registered as distributor cannot later convert to Builder Admin.</p>
   <ul class="spec">
     <li><strong>Daily accrual, daily settlement at 00:00 UTC.</strong> Each day's payout uses that day's stake snapshot — no retroactive re-rating.</li>
@@ -512,8 +491,8 @@ where Notional_Revenue = Billed_Taker_Notional × <b>3.00 bps</b>   (the Public 
     <li><strong>Attribution is per-builder, perpetual, and survives distributor tier changes.</strong></li>
   </ul>
 </section>
-<section id="s9">
-  <div class="sec-h"><span class="num">§09</span><h2>Program cost</h2></div>
+<section id="s8">
+  <div class="sec-h"><span class="num">§08</span><h2>Program cost</h2></div>
   <p class="sec-sub">Assumes $500M monthly taker volume per distributor, invitees on Public (3 bps). Realistic mix = 60% Registered / 20% Silver / 10% Gold / 6% Platinum / 3% Diamond / 1% Vanguard.</p>
   <div class="grid g3">
     <div class="stat"><div class="v red">≈14%</div><div class="k mono">Blended program cost</div><div class="d">Of attributed revenue, at a realistic tier mix</div></div>
@@ -543,8 +522,8 @@ where Notional_Revenue = Billed_Taker_Notional × <b>3.00 bps</b>   (the Public 
   <p>This is the honest ceiling: staking demand from this program is <strong>bounded by distributor count</strong>, not by their volume. 500 distributors at the realistic mix lock ~33% of circulating supply; the same 500 lock no more than that no matter how large they grow. Growth in locked ORDER comes from recruiting more distributors and from more of them climbing the ladder — not from any single one scaling up.</p>
 </section>
 
-<section id="s10">
-  <div class="sec-h"><span class="num">§10</span><h2>Migration</h2></div>
+<section id="s9">
+  <div class="sec-h"><span class="num">§09</span><h2>Migration</h2></div>
   <p class="sec-sub">Internal BDs only. Nobody is worse off during transition.</p>
   <ul class="spec">
     <li>Snapshot every existing binding and its trailing 90-day earnings under the v1 spread model.</li>
@@ -556,16 +535,16 @@ where Notional_Revenue = Billed_Taker_Notional × <b>3.00 bps</b>   (the Public 
   </ul>
 </section>
 
-<section id="s11">
-  <div class="sec-h"><span class="num">§11</span><h2>Decisions closed</h2></div>
+<section id="s10">
+  <div class="sec-h"><span class="num">§10</span><h2>Decisions closed</h2></div>
   <div class="tw"><table>
     <thead><tr><th class="n">#</th><th>Question</th><th>Resolution</th></tr></thead>
     <tbody>
       <tr><td class="n dim">1</td><td class="hi">Does volume affect the rate?</td><td><strong>No.</strong> The share is a pure function of ORDER staked. No volume qualifier, no capacity cap, no overflow, no decay (§03, §04)</td></tr>
       <tr><td class="n dim">2</td><td class="hi">Volume definition</td><td><strong>Billed taker notional</strong> — single-sided by construction, taken from the fee engine, not analytics (§02)</td></tr>
       <tr><td class="n dim">3</td><td class="hi">ORDER price risk</td><td><strong>No re-pricing clause.</strong> Thresholds are fixed ORDER amounts regardless of price</td></tr>
-      <tr><td class="n dim">4</td><td class="hi">Unstake cooldown</td><td><strong>7 days</strong>, confirmed in Orderly docs. Tier drops on request submission (§08)</td></tr>
-      <tr><td class="n dim">5</td><td class="hi">Dormancy pause</td><td><strong>Removed.</strong> Perpetual is unconditional; only termination for cause stops a payout (§07)</td></tr>
+      <tr><td class="n dim">4</td><td class="hi">Unstake cooldown</td><td><strong>7 days</strong>, confirmed in Orderly docs. Tier drops on request submission (§07)</td></tr>
+      <tr><td class="n dim">5</td><td class="hi">Dormancy pause</td><td><strong>Removed.</strong> Perpetual is unconditional; only termination for cause stops a payout (§06)</td></tr>
     </tbody>
   </table></div>
   <div class="call">

@@ -12,7 +12,7 @@
 | Gate | Application, approved by BD. Approval test = *can this applicant actually deliver volume* |
 | Payout base | **Orderly's own base-fee revenue** from the recruited builder. Taker only (Orderly charges taker only) |
 | Rate | 10% floor on approval → 50% ceiling |
-| Tier driver | **ORDER staking only.** Volume never affects the rate — no threshold, no cap, no decay. Volume buys status and privileges only |
+| Tier driver | **ORDER staking only.** Volume never affects anything — no rate threshold, no cap, no decay, no status ladder |
 | Duration | Perpetual for the life of the recruited DEX |
 | Migration | Force-migrate; only internal BDs are on v1 |
 | Depth | Flat, one level. No sub-distributors |
@@ -30,10 +30,7 @@
 2. **The spread model pays distributors out of Orderly's margin in a way Orderly can't cap.** The spread is a function of two tier tables interacting, not a policy dial.
 3. **Volume-driven tiers are gameable.** Wash volume promotes the distributor's own tier, which widens their spread.
 
-**v2 fixes all three by separating the two axes:**
-
-- **Cash (rate) ← staking only.** A clean policy dial, 10%–50%, that Orderly controls directly.
-- **Status (privileges) ← volume.** Support, co-marketing, sponsorship authority, leads. No cash.
+**v2 fixes all three with one rule: the rate comes from staking, and nothing else.** A clean policy dial, 10%–50%, that Orderly controls directly. There is no second ladder — volume is not a qualifier for anything.
 
 Secondary benefit: with rate decoupled from volume, **wash trading becomes strictly −EV.** A distributor who fakes volume causes the builder to pay 3 bps to Orderly and receives back at most 50% of it. There is no tier to farm. This removes an entire abuse class from v1.
 
@@ -122,7 +119,7 @@ A distributor doing $50M/month and one doing $50B/month at the same stake earn t
 | $10B | $3,000,000 | $300,000 | $1,500,000 | 50.0% |
 | $50B | $15,000,000 | $1,500,000 | $7,500,000 | 50.0% |
 
-**The tradeoff this accepts.** A flat ladder saturates. At $0.0331/ORDER the whole ladder tops out at $231,700, so any distributor large enough to pass a BD application buys Vanguard once and never touches ORDER again — total staking demand is (number of distributors) × their tier, one time. That is a real limit, and it is the price of the rule that volume must never touch the rate. Demand grows by **recruiting more distributors and moving them up the ladder**, not by any single one scaling up. Section 9 sizes exactly what that is worth.
+**The tradeoff this accepts.** A flat ladder saturates. At $0.0331/ORDER the whole ladder tops out at $231,700, so any distributor large enough to pass a BD application buys Vanguard once and never touches ORDER again — total staking demand is (number of distributors) × their tier, one time. That is a real limit, and it is the price of the rule that volume must never touch the rate. Demand grows by **recruiting more distributors and moving them up the ladder**, not by any single one scaling up. Section 8 sizes exactly what that is worth.
 
 **Implementation details that matter:**
 
@@ -166,23 +163,7 @@ This gives a **second staking driver**: deeper discount authority is a closing w
 
 ---
 
-## 6. Performance ladder (volume → status, never cash)
-
-Measured on 30d attributed taker volume across graduated invitees. Deliberately no rate attached.
-
-| Level | Trigger | Unlocks |
-|---|---|---|
-| Registered | Approved | Dashboard, codes/links, self-serve collateral, Telegram support |
-| Active | 1 graduated DEX | Named BD contact, deal-desk review, co-branded materials |
-| Scaled | $250M/mo or 3 graduated DEXs | Inbound lead sharing, co-marketing, launch RT/QT, quarterly pipeline review |
-| Strategic | $1B/mo or 8 graduated DEXs | Dedicated account manager, joint campaigns, PR & paid media, roadmap input |
-| Flagship | $5B/mo or 20 graduated DEXs | Advisory board seat, event slots, first look at new products/chains, custom terms |
-
-Everything here costs Orderly headcount and attention, not bps. It rewards the operators without touching the rate dial — and because it's the only thing volume buys, there's no reason to fake volume for it.
-
----
-
-## 7. Application, lifecycle, removal
+## 6. Application, lifecycle, removal
 
 **Application captures** (BD is assessing *can they deliver volume*): identity/entity + KYB, distribution channel and reach with evidence, named pipeline of ≥3 prospective builders, target segment, expected time-to-first-graduation, prior BD/partnership track record, conflicts (existing builder ownership, competing infra relationships).
 
@@ -196,7 +177,7 @@ Everything here costs Orderly headcount and attention, not bps. It rewards the o
 
 ---
 
-## 8. Rules carried over and added
+## 7. Rules carried over and added
 
 Carried from v1: unidirectional binding (one distributor per invitee) · non-reciprocal (no A↔B) · binding at or before graduation · immutable once set · EOA registered as distributor cannot later convert to Builder Admin.
 
@@ -210,7 +191,7 @@ Added:
 
 ---
 
-## 9. Program cost to Orderly
+## 8. Program cost to Orderly
 
 Assumes $500M monthly taker volume per distributor, invitees on Public (3 bps). Realistic mix = 60% Registered / 20% Silver / 10% Gold / 6% Platinum / 3% Diamond / 1% Vanguard.
 
@@ -235,7 +216,7 @@ Staking demand from this program is **bounded by distributor count**, not by the
 
 ---
 
-## 10. Migration (internal BDs only)
+## 9. Migration (internal BDs only)
 
 1. Snapshot every existing binding and its trailing 90-day earnings under the v1 spread model.
 2. Auto-enroll each internal BD as **Registered**, bindings preserved intact.
@@ -246,15 +227,15 @@ Staking demand from this program is **bounded by distributor count**, not by the
 
 ---
 
-## 11. Decisions closed
+## 10. Decisions closed
 
 | # | Question | Resolution |
 |---|---|---|
 | 1 | Does volume affect the rate? | **No.** The share is a pure function of ORDER staked. No volume qualifier, no capacity cap, no overflow, no decay (§3, §4) |
 | 2 | Volume definition | **Billed taker notional** — single-sided by construction, taken from the fee engine, not analytics (§2) |
 | 3 | ORDER price risk | **No re-pricing clause.** Thresholds are fixed ORDER amounts regardless of price |
-| 4 | Unstake cooldown | **7 days**, confirmed in Orderly docs. Tier drops on request submission (§8) |
-| 5 | Dormancy pause | **Removed.** Perpetual is unconditional; only termination for cause stops a payout (§7) |
+| 4 | Unstake cooldown | **7 days**, confirmed in Orderly docs. Tier drops on request submission (§7) |
+| 5 | Dormancy pause | **Removed.** Perpetual is unconditional; only termination for cause stops a payout (§6) |
 
 **One consequence of #3 worth naming.** The ladder is ORDER-denominated, so if ORDER appreciates every tier costs more in dollars while buying the same rate. A 10× move makes Vanguard a $2.3M ask and the top of the ladder stops being reachable for mid-size partners. That pressure is good for the token and bad for recruitment, and it resolves in one of two ways when it bites: cut the ORDER thresholds, or accept that the ladder becomes a large-partner instrument and let the 10% floor carry everyone else. Worth deciding deliberately rather than by drift.
 
