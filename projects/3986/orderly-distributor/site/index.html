@@ -204,7 +204,7 @@ footer .big{font-family:var(--black);font-size:clamp(1.6rem,5.5vw,3.4rem);color:
     <li><a href="#s1"><span class="n">01</span><span>What changes</span></a></li>
     <li><a href="#s2"><span class="n">02</span><span>Payout formula</span></a></li>
     <li><a href="#s3"><span class="n">03</span><span>Stake ladder</span></a></li>
-    <li><a href="#s4"><span class="n">04</span><span>Capacity</span></a></li>
+    <li><a href="#s4"><span class="n">04</span><span>Flat rate</span></a></li>
     <li><a href="#s5"><span class="n">05</span><span>Sponsorship</span></a></li>
     <li><a href="#s6"><span class="n">06</span><span>Performance</span></a></li>
     <li><a href="#s7"><span class="n">07</span><span>Lifecycle</span></a></li>
@@ -222,7 +222,7 @@ footer .big{font-family:var(--black);font-size:clamp(1.6rem,5.5vw,3.4rem);color:
     <span>2026-09-01</span><span>/</span><span>Orderly Network</span>
   </div>
   <h1>Rate is bought<br>with <em>ORDER</em>.<br>Status is earned<br>with volume.</h1>
-  <p class="lede">v1 lets a distributor reach the top tier on invitee volume alone — <b>the better you perform, the less reason you have to buy the token.</b> v2 separates the two axes: staking sets the cash rate, volume sets privileges, and a capacity mechanic makes the correct stake a function of how well you are doing.</p>
+  <p class="lede">v1 lets a distributor reach the top tier on invitee volume alone — <b>the better you perform, the less reason you have to buy the token.</b> v2 separates the two axes: <b>staking sets the cash rate, volume only sets privileges.</b> The percentage is bought with ORDER and nothing else — no volume threshold, no cap, no decay.</p>
 </header>
 
 <div class="meta">
@@ -313,14 +313,14 @@ where Notional_Revenue = Billed_Taker_Notional × <b>3.00 bps</b>   (the Public 
   <div class="sec-h"><span class="num">§03</span><h2>Stake ladder</h2></div>
   <p class="sec-sub">The rate dial. Thresholds deliberately reuse the Builder Staking anchors (100K / 300K / 3M / 7M) so the ecosystem has <strong>one ORDER ladder</strong>, with 1M inserted to smooth the 300K→3M cliff. Steps are a uniform +8%, so every upgrade is a clean ROI question.</p>
   <div class="tw"><table>
-    <thead><tr><th>Tier</th><th class="n">ORDER staked</th><th class="n">USD @ $0.0331</th><th class="n">Share of Orderly rev</th><th class="n">Monthly rev capacity</th><th class="n">Payout at cap</th></tr></thead>
+    <thead><tr><th>Tier</th><th class="n">ORDER staked</th><th class="n">USD @ $0.0331</th><th class="n">Share of Orderly rev</th><th class="n">Applies to</th></tr></thead>
     <tbody>
-      <tr><td class="hi">Registered</td><td class="n">0</td><td class="n">$0</td><td class="n">10%</td><td class="n dim">unlimited</td><td class="n dim">—</td></tr>
-      <tr><td class="hi">Silver</td><td class="n">100,000</td><td class="n">$3,310</td><td class="n">18%</td><td class="n">$25,000</td><td class="n">$4,500/mo</td></tr>
-      <tr><td class="hi">Gold</td><td class="n">300,000</td><td class="n">$9,930</td><td class="n">26%</td><td class="n">$75,000</td><td class="n">$19,500/mo</td></tr>
-      <tr><td class="hi">Platinum</td><td class="n">1,000,000</td><td class="n">$33,100</td><td class="n">34%</td><td class="n">$250,000</td><td class="n">$85,000/mo</td></tr>
-      <tr><td class="hi">Diamond</td><td class="n">3,000,000</td><td class="n">$99,300</td><td class="n">42%</td><td class="n">$750,000</td><td class="n">$315,000/mo</td></tr>
-      <tr class="accent"><td class="hi">Vanguard</td><td class="n">7,000,000</td><td class="n">$231,700</td><td class="n">50%</td><td class="n">$1,750,000</td><td class="n">$875,000/mo</td></tr>
+      <tr><td class="hi">Registered</td><td class="n">0</td><td class="n">$0</td><td class="n">10%</td><td class="n dim">all attributed revenue</td></tr>
+      <tr><td class="hi">Silver</td><td class="n">100,000</td><td class="n">$3,310</td><td class="n">18%</td><td class="n dim">all attributed revenue</td></tr>
+      <tr><td class="hi">Gold</td><td class="n">300,000</td><td class="n">$9,930</td><td class="n">26%</td><td class="n dim">all attributed revenue</td></tr>
+      <tr><td class="hi">Platinum</td><td class="n">1,000,000</td><td class="n">$33,100</td><td class="n">34%</td><td class="n dim">all attributed revenue</td></tr>
+      <tr><td class="hi">Diamond</td><td class="n">3,000,000</td><td class="n">$99,300</td><td class="n">42%</td><td class="n dim">all attributed revenue</td></tr>
+      <tr class="accent"><td class="hi">Vanguard</td><td class="n">7,000,000</td><td class="n">$231,700</td><td class="n">50%</td><td class="n dim">all attributed revenue</td></tr>
     </tbody>
   </table></div>
 
@@ -340,19 +340,19 @@ where Notional_Revenue = Billed_Taker_Notional × <b>3.00 bps</b>   (the Public 
 </section>
 
 <section id="s4">
-  <div class="sec-h"><span class="num">§04</span><h2>The capacity mechanic</h2></div>
-  <p class="sec-sub">A plain ladder saturates. At today's price the whole thing tops out at $231,700 — any distributor serious enough to pass a BD application buys Vanguard on day one and never touches ORDER again. Total demand = (number of large distributors) × 7M, one time. That is not a flywheel, it is a toll booth.</p>
+  <div class="sec-h"><span class="num">§04</span><h2>What the rate does <em>not</em> depend on</h2></div>
+  <p class="sec-sub">One dial, one input. The share is a pure function of ORDER staked and is applied to every dollar of attributed revenue — the first dollar and the ten-millionth are paid at exactly the same percentage.</p>
 
-  <p><strong>Fix:</strong> each tier gives you a rate <em>and</em> a quota of monthly revenue that rate applies to. Overflow drops exactly one step — never cascades further, never falls to the 10% floor.</p>
-<pre>capacity_usd_per_month = <b>0.25</b> × ORDER_staked
+<pre>R = attributed Orderly base-fee revenue this month
+<b>payout</b> = share(ORDER_staked) × R
 
-R = attributed Orderly revenue this month
-<b>payout</b> = share × min(R, capacity)
-       + share_one_tier_down × max(0, R − capacity)</pre>
+<span class="dim">no volume qualifier · no cap · no quota · no overflow · no decay</span></pre>
+
+  <p>A distributor doing $50M/month and one doing $50B/month at the same stake earn the <strong>same percentage</strong>. The larger one earns more money because they generated more revenue, not because they unlocked a better rate. Volume moves the base, never the multiplier.</p>
 
   <div class="calc" id="calc">
     <div class="calc-h">
-      <div class="t">▚ Capacity simulator</div>
+      <div class="t">▚ Payout calculator</div>
       <div class="live"><span class="dot" aria-hidden="true"></span><span>Live model · rev/mo basis</span></div>
     </div>
     <div class="calc-body">
@@ -374,13 +374,13 @@ R = attributed Orderly revenue this month
           </div>
         </div>
         <div class="field">
-          <div class="field-h"><span class="lab">Revenue split against capacity</span><span class="val" id="capOut">$1.75M cap</span></div>
-          <div class="bar" role="img" aria-label="Share of revenue inside versus above capacity">
-            <i class="base" id="barBase" style="width:100%"></i><i class="over" id="barOver" style="width:0%"></i>
+          <div class="field-h"><span class="lab">Revenue split</span><span class="val" id="capOut">50% / 50%</span></div>
+          <div class="bar" role="img" aria-label="Split of Orderly revenue between distributor and Orderly">
+            <i class="base" id="barBase" style="width:50%"></i><i class="over" id="barOver" style="width:50%"></i>
           </div>
           <div class="barleg">
-            <span><i class="base" style="background:var(--red)"></i>Inside capacity · headline rate</span>
-            <span><i class="over" style="background:#5A0C0C"></i>Overflow · one step down</span>
+            <span><i class="base" style="background:var(--red)"></i>Distributor share</span>
+            <span><i class="over" style="background:#5A0C0C"></i>Orderly keeps</span>
           </div>
         </div>
       </div>
@@ -390,34 +390,34 @@ R = attributed Orderly revenue this month
           <div class="ro"><div class="k">Distributor payout</div><div class="v" id="roPay">$495,000</div></div>
           <div class="ro"><div class="k">Effective rate</div><div class="v" id="roEff">50.0%</div></div>
           <div class="ro"><div class="k">Orderly keeps</div><div class="v" id="roKeep">$495,000</div></div>
-          <div class="ro wide"><div class="k">Left on the table vs. fully-staked</div><div class="v" id="roGap">$0<small id="roGapSub">Capacity covers the whole portfolio at the headline rate</small></div></div>
+          <div class="ro wide"><div class="k">Gain from staking to the top tier</div><div class="v" id="roGap">$0<small id="roGapSub">Already at Vanguard — the ceiling rate</small></div></div>
         </div>
         <div class="verdict" id="verdict"></div>
       </div>
     </div>
   </div>
 
-  <p class="t-note">Worked example · Vanguard, 7M ORDER, $1.75M capacity</p>
+  <p class="t-note">Worked example · the rate holds flat across three orders of magnitude</p>
   <div class="tw"><table>
-    <thead><tr><th>Monthly Orderly rev</th><th class="n">Within capacity @ 50%</th><th class="n">Overflow @ 42%</th><th class="n">Payout</th><th class="n">Effective rate</th></tr></thead>
+    <thead><tr><th>Monthly taker volume</th><th class="n">Orderly rev</th><th class="n">Payout @ Registered</th><th class="n">Payout @ Vanguard</th><th class="n">Vanguard rate</th></tr></thead>
     <tbody>
-      <tr><td>$1.00M <span class="dim">($3.3B vol)</span></td><td class="n">$1.00M → $500,000</td><td class="n dim">—</td><td class="n hi">$500,000</td><td class="n">50.0%</td></tr>
-      <tr><td>$1.75M <span class="dim">($5.8B vol)</span></td><td class="n">$1.75M → $875,000</td><td class="n dim">—</td><td class="n hi">$875,000</td><td class="n">50.0%</td></tr>
-      <tr class="accent"><td>$3.00M <span class="dim">($10B vol)</span></td><td class="n">$1.75M → $875,000</td><td class="n">$1.25M → $525,000</td><td class="n hi">$1,400,000</td><td class="n">46.7%</td></tr>
-      <tr><td>$9.00M <span class="dim">($30B vol)</span></td><td class="n">$1.75M → $875,000</td><td class="n">$7.25M → $3,045,000</td><td class="n hi">$3,920,000</td><td class="n">43.6%</td></tr>
+      <tr><td>$50M</td><td class="n">$15,000</td><td class="n">$1,500</td><td class="n hi">$7,500</td><td class="n">50.0%</td></tr>
+      <tr><td>$1B</td><td class="n">$300,000</td><td class="n">$30,000</td><td class="n hi">$150,000</td><td class="n">50.0%</td></tr>
+      <tr class="accent"><td>$10B</td><td class="n">$3,000,000</td><td class="n">$300,000</td><td class="n hi">$1,500,000</td><td class="n">50.0%</td></tr>
+      <tr><td>$50B</td><td class="n">$15,000,000</td><td class="n">$1,500,000</td><td class="n hi">$7,500,000</td><td class="n">50.0%</td></tr>
     </tbody>
   </table></div>
 
   <div class="call">
-    <div class="lab mono">Why this is the whole design</div>
-    <p>The distributor at $10B/mo is leaving <strong>$100,000 per month</strong> on the table. Closing it costs 5M more ORDER — about $165,000 — so <strong>payback lands under two months and the stake is still theirs.</strong> The correct move is always "stake more," and how much you should stake is a function of how well you are doing. Staking demand grows with the program instead of stopping at 7M.</p>
+    <div class="lab mono">The tradeoff this accepts</div>
+    <p>A flat ladder <strong>saturates</strong>. At today's price the whole thing tops out at $231,700, so any distributor large enough to pass a BD application buys Vanguard once and never touches ORDER again — total demand is (number of distributors) × their tier, one time. That is a real limit, and it is the price of the rule that volume must never touch the rate. Demand grows by <strong>recruiting more distributors and moving them up the ladder</strong>, not by any single one scaling. §09 sizes exactly what that is worth.</p>
   </div>
 
   <ul class="spec">
-    <li><strong>Stake above 7M keeps buying capacity</strong> at 0.25 USD/ORDER at the 50% rate. No ceiling — that is the point.</li>
-    <li><strong>Settlement stays daily, on a month-to-date accumulator.</strong> Each day's revenue fills remaining capacity at the headline rate; the rest pays at the step-down. Resets at month start.</li>
+    <li><strong>Staking above 7M buys nothing.</strong> Vanguard is the ceiling; there is no reason to hold more than the top threshold.</li>
+    <li><strong>Settlement is daily</strong> on that day's attributed revenue at that day's rate. No month-to-date accumulator and no true-up — there is nothing to accumulate against.</li>
     <li><strong>The daily stake snapshot uses the minimum stake held during that day</strong>, so nobody can stake for one snapshot and unstake right after.</li>
-    <li>Scale check: at 3 bps, $1 of capacity ≈ $3,333 of monthly taker volume. <strong>Vanguard covers $5.8B/month fully at 50%</strong> — the cap does not bite at all below that. It only engages for the handful of partners large enough that their staking decision moves the token.</li>
+    <li><strong>Crossing a threshold takes effect the next settlement day.</strong> Upgrades apply forward only; no retroactive re-rating of revenue already paid.</li>
   </ul>
 </section>
 
@@ -530,7 +530,7 @@ R = attributed Orderly revenue this month
   </table></div>
 
   <h3 style="font-size:1rem;margin:34px 0 4px">ORDER staking demand created</h3>
-  <p class="t-note">Same mix · before any capacity-driven top-ups</p>
+  <p class="t-note">Same mix · steady state once distributors settle at their chosen tier</p>
   <div class="tw"><table>
     <thead><tr><th class="n">Distributors</th><th class="n">ORDER locked</th><th class="n">USD @ $0.0331</th><th class="n">% of circulating</th></tr></thead>
     <tbody>
@@ -540,7 +540,7 @@ R = attributed Orderly revenue this month
       <tr class="accent"><td class="n hi">500</td><td class="n">135,000,000</td><td class="n">$4,468,500</td><td class="n">32.97%</td></tr>
     </tbody>
   </table></div>
-  <p>Plus capacity-driven top-ups from any distributor above ~$5.8B/mo — that is the part that keeps growing after launch.</p>
+  <p>This is the honest ceiling: staking demand from this program is <strong>bounded by distributor count</strong>, not by their volume. 500 distributors at the realistic mix lock ~33% of circulating supply; the same 500 lock no more than that no matter how large they grow. Growth in locked ORDER comes from recruiting more distributors and from more of them climbing the ladder — not from any single one scaling up.</p>
 </section>
 
 <section id="s10">
@@ -561,7 +561,7 @@ R = attributed Orderly revenue this month
   <div class="tw"><table>
     <thead><tr><th class="n">#</th><th>Question</th><th>Resolution</th></tr></thead>
     <tbody>
-      <tr><td class="n dim">1</td><td class="hi">Capacity mechanic</td><td><strong>In v1.</strong> Mechanics fully specified in §04</td></tr>
+      <tr><td class="n dim">1</td><td class="hi">Does volume affect the rate?</td><td><strong>No.</strong> The share is a pure function of ORDER staked. No volume qualifier, no capacity cap, no overflow, no decay (§03, §04)</td></tr>
       <tr><td class="n dim">2</td><td class="hi">Volume definition</td><td><strong>Billed taker notional</strong> — single-sided by construction, taken from the fee engine, not analytics (§02)</td></tr>
       <tr><td class="n dim">3</td><td class="hi">ORDER price risk</td><td><strong>No re-pricing clause.</strong> Thresholds are fixed ORDER amounts regardless of price</td></tr>
       <tr><td class="n dim">4</td><td class="hi">Unstake cooldown</td><td><strong>7 days</strong>, confirmed in Orderly docs. Tier drops on request submission (§08)</td></tr>
@@ -570,7 +570,7 @@ R = attributed Orderly revenue this month
   </table></div>
   <div class="call">
     <div class="lab mono">One consequence of #3 worth naming</div>
-    <p>Capacity is USD-denominated while the ladder is ORDER-denominated, so if ORDER appreciates the ladder gets more expensive in dollars <em>and</em> buys the same capacity — the program tightens on itself. That is the right direction for the token, but a 10× move makes Vanguard a $2.3M ask. If that needs absorbing later, raise the capacity coefficient (0.25 → higher) rather than touching the tier table.</p>
+    <p>The ladder is ORDER-denominated, so if ORDER appreciates every tier gets more expensive in dollars while buying the same rate. A 10× move makes Vanguard a $2.3M ask and the top of the ladder stops being reachable for mid-size partners. That pressure is good for the token and bad for recruitment, and it resolves in one of two ways when it bites: cut the ORDER thresholds, or accept that the ladder becomes a large-partner instrument and let the 10% floor carry everyone else. Worth deciding deliberately rather than by drift.</p>
   </div>
 </section>
 
@@ -594,7 +594,7 @@ R = attributed Orderly revenue this month
     {n:'Diamond',stake:3000000,share:0.42},
     {n:'Vanguard',stake:7000000,share:0.50}
   ];
-  var CAP_PER_ORDER=0.25, BPS=3.0/10000, PRICE=0.0331, cur=5;
+  var BPS=3.0/10000, PRICE=0.0331, TOP=TIERS.length-1, cur=5;
   var vol=document.getElementById('vol');
   var ids=['volOut','stakeOut','capOut','roRev','roPay','roEff','roKeep','roGap','roGapSub','barBase','barOver','verdict'];
   var el={}; ids.forEach(function(i){el[i]=document.getElementById(i);});
@@ -610,13 +610,7 @@ R = attributed Orderly revenue this month
     var lo=Math.log(5e7), hi=Math.log(5e10);
     return Math.exp(lo+(hi-lo)*(p/100));
   }
-  function payout(rev,i){
-    var t=TIERS[i];
-    if(i===0) return rev*t.share;
-    var cap=t.stake*CAP_PER_ORDER;
-    if(rev<=cap) return rev*t.share;
-    return cap*t.share + (rev-cap)*TIERS[i-1].share;
-  }
+  function payout(rev,i){ return rev*TIERS[i].share; }
   var reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   function flash(node){
     if(reduce) return;
@@ -625,45 +619,37 @@ R = attributed Orderly revenue this month
 
   function render(){
     var v=volFromSlider(+vol.value), rev=v*BPS, t=TIERS[cur];
-    var cap = cur===0 ? Infinity : t.stake*CAP_PER_ORDER;
-    var pay=payout(rev,cur), eff = rev>0 ? pay/rev : t.share;
-    var inside=Math.min(rev,cap), over=Math.max(0,rev-cap);
-    var gap=rev*t.share - pay;
+    var pay=payout(rev,cur), eff=t.share;
+    var top=TIERS[TOP], gap=rev*top.share - pay;
 
     el.volOut.textContent=usd(v);
     el.stakeOut.textContent=t.stake.toLocaleString('en-US')+' ORDER';
-    el.capOut.textContent = cur===0 ? 'no cap · 10% flat' : usd(cap)+' cap';
+    el.capOut.textContent=Math.round(t.share*100)+'% / '+Math.round((1-t.share)*100)+'%';
     el.roRev.textContent=usdFull(rev);
     el.roPay.textContent=usdFull(pay);
     el.roEff.textContent=(eff*100).toFixed(1)+'%';
     el.roKeep.textContent=usdFull(rev-pay);
-    flash(el.roPay); flash(el.roEff);
+    flash(el.roPay);
 
-    var pct = rev>0 ? (inside/rev)*100 : 100;
-    el.barBase.style.width=pct+'%';
-    el.barOver.style.width=(100-pct)+'%';
+    el.barBase.style.width=(t.share*100)+'%';
+    el.barOver.style.width=((1-t.share)*100)+'%';
 
-    if(gap<1){
+    if(cur===TOP){
       el.roGap.childNodes[0].nodeValue='$0';
-      el.roGapSub.textContent = cur===0
-        ? 'Registered has no capacity — 10% applies to everything'
-        : 'Capacity covers the whole portfolio at the headline rate';
+      el.roGapSub.textContent='Already at Vanguard \u2014 the ceiling rate';
     }else{
       el.roGap.childNodes[0].nodeValue=usdFull(gap)+'/mo';
-      var need=Math.ceil((rev/CAP_PER_ORDER - t.stake)/100000)*100000;
-      el.roGapSub.textContent='+'+need.toLocaleString('en-US')+' ORDER (~'+usdFull(need*PRICE)+') to uncap';
+      var need=top.stake-t.stake;
+      el.roGapSub.textContent='+'+need.toLocaleString('en-US')+' ORDER (~'+usdFull(need*PRICE)+') to reach 50%';
       flash(el.roGap);
     }
 
     var msg;
-    if(cur===0){
-      var lift=payout(rev,5)-pay;
-      msg='At <b>Registered</b> you stake nothing and earn the 10% floor. Vanguard costs 7,000,000 ORDER (~$231,700) and adds <b>'+usdFull(lift)+'/mo</b> at this volume — payback in <b>'+(lift>0?(231700/lift).toFixed(1):'—')+' months</b>, with the stake still yours.';
-    }else if(over<1){
-      var head=cap-rev;
-      msg='Fully inside capacity — every dollar earns the headline <b>'+Math.round(t.share*100)+'%</b>. You have <b>'+usd(head)+'/mo</b> of revenue headroom before overflow starts, which is about <b>'+usd(head/BPS)+'</b> of extra monthly taker volume.';
+    if(cur===TOP){
+      msg='<b>Vanguard</b> pays <b>50%</b> of every dollar of attributed revenue \u2014 at $50M/mo and at $50B/mo alike. There is no cap to outgrow and no higher tier to buy: 7,000,000 ORDER is the ceiling.';
     }else{
-      msg='<b>'+usd(over)+'/mo</b> of revenue is overflowing to the '+TIERS[cur-1].n+' rate ('+Math.round(TIERS[cur-1].share*100)+'%). Effective rate has slipped to <b>'+(eff*100).toFixed(1)+'%</b> — topping up the stake recovers <b>'+usdFull(gap)+'/mo</b>.';
+      var months = gap>0 ? ((top.stake-t.stake)*PRICE/gap) : 0;
+      msg='At <b>'+t.n+'</b> you earn <b>'+Math.round(t.share*100)+'%</b> flat. Climbing to Vanguard adds <b>'+usdFull(gap)+'/mo</b> at this volume for '+(top.stake-t.stake).toLocaleString('en-US')+' more ORDER (~'+usdFull((top.stake-t.stake)*PRICE)+') \u2014 payback in <b>'+(months>0?months.toFixed(1):'\u2014')+' months</b>, and the stake is still yours afterwards.';
     }
     el.verdict.innerHTML=msg;
   }

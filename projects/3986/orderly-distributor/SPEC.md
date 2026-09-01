@@ -12,7 +12,7 @@
 | Gate | Application, approved by BD. Approval test = *can this applicant actually deliver volume* |
 | Payout base | **Orderly's own base-fee revenue** from the recruited builder. Taker only (Orderly charges taker only) |
 | Rate | 10% floor on approval → 50% ceiling |
-| Tier driver | **ORDER staking only.** Volume buys status and privileges, never rate |
+| Tier driver | **ORDER staking only.** Volume never affects the rate — no threshold, no cap, no decay. Volume buys status and privileges only |
 | Duration | Perpetual for the life of the recruited DEX |
 | Migration | Force-migrate; only internal BDs are on v1 |
 | Depth | Flat, one level. No sub-distributors |
@@ -64,14 +64,14 @@ Maker fees, maker rebates, and liquidation fees are out of scope (Orderly charge
 
 ## 3. Stake ladder (the rate dial)
 
-| Tier | ORDER staked | USD @ $0.0331 | Share of Orderly rev | Monthly rev capacity | Payout at cap |
-|---|---|---|---|---|---|
-| Registered | 0 | $0 | 10% | n/a (floor rate) | — |
-| Silver | 100,000 | $3,310 | 18% | $25,000 | $4,500/mo |
-| Gold | 300,000 | $9,930 | 26% | $75,000 | $19,500/mo |
-| Platinum | 1,000,000 | $33,100 | 34% | $250,000 | $85,000/mo |
-| Diamond | 3,000,000 | $99,300 | 42% | $750,000 | $315,000/mo |
-| Vanguard | 7,000,000 | $231,700 | 50% | $1,750,000 | $875,000/mo |
+| Tier | ORDER staked | USD @ $0.0331 | Share of Orderly rev | Applies to |
+|---|---|---|---|---|
+| Registered | 0 | $0 | 10% | all attributed revenue |
+| Silver | 100,000 | $3,310 | 18% | all attributed revenue |
+| Gold | 300,000 | $9,930 | 26% | all attributed revenue |
+| Platinum | 1,000,000 | $33,100 | 34% | all attributed revenue |
+| Diamond | 3,000,000 | $99,300 | 42% | all attributed revenue |
+| Vanguard | 7,000,000 | $231,700 | 50% | all attributed revenue |
 
 Thresholds deliberately reuse the Builder Staking anchors (100K / 300K / 3M / 7M) so the ecosystem has **one ORDER ladder**, with 1M inserted to smooth the 300K→3M cliff. Steps are a uniform +8% so every upgrade is a clean ROI question.
 
@@ -87,51 +87,49 @@ Thresholds deliberately reuse the Builder Staking anchors (100K / 300K / 3M / 7M
 
 And the stake is still theirs afterwards — this is payback on a *recoverable* asset, not a fee.
 
+**Upgrade breakeven** — the monthly taker volume at which an upgrade's extra share repays the extra stake in a single month, versus spread over twelve:
+
+| Upgrade | Extra USD staked | Share gain | Vol to repay in 1 month | Vol to repay in 12 months |
+|---|---|---|---|---|
+| Registered → Silver | $3,310 | +8% | $0.14B | $11M |
+| Silver → Gold | $6,620 | +8% | $0.28B | $23M |
+| Gold → Platinum | $23,170 | +8% | $0.97B | $80M |
+| Platinum → Diamond | $66,200 | +8% | $2.76B | $230M |
+| Diamond → Vanguard | $132,400 | +8% | $5.52B | $460M |
+
 ---
 
-## 4. The capacity mechanic — this is the part that actually drives staking
+## 4. What the rate does not depend on
 
-**Problem with a plain ladder:** it saturates. At today's price the entire ladder tops out at $231,700. Any distributor serious enough to pass a BD application buys Vanguard on day one and never touches ORDER again. Total demand = (number of large distributors) × 7M, one time. That is not a flywheel, it's a toll booth.
-
-**Fix:** each tier gives you a **rate** and a **quota of monthly revenue that rate applies to**.
+One dial, one input. The share is a pure function of ORDER staked and applies to every dollar of attributed revenue — the first dollar and the ten-millionth are paid at exactly the same percentage.
 
 ```
-capacity_usd_per_month = 0.25 × ORDER_staked
+R = attributed Orderly base-fee revenue this period
 
-R = attributed Orderly revenue this month
-payout = share × min(R, capacity)
-       + share_one_tier_down × max(0, R − capacity)
+payout = share(ORDER_staked) × R
+
+no volume qualifier · no cap · no quota · no overflow · no decay
 ```
 
-Overflow drops exactly **one step** — never cascades further, never falls to the 10% floor. Registered has no capacity: 10% is unlimited, so nobody can ever earn less than 10% on anything.
+A distributor doing $50M/month and one doing $50B/month at the same stake earn the **same percentage**. The larger one earns more money because they generated more revenue, not because they unlocked a better rate. Volume moves the base, never the multiplier.
 
-**Worked, at Vanguard (7M ORDER → $1.75M capacity):**
+**The rate holds flat across three orders of magnitude:**
 
-| Monthly Orderly rev | Within capacity @ 50% | Overflow @ 42% | Payout | Effective rate |
+| Monthly taker volume | Orderly rev | Payout @ Registered | Payout @ Vanguard | Vanguard rate |
 |---|---|---|---|---|
-| $1.00M ($3.3B vol) | $1.00M → $500,000 | — | $500,000 | 50.0% |
-| $1.75M ($5.8B vol) | $1.75M → $875,000 | — | $875,000 | 50.0% |
-| $3.00M ($10B vol) | $1.75M → $875,000 | $1.25M → $525,000 | $1,400,000 | 46.7% |
-| $9.00M ($30B vol) | $1.75M → $875,000 | $7.25M → $3,045,000 | $3,920,000 | 43.6% |
+| $50M | $15,000 | $1,500 | $7,500 | 50.0% |
+| $1B | $300,000 | $30,000 | $150,000 | 50.0% |
+| $10B | $3,000,000 | $300,000 | $1,500,000 | 50.0% |
+| $50B | $15,000,000 | $1,500,000 | $7,500,000 | 50.0% |
 
-The distributor at $10B/mo is leaving $100,000/month on the table. Closing it costs 5M more ORDER (~$165,000) — **payback under two months, and the stake is still theirs.** That is the whole design: the correct move is always "stake more," and how much you should stake is a function of how well you are doing. Staking demand grows with the program instead of stopping at 7M.
+**The tradeoff this accepts.** A flat ladder saturates. At $0.0331/ORDER the whole ladder tops out at $231,700, so any distributor large enough to pass a BD application buys Vanguard once and never touches ORDER again — total staking demand is (number of distributors) × their tier, one time. That is a real limit, and it is the price of the rule that volume must never touch the rate. Demand grows by **recruiting more distributors and moving them up the ladder**, not by any single one scaling up. Section 9 sizes exactly what that is worth.
 
 **Implementation details that matter:**
 
-- **Stake above 7M keeps buying capacity** at 0.25 USD/ORDER at the 50% rate. No ceiling — that is the point.
-- **Settlement stays daily, on a month-to-date accumulator.** Each day's revenue fills remaining capacity at the headline rate; the rest pays at the step-down. Resets at month start.
+- **Staking above 7M buys nothing.** Vanguard is the ceiling; there is no reason to hold more than the top threshold.
+- **Settlement is daily**, on that day's attributed revenue at that day's rate. No month-to-date accumulator and no true-up — there is nothing to accumulate against.
 - **The daily stake snapshot uses the minimum stake held during that day**, so nobody can stake for one snapshot and unstake right after.
-
-Scale check: at 3 bps, $1 of capacity ≈ $3,333 of monthly taker volume. Vanguard covers **$5.8B/month** fully at 50%.
-
-| Portfolio monthly taker vol | Orderly rev | Flat ladder @ Vanguard | Capped @ Vanguard | Stake to uncap |
-|---|---|---|---|---|
-| $1B | $300,000 | $150,000 | $150,000 | 1,200,000 ORDER |
-| $5B | $1,500,000 | $750,000 | $750,000 | 6,000,000 ORDER |
-| $10B | $3,000,000 | $1,500,000 | $1,400,000 | 12,000,000 ORDER |
-| $30B | $9,000,000 | $4,500,000 | $3,920,000 | 36,000,000 ORDER |
-
-The cap does not bite at all below ~$5.8B/mo — small and mid distributors never feel it. It only engages for the handful of partners large enough that their staking decision moves the token, which is exactly where you want the pressure.
+- **Crossing a threshold takes effect the next settlement day.** Upgrades apply forward only; no retroactive re-rating of revenue already paid.
 
 ---
 
@@ -233,7 +231,7 @@ Blended cost lands ~14% of attributed revenue — and 100% of it is paid on **re
 | 200 | 54,000,000 | $1,787,400 | 13.19% |
 | 500 | 135,000,000 | $4,468,500 | 32.97% |
 
-Plus capacity-driven top-ups from any distributor above ~$7B/mo, which is the part that keeps growing.
+Staking demand from this program is **bounded by distributor count**, not by their volume: 500 distributors at the realistic mix lock ~33% of circulating supply, and the same 500 lock no more than that no matter how large they grow. Growth in locked ORDER comes from recruiting more distributors and from more of them climbing the ladder.
 
 ---
 
@@ -248,13 +246,17 @@ Plus capacity-driven top-ups from any distributor above ~$7B/mo, which is the pa
 
 ---
 
-## 11. Open decisions I need from you
+## 11. Decisions closed
 
-1. **Capacity cap in v1, or flat ladder now and capacity in v2.1?** My recommendation is v1 — without it the program creates one-time staking demand and then stops. It only affects distributors above ~$7B/mo.
-2. **Volume definition.** Is "taker volume" single-sided notional (the taker side of each match)? All my numbers assume yes. If your reported volume is two-sided, every payout figure halves.
-3. **ORDER price risk.** Thresholds are ORDER-denominated, so a 10× token move makes Vanguard a $2.3M ask while capacity stays USD-denominated. Do you want an automatic review trigger (e.g. re-price thresholds if the 90-day TWAP moves >3×), or governance-by-hand?
-4. **Unstake cooldown.** The public docs don't expose the staking contract's unbonding period. If there's a cooldown, tier demotion timing needs to match it — send me the mechanics and I'll write the clause.
-5. **Is the 6-month dormancy pause acceptable** given "perpetual"? I've written it so existing payouts are never touched — only new bindings are blocked.
+| # | Question | Resolution |
+|---|---|---|
+| 1 | Does volume affect the rate? | **No.** The share is a pure function of ORDER staked. No volume qualifier, no capacity cap, no overflow, no decay (§3, §4) |
+| 2 | Volume definition | **Billed taker notional** — single-sided by construction, taken from the fee engine, not analytics (§2) |
+| 3 | ORDER price risk | **No re-pricing clause.** Thresholds are fixed ORDER amounts regardless of price |
+| 4 | Unstake cooldown | **7 days**, confirmed in Orderly docs. Tier drops on request submission (§8) |
+| 5 | Dormancy pause | **Removed.** Perpetual is unconditional; only termination for cause stops a payout (§7) |
+
+**One consequence of #3 worth naming.** The ladder is ORDER-denominated, so if ORDER appreciates every tier costs more in dollars while buying the same rate. A 10× move makes Vanguard a $2.3M ask and the top of the ladder stops being reachable for mid-size partners. That pressure is good for the token and bad for recruitment, and it resolves in one of two ways when it bites: cut the ORDER thresholds, or accept that the ladder becomes a large-partner instrument and let the 10% floor carry everyone else. Worth deciding deliberately rather than by drift.
 
 ---
 
