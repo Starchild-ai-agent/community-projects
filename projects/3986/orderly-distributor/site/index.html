@@ -317,21 +317,30 @@ footer .big{font-family:var(--black);font-size:clamp(1.6rem,5.5vw,3.4rem);color:
 
 <section id="s5">
   <div class="sec-h"><span class="num">§05</span><h2>Cost</h2></div>
-  <p class="sec-sub">$50M average monthly taker volume per distributor, spread across invitees that each stay under $50M/mo so all sit on Public (3 bps). Mix: 60% at 0 stake / 20% 100K / 10% 300K / 6% 1M / 3% 3M / 1% 7M — a blended 16% payout.</p>
+  <p class="sec-sub">Set the average book per distributor. Mix: 60% at 0 stake / 20% 100K / 10% 300K / 6% 1M / 3% 3M / 1% 7M — a blended 16% payout.</p>
+  <div class="calc" id="costcalc">
+    <div class="calc-h">
+      <div class="t">▚ Cost calculator</div>
+      <div class="live"><span class="dot" aria-hidden="true"></span><span>Illustrative · 3 bps</span></div>
+    </div>
+    <div class="calc-in" style="padding:20px 20px 22px">
+      <div class="field">
+        <div class="field-h"><label class="lab" for="cvol">Average monthly taker volume per distributor</label><span class="val" id="cvolOut">$50M</span></div>
+        <input type="range" id="cvol" min="0" max="100" value="35" step="1" aria-describedby="cvolOut">
+        <div class="ticks"><span>$10M</span><span>$50M</span><span>$200M</span><span>$1B</span></div>
+      </div>
+    </div>
+  </div>
   <div class="tw"><table>
     <thead><tr><th class="n">Distributors</th><th class="n">Gross rev/mo</th><th class="n">Paid out</th><th class="n">Orderly keeps</th><th class="n">ORDER locked</th><th class="n">% circulating</th></tr></thead>
-    <tbody>
-      <tr><td class="n hi">5</td><td class="n">$75,000</td><td class="n">$12,000</td><td class="n">$63,000</td><td class="n">1,350,000</td><td class="n">0.33%</td></tr>
-      <tr><td class="n hi">20</td><td class="n">$300,000</td><td class="n">$48,000</td><td class="n">$252,000</td><td class="n">5,400,000</td><td class="n">1.32%</td></tr>
-      <tr><td class="n hi">50</td><td class="n">$750,000</td><td class="n">$120,000</td><td class="n">$630,000</td><td class="n">13,500,000</td><td class="n">3.30%</td></tr>
-      <tr class="accent"><td class="n hi">100</td><td class="n">$1,500,000</td><td class="n">$240,000</td><td class="n">$1,260,000</td><td class="n">27,000,000</td><td class="n">6.59%</td></tr>
-    </tbody>
+    <tbody id="costbody"></tbody>
+  
   </table></div>
-  <p class="t-note">100 distributors is the success case, not the base case — $5B/mo of routed taker volume, a serious book for Orderly but a fraction of global perp flow. Everything scales linearly in volume: double the average book and every dollar figure doubles, while the 16% and the ORDER locked do not move.</p>
+  <p class="t-note">100 distributors is the success case, not the base case. Dollar figures scale with the slider; the 16% and the ORDER locked do not — staking demand tracks distributor <em>count</em>, never their size. Assumes invitees each stay under $50M/mo so all sit on Public (3 bps); past that their base fee falls to 2.75–1.00 bps and gross revenue comes in lower than shown.</p>
   <p>Worst case is bounded at 50% by construction. The program is premised on paying only for flow a distributor originates; how much of that flow would have arrived anyway is an attribution question this model does not answer.</p>
   <div class="call">
     <div class="lab mono">What this does not do</div>
-    <p>It is not a token sink. Even at 100 distributors the program locks <strong>27M ORDER, about 6.6% of circulating</strong> — real, but not a supply story. Staking demand is bounded by distributor <em>count</em>, and a distributor who buys the top row once never needs to buy again no matter how large they grow. Judge this program on the revenue it originates, not on the ORDER it locks.</p>
+    <p>It is not a token sink. Even at 100 distributors the program locks <strong>27M ORDER, about 6.6% of circulating</strong> — real, but not a supply story, and that figure does not move however large the books get. Staking demand is bounded by distributor <em>count</em>, and a distributor who buys the top row once never needs to buy again no matter how large they grow. Judge this program on the revenue it originates, not on the ORDER it locks.</p>
   </div>
 </section>
 
@@ -434,6 +443,36 @@ footer .big{font-family:var(--black);font-size:clamp(1.6rem,5.5vw,3.4rem);color:
     });
   },{rootMargin:'-15% 0px -70% 0px'});
   document.querySelectorAll('section[id]').forEach(function(s){obs.observe(s);});
+})();
+(function(){
+  var vol=document.getElementById('cvol'), out=document.getElementById('cvolOut'),
+      body=document.getElementById('costbody');
+  if(!vol||!body) return;
+  var COUNTS=[5,20,50,100], BPS=3.0/10000, BLEND=0.16, PER=270000, CIRC=409490289;
+  function usd(v){
+    if(v>=1e9) return '$'+(v/1e9).toFixed(2)+'B';
+    if(v>=1e6) return '$'+(v/1e6).toFixed(1)+'M';
+    return '$'+Math.round(v).toLocaleString('en-US');
+  }
+  function volFrom(p){ var lo=Math.log(1e7), hi=Math.log(1e9); return Math.exp(lo+(hi-lo)*(p/100)); }
+  function render(){
+    var v=volFrom(+vol.value);
+    out.textContent=usd(v);
+    var html='';
+    COUNTS.forEach(function(n,idx){
+      var gross=n*v*BPS, paid=gross*BLEND, locked=n*PER;
+      html+='<tr'+(idx===COUNTS.length-1?' class="accent"':'')+'>'+
+        '<td class="n hi">'+n+'</td>'+
+        '<td class="n">$'+Math.round(gross).toLocaleString('en-US')+'</td>'+
+        '<td class="n">$'+Math.round(paid).toLocaleString('en-US')+'</td>'+
+        '<td class="n">$'+Math.round(gross-paid).toLocaleString('en-US')+'</td>'+
+        '<td class="n">'+locked.toLocaleString('en-US')+'</td>'+
+        '<td class="n">'+(locked/CIRC*100).toFixed(2)+'%</td></tr>';
+    });
+    body.innerHTML=html;
+  }
+  vol.addEventListener('input',render);
+  render();
 })();
 </script>
 </body>
