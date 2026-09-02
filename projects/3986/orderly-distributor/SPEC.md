@@ -1,7 +1,7 @@
 # Orderly Distributor Program — Mechanics
 
 **Status:** draft for review · **Date:** 2026-09-01
-**Reference price:** ORDER $0.0331 (CoinGecko, 2026-09-01) · mcap $13.5M · 409.5M circulating · FDV $33.1M
+**Reference price:** ORDER $0.0341 (CoinGecko, 2026-09-01) · mcap $13.5M · 409.5M circulating · FDV $33.1M
 
 ---
 
@@ -55,14 +55,14 @@ Maker fees, maker rebates, and liquidation fees are out of scope (Orderly charge
 
 ## 3. Stake ladder (the rate dial)
 
-| Tier | ORDER staked | USD @ $0.0331 | Share of Orderly rev | Applies to |
+| Tier | ORDER staked | USD @ $0.0341 | Share of Orderly rev | Applies to |
 |---|---|---|---|---|
-| Registered | 0 | $0 | 10% | all attributed revenue |
-| Silver | 100,000 | $3,310 | 18% | all attributed revenue |
-| Gold | 300,000 | $9,930 | 26% | all attributed revenue |
-| Platinum | 1,000,000 | $33,100 | 34% | all attributed revenue |
-| Diamond | 3,000,000 | $99,300 | 42% | all attributed revenue |
-| Vanguard | 7,000,000 | $231,700 | 50% | all attributed revenue |
+| 0-stake | 0 | $0 | 10% | all attributed revenue |
+| 100K | 100,000 | $3,310 | 18% | all attributed revenue |
+| 300K | 300,000 | $9,930 | 26% | all attributed revenue |
+| 1M | 1,000,000 | $33,100 | 34% | all attributed revenue |
+| 3M | 3,000,000 | $99,300 | 42% | all attributed revenue |
+| 7M tier | 7,000,000 | $231,700 | 50% | all attributed revenue |
 
 Thresholds deliberately reuse the Builder Staking anchors (100K / 300K / 3M / 7M) so the ecosystem has **one ORDER ladder**, with 1M inserted to smooth the 300K→3M cliff. Steps are a uniform +8% so every upgrade is a clean ROI question.
 
@@ -70,11 +70,11 @@ Thresholds deliberately reuse the Builder Staking anchors (100K / 300K / 3M / 7M
 
 | Upgrade | Extra ORDER | Extra USD | Cumulative taker volume to repay the stake |
 |---|---|---|---|
-| Registered → Silver | 100,000 | $3,310 | $140M |
-| Silver → Gold | 200,000 | $6,620 | $280M |
-| Gold → Platinum | 700,000 | $23,170 | $970M |
-| Platinum → Diamond | 2,000,000 | $66,200 | $2.76B |
-| Diamond → Vanguard | 4,000,000 | $132,400 | $5.52B |
+| 0-stake → 100K | 100,000 | $3,310 | $140M |
+| 100K → 300K | 200,000 | $6,620 | $280M |
+| 300K → 1M | 700,000 | $23,170 | $970M |
+| 1M → 3M | 2,000,000 | $66,200 | $2.76B |
+| 3M → 7M tier | 4,000,000 | $132,400 | $5.52B |
 
 And the stake is still theirs afterwards — this is payback on a *recoverable* asset, not a fee.
 
@@ -82,11 +82,11 @@ And the stake is still theirs afterwards — this is payback on a *recoverable* 
 
 | Upgrade | Extra USD staked | Share gain | Vol to repay in 1 month | Vol to repay in 12 months |
 |---|---|---|---|---|
-| Registered → Silver | $3,310 | +8% | $140M | $11M |
-| Silver → Gold | $6,620 | +8% | $280M | $23M |
-| Gold → Platinum | $23,170 | +8% | $970M | $80M |
-| Platinum → Diamond | $66,200 | +8% | $2.76B | $230M |
-| Diamond → Vanguard | $132,400 | +8% | $5.52B | $460M |
+| 0-stake → 100K | $3,310 | +8% | $140M | $11M |
+| 100K → 300K | $6,620 | +8% | $280M | $23M |
+| 300K → 1M | $23,170 | +8% | $970M | $80M |
+| 1M → 3M | $66,200 | +8% | $2.76B | $230M |
+| 3M → 7M tier | $132,400 | +8% | $5.52B | $460M |
 
 ---
 
@@ -106,14 +106,14 @@ A distributor doing $50M/month and one doing $50B/month at the same stake earn t
 
 **The rate holds flat across three orders of magnitude:**
 
-| Monthly taker volume | Orderly rev | Payout @ Registered | Payout @ Vanguard | Vanguard rate |
+| Monthly taker volume | Orderly rev | Payout @ 0 stake | Payout @ 7M | 7M tier rate |
 |---|---|---|---|---|
 | $50M | $15,000 | $1,500 | $7,500 | 50.0% |
 | $1B | $300,000 | $30,000 | $150,000 | 50.0% |
 | $10B | $3,000,000 | $300,000 | $1,500,000 | 50.0% |
 | $50B | $15,000,000 | $1,500,000 | $7,500,000 | 50.0% |
 
-**The tradeoff this accepts.** A flat ladder saturates. At $0.0331/ORDER the whole ladder tops out at $231,700, so any distributor large enough to pass a BD application buys Vanguard once and never touches ORDER again — total staking demand is (number of distributors) × their tier, one time. That is a real limit, and it is the price of the rule that volume must never touch the rate. Demand grows by **recruiting more distributors and moving them up the ladder**, not by any single one scaling up. Section 8 sizes exactly what that is worth.
+**The tradeoff this accepts.** A flat ladder saturates. At $0.0341/ORDER the whole ladder tops out at $231,700, so any distributor large enough to pass a BD application buys 7M tier once and never touches ORDER again — total staking demand is (number of distributors) × their tier, one time. That is a real limit, and it is the price of the rule that volume must never touch the rate. Demand grows by **recruiting more distributors and moving them up the ladder**, not by any single one scaling up. Section 8 sizes exactly what that is worth.
 
 **Implementation details that matter:**
 
@@ -127,7 +127,7 @@ A distributor doing $50M/month and one doing $50B/month at the same stake earn t
 
 Distributors can sponsor an invitee into better base pricing to win a deal. The **entire discount is debited from the distributor's payout**, which makes Orderly revenue-neutral:
 
-$1B monthly taker volume, distributor at Vanguard (50%):
+$1B monthly taker volume, distributor at 7M tier (50%):
 
 | Sponsored builder tier | Orderly actual rev | Discount debited | Distributor payout | **Orderly net** |
 |---|---|---|---|---|
@@ -143,12 +143,12 @@ Orderly nets exactly $150,000 in every permitted case. The distributor decides w
 
 | Distributor tier | May sponsor invitee up to |
 |---|---|
-| Registered | — |
-| Silver | Silver |
-| Gold | Gold |
-| Platinum | Gold |
-| Diamond | Platinum |
-| Vanguard | Platinum |
+| 0-stake | — |
+| 100K | Silver |
+| 300K | Gold |
+| 1M | 300K |
+| 3M | 1M |
+| 7M tier | 1M |
 
 Hard rules: payout floors at $0 (never negative); if discount cost exceeds earned share two months running, the sponsorship auto-downgrades one tier with 30 days' notice. Diamond pricing stays a manual Orderly-side strategic assignment, never distributor-granted.
 
@@ -162,7 +162,7 @@ This gives a **second staking driver**: deeper discount authority is a closing w
 
 **Decision:** BD approve / reject / conditional (approve with a 90-day first-graduation milestone). Target SLA 5 business days.
 
-**On approval:** Registered tier, 10%, immediately live. No stake required to start — staking is the upgrade path, never the entry toll.
+**On approval:** 0-stake tier, 10%, immediately live. No stake required to start — staking is the upgrade path, never the entry toll.
 
 **Perpetual is unconditional.** No dormancy clause, no performance minimum. A distributor who lands one DEX and never works again keeps that payout for the life of the DEX.
 
@@ -186,7 +186,7 @@ Added:
 
 ## 8. Program cost to Orderly
 
-Assumes **$50M average monthly taker volume per distributor**, invitees on Public (3 bps). Realistic mix = 60% Registered / 20% Silver / 10% Gold / 6% Platinum / 3% Diamond / 1% Vanguard, which blends to a **16%** payout.
+Assumes **$50M average monthly taker volume per distributor**, invitees on Public (3 bps). Realistic mix = 60% at 0 / 20% at 100K / 10% at 300K / 6% at 1M / 3% at 3M / 1% at 7M, which blends to a **16%** payout.
 
 100 distributors is the program's success ceiling, not its base case — at that count a large share of the world's meaningful order flow is routed through Orderly. Sizing beyond it is not a useful planning exercise.
 
@@ -203,7 +203,7 @@ Blended cost lands at 16% of attributed revenue, and 100% of it is paid on **rev
 
 **ORDER staking demand created:**
 
-| Distributors | ORDER locked | USD @ $0.0331 | % of circulating (409.5M) |
+| Distributors | ORDER locked | USD @ $0.0341 | % of circulating (409.5M) |
 |---|---|---|---|
 | 5 | 1,350,000 | $44,685 | 0.33% |
 | 20 | 5,400,000 | $178,740 | 1.32% |
@@ -235,7 +235,7 @@ Staking demand is **bounded by distributor count**, not by their volume — the 
 | 4 | Unstake cooldown | **7 days**, confirmed in Orderly docs. Tier drops on request submission (§7) |
 | 5 | Dormancy pause | **Removed.** Perpetual is unconditional; only termination for cause stops a payout (§6) |
 
-**One consequence of #3 worth naming.** The ladder is ORDER-denominated, so if ORDER appreciates every tier costs more in dollars while buying the same rate. A 10× move makes Vanguard a $2.3M ask and the top of the ladder stops being reachable for mid-size partners. That pressure is good for the token and bad for recruitment, and it resolves in one of two ways when it bites: cut the ORDER thresholds, or accept that the ladder becomes a large-partner instrument and let the 10% floor carry everyone else. Worth deciding deliberately rather than by drift.
+**One consequence of #3 worth naming.** The ladder is ORDER-denominated, so if ORDER appreciates every tier costs more in dollars while buying the same rate. A 10× move makes 7M tier a $2.3M ask and the top of the ladder stops being reachable for mid-size partners. That pressure is good for the token and bad for recruitment, and it resolves in one of two ways when it bites: cut the ORDER thresholds, or accept that the ladder becomes a large-partner instrument and let the 10% floor carry everyone else. Worth deciding deliberately rather than by drift.
 
 ---
 

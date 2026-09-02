@@ -216,11 +216,11 @@ footer .big{font-family:var(--black);font-size:clamp(1.6rem,5.5vw,3.4rem);color:
 </header>
 
 <div class="meta">
-  <div><div class="k mono">ORDER price</div><div class="v">$0.0331</div></div>
-  <div><div class="k mono">Market cap</div><div class="v">$13.5M</div></div>
+  <div><div class="k mono">ORDER price · 2026-09-02</div><div class="v">$0.0341</div></div>
+  <div><div class="k mono">Market cap</div><div class="v">$14.0M</div></div>
   <div><div class="k mono">Circulating</div><div class="v">409.5M</div></div>
   <div><div class="k mono">Payout band</div><div class="v">10% — 50%</div></div>
-  <div><div class="k mono">Blended cost</div><div class="v">16% of rev</div></div>
+  <div><div class="k mono">Blended cost · modelled</div><div class="v">16% of rev</div></div>
 </div>
 
 <section id="s1">
@@ -237,27 +237,27 @@ footer .big{font-family:var(--black);font-size:clamp(1.6rem,5.5vw,3.4rem);color:
   <div class="sec-h"><span class="num">§02</span><h2>The ladder</h2></div>
   <p class="sec-sub">One table. Your stake picks a row; the row is your cut of every dollar.</p>
   <div class="tw"><table>
-    <thead><tr><th>ORDER staked</th><th class="n">Cost @ $0.0331</th><th class="n">Your cut</th><th class="n">Volume to break even</th></tr></thead>
+    <thead><tr><th>ORDER staked</th><th class="n">Cost @ $0.0341</th><th class="n">Your cut</th><th class="n">Volume to break even</th></tr></thead>
     <tbody>
       <tr><td class="hi">0</td><td class="n">$0</td><td class="n">10%</td><td class="n dim">—</td></tr>
-      <tr><td class="hi">100,000</td><td class="n">$3,310</td><td class="n">18%</td><td class="n">$140M</td></tr>
-      <tr><td class="hi">300,000</td><td class="n">$9,930</td><td class="n">26%</td><td class="n">$280M</td></tr>
-      <tr><td class="hi">1,000,000</td><td class="n">$33,100</td><td class="n">34%</td><td class="n">$970M</td></tr>
-      <tr><td class="hi">3,000,000</td><td class="n">$99,300</td><td class="n">42%</td><td class="n">$2.76B</td></tr>
-      <tr class="accent"><td class="hi">7,000,000</td><td class="n">$231,700</td><td class="n">50%</td><td class="n">$5.52B</td></tr>
+      <tr><td class="hi">100,000</td><td class="n">$3,409</td><td class="n">18%</td><td class="n">$142M</td></tr>
+      <tr><td class="hi">300,000</td><td class="n">$10,226</td><td class="n">26%</td><td class="n">$284M</td></tr>
+      <tr><td class="hi">1,000,000</td><td class="n">$34,088</td><td class="n">34%</td><td class="n">$994M</td></tr>
+      <tr><td class="hi">3,000,000</td><td class="n">$102,263</td><td class="n">42%</td><td class="n">$2.84B</td></tr>
+      <tr class="accent"><td class="hi">7,000,000</td><td class="n">$238,613</td><td class="n">50%</td><td class="n">$5.68B</td></tr>
     </tbody>
   </table></div>
-  <p class="t-note">Break-even = the taker volume that row has to produce before the extra 8% has paid back what the extra ORDER cost. Cross it and the upgrade is free — and the stake is still yours, unstakeable any time.</p>
+  <p class="t-note">Break-even = the taker volume that row has to produce before the extra 8% has paid back what the extra ORDER cost, with invitees on Public (3 bps). Cross it and the upgrade is free. The stake stays yours, subject to Orderly's <a href="https://orderly.network/docs/introduction/tokenomics/order-staking/staking" target="_blank" rel="noopener">7-day unstaking period</a> — not withdrawable on demand. If one invitee grows past $50M/mo its base fee falls to 2.75–1.00 bps, which pushes these break-even volumes higher.</p>
 </section>
 
 <section id="s3">
   <div class="sec-h"><span class="num">§03</span><h2>Calculator</h2></div>
-  <p class="sec-sub">The rate is flat: $50M/mo and $50B/mo pay the same percentage.</p>
+  <p class="sec-sub">The rate is flat: $50M/mo and $50B/mo pay the same <em>percentage</em>. Revenue is modelled at 3 bps, which holds while each invitee stays under $50M/mo.</p>
 
   <div class="calc" id="calc">
     <div class="calc-h">
       <div class="t">▚ Payout calculator</div>
-      <div class="live"><span class="dot" aria-hidden="true"></span><span>Live model</span></div>
+      <div class="live"><span class="dot" aria-hidden="true"></span><span>Illustrative · 3 bps</span></div>
     </div>
     <div class="calc-body">
       <div class="calc-in">
@@ -300,6 +300,7 @@ footer .big{font-family:var(--black);font-size:clamp(1.6rem,5.5vw,3.4rem);color:
       </div>
     </div>
   </div>
+  <p class="t-note">Orderly's base taker fee is not one number — it falls with the invitee's own tier: <b>3.00 bps</b> Public, 2.75 Silver (≥$50M/mo or 100K $ORDER), 2.50 Gold (≥$200M or 300K), 2.00 Platinum (≥$750M or 3M), 1.00 Diamond (≥$2B or 7M) — per <a href="https://orderly.network/docs/introduction/trade-on-orderly/trading-basics/trading-fees" target="_blank" rel="noopener">Orderly trading fees</a>. This calculator holds 3 bps flat, so at large single-invitee volumes it <b>overstates</b> revenue. Your percentage cut is unaffected.</p>
 </section>
 
 <section id="s4">
@@ -315,7 +316,7 @@ footer .big{font-family:var(--black);font-size:clamp(1.6rem,5.5vw,3.4rem);color:
 
 <section id="s5">
   <div class="sec-h"><span class="num">§05</span><h2>Cost</h2></div>
-  <p class="sec-sub">$50M average monthly taker volume per distributor, invitees on Public (3 bps). Mix: 60% at 0 stake / 20% 100K / 10% 300K / 6% 1M / 3% 3M / 1% 7M — a blended 16% payout.</p>
+  <p class="sec-sub">$50M average monthly taker volume per distributor, spread across invitees that each stay under $50M/mo so all sit on Public (3 bps). Mix: 60% at 0 stake / 20% 100K / 10% 300K / 6% 1M / 3% 3M / 1% 7M — a blended 16% payout.</p>
   <div class="tw"><table>
     <thead><tr><th class="n">Distributors</th><th class="n">Gross rev/mo</th><th class="n">Paid out</th><th class="n">Orderly keeps</th><th class="n">ORDER locked</th><th class="n">% circulating</th></tr></thead>
     <tbody>
@@ -325,8 +326,8 @@ footer .big{font-family:var(--black);font-size:clamp(1.6rem,5.5vw,3.4rem);color:
       <tr class="accent"><td class="n hi">100</td><td class="n">$1,500,000</td><td class="n">$240,000</td><td class="n">$1,260,000</td><td class="n">27,000,000</td><td class="n">6.59%</td></tr>
     </tbody>
   </table></div>
-  <p class="t-note">100 distributors is the success case, not the base case — that is most of the world's meaningful order flow routed through Orderly. Everything scales linearly in volume: double the average book and every dollar figure doubles, while the 16% and the ORDER locked do not move.</p>
-  <p>Worst case is bounded at 50% by construction, and every dollar is paid on revenue that would not exist otherwise.</p>
+  <p class="t-note">100 distributors is the success case, not the base case — $5B/mo of routed taker volume, a serious book for Orderly but a fraction of global perp flow. Everything scales linearly in volume: double the average book and every dollar figure doubles, while the 16% and the ORDER locked do not move.</p>
+  <p>Worst case is bounded at 50% by construction. The program is premised on paying only for flow a distributor originates; how much of that flow would have arrived anyway is an attribution question this model does not answer.</p>
   <div class="call">
     <div class="lab mono">What this does not do</div>
     <p>It is not a token sink. Even at 100 distributors the program locks <strong>27M ORDER, about 6.6% of circulating</strong> — real, but not a supply story. Staking demand is bounded by distributor <em>count</em>, and a distributor who buys the top row once never needs to buy again no matter how large they grow. Judge this program on the revenue it originates, not on the ORDER it locks.</p>
@@ -336,7 +337,8 @@ footer .big{font-family:var(--black);font-size:clamp(1.6rem,5.5vw,3.4rem);color:
 <footer>
   <div class="big">END ///</div>
   <div class="mono">Orderly Distributor Program · Mechanics · 2026-09-01<br>
-  Reference price ORDER $0.0331 (CoinGecko, 2026-09-01) · every table regenerates from <samp>model.py</samp><br>
+  Proposed program — not published Orderly policy. The ladder rates, application gate and settlement rules are this document's design; base fee tiers and staking mechanics are Orderly's, cited below.<br>
+  Reference price ORDER $0.0341 · market cap $14.0M · circulating 409.5M (CoinGecko, 2026-09-02) · every figure recomputed from <samp>model.py</samp> at that price<br>
   Staking mechanics from <a href="https://orderly.network/docs/introduction/tokenomics/order-staking/staking" target="_blank" rel="noopener">Orderly staking documentation</a> · fee tiers from <a href="https://orderly.network/docs/introduction/trade-on-orderly/trading-basics/trading-fees" target="_blank" rel="noopener">Orderly trading fees</a></div>
 </footer>
 
@@ -346,14 +348,10 @@ footer .big{font-family:var(--black);font-size:clamp(1.6rem,5.5vw,3.4rem);color:
 <script>
 (function(){
   var TIERS=[
-    {n:'Registered',stake:0,share:0.10},
-    {n:'Silver',stake:100000,share:0.18},
-    {n:'Gold',stake:300000,share:0.26},
-    {n:'Platinum',stake:1000000,share:0.34},
-    {n:'Diamond',stake:3000000,share:0.42},
-    {n:'Vanguard',stake:7000000,share:0.50}
+    {stake:0,share:0.10},{stake:100000,share:0.18},{stake:300000,share:0.26},
+    {stake:1000000,share:0.34},{stake:3000000,share:0.42},{stake:7000000,share:0.50}
   ];
-  var BPS=3.0/10000, PRICE=0.0331, TOP=TIERS.length-1, cur=5;
+  var BPS=3.0/10000, PRICE=0.03408758, TOP=TIERS.length-1, cur=5;
   var vol=document.getElementById('vol');
   var ids=['volOut','stakeOut','capOut','roRev','roPay','roEff','roKeep','roGap','roGapSub','barBase','barOver','verdict'];
   var el={}; ids.forEach(function(i){el[i]=document.getElementById(i);});

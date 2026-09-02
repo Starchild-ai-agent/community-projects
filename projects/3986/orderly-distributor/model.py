@@ -9,7 +9,7 @@ much revenue exists to split; the percentage of that revenue is a pure function
 of ORDER staked. There is no cap, no quota, no overflow, no decay.
 """
 
-ORDER_PRICE = 0.0331  # USD, CoinGecko 2026-09-01
+ORDER_PRICE = 0.03408758  # USD, CoinGecko 2026-09-02
 
 # Orderly base taker fee by BUILDER tier (bps) — from Builder Staking Programme
 BUILDER_RATE = {"Public": 3.00, "Silver": 2.75, "Gold": 2.50, "Platinum": 2.00, "Diamond": 1.00}
@@ -37,7 +37,7 @@ def payout(monthly_rev, tier_idx):
 
 
 def table_ladder():
-    rows = ["| Tier | ORDER staked | USD @ $0.0331 | Share of Orderly rev |",
+    rows = ["| Tier | ORDER staked | USD @ $0.0341 | Share of Orderly rev |",
             "|---|---|---|---|"]
     for name, stake, share in TIERS:
         rows.append(f"| {name} | {stake:,} | ${stake*ORDER_PRICE:,.0f} | {share:.0%} |")
@@ -124,7 +124,7 @@ def table_staking_demand():
     rows = ["| Distributors | ORDER locked | USD @ $0.0331 | % of circulating (409.5M) |", "|---|---|---|---|"]
     for n in (10, 50, 200, 500):
         locked = sum(n * w * TIERS[i][1] for i, w in enumerate(mix))
-        rows.append(f"| {n} | {locked:,.0f} | ${locked*ORDER_PRICE:,.0f} | {locked/409_464_543*100:.2f}% |")
+        rows.append(f"| {n} | {locked:,.0f} | ${locked*ORDER_PRICE:,.0f} | {locked/409_490_289*100:.2f}% |")
     return "\n".join(rows)
 
 
