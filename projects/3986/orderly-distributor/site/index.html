@@ -202,7 +202,7 @@ footer .big{font-family:var(--black);font-size:clamp(1.6rem,5.5vw,3.4rem);color:
   <ol id="navlist">
     <li><a href="#s1"><span class="n">01</span><span>The deal</span></a></li>
     <li><a href="#s2"><span class="n">02</span><span>The ladder</span></a></li>
-    <li><a href="#s3"><span class="n">03</span><span>Calculator</span></a></li>
+    <li><a href="#s3"><span class="n">03</span><span>Revenue</span></a></li>
     <li><a href="#s4"><span class="n">04</span><span>Rules</span></a></li>
     <li><a href="#s5"><span class="n">05</span><span>Cost</span></a></li>
   </ol>
@@ -252,12 +252,12 @@ footer .big{font-family:var(--black);font-size:clamp(1.6rem,5.5vw,3.4rem);color:
 </section>
 
 <section id="s3">
-  <div class="sec-h"><span class="num">§03</span><h2>Calculator</h2></div>
+  <div class="sec-h"><span class="num">§03</span><h2>Revenue</h2></div>
   <p class="sec-sub">The rate is flat: $50M/mo and $50B/mo pay the same <em>percentage</em>. Revenue is modelled at 3 bps, which holds while each invitee stays under $50M/mo.</p>
 
   <div class="calc" id="calc">
     <div class="calc-h">
-      <div class="t">▚ Payout calculator</div>
+      <div class="t">▚ Revenue calculator</div>
       <div class="live"><span class="dot" aria-hidden="true"></span><span>Illustrative · 3 bps</span></div>
     </div>
     <div class="calc-body">
@@ -325,14 +325,14 @@ footer .big{font-family:var(--black);font-size:clamp(1.6rem,5.5vw,3.4rem);color:
     </div>
     <div class="calc-in" style="padding:20px 20px 22px">
       <div class="field">
-        <div class="field-h"><label class="lab" for="cvol">Average monthly taker volume per distributor</label><span class="val" id="cvolOut">$50M</span></div>
+        <div class="field-h"><label class="lab" for="cvol">Monthly taker volume per distributor</label><span class="val" id="cvolOut">$50M</span></div>
         <input type="range" id="cvol" min="0" max="100" value="35" step="1" aria-describedby="cvolOut">
         <div class="ticks"><span>$10M</span><span>$50M</span><span>$200M</span><span>$1B</span></div>
       </div>
     </div>
   </div>
   <div class="tw"><table>
-    <thead><tr><th class="n">Distributors</th><th class="n">Gross rev/mo</th><th class="n">Paid out</th><th class="n">Orderly keeps</th><th class="n">ORDER locked</th><th class="n">% circulating</th></tr></thead>
+    <thead><tr><th class="n">Distributors</th><th class="n">Orderly revenue</th><th class="n">Distributor payouts</th><th class="n">Orderly keeps</th><th class="n">ORDER locked</th><th class="n">% circulating</th></tr></thead>
     <tbody id="costbody"></tbody>
   
   </table></div>

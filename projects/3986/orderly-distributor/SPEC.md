@@ -127,7 +127,7 @@ A distributor doing $50M/month and one doing $50B/month at the same stake earn t
 
 Distributors can sponsor an invitee into better base pricing to win a deal. The **entire discount is debited from the distributor's payout**, which makes Orderly revenue-neutral:
 
-$1B monthly taker volume, distributor at 7M tier (50%):
+$1B monthly taker volume, distributor at 7M rung (50%):
 
 | Sponsored builder tier | Orderly actual rev | Discount debited | Distributor payout | **Orderly net** |
 |---|---|---|---|---|
@@ -148,7 +148,7 @@ Orderly nets exactly $150,000 in every permitted case. The distributor decides w
 | 300K | Gold |
 | 1M | 300K |
 | 3M | 1M |
-| 7M tier | 1M |
+| 7M rung | 1M |
 
 Hard rules: payout floors at $0 (never negative); if discount cost exceeds earned share two months running, the sponsorship auto-downgrades one tier with 30 days' notice. Diamond pricing stays a manual Orderly-side strategic assignment, never distributor-granted.
 
@@ -235,7 +235,7 @@ Staking demand is **bounded by distributor count**, not by their volume — the 
 | 4 | Unstake cooldown | **7 days**, confirmed in Orderly docs. Tier drops on request submission (§7) |
 | 5 | Dormancy pause | **Removed.** Perpetual is unconditional; only termination for cause stops a payout (§6) |
 
-**One consequence of #3 worth naming.** The ladder is ORDER-denominated, so if ORDER appreciates every tier costs more in dollars while buying the same rate. A 10× move makes 7M tier a $2.3M ask and the top of the ladder stops being reachable for mid-size partners. That pressure is good for the token and bad for recruitment, and it resolves in one of two ways when it bites: cut the ORDER thresholds, or accept that the ladder becomes a large-partner instrument and let the 10% floor carry everyone else. Worth deciding deliberately rather than by drift.
+**One consequence of #3 worth naming.** The ladder is ORDER-denominated, so if ORDER appreciates every tier costs more in dollars while buying the same rate. A 10× move makes 7M rung a $2.3M ask and the top of the ladder stops being reachable for mid-size partners. That pressure is good for the token and bad for recruitment, and it resolves in one of two ways when it bites: cut the ORDER thresholds, or accept that the ladder becomes a large-partner instrument and let the 10% floor carry everyone else. Worth deciding deliberately rather than by drift.
 
 ---
 
