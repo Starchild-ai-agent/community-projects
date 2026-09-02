@@ -97,7 +97,7 @@ One dial, one input. The share is a pure function of ORDER staking tier and appl
 ```
 R = attributed Orderly base-fee revenue this period
 
-payout = share(ORDER_staking_tier) × R
+payout = R (Orderly fee revenue) × share(ORDER staking tier)
 
 no volume qualifier · no cap · no quota · no overflow · no decay
 ```
