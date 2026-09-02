@@ -1,4 +1,4 @@
-# Orderly Distributor Program v2 — Mechanics Spec
+# Orderly Distributor Program — Mechanics
 
 **Status:** draft for review · **Date:** 2026-09-01
 **Reference price:** ORDER $0.0331 (CoinGecko, 2026-09-01) · mcap $13.5M · 409.5M circulating · FDV $33.1M
@@ -14,25 +14,19 @@
 | Rate | 10% floor on approval → 50% ceiling |
 | Tier driver | **ORDER staking only.** Volume never affects anything — no rate threshold, no cap, no decay, no status ladder |
 | Duration | Perpetual for the life of the recruited DEX |
-| Migration | Force-migrate; only internal BDs are on v1 |
+| Migration | Force-migrate every existing distributor |
 | Depth | Flat, one level. No sub-distributors |
 | Target profile | Anyone with access to people who might launch a DEX or bolt perps onto an existing product (wallet apps, trading communities, agencies, regional partners) |
 
 ---
 
-## 1. What actually changes
+## 1. The model
 
-**v1 (today):** distributor earns the *fee spread* — `max(0.1 bps, invitee base taker fee − distributor base taker fee)`. Tier from `30d aggregate volume OR staking, higher wins`, where aggregate volume includes every invitee's volume.
+A distributor recruits a DEX onto Orderly. Orderly earns a base taker fee from that DEX. The distributor takes a share of that fee for the life of the DEX.
 
-**Three structural problems with v1:**
+The share is set by one input: **how much ORDER the distributor has staked.** It runs from 10% at zero stake to 50% at the top of the ladder. Nothing else moves it — not volume, not tenure, not the number of DEXs recruited. Volume determines how much revenue exists to share; it never changes the percentage.
 
-1. **The tier system is an anti-incentive to stake.** Distributor volume includes all invitee volume, so anyone who succeeds at the job hits Diamond on volume alone and never buys a single ORDER. The better you perform, the less reason you have to lock tokens. This is why v1 produces ~zero staking demand.
-2. **The spread model pays distributors out of Orderly's margin in a way Orderly can't cap.** The spread is a function of two tier tables interacting, not a policy dial.
-3. **Volume-driven tiers are gameable.** Wash volume promotes the distributor's own tier, which widens their spread.
-
-**v2 fixes all three with one rule: the rate comes from staking, and nothing else.** A clean policy dial, 10%–50%, that Orderly controls directly. There is no second ladder — volume is not a qualifier for anything.
-
-Secondary benefit: with rate decoupled from volume, **wash trading becomes strictly −EV.** A distributor who fakes volume causes the builder to pay 3 bps to Orderly and receives back at most 50% of it. There is no tier to farm. This removes an entire abuse class from v1.
+This gives Orderly a single policy dial it controls directly, and gives distributors one clear reason to hold the token.
 
 ---
 
@@ -179,7 +173,7 @@ This gives a **second staking driver**: deeper discount authority is a closing w
 
 ## 7. Rules carried over and added
 
-Carried from v1: unidirectional binding (one distributor per invitee) · non-reciprocal (no A↔B) · binding at or before graduation · immutable once set · EOA registered as distributor cannot later convert to Builder Admin.
+Binding rules: unidirectional binding (one distributor per invitee) · non-reciprocal (no A↔B) · binding at or before graduation · immutable once set · EOA registered as distributor cannot later convert to Builder Admin.
 
 Added:
 - **Daily accrual, daily settlement at 00:00 UTC.** Each day's payout uses that day's stake snapshot — no retroactive re-rating, no staking-for-one-day-then-unstaking.
@@ -218,11 +212,11 @@ Staking demand from this program is **bounded by distributor count**, not by the
 
 ## 9. Migration
 
-1. Snapshot every existing binding and its trailing 90-day earnings under the v1 spread model.
+1. Snapshot every existing binding and its trailing 90-day earnings under the old fee-spread model.
 2. Auto-enroll every existing distributor at 10%, bindings preserved intact.
-3. **90-day parity guarantee:** pay `max(v1 spread, v2 share)` per binding. Nobody is worse off during transition.
-4. Publish each distributor's break-even stake — the ORDER needed for v2 to beat their v1 spread — at migration.
-5. Day 91: v2 only.
+3. **90-day parity guarantee:** pay `max(old spread, new share)` per binding. Nobody is worse off during transition.
+4. Publish each distributor's break-even stake — the ORDER needed for the new share to beat their old spread — at migration.
+5. Day 91: new model only.
 6. The application gate is not retroactive; everyone already bound is grandfathered as approved.
 
 ---

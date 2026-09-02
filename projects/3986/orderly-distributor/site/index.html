@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Orderly Distributor Program v2 — Mechanics Spec</title>
+<title>Orderly Distributor Program — Mechanics</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;800&family=Archivo+Black&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
@@ -62,8 +62,8 @@ nav a.on .n{color:var(--red)}
 main{min-width:0}
 
 /* ── hero ──────────────────────────────────────────── */
-.hero{padding:76px 40px 34px;border-bottom:1px solid var(--line);position:relative;overflow:hidden}
-.hero .kick{display:flex;gap:14px;flex-wrap:wrap;color:var(--dim);margin-bottom:26px}
+.hero{padding:38px 40px 22px;border-bottom:1px solid var(--line);position:relative;overflow:hidden}
+.hero .kick{display:flex;gap:14px;flex-wrap:wrap;color:var(--dim);margin-bottom:0}
 .hero h1{font-size:clamp(2.6rem,7.4vw,6.4rem)}
 .hero h1 em{font-style:normal;color:var(--red)}
 .hero .lede{margin-top:26px;font-size:1.12rem;max-width:64ch;color:#CFCFCF}
@@ -183,7 +183,7 @@ footer .big{font-family:var(--black);font-size:clamp(1.6rem,5.5vw,3.4rem);color:
   nav ol{display:flex;flex-wrap:wrap}
   nav a{padding:6px 12px}
   nav a.on{box-shadow:inset 0 -2px 0 var(--red)}
-  .hero{padding:44px 20px 26px} section{padding:40px 20px} footer{padding:36px 20px 50px}
+  .hero{padding:26px 20px 18px} section{padding:40px 20px} footer{padding:36px 20px 50px}
   .calc-body{grid-template-columns:1fr}
 }
 @media (prefers-reduced-motion:reduce){
@@ -196,8 +196,8 @@ footer .big{font-family:var(--black);font-size:clamp(1.6rem,5.5vw,3.4rem);color:
 <div class="shell">
 <nav aria-label="Section index">
   <div class="nav-brand">
-    <div class="t">Distributor<br>Program V2</div>
-    <div class="s mono">Mechanics / Draft</div>
+    <div class="t">Distributor<br>Program</div>
+    <div class="s mono">Mechanics</div>
   </div>
   <ol id="navlist">
     <li><a href="#s1"><span class="n">01</span><span>The deal</span></a></li>
@@ -211,11 +211,8 @@ footer .big{font-family:var(--black);font-size:clamp(1.6rem,5.5vw,3.4rem);color:
 
 <header class="hero">
   <div class="kick mono">
-    <span class="red">● Draft for review</span><span>/</span><span>Rev 2.0</span><span>/</span>
-    <span>2026-09-01</span><span>/</span><span>Orderly Network</span>
+    <span>Orderly Network</span><span>/</span><span>Distributor Program</span><span>/</span><span>2026-09-01</span>
   </div>
-  <h1>Your cut is<br>bought with<br><em>ORDER</em>.</h1>
-  <p class="lede">Nothing else moves it. Not volume, not tenure, not status.</p>
 </header>
 
 <div class="meta">
@@ -234,10 +231,6 @@ footer .big{font-family:var(--black);font-size:clamp(1.6rem,5.5vw,3.4rem);color:
 
 <span class="dim">taker side only · no cap · no decay · no expiry</span></pre>
 
-  <div class="call">
-    <div class="lab mono">What v1 got wrong</div>
-    <p>v1 let you reach the top tier on invitee volume alone — <strong>the better you performed, the less reason you had to buy the token.</strong> v2 puts the rate on one dial and hands it to Orderly.</p>
-  </div>
 </section>
 
 <section id="s2">
@@ -341,8 +334,8 @@ footer .big{font-family:var(--black);font-size:clamp(1.6rem,5.5vw,3.4rem);color:
 </section>
 
 <footer>
-  <div class="big">END OF SPEC<br>REV 2.0 ///</div>
-  <div class="mono">Orderly Distributor Program v2 · Draft for review · 2026-09-01<br>
+  <div class="big">END ///</div>
+  <div class="mono">Orderly Distributor Program · Mechanics · 2026-09-01<br>
   Reference price ORDER $0.0331 (CoinGecko, 2026-09-01) · every table regenerates from <samp>model.py</samp><br>
   Staking mechanics from <a href="https://orderly.network/docs/introduction/tokenomics/order-staking/staking" target="_blank" rel="noopener">Orderly staking documentation</a> · fee tiers from <a href="https://orderly.network/docs/introduction/trade-on-orderly/trading-basics/trading-fees" target="_blank" rel="noopener">Orderly trading fees</a></div>
 </footer>
