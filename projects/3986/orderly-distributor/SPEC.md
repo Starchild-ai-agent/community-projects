@@ -73,8 +73,8 @@ Thresholds deliberately reuse the Builder Staking anchors (100K / 300K / 3M / 7M
 | Registered → Silver | 100,000 | $3,310 | $140M |
 | Silver → Gold | 200,000 | $6,620 | $280M |
 | Gold → Platinum | 700,000 | $23,170 | $970M |
-| Platinum → Diamond | 2,000,000 | $66,200 | $2,760M |
-| Diamond → Vanguard | 4,000,000 | $132,400 | $5,520M |
+| Platinum → Diamond | 2,000,000 | $66,200 | $2.76B |
+| Diamond → Vanguard | 4,000,000 | $132,400 | $5.52B |
 
 And the stake is still theirs afterwards — this is payback on a *recoverable* asset, not a fee.
 
@@ -85,8 +85,8 @@ And the stake is still theirs afterwards — this is payback on a *recoverable* 
 | Registered → Silver | $3,310 | +8% | $140M | $11M |
 | Silver → Gold | $6,620 | +8% | $280M | $23M |
 | Gold → Platinum | $23,170 | +8% | $970M | $80M |
-| Platinum → Diamond | $66,200 | +8% | $2,760M | $230M |
-| Diamond → Vanguard | $132,400 | +8% | $5,520M | $460M |
+| Platinum → Diamond | $66,200 | +8% | $2.76B | $230M |
+| Diamond → Vanguard | $132,400 | +8% | $5.52B | $460M |
 
 ---
 
