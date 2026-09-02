@@ -113,7 +113,7 @@ A distributor doing $50M/month and one doing $50B/month at the same stake earn t
 | $10B | $3,000,000 | $300,000 | $1,500,000 | 50.0% |
 | $50B | $15,000,000 | $1,500,000 | $7,500,000 | 50.0% |
 
-**The tradeoff this accepts.** A flat ladder saturates. At $0.0341/ORDER the whole ladder tops out at $231,700, so any distributor large enough to pass a BD application buys 7M tier once and never touches ORDER again — total staking demand is (number of distributors) × their tier, one time. That is a real limit, and it is the price of the rule that volume must never touch the rate. Demand grows by **recruiting more distributors and moving them up the ladder**, not by any single one scaling up. Section 8 sizes exactly what that is worth.
+**The tradeoff this accepts.** A flat ladder saturates. At $0.0341/ORDER the whole ladder tops out at $238,613, so any distributor large enough to pass a BD application buys the 7M rung (Diamond) once and never touches ORDER again — total staking demand is (number of distributors) × their tier, one time. That is a real limit, and it is the price of the rule that volume must never touch the rate. Demand grows by **recruiting more distributors and moving them up the ladder**, not by any single one scaling up. Section 8 sizes exactly what that is worth.
 
 **Implementation details that matter:**
 
