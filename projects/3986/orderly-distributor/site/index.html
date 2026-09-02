@@ -139,6 +139,9 @@ ul.spec li::before{content:"+";position:absolute;left:4px;top:13px;color:var(--r
 @keyframes blink{0%,60%{opacity:1}61%,100%{opacity:.15}}
 .calc-body{display:grid;grid-template-columns:minmax(280px,1fr) minmax(300px,1.05fr);gap:1px;background:var(--line)}
 .calc-in,.calc-out{background:#0E0E0E;padding:20px}
+.lad-in{display:grid;grid-template-columns:1fr 1fr;gap:26px;padding:20px 20px 22px}
+@media(max-width:700px){.lad-in{grid-template-columns:1fr;gap:0}}
+.lad-in .field{margin-bottom:0}
 .field{margin-bottom:24px}
 .field:last-child{margin-bottom:0}
 .field-h{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:11px}
@@ -235,24 +238,37 @@ footer .big{font-family:var(--black);font-size:clamp(1.6rem,5.5vw,3.4rem);color:
 
 <section id="s2">
   <div class="sec-h"><span class="num">§02</span><h2>The ladder</h2></div>
-  <p class="sec-sub">One table. Your stake picks a row; the row is your cut of every dollar.</p>
+  <p class="sec-sub">One table. Your stake picks a row; the row is your cut of every dollar. The two ends of the ladder are set here — the rungs between them divide evenly.</p>
+  <div class="calc" id="ladcalc">
+    <div class="calc-h">
+      <div class="t">▚ Ladder</div>
+      <div class="live"><span class="dot" aria-hidden="true"></span><span id="ladStep">10-point steps</span></div>
+    </div>
+    <div class="calc-in lad-in">
+      <div class="field">
+        <div class="field-h"><label class="lab" for="floor">Floor · Public</label><span class="val" id="floorOut">10%</span></div>
+        <input type="range" id="floor" min="0" max="40" value="10" step="5" aria-describedby="floorOut">
+        <div class="ticks"><span>0%</span><span>20%</span><span>40%</span></div>
+      </div>
+      <div class="field">
+        <div class="field-h"><label class="lab" for="ceil">Ceiling · Diamond</label><span class="val" id="ceilOut">50%</span></div>
+        <input type="range" id="ceil" min="20" max="80" value="50" step="5" aria-describedby="ceilOut">
+        <div class="ticks"><span>20%</span><span>50%</span><span>80%</span></div>
+      </div>
+    </div>
+  </div>
   <div class="tw"><table>
     <thead><tr><th>ORDER staked</th><th>Orderly tier</th><th class="n">Cost @ $0.0341</th><th class="n">Your cut</th><th class="n">Volume to break even</th></tr></thead>
-    <tbody>
-      <tr><td class="hi">0</td><td>Public</td><td class="n">$0</td><td class="n">10%</td><td class="n dim">—</td></tr>
-      <tr><td class="hi">100,000</td><td>Silver</td><td class="n">$3,409</td><td class="n">20%</td><td class="n">$114M</td></tr>
-      <tr><td class="hi">300,000</td><td>Gold</td><td class="n">$10,226</td><td class="n">30%</td><td class="n">$227M</td></tr>
-      <tr><td class="hi">3,000,000</td><td>Platinum</td><td class="n">$102,263</td><td class="n">40%</td><td class="n">$3.07B</td></tr>
-      <tr class="accent"><td class="hi">7,000,000</td><td>Diamond</td><td class="n">$238,613</td><td class="n">50%</td><td class="n">$4.55B</td></tr>
-    </tbody>
+    <tbody id="ladderbody"></tbody>
+  
   </table></div>
   <p class="t-note">Orderly tier = the <a href="https://orderly.network/docs/introduction/trade-on-orderly/trading-basics/trading-fees" target="_blank" rel="noopener">builder fee tier</a> the same stake buys on Orderly. Every rung is one of Orderly's five real staking thresholds — this program invents none of its own, so a distributor's stake moves them up both ladders at once.</p>
-  <p class="t-note">Break-even = the taker volume that row has to produce before the extra 10 points have paid back what the extra ORDER cost, with invitees on Public (3 bps). Cross it and the upgrade is free. The stake stays yours, subject to Orderly's <a href="https://orderly.network/docs/introduction/tokenomics/order-staking/staking" target="_blank" rel="noopener">7-day unstaking period</a> — not withdrawable on demand. If one invitee grows past $50M/mo its base fee falls to 2.75–1.00 bps, which pushes these break-even volumes higher.</p>
+  <p class="t-note">Break-even = the taker volume that row has to produce before the extra <span id="stepNote">10</span> points have paid back what the extra ORDER cost, with invitees on Public (3 bps). Cross it and the upgrade is free. The stake stays yours, subject to Orderly's <a href="https://orderly.network/docs/introduction/tokenomics/order-staking/staking" target="_blank" rel="noopener">7-day unstaking period</a> — not withdrawable on demand. If one invitee grows past $50M/mo its base fee falls to 2.75–1.00 bps, which pushes these break-even volumes higher.</p>
 </section>
 
 <section id="s3">
   <div class="sec-h"><span class="num">§03</span><h2>Revenue</h2></div>
-  <p class="sec-sub">The rate is flat: $50M/mo and $50B/mo pay the same <em>percentage</em>. Revenue is modelled at 3 bps, which holds while each invitee stays under $50M/mo.</p>
+  <p class="sec-sub">The rate is flat: $50M/mo and $50B/mo pay the same <em>percentage</em>. Rungs follow the ladder set in §02. Revenue is modelled at 3 bps, which holds while each invitee stays under $50M/mo.</p>
 
   <div class="calc" id="calc">
     <div class="calc-h">
@@ -315,7 +331,7 @@ footer .big{font-family:var(--black);font-size:clamp(1.6rem,5.5vw,3.4rem);color:
 
 <section id="s5">
   <div class="sec-h"><span class="num">§05</span><h2>Cost</h2></div>
-  <p class="sec-sub">Set the average book per distributor. Mix: 60% Public / 20% Silver / 14% Gold / 5% Platinum / 1% Diamond — a blended 16.7% payout.</p>
+  <p class="sec-sub">Set the average book per distributor. Mix: 60% Public / 20% Silver / 14% Gold / 5% Platinum / 1% Diamond — a blended <span id="blendOut">16.7%</span> payout on the §02 ladder.</p>
   <div class="calc" id="costcalc">
     <div class="calc-h">
       <div class="t">▚ Cost calculator</div>
@@ -334,8 +350,8 @@ footer .big{font-family:var(--black);font-size:clamp(1.6rem,5.5vw,3.4rem);color:
     <tbody id="costbody"></tbody>
   
   </table></div>
-  <p class="t-note">100 distributors is the success case, not the base case. Dollar figures scale with the slider; the 16% and the ORDER locked do not — staking demand tracks distributor <em>count</em>, never their size. Assumes invitees each stay under $50M/mo so all sit on Public (3 bps); past that their base fee falls to 2.75–1.00 bps and gross revenue comes in lower than shown.</p>
-  <p>Worst case is bounded at 50% by construction. The program is premised on paying only for flow a distributor originates; how much of that flow would have arrived anyway is an attribution question this model does not answer.</p>
+  <p class="t-note">100 distributors is the success case, not the base case. Dollar figures scale with the volume slider; the ORDER locked does not — staking demand tracks distributor <em>count</em>, never their size. Assumes invitees each stay under $50M/mo so all sit on Public (3 bps); past that their base fee falls to 2.75–1.00 bps and gross revenue comes in lower than shown.</p>
+  <p>Worst case is bounded at the ceiling (<span id="ceilNote">50%</span>) by construction. The program is premised on paying only for flow a distributor originates; how much of that flow would have arrived anyway is an attribution question this model does not answer.</p>
   <div class="call">
     <div class="lab mono">What this does not do</div>
     <p>It is not a token sink. Even at 100 distributors the program locks <strong>28.2M ORDER, about 6.9% of circulating</strong> — real, but not a supply story, and that figure does not move however large the books get. Staking demand is bounded by distributor <em>count</em>, and a distributor who buys the top row once never needs to buy again no matter how large they grow. Judge this program on the revenue it originates, not on the ORDER it locks.</p>
@@ -355,15 +371,15 @@ footer .big{font-family:var(--black);font-size:clamp(1.6rem,5.5vw,3.4rem);color:
 
 <script>
 (function(){
-  var TIERS=[
-    {stake:0,share:0.10},{stake:100000,share:0.20},{stake:300000,share:0.30},
-    {stake:3000000,share:0.40},{stake:7000000,share:0.50}
-  ];
-  var BPS=3.0/10000, PRICE=0.03408758, TOP=TIERS.length-1, cur=TIERS.length-1;
-  var vol=document.getElementById('vol');
-  var ids=['volOut','stakeOut','capOut','roRev','roPay','roEff','roKeep','roGap','roGapSub','barBase','barOver','verdict'];
-  var el={}; ids.forEach(function(i){el[i]=document.getElementById(i);});
+  var STAKES=[0,100000,300000,3000000,7000000];
+  var NAMES=['Public','Silver','Gold','Platinum','Diamond'];
+  var COSTS=['$0','$3,409','$10,226','$102,263','$238,613'];
+  var MIX=[0.60,0.20,0.14,0.05,0.01];
+  var BPS=3.0/10000, PRICE=0.03408758, CIRC=409490289, PER=282000;
+  var TOP=STAKES.length-1, cur=TOP;
+  var SHARE=[0.10,0.20,0.30,0.40,0.50];
 
+  function $(id){return document.getElementById(id);}
   function usd(v){
     if(v>=1e9) return '$'+(v/1e9).toFixed(2)+'B';
     if(v>=1e6) return '$'+(v/1e6).toFixed(2)+'M';
@@ -371,64 +387,137 @@ footer .big{font-family:var(--black);font-size:clamp(1.6rem,5.5vw,3.4rem);color:
     return '$'+Math.round(v);
   }
   function usdFull(v){return '$'+Math.round(v).toLocaleString('en-US');}
-  function volFromSlider(p){
-    var lo=Math.log(5e7), hi=Math.log(5e10);
-    return Math.exp(lo+(hi-lo)*(p/100));
-  }
-  function payout(rev,i){ return rev*TIERS[i].share; }
+  function pct(x){var p=x*100; return (Math.abs(p-Math.round(p))<0.05?Math.round(p):p.toFixed(1))+'%';}
   var reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   function flash(node){
-    if(reduce) return;
+    if(!node||reduce) return;
     node.classList.remove('flash'); void node.offsetWidth; node.classList.add('flash');
   }
 
-  function render(){
-    var v=volFromSlider(+vol.value), rev=v*BPS, t=TIERS[cur];
-    var pay=payout(rev,cur), eff=t.share;
-    var top=TIERS[TOP], gap=rev*top.share - pay;
+  /* ---------- ladder (the shared input) ---------- */
+  var fl=$('floor'), ce=$('ceil');
+
+  function readLadder(){
+    var f=+fl.value/100, c=+ce.value/100;
+    if(c<f+0.05){ c=f+0.05; ce.value=Math.round(c*100); }
+    for(var i=0;i<=TOP;i++) SHARE[i]=f+(c-f)*i/TOP;
+    $('floorOut').textContent=pct(f);
+    $('ceilOut').textContent=pct(c);
+    var step=(c-f)/TOP;
+    $('ladStep').textContent=pct(step).replace('%','')+'-point steps';
+    var sn=$('stepNote'); if(sn) sn.textContent=pct(step).replace('%','');
+    var cn=$('ceilNote'); if(cn) cn.textContent=pct(c);
+  }
+
+  function breakEven(i){
+    if(i===0) return null;
+    var ds=SHARE[i]-SHARE[i-1];
+    if(ds<=0) return null;
+    return (STAKES[i]-STAKES[i-1])*PRICE/(BPS*ds);
+  }
+
+  function renderLadder(){
+    var body=$('ladderbody'); if(!body) return;
+    var html='';
+    for(var i=0;i<=TOP;i++){
+      var be=breakEven(i);
+      html+='<tr'+(i===TOP?' class="accent"':'')+'>'+
+        '<td class="hi">'+STAKES[i].toLocaleString('en-US')+'</td>'+
+        '<td>'+NAMES[i]+'</td>'+
+        '<td class="n">'+COSTS[i]+'</td>'+
+        '<td class="n">'+pct(SHARE[i])+'</td>'+
+        (be===null?'<td class="n dim">\u2014</td>':'<td class="n">'+usd(be)+'</td>')+
+        '</tr>';
+    }
+    body.innerHTML=html;
+  }
+
+  /* ---------- §03 revenue calculator ---------- */
+  var vol=$('vol');
+  var ids=['volOut','stakeOut','capOut','roRev','roPay','roEff','roKeep','roGap','roGapSub','barBase','barOver','verdict'];
+  var el={}; ids.forEach(function(i){el[i]=$(i);});
+  function volFromSlider(p){var lo=Math.log(5e7), hi=Math.log(5e10); return Math.exp(lo+(hi-lo)*(p/100));}
+
+  function renderCalc(){
+    if(!vol) return;
+    var v=volFromSlider(+vol.value), rev=v*BPS;
+    var share=SHARE[cur], pay=rev*share, topShare=SHARE[TOP], gap=rev*topShare-pay;
 
     el.volOut.textContent=usd(v);
-    el.stakeOut.textContent=t.stake.toLocaleString('en-US')+' ORDER';
-    el.capOut.textContent=Math.round(t.share*100)+'% / '+Math.round((1-t.share)*100)+'%';
+    el.stakeOut.textContent=STAKES[cur].toLocaleString('en-US')+' ORDER';
+    el.capOut.textContent=pct(share)+' / '+pct(1-share);
     el.roRev.textContent=usdFull(rev);
     el.roPay.textContent=usdFull(pay);
-    el.roEff.textContent=(eff*100).toFixed(1)+'%';
+    el.roEff.textContent=(share*100).toFixed(1)+'%';
     el.roKeep.textContent=usdFull(rev-pay);
     flash(el.roPay);
 
-    el.barBase.style.width=(t.share*100)+'%';
-    el.barOver.style.width=((1-t.share)*100)+'%';
+    el.barBase.style.width=(share*100)+'%';
+    el.barOver.style.width=((1-share)*100)+'%';
 
+    var need=STAKES[TOP]-STAKES[cur];
     if(cur===TOP){
       el.roGap.childNodes[0].nodeValue='$0';
-      el.roGapSub.textContent='Top of the ladder \u2014 50% is the ceiling';
+      el.roGapSub.textContent='Top of the ladder \u2014 '+pct(topShare)+' is the ceiling';
+      el.verdict.innerHTML='7,000,000 ORDER pays <b>'+pct(topShare)+'</b> of every dollar \u2014 at $50M/mo and at '+
+        '$50B/mo alike. Nothing above this row exists.';
     }else{
       el.roGap.childNodes[0].nodeValue=usdFull(gap)+'/mo';
-      var need=top.stake-t.stake;
-      el.roGapSub.textContent='+'+need.toLocaleString('en-US')+' ORDER (~'+usdFull(need*PRICE)+') to reach 50%';
+      el.roGapSub.textContent='+'+need.toLocaleString('en-US')+' ORDER (~'+usdFull(need*PRICE)+') to reach '+pct(topShare);
       flash(el.roGap);
+      var months=gap>0?(need*PRICE/gap):0;
+      el.verdict.innerHTML='You earn <b>'+pct(share)+'</b> flat. '+need.toLocaleString('en-US')+
+        ' more ORDER (~'+usdFull(need*PRICE)+') takes you to '+pct(topShare)+' and adds <b>'+usdFull(gap)+
+        '/mo</b> here \u2014 payback in <b>'+(months>0?months.toFixed(1):'\u2014')+' months</b>, stake still yours.';
     }
-
-    var msg;
-    if(cur===TOP){
-      msg='7,000,000 ORDER pays <b>50%</b> of every dollar \u2014 at $50M/mo and at $50B/mo alike. Nothing above this row exists.';
-    }else{
-      var months = gap>0 ? ((top.stake-t.stake)*PRICE/gap) : 0;
-      msg='You earn <b>'+Math.round(t.share*100)+'%</b> flat. '+(top.stake-t.stake).toLocaleString('en-US')+' more ORDER (~'+usdFull((top.stake-t.stake)*PRICE)+') takes you to 50% and adds <b>'+usdFull(gap)+'/mo</b> here \u2014 payback in <b>'+(months>0?months.toFixed(1):'\u2014')+' months</b>, stake still yours.';
-    }
-    el.verdict.innerHTML=msg;
   }
 
-  vol.addEventListener('input',render);
+  /* ---------- §05 cost calculator ---------- */
+  var cvol=$('cvol'), cbody=$('costbody'), COUNTS=[5,20,50,100];
+  function cvolFrom(p){var lo=Math.log(1e7), hi=Math.log(1e9); return Math.exp(lo+(hi-lo)*(p/100));}
+  function usdShort(v){
+    if(v>=1e9) return '$'+(v/1e9).toFixed(2)+'B';
+    if(v>=1e6) return '$'+(v/1e6).toFixed(1)+'M';
+    return '$'+Math.round(v).toLocaleString('en-US');
+  }
+  function blend(){var b=0; for(var i=0;i<=TOP;i++) b+=MIX[i]*SHARE[i]; return b;}
+
+  function renderCost(){
+    if(!cvol||!cbody) return;
+    var v=cvolFrom(+cvol.value), b=blend();
+    $('cvolOut').textContent=usdShort(v);
+    var bo=$('blendOut'); if(bo) bo.textContent=pct(b);
+    var html='';
+    COUNTS.forEach(function(n,idx){
+      var gross=n*v*BPS, paid=gross*b, locked=n*PER;
+      html+='<tr'+(idx===COUNTS.length-1?' class="accent"':'')+'>'+
+        '<td class="n hi">'+n+'</td>'+
+        '<td class="n">$'+Math.round(gross).toLocaleString('en-US')+'</td>'+
+        '<td class="n">$'+Math.round(paid).toLocaleString('en-US')+'</td>'+
+        '<td class="n">$'+Math.round(gross-paid).toLocaleString('en-US')+'</td>'+
+        '<td class="n">'+locked.toLocaleString('en-US')+'</td>'+
+        '<td class="n">'+(locked/CIRC*100).toFixed(2)+'%</td></tr>';
+    });
+    cbody.innerHTML=html;
+  }
+
+  function renderAll(){ readLadder(); renderLadder(); renderCalc(); renderCost(); }
+
+  if(fl) fl.addEventListener('input',renderAll);
+  if(ce) ce.addEventListener('input',renderAll);
+  if(vol) vol.addEventListener('input',renderCalc);
+  if(cvol) cvol.addEventListener('input',renderCost);
+
   var btns=Array.prototype.slice.call(document.querySelectorAll('#tierbtns button'));
   btns.forEach(function(b){
     b.addEventListener('click',function(){
       cur=+b.getAttribute('data-i');
       btns.forEach(function(x){x.setAttribute('aria-pressed', x===b?'true':'false');});
-      render();
+      renderCalc();
     });
   });
-  render();
+
+  renderAll();
 
   var links=Array.prototype.slice.call(document.querySelectorAll('#navlist a'));
   var byId={}; links.forEach(function(a){byId[a.getAttribute('href').slice(1)]=a;});
@@ -442,36 +531,7 @@ footer .big{font-family:var(--black);font-size:clamp(1.6rem,5.5vw,3.4rem);color:
   },{rootMargin:'-15% 0px -70% 0px'});
   document.querySelectorAll('section[id]').forEach(function(s){obs.observe(s);});
 })();
-(function(){
-  var vol=document.getElementById('cvol'), out=document.getElementById('cvolOut'),
-      body=document.getElementById('costbody');
-  if(!vol||!body) return;
-  var COUNTS=[5,20,50,100], BPS=3.0/10000, BLEND=0.167, PER=282000, CIRC=409490289;
-  function usd(v){
-    if(v>=1e9) return '$'+(v/1e9).toFixed(2)+'B';
-    if(v>=1e6) return '$'+(v/1e6).toFixed(1)+'M';
-    return '$'+Math.round(v).toLocaleString('en-US');
-  }
-  function volFrom(p){ var lo=Math.log(1e7), hi=Math.log(1e9); return Math.exp(lo+(hi-lo)*(p/100)); }
-  function render(){
-    var v=volFrom(+vol.value);
-    out.textContent=usd(v);
-    var html='';
-    COUNTS.forEach(function(n,idx){
-      var gross=n*v*BPS, paid=gross*BLEND, locked=n*PER;
-      html+='<tr'+(idx===COUNTS.length-1?' class="accent"':'')+'>'+
-        '<td class="n hi">'+n+'</td>'+
-        '<td class="n">$'+Math.round(gross).toLocaleString('en-US')+'</td>'+
-        '<td class="n">$'+Math.round(paid).toLocaleString('en-US')+'</td>'+
-        '<td class="n">$'+Math.round(gross-paid).toLocaleString('en-US')+'</td>'+
-        '<td class="n">'+locked.toLocaleString('en-US')+'</td>'+
-        '<td class="n">'+(locked/CIRC*100).toFixed(2)+'%</td></tr>';
-    });
-    body.innerHTML=html;
-  }
-  vol.addEventListener('input',render);
-  render();
-})();
 </script>
+
 </body>
 </html>

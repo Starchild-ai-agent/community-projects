@@ -3,7 +3,7 @@
     "type": "service",
     "user_id": "3986",
     "slug": "orderly-distributor",
-    "version": "2.0.0",
+    "version": "2.1.0",
     "description": "Orderly Distributor Program v2 — mechanics spec. Rate is bought with ORDER staking, status is earned with volume, and a capacity mechanic makes the correct stake a function of how well the distributor is doing. Single-page spec with a live capacity simulator.",
     "tags": [
       "orderly",
@@ -13,7 +13,7 @@
     "author": "user-3986",
     "license": "MIT",
     "github_url": "https://github.com/Starchild-ai-agent/community-projects/tree/main/projects/3986/orderly-distributor",
-    "updated_at": "2026-09-02T11:07:44.278Z",
+    "updated_at": "2026-09-02T11:55:53.523Z",
     "created_at": "2026-09-01T17:07:24.210Z"
   },
   {
