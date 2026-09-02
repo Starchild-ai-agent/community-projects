@@ -1,6 +1,6 @@
 name: orderly-distributor
 type: service
-version: 1.8.1
+version: 2.0.0
 license: MIT
 port: 9083
 description: Orderly Distributor Program v2 — mechanics spec. Rate is bought with

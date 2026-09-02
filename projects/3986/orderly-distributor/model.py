@@ -17,12 +17,11 @@ BUILDER_RATE = {"Public": 3.00, "Silver": 2.75, "Gold": 2.50, "Platinum": 2.00, 
 # Distributor ladder: stake (ORDER) -> share of Orderly revenue.
 # 10% floor on approval, 50% ceiling at the top of the ladder.
 TIERS = [
-    ("Registered", 0,         0.10),
-    ("Silver",     100_000,   0.18),
-    ("Gold",       300_000,   0.26),
-    ("Platinum",   1_000_000, 0.34),
-    ("Diamond",    3_000_000, 0.42),
-    ("Vanguard",   7_000_000, 0.50),
+    ("Public",     0,         0.10),
+    ("Silver",     100_000,   0.20),
+    ("Gold",       300_000,   0.30),
+    ("Platinum",   3_000_000, 0.40),
+    ("Diamond",    7_000_000, 0.50),
 ]
 
 

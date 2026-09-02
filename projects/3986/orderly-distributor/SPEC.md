@@ -58,23 +58,21 @@ Maker fees, maker rebates, and liquidation fees are out of scope (Orderly charge
 | Rung | Orderly tier | ORDER staked | USD @ $0.0341 | Share of Orderly rev | Applies to |
 |---|---|---|---|---|---|
 | 0-stake | Public | 0 | $0 | 10% | all attributed revenue |
-| 100K | Silver | 100,000 | $3,409 | 18% | all attributed revenue |
-| 300K | Gold | 300,000 | $10,226 | 26% | all attributed revenue |
-| 1M | — | 1,000,000 | $34,088 | 34% | all attributed revenue |
-| 3M | Platinum | 3,000,000 | $102,263 | 42% | all attributed revenue |
+| 100K | Silver | 100,000 | $3,409 | 20% | all attributed revenue |
+| 300K | Gold | 300,000 | $10,226 | 30% | all attributed revenue |
+| 3M | Platinum | 3,000,000 | $102,263 | 40% | all attributed revenue |
 | 7M | Diamond | 7,000,000 | $238,613 | 50% | all attributed revenue |
 
-Thresholds deliberately reuse the Builder Staking anchors (100K / 300K / 3M / 7M) so the ecosystem has **one ORDER ladder**, with 1M inserted to smooth the 300K→3M cliff. Steps are a uniform +8% so every upgrade is a clean ROI question.
+The rungs **are** Orderly's Builder Staking thresholds — all four of them, and no others. One stake, one ladder, two effects: a lower base fee from Orderly and a higher distributor share. An earlier draft inserted a 1M rung to smooth the 300K→3M cliff; it was removed because no such Orderly tier exists and inventing one breaks the 1:1 mapping. The cliff is real and is left visible. Steps are a uniform +10 points.
 
-**Upgrade ROI** — each +8% step is worth $2,400 per $100M of monthly taker volume:
+**Upgrade ROI** — each +10-point step is worth $3,000 per $100M of monthly taker volume:
 
 | Upgrade | Extra ORDER | Extra USD | Cumulative taker volume to repay the stake |
 |---|---|---|---|
-| 0-stake → 100K (Public → Silver) | 100,000 | $3,409 | $142M |
-| 100K → 300K (Silver → Gold) | 200,000 | $6,818 | $284M |
-| 300K → 1M (Gold → —) | 700,000 | $23,861 | $994M |
-| 1M → 3M (— → Platinum) | 2,000,000 | $68,175 | $2.84B |
-| 3M → 7M (Platinum → Diamond) | 4,000,000 | $136,350 | $5.68B |
+| Public → Silver | 100,000 | $3,409 | $114M |
+| Silver → Gold | 200,000 | $6,818 | $227M |
+| Gold → Platinum | 2,700,000 | $92,036 | $3.07B |
+| Platinum → Diamond | 4,000,000 | $136,350 | $4.55B |
 
 And the stake is still theirs afterwards — this is payback on a *recoverable* asset, not a fee.
 
@@ -82,11 +80,10 @@ And the stake is still theirs afterwards — this is payback on a *recoverable* 
 
 | Upgrade | Extra USD staked | Share gain | Vol to repay in 1 month | Vol to repay in 12 months |
 |---|---|---|---|---|
-| 0-stake → 100K | $3,409 | +8% | $142M | $11.8M |
-| 100K → 300K | $6,818 | +8% | $284M | $23.7M |
-| 300K → 1M | $23,861 | +8% | $994M | $82.9M |
-| 1M → 3M | $68,175 | +8% | $2.84B | $236.7M |
-| 3M → 7M | $136,350 | +8% | $5.68B | $473.4M |
+| Public → Silver | $3,409 | +10 pts | $114M | $9.5M |
+| Silver → Gold | $6,818 | +10 pts | $227M | $18.9M |
+| Gold → Platinum | $92,036 | +10 pts | $3.07B | $255.7M |
+| Platinum → Diamond | $136,350 | +10 pts | $4.55B | $378.8M |
 
 ---
 
@@ -143,12 +140,11 @@ Orderly nets exactly $150,000 in every permitted case. The distributor decides w
 
 | Distributor tier | May sponsor invitee up to |
 |---|---|
-| 0-stake | — |
-| 100K | Silver |
-| 300K | Gold |
-| 1M | 300K |
-| 3M | 1M |
-| 7M rung | 1M |
+| Public (0 stake) | — |
+| Silver | Silver |
+| Gold | Gold |
+| Platinum | Gold |
+| Diamond | Gold |
 
 Hard rules: payout floors at $0 (never negative); if discount cost exceeds earned share two months running, the sponsorship auto-downgrades one tier with 30 days' notice. Diamond pricing stays a manual Orderly-side strategic assignment, never distributor-granted.
 
@@ -186,7 +182,7 @@ Added:
 
 ## 8. Program cost to Orderly
 
-Assumes **$50M average monthly taker volume per distributor**, invitees on Public (3 bps). Realistic mix = 60% at 0 (Public) / 20% at 100K (Silver) / 10% at 300K (Gold) / 6% at 1M / 3% at 3M (Platinum) / 1% at 7M (Diamond), which blends to a **16%** payout.
+Assumes **$50M average monthly taker volume per distributor**, invitees on Public (3 bps). Realistic mix = 60% Public / 20% Silver / 14% Gold / 5% Platinum / 1% Diamond, which blends to a **16.7%** payout and locks 282,000 ORDER per distributor.
 
 100 distributors is the program's success ceiling, not its base case — at that count a large share of the world's meaningful order flow is routed through Orderly. Sizing beyond it is not a useful planning exercise.
 

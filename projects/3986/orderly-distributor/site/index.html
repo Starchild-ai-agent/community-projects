@@ -240,15 +240,14 @@ footer .big{font-family:var(--black);font-size:clamp(1.6rem,5.5vw,3.4rem);color:
     <thead><tr><th>ORDER staked</th><th>Orderly tier</th><th class="n">Cost @ $0.0341</th><th class="n">Your cut</th><th class="n">Volume to break even</th></tr></thead>
     <tbody>
       <tr><td class="hi">0</td><td>Public</td><td class="n">$0</td><td class="n">10%</td><td class="n dim">—</td></tr>
-      <tr><td class="hi">100,000</td><td>Silver</td><td class="n">$3,409</td><td class="n">18%</td><td class="n">$142M</td></tr>
-      <tr><td class="hi">300,000</td><td>Gold</td><td class="n">$10,226</td><td class="n">26%</td><td class="n">$284M</td></tr>
-      <tr><td class="hi">1,000,000</td><td><span class="dim">—</span></td><td class="n">$34,088</td><td class="n">34%</td><td class="n">$994M</td></tr>
-      <tr><td class="hi">3,000,000</td><td>Platinum</td><td class="n">$102,263</td><td class="n">42%</td><td class="n">$2.84B</td></tr>
-      <tr class="accent"><td class="hi">7,000,000</td><td>Diamond</td><td class="n">$238,613</td><td class="n">50%</td><td class="n">$5.68B</td></tr>
+      <tr><td class="hi">100,000</td><td>Silver</td><td class="n">$3,409</td><td class="n">20%</td><td class="n">$114M</td></tr>
+      <tr><td class="hi">300,000</td><td>Gold</td><td class="n">$10,226</td><td class="n">30%</td><td class="n">$227M</td></tr>
+      <tr><td class="hi">3,000,000</td><td>Platinum</td><td class="n">$102,263</td><td class="n">40%</td><td class="n">$3.07B</td></tr>
+      <tr class="accent"><td class="hi">7,000,000</td><td>Diamond</td><td class="n">$238,613</td><td class="n">50%</td><td class="n">$4.55B</td></tr>
     </tbody>
   </table></div>
-  <p class="t-note">Orderly tier = the <a href="https://orderly.network/docs/introduction/trade-on-orderly/trading-basics/trading-fees" target="_blank" rel="noopener">builder fee tier</a> the same stake would earn on Orderly (Silver 100K, Gold 300K, Platinum 3M, Diamond 7M). Four of the six rungs sit exactly on Orderly's staking thresholds; the 1M rung is this program's own and has no Orderly counterpart.</p>
-  <p class="t-note">Break-even = the taker volume that row has to produce before the extra 8% has paid back what the extra ORDER cost, with invitees on Public (3 bps). Cross it and the upgrade is free. The stake stays yours, subject to Orderly's <a href="https://orderly.network/docs/introduction/tokenomics/order-staking/staking" target="_blank" rel="noopener">7-day unstaking period</a> — not withdrawable on demand. If one invitee grows past $50M/mo its base fee falls to 2.75–1.00 bps, which pushes these break-even volumes higher.</p>
+  <p class="t-note">Orderly tier = the <a href="https://orderly.network/docs/introduction/trade-on-orderly/trading-basics/trading-fees" target="_blank" rel="noopener">builder fee tier</a> the same stake buys on Orderly. Every rung is one of Orderly's five real staking thresholds — this program invents none of its own, so a distributor's stake moves them up both ladders at once.</p>
+  <p class="t-note">Break-even = the taker volume that row has to produce before the extra 10 points have paid back what the extra ORDER cost, with invitees on Public (3 bps). Cross it and the upgrade is free. The stake stays yours, subject to Orderly's <a href="https://orderly.network/docs/introduction/tokenomics/order-staking/staking" target="_blank" rel="noopener">7-day unstaking period</a> — not withdrawable on demand. If one invitee grows past $50M/mo its base fee falls to 2.75–1.00 bps, which pushes these break-even volumes higher.</p>
 </section>
 
 <section id="s3">
@@ -273,9 +272,8 @@ footer .big{font-family:var(--black);font-size:clamp(1.6rem,5.5vw,3.4rem);color:
             <button type="button" data-i="0">0</button>
             <button type="button" data-i="1">100K</button>
             <button type="button" data-i="2">300K</button>
-            <button type="button" data-i="3">1M</button>
-            <button type="button" data-i="4">3M</button>
-            <button type="button" data-i="5" aria-pressed="true">7M</button>
+            <button type="button" data-i="3">3M</button>
+            <button type="button" data-i="4" aria-pressed="true">7M</button>
           </div>
         </div>
         <div class="field">
@@ -317,7 +315,7 @@ footer .big{font-family:var(--black);font-size:clamp(1.6rem,5.5vw,3.4rem);color:
 
 <section id="s5">
   <div class="sec-h"><span class="num">§05</span><h2>Cost</h2></div>
-  <p class="sec-sub">Set the average book per distributor. Mix: 60% at 0 stake / 20% 100K / 10% 300K / 6% 1M / 3% 3M / 1% 7M — a blended 16% payout.</p>
+  <p class="sec-sub">Set the average book per distributor. Mix: 60% Public / 20% Silver / 14% Gold / 5% Platinum / 1% Diamond — a blended 16.7% payout.</p>
   <div class="calc" id="costcalc">
     <div class="calc-h">
       <div class="t">▚ Cost calculator</div>
@@ -340,7 +338,7 @@ footer .big{font-family:var(--black);font-size:clamp(1.6rem,5.5vw,3.4rem);color:
   <p>Worst case is bounded at 50% by construction. The program is premised on paying only for flow a distributor originates; how much of that flow would have arrived anyway is an attribution question this model does not answer.</p>
   <div class="call">
     <div class="lab mono">What this does not do</div>
-    <p>It is not a token sink. Even at 100 distributors the program locks <strong>27M ORDER, about 6.6% of circulating</strong> — real, but not a supply story, and that figure does not move however large the books get. Staking demand is bounded by distributor <em>count</em>, and a distributor who buys the top row once never needs to buy again no matter how large they grow. Judge this program on the revenue it originates, not on the ORDER it locks.</p>
+    <p>It is not a token sink. Even at 100 distributors the program locks <strong>28.2M ORDER, about 6.9% of circulating</strong> — real, but not a supply story, and that figure does not move however large the books get. Staking demand is bounded by distributor <em>count</em>, and a distributor who buys the top row once never needs to buy again no matter how large they grow. Judge this program on the revenue it originates, not on the ORDER it locks.</p>
   </div>
 </section>
 
@@ -358,10 +356,10 @@ footer .big{font-family:var(--black);font-size:clamp(1.6rem,5.5vw,3.4rem);color:
 <script>
 (function(){
   var TIERS=[
-    {stake:0,share:0.10},{stake:100000,share:0.18},{stake:300000,share:0.26},
-    {stake:1000000,share:0.34},{stake:3000000,share:0.42},{stake:7000000,share:0.50}
+    {stake:0,share:0.10},{stake:100000,share:0.20},{stake:300000,share:0.30},
+    {stake:3000000,share:0.40},{stake:7000000,share:0.50}
   ];
-  var BPS=3.0/10000, PRICE=0.03408758, TOP=TIERS.length-1, cur=5;
+  var BPS=3.0/10000, PRICE=0.03408758, TOP=TIERS.length-1, cur=TIERS.length-1;
   var vol=document.getElementById('vol');
   var ids=['volOut','stakeOut','capOut','roRev','roPay','roEff','roKeep','roGap','roGapSub','barBase','barOver','verdict'];
   var el={}; ids.forEach(function(i){el[i]=document.getElementById(i);});
@@ -448,7 +446,7 @@ footer .big{font-family:var(--black);font-size:clamp(1.6rem,5.5vw,3.4rem);color:
   var vol=document.getElementById('cvol'), out=document.getElementById('cvolOut'),
       body=document.getElementById('costbody');
   if(!vol||!body) return;
-  var COUNTS=[5,20,50,100], BPS=3.0/10000, BLEND=0.16, PER=270000, CIRC=409490289;
+  var COUNTS=[5,20,50,100], BPS=3.0/10000, BLEND=0.167, PER=282000, CIRC=409490289;
   function usd(v){
     if(v>=1e9) return '$'+(v/1e9).toFixed(2)+'B';
     if(v>=1e6) return '$'+(v/1e6).toFixed(1)+'M';
