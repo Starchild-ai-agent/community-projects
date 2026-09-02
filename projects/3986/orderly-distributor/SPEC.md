@@ -70,11 +70,11 @@ Thresholds deliberately reuse the Builder Staking anchors (100K / 300K / 3M / 7M
 
 | Upgrade | Extra ORDER | Extra USD | Cumulative taker volume to repay the stake |
 |---|---|---|---|
-| Registered → Silver | 100,000 | $3,310 | $0.14B |
-| Silver → Gold | 200,000 | $6,620 | $0.28B |
-| Gold → Platinum | 700,000 | $23,170 | $0.97B |
-| Platinum → Diamond | 2,000,000 | $66,200 | $2.76B |
-| Diamond → Vanguard | 4,000,000 | $132,400 | $5.52B |
+| Registered → Silver | 100,000 | $3,310 | $140M |
+| Silver → Gold | 200,000 | $6,620 | $280M |
+| Gold → Platinum | 700,000 | $23,170 | $970M |
+| Platinum → Diamond | 2,000,000 | $66,200 | $2,760M |
+| Diamond → Vanguard | 4,000,000 | $132,400 | $5,520M |
 
 And the stake is still theirs afterwards — this is payback on a *recoverable* asset, not a fee.
 
@@ -82,11 +82,11 @@ And the stake is still theirs afterwards — this is payback on a *recoverable* 
 
 | Upgrade | Extra USD staked | Share gain | Vol to repay in 1 month | Vol to repay in 12 months |
 |---|---|---|---|---|
-| Registered → Silver | $3,310 | +8% | $0.14B | $11M |
-| Silver → Gold | $6,620 | +8% | $0.28B | $23M |
-| Gold → Platinum | $23,170 | +8% | $0.97B | $80M |
-| Platinum → Diamond | $66,200 | +8% | $2.76B | $230M |
-| Diamond → Vanguard | $132,400 | +8% | $5.52B | $460M |
+| Registered → Silver | $3,310 | +8% | $140M | $11M |
+| Silver → Gold | $6,620 | +8% | $280M | $23M |
+| Gold → Platinum | $23,170 | +8% | $970M | $80M |
+| Platinum → Diamond | $66,200 | +8% | $2,760M | $230M |
+| Diamond → Vanguard | $132,400 | +8% | $5,520M | $460M |
 
 ---
 
