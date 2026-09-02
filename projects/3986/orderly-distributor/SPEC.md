@@ -55,14 +55,14 @@ Maker fees, maker rebates, and liquidation fees are out of scope (Orderly charge
 
 ## 3. Stake ladder (the rate dial)
 
-| Tier | ORDER staked | USD @ $0.0341 | Share of Orderly rev | Applies to |
-|---|---|---|---|---|
-| 0-stake | 0 | $0 | 10% | all attributed revenue |
-| 100K | 100,000 | $3,310 | 18% | all attributed revenue |
-| 300K | 300,000 | $9,930 | 26% | all attributed revenue |
-| 1M | 1,000,000 | $33,100 | 34% | all attributed revenue |
-| 3M | 3,000,000 | $99,300 | 42% | all attributed revenue |
-| 7M tier | 7,000,000 | $231,700 | 50% | all attributed revenue |
+| Rung | Orderly tier | ORDER staked | USD @ $0.0341 | Share of Orderly rev | Applies to |
+|---|---|---|---|---|---|
+| 0-stake | Public | 0 | $0 | 10% | all attributed revenue |
+| 100K | Silver | 100,000 | $3,409 | 18% | all attributed revenue |
+| 300K | Gold | 300,000 | $10,226 | 26% | all attributed revenue |
+| 1M | — | 1,000,000 | $34,088 | 34% | all attributed revenue |
+| 3M | Platinum | 3,000,000 | $102,263 | 42% | all attributed revenue |
+| 7M | Diamond | 7,000,000 | $238,613 | 50% | all attributed revenue |
 
 Thresholds deliberately reuse the Builder Staking anchors (100K / 300K / 3M / 7M) so the ecosystem has **one ORDER ladder**, with 1M inserted to smooth the 300K→3M cliff. Steps are a uniform +8% so every upgrade is a clean ROI question.
 
@@ -70,11 +70,11 @@ Thresholds deliberately reuse the Builder Staking anchors (100K / 300K / 3M / 7M
 
 | Upgrade | Extra ORDER | Extra USD | Cumulative taker volume to repay the stake |
 |---|---|---|---|
-| 0-stake → 100K | 100,000 | $3,310 | $140M |
-| 100K → 300K | 200,000 | $6,620 | $280M |
-| 300K → 1M | 700,000 | $23,170 | $970M |
-| 1M → 3M | 2,000,000 | $66,200 | $2.76B |
-| 3M → 7M tier | 4,000,000 | $132,400 | $5.52B |
+| 0-stake → 100K (Public → Silver) | 100,000 | $3,409 | $142M |
+| 100K → 300K (Silver → Gold) | 200,000 | $6,818 | $284M |
+| 300K → 1M (Gold → —) | 700,000 | $23,861 | $994M |
+| 1M → 3M (— → Platinum) | 2,000,000 | $68,175 | $2.84B |
+| 3M → 7M (Platinum → Diamond) | 4,000,000 | $136,350 | $5.68B |
 
 And the stake is still theirs afterwards — this is payback on a *recoverable* asset, not a fee.
 
@@ -82,11 +82,11 @@ And the stake is still theirs afterwards — this is payback on a *recoverable* 
 
 | Upgrade | Extra USD staked | Share gain | Vol to repay in 1 month | Vol to repay in 12 months |
 |---|---|---|---|---|
-| 0-stake → 100K | $3,310 | +8% | $140M | $11M |
-| 100K → 300K | $6,620 | +8% | $280M | $23M |
-| 300K → 1M | $23,170 | +8% | $970M | $80M |
-| 1M → 3M | $66,200 | +8% | $2.76B | $230M |
-| 3M → 7M tier | $132,400 | +8% | $5.52B | $460M |
+| 0-stake → 100K | $3,409 | +8% | $142M | $11.8M |
+| 100K → 300K | $6,818 | +8% | $284M | $23.7M |
+| 300K → 1M | $23,861 | +8% | $994M | $82.9M |
+| 1M → 3M | $68,175 | +8% | $2.84B | $236.7M |
+| 3M → 7M | $136,350 | +8% | $5.68B | $473.4M |
 
 ---
 
@@ -106,7 +106,7 @@ A distributor doing $50M/month and one doing $50B/month at the same stake earn t
 
 **The rate holds flat across three orders of magnitude:**
 
-| Monthly taker volume | Orderly rev | Payout @ 0 stake | Payout @ 7M | 7M tier rate |
+| Monthly taker volume | Orderly rev | Payout @ 0 stake (Public) | Payout @ 7M (Diamond) | 7M rate |
 |---|---|---|---|---|
 | $50M | $15,000 | $1,500 | $7,500 | 50.0% |
 | $1B | $300,000 | $30,000 | $150,000 | 50.0% |
@@ -186,7 +186,7 @@ Added:
 
 ## 8. Program cost to Orderly
 
-Assumes **$50M average monthly taker volume per distributor**, invitees on Public (3 bps). Realistic mix = 60% at 0 / 20% at 100K / 10% at 300K / 6% at 1M / 3% at 3M / 1% at 7M, which blends to a **16%** payout.
+Assumes **$50M average monthly taker volume per distributor**, invitees on Public (3 bps). Realistic mix = 60% at 0 (Public) / 20% at 100K (Silver) / 10% at 300K (Gold) / 6% at 1M / 3% at 3M (Platinum) / 1% at 7M (Diamond), which blends to a **16%** payout.
 
 100 distributors is the program's success ceiling, not its base case — at that count a large share of the world's meaningful order flow is routed through Orderly. Sizing beyond it is not a useful planning exercise.
 

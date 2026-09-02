@@ -237,16 +237,17 @@ footer .big{font-family:var(--black);font-size:clamp(1.6rem,5.5vw,3.4rem);color:
   <div class="sec-h"><span class="num">§02</span><h2>The ladder</h2></div>
   <p class="sec-sub">One table. Your stake picks a row; the row is your cut of every dollar.</p>
   <div class="tw"><table>
-    <thead><tr><th>ORDER staked</th><th class="n">Cost @ $0.0341</th><th class="n">Your cut</th><th class="n">Volume to break even</th></tr></thead>
+    <thead><tr><th>ORDER staked</th><th>Orderly tier</th><th class="n">Cost @ $0.0341</th><th class="n">Your cut</th><th class="n">Volume to break even</th></tr></thead>
     <tbody>
-      <tr><td class="hi">0</td><td class="n">$0</td><td class="n">10%</td><td class="n dim">—</td></tr>
-      <tr><td class="hi">100,000</td><td class="n">$3,409</td><td class="n">18%</td><td class="n">$142M</td></tr>
-      <tr><td class="hi">300,000</td><td class="n">$10,226</td><td class="n">26%</td><td class="n">$284M</td></tr>
-      <tr><td class="hi">1,000,000</td><td class="n">$34,088</td><td class="n">34%</td><td class="n">$994M</td></tr>
-      <tr><td class="hi">3,000,000</td><td class="n">$102,263</td><td class="n">42%</td><td class="n">$2.84B</td></tr>
-      <tr class="accent"><td class="hi">7,000,000</td><td class="n">$238,613</td><td class="n">50%</td><td class="n">$5.68B</td></tr>
+      <tr><td class="hi">0</td><td>Public</td><td class="n">$0</td><td class="n">10%</td><td class="n dim">—</td></tr>
+      <tr><td class="hi">100,000</td><td>Silver</td><td class="n">$3,409</td><td class="n">18%</td><td class="n">$142M</td></tr>
+      <tr><td class="hi">300,000</td><td>Gold</td><td class="n">$10,226</td><td class="n">26%</td><td class="n">$284M</td></tr>
+      <tr><td class="hi">1,000,000</td><td><span class="dim">—</span></td><td class="n">$34,088</td><td class="n">34%</td><td class="n">$994M</td></tr>
+      <tr><td class="hi">3,000,000</td><td>Platinum</td><td class="n">$102,263</td><td class="n">42%</td><td class="n">$2.84B</td></tr>
+      <tr class="accent"><td class="hi">7,000,000</td><td>Diamond</td><td class="n">$238,613</td><td class="n">50%</td><td class="n">$5.68B</td></tr>
     </tbody>
   </table></div>
+  <p class="t-note">Orderly tier = the <a href="https://orderly.network/docs/introduction/trade-on-orderly/trading-basics/trading-fees" target="_blank" rel="noopener">builder fee tier</a> the same stake would earn on Orderly (Silver 100K, Gold 300K, Platinum 3M, Diamond 7M). Four of the six rungs sit exactly on Orderly's staking thresholds; the 1M rung is this program's own and has no Orderly counterpart.</p>
   <p class="t-note">Break-even = the taker volume that row has to produce before the extra 8% has paid back what the extra ORDER cost, with invitees on Public (3 bps). Cross it and the upgrade is free. The stake stays yours, subject to Orderly's <a href="https://orderly.network/docs/introduction/tokenomics/order-staking/staking" target="_blank" rel="noopener">7-day unstaking period</a> — not withdrawable on demand. If one invitee grows past $50M/mo its base fee falls to 2.75–1.00 bps, which pushes these break-even volumes higher.</p>
 </section>
 
