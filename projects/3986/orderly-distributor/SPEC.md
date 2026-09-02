@@ -92,12 +92,12 @@ And the stake is still theirs afterwards — this is payback on a *recoverable* 
 
 ## 4. What the rate does not depend on
 
-One dial, one input. The share is a pure function of ORDER staked and applies to every dollar of attributed revenue — the first dollar and the ten-millionth are paid at exactly the same percentage.
+One dial, one input. The share is a pure function of ORDER staking tier and applies to every dollar of attributed revenue — the first dollar and the ten-millionth are paid at exactly the same percentage.
 
 ```
 R = attributed Orderly base-fee revenue this period
 
-payout = share(ORDER_staked) × R
+payout = share(ORDER_staking_tier) × R
 
 no volume qualifier · no cap · no quota · no overflow · no decay
 ```
