@@ -220,7 +220,7 @@ footer .big{font-family:var(--black);font-size:clamp(1.6rem,5.5vw,3.4rem);color:
   <div><div class="k mono">Market cap</div><div class="v">$13.5M</div></div>
   <div><div class="k mono">Circulating</div><div class="v">409.5M</div></div>
   <div><div class="k mono">Payout band</div><div class="v">10% — 50%</div></div>
-  <div><div class="k mono">Blended cost</div><div class="v">≈14% of rev</div></div>
+  <div><div class="k mono">Blended cost</div><div class="v">16% of rev</div></div>
 </div>
 
 <section id="s1">
@@ -315,20 +315,21 @@ footer .big{font-family:var(--black);font-size:clamp(1.6rem,5.5vw,3.4rem);color:
 
 <section id="s5">
   <div class="sec-h"><span class="num">§05</span><h2>Cost</h2></div>
-  <p class="sec-sub">$500M monthly taker volume per distributor, invitees on Public (3 bps). Mix: 60% at 0 stake / 20% 100K / 10% 300K / 6% 1M / 3% 3M / 1% 7M.</p>
+  <p class="sec-sub">$50M average monthly taker volume per distributor, invitees on Public (3 bps). Mix: 60% at 0 stake / 20% 100K / 10% 300K / 6% 1M / 3% 3M / 1% 7M — a blended 16% payout.</p>
   <div class="tw"><table>
-    <thead><tr><th class="n">Distributors</th><th class="n">Gross rev/mo</th><th class="n">Paid out</th><th class="n">ORDER locked</th><th class="n">% circulating</th></tr></thead>
+    <thead><tr><th class="n">Distributors</th><th class="n">Gross rev/mo</th><th class="n">Paid out</th><th class="n">Orderly keeps</th><th class="n">ORDER locked</th><th class="n">% circulating</th></tr></thead>
     <tbody>
-      <tr><td class="n hi">10</td><td class="n">$1,500,000</td><td class="n">$240,000 (16%)</td><td class="n">2,700,000</td><td class="n">0.66%</td></tr>
-      <tr><td class="n hi">50</td><td class="n">$7,500,000</td><td class="n">$1,200,000 (16%)</td><td class="n">13,500,000</td><td class="n">3.30%</td></tr>
-      <tr><td class="n hi">200</td><td class="n">$30,000,000</td><td class="n">$4,800,000 (16%)</td><td class="n">54,000,000</td><td class="n">13.19%</td></tr>
-      <tr class="accent"><td class="n hi">500</td><td class="n">$75,000,000</td><td class="n">$12,000,000 (16%)</td><td class="n">135,000,000</td><td class="n">32.97%</td></tr>
+      <tr><td class="n hi">5</td><td class="n">$75,000</td><td class="n">$12,000</td><td class="n">$63,000</td><td class="n">1,350,000</td><td class="n">0.33%</td></tr>
+      <tr><td class="n hi">20</td><td class="n">$300,000</td><td class="n">$48,000</td><td class="n">$252,000</td><td class="n">5,400,000</td><td class="n">1.32%</td></tr>
+      <tr><td class="n hi">50</td><td class="n">$750,000</td><td class="n">$120,000</td><td class="n">$630,000</td><td class="n">13,500,000</td><td class="n">3.30%</td></tr>
+      <tr class="accent"><td class="n hi">100</td><td class="n">$1,500,000</td><td class="n">$240,000</td><td class="n">$1,260,000</td><td class="n">27,000,000</td><td class="n">6.59%</td></tr>
     </tbody>
   </table></div>
+  <p class="t-note">100 distributors is the success case, not the base case — that is most of the world's meaningful order flow routed through Orderly. Everything scales linearly in volume: double the average book and every dollar figure doubles, while the 16% and the ORDER locked do not move.</p>
   <p>Worst case is bounded at 50% by construction, and every dollar is paid on revenue that would not exist otherwise.</p>
   <div class="call">
-    <div class="lab mono">The tradeoff this accepts</div>
-    <p>A flat ladder <strong>saturates</strong>. The whole thing tops out at $231,700, so a large distributor buys the top row once and never touches ORDER again. Locked supply grows by <strong>recruiting more distributors</strong>, not by any one of them scaling. That is the price of keeping volume off the rate.</p>
+    <div class="lab mono">What this does not do</div>
+    <p>It is not a token sink. Even at 100 distributors the program locks <strong>27M ORDER, about 6.6% of circulating</strong> — real, but not a supply story. Staking demand is bounded by distributor <em>count</em>, and a distributor who buys the top row once never needs to buy again no matter how large they grow. Judge this program on the revenue it originates, not on the ORDER it locks.</p>
   </div>
 </section>
 

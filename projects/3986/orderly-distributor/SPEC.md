@@ -186,26 +186,31 @@ Added:
 
 ## 8. Program cost to Orderly
 
-Assumes $500M monthly taker volume per distributor, invitees on Public (3 bps). Realistic mix = 60% Registered / 20% Silver / 10% Gold / 6% Platinum / 3% Diamond / 1% Vanguard.
+Assumes **$50M average monthly taker volume per distributor**, invitees on Public (3 bps). Realistic mix = 60% Registered / 20% Silver / 10% Gold / 6% Platinum / 3% Diamond / 1% Vanguard, which blends to a **16%** payout.
 
-| Distributors | Gross Orderly rev/mo | All at 10% | All at 50% | **Blended, realistic mix** |
-|---|---|---|---|---|
-| 10 | $1,500,000 | $150,000 (10%) | $750,000 (50%) | **$214,000 (14%)** |
-| 50 | $7,500,000 | $750,000 (10%) | $3,750,000 (50%) | **$1,070,000 (14%)** |
-| 200 | $30,000,000 | $3,000,000 (10%) | $15,000,000 (50%) | **$4,280,000 (14%)** |
+100 distributors is the program's success ceiling, not its base case — at that count a large share of the world's meaningful order flow is routed through Orderly. Sizing beyond it is not a useful planning exercise.
 
-Blended cost lands ~14% of attributed revenue — and 100% of it is paid on **revenue that would not exist without the distributor**. Worst case is bounded at 50% by construction, and Orderly is indifferent to sponsorship, so there is no second leak.
+| Distributors | Gross Orderly rev/mo | All at 10% | All at 50% | **Blended (16%)** | Orderly keeps |
+|---|---|---|---|---|---|
+| 5 | $75,000 | $7,500 | $37,500 | **$12,000** | $63,000 |
+| 20 | $300,000 | $30,000 | $150,000 | **$48,000** | $252,000 |
+| 50 | $750,000 | $75,000 | $375,000 | **$120,000** | $630,000 |
+| 100 | $1,500,000 | $150,000 | $750,000 | **$240,000** | $1,260,000 |
+
+Everything scales linearly in volume: at a $100M average book every dollar figure doubles, while the blended 16% and the ORDER locked are unchanged.
+
+Blended cost lands at 16% of attributed revenue, and 100% of it is paid on **revenue that would not exist without the distributor**. Worst case is bounded at 50% by construction, and Orderly is indifferent to sponsorship, so there is no second leak.
 
 **ORDER staking demand created:**
 
-| Distributors | ORDER locked | USD @ $0.0331 | % of circulating |
+| Distributors | ORDER locked | USD @ $0.0331 | % of circulating (409.5M) |
 |---|---|---|---|
-| 10 | 2,700,000 | $89,370 | 0.66% |
+| 5 | 1,350,000 | $44,685 | 0.33% |
+| 20 | 5,400,000 | $178,740 | 1.32% |
 | 50 | 13,500,000 | $446,850 | 3.30% |
-| 200 | 54,000,000 | $1,787,400 | 13.19% |
-| 500 | 135,000,000 | $4,468,500 | 32.97% |
+| 100 | 27,000,000 | $893,700 | 6.59% |
 
-Staking demand from this program is **bounded by distributor count**, not by their volume: 500 distributors at the realistic mix lock ~33% of circulating supply, and the same 500 lock no more than that no matter how large they grow. Growth in locked ORDER comes from recruiting more distributors and from more of them climbing the ladder.
+Staking demand is **bounded by distributor count**, not by their volume — the same 100 distributors lock no more than 27M ORDER however large they grow. This is a revenue-origination program with a staking side effect, not a supply sink; it should be judged on originated revenue.
 
 ---
 
