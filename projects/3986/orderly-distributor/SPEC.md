@@ -117,7 +117,6 @@ A distributor doing $50M/month and one doing $50B/month at the same stake earn t
 
 **Implementation details that matter:**
 
-- **Staking above 7M buys nothing.** Vanguard is the ceiling; there is no reason to hold more than the top threshold.
 - **Settlement is daily**, on that day's attributed revenue at that day's rate. No month-to-date accumulator and no true-up — there is nothing to accumulate against.
 - **The daily stake snapshot uses the minimum stake held during that day**, so nobody can stake for one snapshot and unstake right after.
 - **Crossing a threshold takes effect the next settlement day.** Upgrades apply forward only; no retroactive re-rating of revenue already paid.
