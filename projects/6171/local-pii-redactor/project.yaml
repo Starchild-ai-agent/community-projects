@@ -1,0 +1,8 @@
+name: local-pii-redactor
+version: 1.0.2
+type: script
+description: Local deterministic PII redaction utility with JSON reports.
+license: MIT
+entry: scripts/redact.py
+env_required: []
+author: user-6171
