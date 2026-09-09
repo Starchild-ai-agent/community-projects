@@ -1,5 +1,18 @@
 [
   {
+    "type": "service",
+    "user_id": "3182",
+    "slug": "market-opening-checklist-weekly",
+    "version": "1.0.0",
+    "description": "A weekly self-contained static HTML checklist UI for preparing a market-opening review. Users record observable pre-market facts first, then analysis, with checkboxes, a progress indicator, and per-session-date localStorage persistence. Ships with empty fields by design — no live data is fetched.",
+    "tags": [],
+    "author": "user-3182",
+    "license": "MIT",
+    "github_url": "https://github.com/Starchild-ai-agent/community-projects/tree/main/projects/3182/market-opening-checklist-weekly",
+    "updated_at": "2026-09-09T14:35:08.299Z",
+    "created_at": "2026-09-09T14:35:08.299Z"
+  },
+  {
     "type": "script",
     "user_id": "6171",
     "slug": "local-pii-redactor",

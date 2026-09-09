@@ -1,0 +1,17 @@
+name: market-opening-checklist-weekly
+type: service
+version: 1.0.0
+title: Market Opening Checklist
+slug: market-opening-checklist-weekly
+entry: src/index.html
+license: MIT
+port: 8787
+description: A weekly self-contained static HTML checklist UI for preparing a market-opening
+  review. Users record observable pre-market facts first, then analysis, with checkboxes,
+  a progress indicator, and per-session-date localStorage persistence. Ships with empty
+  fields by design — no live data is fetched.
+env_required: []
+author: user-3182
+publisher:
+  public_slug: "3182-market-opening-checklist-weekly"
+  code_slug: "market-opening-checklist-weekly"
