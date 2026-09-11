@@ -1,0 +1,11 @@
+name: personal-intro
+type: service
+version: 1.0.1
+license: MIT
+entry: index.html
+port: 9081
+description: 基于 HTML5 UP Read Only 模板的中文个人介绍页
+env_required: []
+publisher:
+  public_slug: intro
+author: user-5093
