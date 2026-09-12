@@ -3,7 +3,7 @@
     "type": "script",
     "user_id": "554",
     "slug": "gpt-live-demo",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "GPT-Live voice receptionist demo - WebRTC browser client + Express relay server bridging to a Starchild agent brain. Installable as a Starchild skill for any agent.",
     "tags": [
       "voice",
@@ -14,7 +14,7 @@
     "author": "user-554",
     "license": "MIT",
     "github_url": "https://github.com/Starchild-ai-agent/community-projects/tree/main/projects/554/gpt-live-demo",
-    "updated_at": "2026-09-12T11:10:22.788Z",
+    "updated_at": "2026-09-12T11:11:57.608Z",
     "created_at": "2026-09-12T11:10:22.788Z"
   },
   {

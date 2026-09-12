@@ -1,5 +1,5 @@
 name: gpt-live-demo
-version: 1.0.0
+version: 1.0.1
 type: script
 description: GPT-Live voice receptionist demo - WebRTC browser client + Express relay
   server bridging to a Starchild agent brain. Installable as a Starchild skill for

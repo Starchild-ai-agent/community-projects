@@ -20,7 +20,7 @@ Architecture: browser (WebRTC audio + oai-events DataChannel) → OpenAI GPT-Liv
 ## How to start
 
 ```
-npx skills@latest add jotaro-ora/gpt-live-demo-skill --agent openclaw
+In any Starchild agent: fork community project 554/gpt-live-demo (or `python3 -c "import sys; sys.path.insert(0,'skills/community-publish'); from exports import fork; print(fork('554/gpt-live-demo'))"`)
 cd skills/gpt-live-demo/scripts
 npm install
 node server.mjs        # relay on :3000
