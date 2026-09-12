@@ -7,7 +7,7 @@ WebRTC 语音通话前端 + Express 中继服务器，让用户通过浏览器�
 ## 一行安装（任意 Starchild agent）
 
 ```bash
-Fork community project 554/gpt-live-demo via Starchild community-publish (fork("554/gpt-live-demo"))
+npx skills@latest add jotaro-ora/gpt-live-demo-skill --agent openclaw
 ```
 
 ## 快速启动

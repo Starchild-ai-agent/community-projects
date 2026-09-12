@@ -14,8 +14,7 @@ Architecture: browser (WebRTC audio + oai-events DataChannel) → OpenAI GPT-Liv
 ## Required env
 
 - `OPENAI_API_KEY` — OpenAI key with GPT-Live access (relay uses it to mint WebRTC session tokens)
-- `STARCHILD_AGENT_PORT` — port of the local Starchild agent API (default 8000)
-- Starchild agent key is injected by the platform proxy; on a bare server set `SC_AGENT_KEY`
+- Starchild brain endpoint is hardcoded to `localhost:8000/chat/stream` inside the platform; standalone deploys need a reachable agent SSE endpoint
 
 ## How to start
 
@@ -29,7 +28,9 @@ node server.mjs        # relay on :3000
 
 ## Outputs / Behavior
 
-- Browser establishes a WebRTC call with GPT-Live; the transcript and delegation events stream into the on-page log
+- Dual-pane UI: chat bubbles + live event log (delegation / tool / result), per-second billing meter
+- Recent voice history is re-injected into each new session (memory re-injection) and persisted to `data/voice-history.json` across restarts
+- Backend tool routing: ask_starchild / check_task / cancel_task / list_tasks / memory_lookup; tasks persisted to `data/tasks.json` (done tasks kept 1h)
 - GPT-Live delegates tasks to the Starchild agent via the relay; the agent's streamed progress is injected back into the live session (`session.thinking.append`) so the voice reports intermediate status
 - Billing/per-second counters shown in the UI
 

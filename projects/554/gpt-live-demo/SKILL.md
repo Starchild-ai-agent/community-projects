@@ -1,8 +1,10 @@
 ---
 name: gpt-live-demo
-version: 0.1.0
+version: 0.2.0
 description: >
   GPT-Live 语音接线员 Demo — WebRTC 语音通话前端 + Express 中继服务器 + Starchild brain 桥接。
+  五工具路由（ask_starchild / check_task / cancel_task / list_tasks / memory_lookup）、
+  跨重启持久化（data/tasks.json + voice-history.json）与会话记忆回灌。
   用户通过浏览器直接与 GPT-Live 语音模型对话，对话内容由 Starchild agent 作为后端大脑处理。
   适用于：语音 Demo 演示、GPT-Live 中继服务开发、实时语音 + AI 代理集成原型。
 tags: [voice, gpt-live, webrtc, demo, relay-server]
@@ -47,12 +49,21 @@ cd <skill-dir>/scripts
 npm install
 ```
 
-### 2. 设置环境变量
+### 2. 准备 OpenAI API key（安装者必读）
+
+本 skill 依赖 OpenAI 的 `gpt-live-1` 实时语音模型，**没有内置 key，也无法代申请**。
+使用前请自行准备：
+
+1. 前往 https://platform.openai.com/api-keys 创建一个 API key（`sk-...` 格式）；
+2. 该账号需已开通 **gpt-live-1（Realtime Beta）访问权限**——在 OpenAI 后台申请，未开通会报 403/model_not_found；
+3. 将 key 写入环境变量（或 skill 目录下的 `.env`）：
 
 ```bash
-export OPENAI_API_KEY=sk-...   # 需要有 gpt-live-1 访问权限
+export OPENAI_API_KEY=sk-...   # 必填，需 gpt-live-1 访问权限
 export PORT=3000               # 可选，默认 3000
 ```
+
+> 没有有效 key 时，`/api/session` 会返回 401，浏览器端表现为"无法开始通话"。
 
 ### 3. 启动服务
 
@@ -87,7 +98,7 @@ node server.mjs
 
 ## 注意事项
 
-- `OPENAI_API_KEY` 必须有 `gpt-live-1` 模型的访问权限（需申请 Beta 访问）
+- 使用前必须自备 `OPENAI_API_KEY`（见「快速开始 · 第 2 步」），需开通 gpt-live-1（Realtime Beta）访问权限，否则无法建立通话
 - 服务默认仅监听本地，生产部署前须在 `/api/session` 加鉴权
-- 中继服务器保存对话历史在内存中（`histories` Map），重启即清空；生产环境建议持久化
+- 任务与语音历史持久化到 `data/` 目录（防抖落盘），重启不丢失；完成后任务保留 1 小时
 - 计费估算基于 $0.05/分钟（gpt-live-1 语音），后端 brain 调用费用另计

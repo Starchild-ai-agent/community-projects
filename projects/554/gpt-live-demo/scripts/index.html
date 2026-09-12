@@ -3,169 +3,168 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Starchild · GPT-Live 语音接线员 Demo</title>
+<title>Starchild · GPT-Live 语音 Demo</title>
 <style>
-:root{--bg:#0b0e14;--panel:#12161f;--line:#1f2633;--txt:#e7ecf3;--dim:#8b96a8;--acc:#5eead4;--amber:#fbbf24;--rose:#fb7185;--blue:#60a5fa}
+:root{--bg:#0b1512;--panel:#101d19;--line:#1d332c;--tx:#d7e8e1;--dim:#6b8a80;--acc:#4ade80;--err:#f87171;--warn:#fbbf24}
 *{box-sizing:border-box;margin:0}
-body{background:var(--bg);color:var(--txt);font:14px/1.55 -apple-system,"PingFang SC","Segoe UI",sans-serif;height:100vh;display:flex;flex-direction:column}
-header{display:flex;align-items:center;gap:14px;padding:14px 20px;border-bottom:1px solid var(--line)}
-h1{font-size:16px;font-weight:600}
-h1 .emoji{margin-right:6px}
-#status{font-size:12px;padding:3px 10px;border-radius:99px;border:1px solid var(--line);color:var(--dim)}
-#status.on{color:#052e2b;background:var(--acc);border-color:var(--acc);font-weight:600}
-#status.err{color:#fecdd3;background:#4c1d24;border-color:var(--rose)}
-#cost{font-size:12px;color:var(--amber);font-variant-numeric:tabular-nums;white-space:nowrap}
-.spacer{flex:1}
-button{font:inherit;border:1px solid var(--line);background:var(--panel);color:var(--txt);padding:8px 18px;border-radius:10px;cursor:pointer}
-button:hover{border-color:var(--acc)}
-button:disabled{opacity:.4;cursor:not-allowed}
+body{background:var(--bg);color:var(--tx);font:14px/1.5 -apple-system,"PingFang SC",sans-serif;padding:16px;max-width:760px;margin:0 auto}
+h1{font-size:17px;margin-bottom:4px}
+.sub{color:var(--dim);font-size:12px;margin-bottom:12px}
+#status{font-size:12px;color:var(--dim);min-height:18px;margin-bottom:8px}
+#status.err{color:var(--err)}
+button{background:#152822;color:var(--tx);border:1px solid var(--line);border-radius:8px;padding:8px 16px;font-size:13px;cursor:pointer}
 #connect{background:var(--acc);color:#052e2b;font-weight:600;border-color:var(--acc)}
-main{flex:1;display:grid;grid-template-columns:1fr 1fr;gap:0;min-height:0}
-section{display:flex;flex-direction:column;min-height:0}
-section:first-child{border-right:1px solid var(--line)}
-h2{font-size:12px;font-weight:600;color:var(--dim);text-transform:uppercase;letter-spacing:.08em;padding:10px 20px;border-bottom:1px solid var(--line)}
-#chat{flex:1;overflow-y:auto;padding:16px 20px;display:flex;flex-direction:column;gap:10px}
-.bubble{max-width:85%;padding:9px 13px;border-radius:14px;white-space:pre-wrap}
-.bubble.user{align-self:flex-end;background:#1c3a5e;border-bottom-right-radius:4px}
-.bubble.bot{align-self:flex-start;background:var(--panel);border:1px solid var(--line);border-bottom-left-radius:4px}
-.bubble .who{display:block;font-size:10px;color:var(--dim);margin-bottom:2px}
-#log{flex:1;overflow-y:auto;padding:10px 14px;font:11.5px/1.5 ui-monospace,Menlo,monospace}
-.ev{padding:6px 9px;border-radius:8px;margin-bottom:4px;border:1px solid transparent;display:flex;gap:8px;align-items:baseline}
-.ev .t{color:var(--dim);flex-shrink:0}
-.ev .b{word-break:break-all}
-.ev.raw{color:#5b6577}
-.ev.deleg{background:#2b2410;border-color:#4a3c12;color:var(--amber)}
-.ev.tool{background:#0f2438;border-color:#1d3a5f;color:var(--blue)}
-.ev.result{background:#0d2b23;border-color:#1c4a3d;color:var(--acc)}
-.ev.speech{background:#261019;border-color:#4a1c2a;color:#fda4af}
-.ev.sys{color:#7c8798}
-footer{border-top:1px solid var(--line);padding:10px 20px;display:flex;gap:16px;align-items:center;color:var(--dim);font-size:12px}
-.dot{width:7px;height:7px;border-radius:50%;background:#334155}
-.dot.live{background:var(--acc);animation:p 1.2s infinite}
-@keyframes p{50%{opacity:.3}}
+button:disabled{opacity:.4;cursor:not-allowed}
+.row{display:flex;gap:8px;margin-bottom:12px}
+#chat{display:flex;flex-direction:column;gap:6px;margin-bottom:12px}
+.bubble{max-width:82%;padding:8px 12px;border-radius:12px;font-size:13px}
+.bubble.user{align-self:flex-end;background:#1b3a2f}
+.bubble.agent{align-self:flex-start;background:var(--panel);border:1px solid var(--line)}
+#log{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:10px;height:300px;overflow-y:auto;font:11px/1.6 ui-monospace,monospace}
+.ev{margin-bottom:2px;white-space:pre-wrap;word-break:break-all}
+.ev.sys{color:var(--dim)}.ev.deleg{color:var(--warn)}.ev.tool{color:#7dd3fc}
+.ev.result{color:var(--acc)}.ev.err{color:var(--err)}.ev.raw{color:#a78bfa}
+footer{display:flex;align-items:center;gap:6px;color:var(--dim);font-size:12px;margin-top:10px}
+.dot{width:8px;height:8px;border-radius:50%;background:#3a4f48}
+.dot.live{background:var(--acc)}
 </style>
 </head>
 <body>
-<header>
-  <h1><span class="emoji">🐶</span>Starchild · GPT-Live</h1>
-  <span id="status">未连接</span>
-  <span id="cost" title="gpt-live-1 $0.05/分钟，后端大脑调用另计"></span>
-  <div class="spacer"></div>
-  <button id="close" disabled>结束会话</button>
+<h1>🐶 Starchild 语音</h1>
+<div class="sub">GPT-Live 语音层 · Starchild 大脑 · 五工具路由（memory_lookup / ask_starchild / check_task / cancel_task / list_tasks）</div>
+<div id="status">未连接</div>
+<div class="row">
   <button id="connect">开始通话</button>
-</header>
-<main>
-  <section>
-    <h2>对话</h2>
-    <div id="chat"></div>
-  </section>
-  <section>
-    <h2>事件流水（prompt / 委派 / 结果）</h2>
-    <div id="log"></div>
-  </section>
-</main>
+  <button id="close" disabled>挂断</button>
+</div>
+<div id="chat"></div>
+<div id="log"></div>
 <footer><span class="dot" id="micdot"></span><span id="mic">麦克风未开启</span></footer>
 
 <script>
 const $=id=>document.getElementById(id);
 const chat=$("chat"),log=$("log"),status=$("status");
-
-// ---- 计费器：gpt-live-1 $0.05/分钟，按秒计费（后端大脑调用另计）----
-const RATE_PER_SEC=0.05/60;
-const TOTAL_KEY="gptlive_total_usd";
-let totalBase=parseFloat(localStorage.getItem(TOTAL_KEY)||"0");
-let sessionCost=0;          // 本次页面内已结束通话的费用
-let callStartTs=null;       // 当前通话开始时间
-let callTimer=null;
-let lastSettled=null;       // 最近一次结算采用的秒数（用于官方用量修正）
-function renderCost(){
-  const live=callStartTs?(Date.now()-callStartTs)/1000*RATE_PER_SEC:0;
-  const cur=sessionCost+live;
-  $("cost").textContent=`本次 $${cur.toFixed(4)} ｜ 累计 $${(totalBase+cur).toFixed(4)}`;
-  $("cost").title=`gpt-live-1 语音 $0.05/分钟（按秒计）\n后端大脑（Starchild agent）调用单独计费，未含在内`;
-}
-function startMeter(){callStartTs=Date.now();renderCost();if(!callTimer)callTimer=setInterval(renderCost,1000);}
-function endMeter(usageSec){
-  if(callTimer){clearInterval(callTimer);callTimer=null;}
-  if(callStartTs){
-    const secs=Math.max(0,(Date.now()-callStartTs)/1000);
-    lastSettled=secs;
-    const cost=secs*RATE_PER_SEC;
-    sessionCost+=cost;totalBase+=cost;
-    try{localStorage.setItem(TOTAL_KEY,String(totalBase));}catch(_){}
-    callStartTs=null;
-  }
-  // session.closed 带官方用量时，用官方秒数修正墙钟估算
-  if(typeof usageSec==="number"&&usageSec>0&&lastSettled!=null){
-    const delta=usageSec-lastSettled;
-    lastSettled=null;
-    if(Math.abs(delta)>0.5){
-      const dcost=delta*RATE_PER_SEC;
-      sessionCost+=dcost;totalBase+=dcost;
-      try{localStorage.setItem(TOTAL_KEY,String(totalBase));}catch(_){}
-      addEv("sys","计费",`官方用量 ${usageSec.toFixed(1)}s，修正 $${dcost.toFixed(4)}`);
-    }
-  }
-  renderCost();
-}
-// 从 session.closed 的 usage 里防御性解析秒数（字段名未知，只认明确的 *seconds 键）
-function usageSeconds(u){
-  if(!u||typeof u!=="object")return null;
-  for(const k of Object.keys(u)){
-    if(/second(s)?$/i.test(k)&&typeof u[k]==="number")return u[k];
-  }
-  for(const v of Object.values(u)){
-    if(v&&typeof v==="object"){const s=usageSeconds(v);if(s!=null)return s;}
-  }
-  return null;
-}
-window.addEventListener("beforeunload",()=>{if(callStartTs)endMeter();});
-renderCost();
-
 let pc,dc,stream,connected=false;
 let liveSessionId=null,utterBuf="";
-const base=location.pathname.replace(/\/?$/,"/"); // /preview/<id>/ 兜底
+const base=location.pathname.replace(/\/?$/,"/");
+const esc=s=>String(s).replace(/[&<>]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]));
 async function api(path,body){
-  const r=await fetch(base+path,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(body)});
+  const r=await fetch(base+path,{method:body?"POST":"GET",headers:body?{"Content-Type":"application/json"}:{},body:body?JSON.stringify(body):undefined});
   if(!r.ok){const e=await r.json().catch(()=>({error:"HTTP "+r.status}));throw new Error(e.error||("HTTP "+r.status));}
   return r.json();
 }
-
 const ts=()=>new Date().toLocaleTimeString("zh-CN",{hour12:false});
 function addEv(cls,tag,body){
   const d=document.createElement("div");d.className="ev "+cls;
-  d.innerHTML=`<span class="t">${ts()}</span><span class="b">[${tag}] ${body}</span>`;
-  log.appendChild(d);log.scrollTop=log.scrollHeight;
+  d.textContent=`[${ts()}] ${tag}: ${body}`;log.appendChild(d);log.scrollTop=log.scrollHeight;
 }
-function addBubble(who,text){
-  if(!text)return;
-  const d=document.createElement("div");d.className="bubble "+who;
-  d.innerHTML=`<span class="who">${who==="user"?"你":"Starchild"}</span>`;
-  d.appendChild(document.createTextNode(text));
+function addBubble(role,text){
+  const d=document.createElement("div");d.className="bubble "+role;d.textContent=text;
   chat.appendChild(d);chat.scrollTop=chat.scrollHeight;
 }
-function setStatus(t,cls){status.textContent=t;status.className=cls||"";}
+function setStatus(t,err){status.textContent=t;status.classList.toggle("err",!!err);}
 
-function esc(s){return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
+// ---- tool dispatch: route delegation to the right executor ----
+// Client delegation has no tools field in session config, so the model names
+// the tool inside its delegation request; we route on the request text.
+function routeTool(text){
+  const t=(text||"").trim();
+  if(/^(查询|查看|列出|显示)?\s*(当前)?(所有|全部)?\s*(后台)?任务列表?$|list[_ ]?tasks/i.test(t)&&t.length<30)return{name:"list_tasks",fn:doListTasks};
+  if(/^(取消|终止|停止|别查了)\b|cancel[_ ]?task/i.test(t))return{name:"cancel_task",fn:doCancelTask};
+  if(/^(怎么样了|好了吗|进度|进展|查.*进度|任务状态)|check[_ ]?task/i.test(t)&&t.length<40)return{name:"check_task",fn:doCheckTask};
+  if(/(之前|上次|记得|我们说过|历史|记忆)|memory[_ ]?lookup/i.test(t)&&t.length<60)return{name:"memory_lookup",fn:doMemoryLookup};
+  return{name:"ask_starchild",fn:doAskStarchild}; // default: the brain
+}
 
-// ---- event rendering -------------------------------------------------
+// ---- tool implementations ----
+async function doMemoryLookup(text,taskId){
+  const q=text.replace(/^(查(询|一下)?|看看?|帮我?查|记忆|之前|我们)?(说过|聊过)?(什么)?[?？。！!]*/g,"").trim()||text;
+  const out=await api("api/memory?q="+encodeURIComponent(q.slice(0,80)));
+  const items=out.results||[];
+  const summary=items.length
+    ?`找到 ${items.length} 条相关记忆：\n`+items.slice(-3).map(m=>`${m.role==="user"?"用户":"你"}说过: ${m.text.slice(0,80)}`).join("\n")
+    :"没有找到相关历史记忆。";
+  addEv("result","memory_lookup",summary);
+  returnCommentary(taskId,summary);
+}
+async function doListTasks(_text,taskId){
+  const out=await api("api/tasks");
+  const ts=out.tasks||[];
+  const summary=ts.length?`当前 ${ts.length} 个任务：\n`+ts.map(t=>`${t.id.slice(-6)} [${t.status}] ${t.userText.slice(0,40)}`).join("\n"):"当前没有后台任务。";
+  addEv("result","list_tasks",summary);
+  returnCommentary(taskId,summary);
+}
+async function doCheckTask(text,taskId){
+  // check latest running/done task
+  const out=await api("api/tasks");
+  const running=(out.tasks||[]).filter(t=>t.status==="running");
+  const target=running[0]||(out.tasks||[]).sort((a,b)=>b.createdAt-a.createdAt)[0];
+  if(!target){returnCommentary(taskId,"当前没有后台任务。");return;}
+  const prog=(target.progress||[]).slice(-2).map(p=>p.detail).join("；")||"等待中";
+  const summary=target.status==="running"?`任务「${target.userText.slice(0,40)}」进行中：${prog}`:
+    target.status==="done"?`任务已完成：${target.reply.slice(0,150)}`:`任务${target.status}${target.error?": "+target.error:""}`;
+  addEv("result","check_task",summary);
+  returnCommentary(taskId,summary);
+}
+async function doCancelTask(text,taskId){
+  const out=await api("api/tasks");
+  const running=(out.tasks||[]).filter(t=>t.status==="running");
+  if(!running.length){returnCommentary(taskId,"没有正在运行的任务。");return;}
+  for(const t of running){await api("api/tasks/"+t.id+"/cancel",{});}
+  addEv("result","cancel_task",`已终止 ${running.length} 个任务`);
+  returnCommentary(taskId,`已终止 ${running.length} 个后台任务。`);
+}
+let lastTaskId=null; // most recent brain task, for progress polling
+async function doAskStarchild(text,taskId){
+  addEv("tool","Starchild",`调用大脑 → session=${liveSessionId||"?"} 文本: ${text.slice(0,120)}`);
+  addBubble("user",text);
+  const sub=await api("api/agent",{session_id:liveSessionId,text});
+  lastTaskId=sub.task_id;
+  let reply=null,errMsg=null,tries=0,seenProg=0;
+  for(;;){
+    await new Promise(r=>setTimeout(r,2000));
+    const st=await fetch(base+"api/agent/"+sub.task_id).then(r=>r.json());
+    if(st.progress&&st.progress.length>seenProg){
+      for(const p of st.progress.slice(seenProg)){
+        addEv("tool","进展",p.detail);
+        dc.send(JSON.stringify({type:"session.thinking.append",event_id:"prog_"+Date.now(),
+          delegation_id:taskId||null,content:p.detail}));
+      }
+      seenProg=st.progress.length;
+    }
+    if(st.status==="done"){reply=st.reply;break;}
+    if(st.status==="error"){errMsg=st.error;break;}
+    if(st.status==="cancelled"){errMsg="任务已取消";break;}
+    if(++tries%15===0)addEv("tool","Starchild",`大脑思考中…(${(tries*2)|0}s)`);
+    if(tries>150){errMsg="等待大脑超时（5分钟）";break;}
+  }
+  if(errMsg)throw new Error(errMsg);
+  reply=(reply||"").trim();
+  if(!reply)throw new Error("大脑返回为空");
+  addEv("result","Starchild",`大脑返回 → ${reply.slice(0,300)}`);
+  returnCommentary(taskId,reply.slice(0,2000));
+  addBubble("agent",reply);
+}
+function returnCommentary(delegationId,content){
+  dc.send(JSON.stringify({
+    type:"session.commentary.append",event_id:"starchild_"+Date.now(),
+    delegation_id:delegationId||null,content:String(content).slice(0,2000)
+  }));
+  addEv("raw","回传","结果已送入语音播报");
+}
+
 function renderEvent(ev){
   const t=ev.type||"(unknown)";
-  // delegation lifecycle — client mode: event carries metadata only,
-  // task text comes from accumulated input transcript
   if(t==="session.delegation.created"){
     const d=ev.delegation||{};
-    addEv("deleg","委派",`GPT-Live 请求 Starchild 大脑 → delegation_id=${d.id||ev.delegation_id||""} target=${d.target||"client"}`);
-    handleDelegation(d.id||ev.delegation_id);
-    return;
-  }
-  // transcripts (generic match)
-  if(/input.*(transcript|transcription)/.test(t)){
-    if(ev.delta){utterBuf+=ev.delta;addEv("sys","转写",`你: ${ev.delta}`);}
-    return;
-  }
-  if(/output.*(transcript|transcription)/.test(t)){
-    if(ev.delta)addEv("speech","说话",`Starchild 说: ${ev.delta}`);
+    const did=d.id||ev.delegation_id||"";
+    addEv("deleg","委派",`请求 → delegation_id=${did} target=${d.target||"client"}`);
+    const text=(utterBuf||"").trim();
+    utterBuf="";
+    if(!text){addEv("deleg","委派","未采集到用户文本，跳过");return;}
+    const route=routeTool(text);
+    addEv("deleg","路由",`判定工具: ${route.name}`);
+    route.fn(text,did).catch(err=>{addEv("err","工具失败",esc(err.message));});
     return;
   }
   if(t==="session.started"){
@@ -175,131 +174,52 @@ function renderEvent(ev){
   }
   if(t==="session.closed"){
     const u=ev.usage?` 用量: ${JSON.stringify(ev.usage)}`:"";
-    endMeter(usageSeconds(ev.usage));
-    addEv("result","会话","session.closed — 会话结束，已结算费用。"+u);return;
+    addEv("result","会话","session.closed — 会话结束。"+u);return;
   }
-  if(/session\.(thinking|commentary|instructions)\.append(ed)?$/.test(t)){
-    addEv("raw","注入",`${t} delegation_id=${ev.delegation_id}`);return;
-  }
-  if(/error/i.test(t)){
-    addEv("deleg","错误",esc(JSON.stringify(ev)));return;
-  }
-  // everything else: compact one-liner
-  const brief=JSON.stringify(ev);
-  addEv("raw",t.slice(0,40),brief.length>220?brief.slice(0,220)+"…":brief);
-}
-
-function renderNested(env){
-  const e=env.event||{},t=e.type||"(nested)";
-  const did=env.delegation_id||"";
-  if(/function_call/.test(t)&&e.name){
-    addEv("tool","工具调用",`后端请求执行 ${e.name}(${e.arguments||""}) call_id=${e.call_id||""}`);
-    if(e.name==="starchild_status")runStarchildTool(e.call_id,did);
+  if(/input.*(transcript|transcription)/.test(t)){
+    if(ev.delta){utterBuf+=ev.delta;addEv("sys","转写",`你: ${ev.delta}`);}
     return;
   }
-  if(/output_text\.delta/.test(t)){addEv("raw","后端输出",esc(e.delta||""));return;}
-  if(/output_item\.added/.test(t)){addEv("raw","后端",`${e.item?.type||t} ${e.item?.name||""}`);return;}
-  if(/response\.(created|completed|failed)/.test(t)){
-    addEv(t.includes("failed")?"deleg":"result","后端",`委派任务 ${t.split(".").pop()} (${did})`);return;
-  }
-  const brief=JSON.stringify(e);
-  addEv("raw",t.slice(0,40),brief.length>160?brief.slice(0,160)+"…":brief);
-}
-
-// ---- client delegation: ask Starchild brain via localhost ----
-async function handleDelegation(delegationId){
-  const text=(utterBuf||"").trim();
-  utterBuf="";
-  if(!text){
-    addEv("deleg","委派","未采集到用户文本，跳过本次委派");
+  if(/output.*(transcript|transcription)/.test(t)){
+    if(ev.delta)addEv("speech","说话",`Starchild 说: ${ev.delta}`);
     return;
   }
-  addBubble("user",text);
-  addEv("tool","Starchild",`调用大脑 → session=${liveSessionId||"?"} delegation=${delegationId||""} 文本: ${text.slice(0,120)}`);
-  try{
-    addEv("tool","Starchild","任务已提交，等待大脑回复…");
-    const sub=await api("api/agent",{session_id:liveSessionId,text});
-    let reply=null,errMsg=null,tries=0,seenProg=0;
-    for(;;){
-      await new Promise(r=>setTimeout(r,2000));
-      const st=await fetch(base+"api/agent/"+sub.task_id).then(r=>r.json());
-      // feed new intermediate states to the voice agent so it can report progress
-      if(st.progress&&st.progress.length>seenProg){
-        for(const p of st.progress.slice(seenProg)){
-          addEv("tool","进展",p.detail);
-          dc.send(JSON.stringify({type:"session.thinking.append",event_id:"prog_"+Date.now(),
-            delegation_id:delegationId||null,content:p.detail}));
-        }
-        seenProg=st.progress.length;
-      }
-      if(st.status==="done"){reply=st.reply;break;}
-      if(st.status==="error"){errMsg=st.error;break;}
-      if(++tries%15===0)addEv("tool","Starchild",`大脑思考中…(${(tries*2)|0}s)`);
-      if(tries>150){errMsg="等待大脑超时（5分钟）";break;}
-    }
-    if(errMsg)throw new Error(errMsg);
-    reply=(reply||"").trim();
-    if(!reply)throw new Error("大脑返回为空");
-    addEv("result","Starchild",`大脑返回 → ${reply.slice(0,300)}`);
-    // feed result back as speakable commentary tied to this delegation
-    dc.send(JSON.stringify({
-      type:"session.commentary.append",event_id:"starchild_"+Date.now(),
-      delegation_id:delegationId||null,content:reply.slice(0,2000)
-    }));
-    addEv("raw","回传","session.commentary.append 已发送，大脑结果进入语音播报");
-  }catch(err){addEv("deleg","大脑失败",esc(err.message));}
+  if(/error|failed/i.test(t)){
+    addEv("err","事件",JSON.stringify(ev).slice(0,300));return;
+  }
+  addEv("raw",t,JSON.stringify(ev).slice(0,150));
 }
 
-// ---- WebRTC bootstrap --------------------------------------------------
 $("connect").onclick=async()=>{
   $("connect").disabled=true;chat.textContent="";log.textContent="";
   try{
     setStatus("请求麦克风…");
     stream=await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:true,noiseSuppression:true}});
     $("mic").textContent="麦克风已开启";$("micdot").classList.add("live");
+    setStatus("建立连接…");
     pc=new RTCPeerConnection();
     stream.getTracks().forEach(t=>pc.addTrack(t,stream));
-    pc.ontrack=e=>{
-      const a=document.createElement("audio");a.autoplay=true;
-      a.srcObject=e.streams[0];document.body.appendChild(a);
-    };
+    pc.ontrack=e=>{$("audio")?.remove();const a=document.createElement("audio");a.id="audio";a.srcObject=e.streams[0];a.play();};
     dc=pc.createDataChannel("oai-events");
-    dc.onopen=()=>addEv("result","信道","data channel 已打开，等待 session.started…");
-    dc.onmessage=m=>{try{renderEvent(JSON.parse(m.data));}catch(_){}};
-    const offer=await pc.createOffer();
-    await pc.setLocalDescription(offer);
-    await new Promise(r=>{
-      if(pc.iceGatheringState==="complete")return r();
-      pc.onicegatheringstatechange=()=>pc.iceGatheringState==="complete"&&r();
-      setTimeout(r,2000);
-    });
+    dc.onmessage=e=>{try{renderEvent(JSON.parse(e.data));}catch(_){}};
+    await pc.setLocalDescription(await pc.createOffer());
     setStatus("创建会话…");
     const data=await api("api/session",{sdp:pc.localDescription.sdp});
-    await pc.setRemoteDescription({type:"answer",sdp:data.transport.sdp});
-    addEv("raw","SDP","answer 已应用，WebRTC 协商完成");
+    await pc.setRemoteDescription(data.transport?.sdp?{type:"answer",sdp:data.transport.sdp}:data.answer??data);
     connected=true;$("close").disabled=false;
-    setStatus("通话中","on");
-    startMeter();
-    addBubble("bot","（语音接通，直接说话即可。试试：\"Starchild 现在什么状态？\" 或 \"帮我搜一下最新的 AI 新闻\"）");
+    setStatus("已连接，开始说话");
   }catch(err){
-    setStatus("失败: "+err.message,"err");
-    addEv("deleg","失败",esc(err.message));
+    setStatus("失败: "+err.message,true);addEv("deleg","失败",esc(err.message));
     $("connect").disabled=false;
   }
 };
-
 $("close").onclick=()=>{
-  if(!connected)return;
-  endMeter(); // 先按通话时长结算，session.closed 若带官方 usage 再修正
-  addEv("sys","会话","发送 session.close…");
-  dc.send(JSON.stringify({type:"session.close"}));
-  setTimeout(()=>{if(pc)pc.close();cleanup();},1500);
-};
-function cleanup(){
+  try{dc&&dc.send(JSON.stringify({type:"session.close",event_id:"close_"+Date.now()}));}catch(_){}
+  setTimeout(()=>{pc&&pc.close();},800);
   connected=false;$("close").disabled=true;$("connect").disabled=false;
-  setStatus("已结束");
+  setStatus("已挂断（后台任务继续）");
   if(stream){stream.getTracks().forEach(t=>t.stop());$("mic").textContent="麦克风未开启";$("micdot").classList.remove("live");}
-}
+};
 </script>
 </body>
 </html>

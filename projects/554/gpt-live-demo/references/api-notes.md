@@ -48,14 +48,14 @@ Demo 用正则 `/second(s)?$/i` 防御性解析，找到第一个数字型 `*sec
 截至 2026 年，`gpt-live-1` 仍需申请 Beta 访问权限。
 错误表现：POST `/api/session` 返回 403 或 404。
 
-## 会话历史设计
+## 会话历史与持久化设计
 
-服务器维护 `histories` Map（liveSessionId → 对话数组），最多保留 20 条。
-每次 delegation 触发时，把最近 6000 字符的历史拼接到 brain 的 prompt 前缀，
-让 brain 知道本次语音通话的上下文。
+服务器维护全局语音历史（`voiceHistory`，所有语音会话共享一个 `voice` 流，最多 40 条）。
+每次建会话时把最近 12 条历史以 developer message 回灌进 GPT-Live session（记忆回灌），
+每次 delegation 触发时再把最近 10 条拼接到 brain 的 prompt 前缀。
 
-会话结束时（`POST /api/session/:id/end`）历史被清除。
-重启服务器历史全部丢失（内存存储）。
+持久化：任务（`data/tasks.json`，完成后保留 1 小时）与语音历史（`data/voice-history.json`）
+均防抖落盘，重启不丢失。`data/` 目录不入库（见 .gitignore）。
 
 ## 异步任务轮询模式
 
@@ -65,4 +65,10 @@ Demo 用正则 `/second(s)?$/i` 防御性解析，找到第一个数字型 `*sec
 3. 前端每 2 秒 GET `/api/agent/:id` 轮询状态
 4. 每解析到一条进展事件就通过 DataChannel 推送 `session.thinking.append`
 5. 任务完成后前端读取 `reply`，推送 `session.commentary.append`
-6. 任务结果在内存保留 5 分钟后自动清理
+6. 任务结果落盘 `data/tasks.json`，完成后保留 1 小时，可查询/取消（`/api/tasks`、`/api/tasks/:id/cancel`）
+
+## 内建后台工具
+
+服务器为 GPT-Live 提供五个工具端点：`ask_starchild`（委派大脑）、`check_task`、
+`cancel_task`、`list_tasks`（以上走 `/api/agent*` 与 `/api/tasks*`）、
+`memory_lookup`（`/api/memory`，按关键词检索持久化语音历史）。

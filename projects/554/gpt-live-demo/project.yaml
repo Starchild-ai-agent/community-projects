@@ -1,5 +1,5 @@
 name: gpt-live-demo
-version: 1.0.1
+version: 1.1.0
 type: script
 description: GPT-Live voice receptionist demo - WebRTC browser client + Express relay
   server bridging to a Starchild agent brain. Installable as a Starchild skill for
@@ -7,7 +7,6 @@ description: GPT-Live voice receptionist demo - WebRTC browser client + Express 
 license: MIT
 entry: scripts/server.mjs
 env_required:
-- STARCHILD_AGENT_PORT
 - OPENAI_API_KEY
 tags:
 - voice
