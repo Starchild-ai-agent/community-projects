@@ -1,0 +1,17 @@
+name: cron-studio-skill
+type: script
+version: 1.0.0
+license: MIT
+entry: src/main.py
+description: Validate, describe, and schedule-check cron expressions (vixie-cron semantics)
+  with a zero-dependency CLI; includes local→UTC conversion for platform schedulers.
+env_required: []
+tags:
+- devtools
+- cron
+- scheduler
+- cli
+- utility
+publisher:
+  public_slug: cron-studio-build-decode-cron
+author: user-6171
