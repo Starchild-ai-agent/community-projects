@@ -1,6 +1,0 @@
-.env
-.env.local
-*.key
-*.pem
-secrets/
-__pycache__/
