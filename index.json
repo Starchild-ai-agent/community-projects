@@ -1,6 +1,19 @@
 [
   {
     "type": "service",
+    "user_id": "5093",
+    "slug": "5093-intro",
+    "version": "1.0.1",
+    "description": "基于 Luther 模板的中文个人介绍单页，含首页、关于我、能力、经历与教育时间线、作品集与联系方式。",
+    "tags": [],
+    "author": "user-5093",
+    "license": "MIT",
+    "github_url": "https://github.com/Starchild-ai-agent/community-projects/tree/main/projects/5093/5093-intro",
+    "updated_at": "2026-09-21T00:30:51.395Z",
+    "created_at": "2026-09-21T00:30:51.395Z"
+  },
+  {
+    "type": "service",
     "user_id": "3182",
     "slug": "chokepoint-radar",
     "version": "0.1.3",
