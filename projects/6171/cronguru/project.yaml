@@ -1,0 +1,8 @@
+name: cronguru
+type: service
+version: 1.0.0
+description: "cron 表达式人话解释器与执行时间计算器：逐字段中文解释、未来 10 次执行时间、常用模板速查，纯前端零依赖"
+license: MIT
+entry: index.html
+port: 8080
+author: user-6171

@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CronGuru — cron 表达式解释器与执行时间计算器</title>
+<style>
+:root{--bg:#0d1117;--panel:#161b22;--border:#30363d;--text:#e6edf3;--muted:#8b949e;--accent:#58a6ff;--green:#3fb950;--red:#f85149;--yellow:#d29922}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;min-height:100vh;padding:24px 16px}
+.wrap{max-width:860px;margin:0 auto}
+h1{font-size:26px;margin-bottom:4px}
+h1 span{color:var(--accent)}
+.sub{color:var(--muted);font-size:14px;margin-bottom:24px}
+.card{background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:20px;margin-bottom:16px}
+label{display:block;font-size:13px;color:var(--muted);margin-bottom:8px}
+input[type=text]{width:100%;background:var(--bg);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:ui-monospace,Consolas,monospace;font-size:18px;padding:12px 14px;outline:none}
+input[type=text]:focus{border-color:var(--accent)}
+.row{display:flex;gap:10px;margin-top:12px;flex-wrap:wrap}
+.chip{background:var(--bg);border:1px solid var(--border);border-radius:20px;color:var(--muted);font-size:12px;padding:5px 12px;cursor:pointer;transition:.15s}
+.chip:hover{color:var(--accent);border-color:var(--accent)}
+.status{margin-top:14px;font-size:14px;padding:10px 14px;border-radius:8px;display:none}
+.status.ok{display:block;background:rgba(63,185,80,.12);color:var(--green);border:1px solid rgba(63,185,80,.4)}
+.status.err{display:block;background:rgba(248,81,73,.12);color:var(--red);border:1px solid rgba(248,81,73,.4)}
+.explain{margin-top:14px;line-height:1.9;font-size:15px}
+.explain b{color:var(--accent)}
+.seg{display:inline-block;background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:2px 8px;margin:0 3px;font-family:ui-monospace,monospace;font-size:13px;color:var(--yellow)}
+h2{font-size:16px;margin-bottom:12px;color:var(--text)}
+.next-list{list-style:none;font-family:ui-monospace,Consolas,monospace;font-size:14px}
+.next-list li{padding:7px 10px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between}
+.next-list li:last-child{border-bottom:none}
+.next-list .idx{color:var(--muted)}
+.next-list .tz{color:var(--muted);font-size:12px}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th,td{padding:8px 10px;border:1px solid var(--border);text-align:left}
+th{background:var(--bg);color:var(--muted);font-weight:500}
+td code{font-family:ui-monospace,monospace;color:var(--yellow)}
+td .use{cursor:pointer;color:var(--accent)}
+td .use:hover{text-decoration:underline}
+footer{text-align:center;color:var(--muted);font-size:12px;margin-top:24px}
+</style>
+</head>
+<body>
+<div class="wrap">
+<h1>⏰ Cron<span>Guru</span> 中文版</h1>
+<p class="sub">cron 表达式人话解释 · 未来执行时间计算 · 常用模板速查 — 纯前端，零依赖，数据不出浏览器</p>
+
+<div class="card">
+<label for="expr">输入 cron 表达式（5 段：分 时 日 月 周）</label>
+<input type="text" id="expr" value="0 1 * * 0" placeholder="例如：*/5 * * * *" spellcheck="false">
+<div class="row" id="chips"></div>
+<div class="status" id="status"></div>
+<div class="explain" id="explain"></div>
+</div>
+
+<div class="card">
+<h2>📅 未来 10 次执行时间（本地时区）</h2>
+<ul class="next-list" id="next"></ul>
+</div>
+
+<div class="card">
+<h2>📋 常用模板</h2>
+<table id="tpl">
+<tr><th>表达式</th><th>含义</th><th></th></tr>
+</table>
+</div>
+
+<footer>CronGuru 中文版 · by tea 🍵 · 所有计算在浏览器本地完成</footer>
+</div>
+<script>
+var FIELDS=[["minute","分钟",0,59],["hour","小时",0,23],["dom","日",1,31],["month","月份",1,12],["dow","星期",0,6]];
+var MONTHS=["1月","2月","3月","4月","5月","6月","7月","8月","9月","10月","11月","12月"];
+var DOWS=["周日","周一","周二","周三","周四","周五","周六"];
+var TEMPLATES=[
+["*/5 * * * *","每 5 分钟"],
+["0 * * * *","每小时整点"],
+["0 9 * * 1-5","工作日每天早上 9 点"],
+["0 1 * * 0","每周日凌晨 1 点"],
+["30 8 1 * *","每月 1 号早上 8:30"],
+["0 0 1 1 *","每年 1 月 1 日零点"],
+["0 */6 * * *","每 6 小时"],
+["0 2 * * *","每天凌晨 2 点"],
+["15,45 * * * *","每小时的第 15 和 45 分"],
+["0 12 * * 5","每周五中午 12 点"]];
+function pad(n){return n<10?"0"+n:""+n}
+function parseField(f,str){
+  if(str===undefined||str===null||str==="")return null;
+  var list=[];
+  var parts=str.split(",");
+  for(var i=0;i<parts.length;i++){
+    var p=parts[i].trim(),step=1,range=[f[2],f[3]],any=false;
+    if(p==="*"||p==="?"){any=true}
+    else if(p.indexOf("/")>-1){
+      var pp=p.split("/");step=parseInt(pp[1],10);
+      if(isNaN(step)||step<1)return null;
+      if(pp[0]==="*"||pp[0]===""){any=true}
+      else{range=parseRange(pp[0],f);if(!range)return null}
+    }else if(p.indexOf("-")>-1){range=parseRange(p,f);if(!range)return null}
+    else{
+      var v=parseVal(p,f);if(v===null)return null;
+      if(step)list.push(v);else return null;
+      continue;
+    }
+    if(any)range=[f[2],f[3]];
+    if(step&&(step<1))return null;
+    for(var v2=range[0];v2<=range[1];v2+=step)list.push(v2);
+  }
+  if(!list.length)return null;
+  list.sort(function(a,b){return a-b});
+  return list;
+}
+function parseVal(s,f){
+  s=s.trim();
+  var names=null;
+  if(f[0]==="month")names=MONTHS;
+  if(f[0]==="dow")names=DOWS;
+  if(names){for(var i=0;i<names.length;i++){if(names[i]===s)return i}if(/^(sun|mon|tue|wed|thu|fri|sat)$/i.test(s)){return["sun","mon","tue","wed","thu","fri","sat"].indexOf(s.toLowerCase())}}
+  var v=parseInt(s,10);
+  if(isNaN(v))return null;
+  if(f[0]==="dow"&&v===7)v=0;
+  if(v<f[2]||v>f[3])return null;
+  return v;
+}
+function parseRange(s,f){
+  var ab=s.split("-");
+  if(ab.length!==2)return null;
+  var a=parseVal(ab[0],f),b=parseVal(ab[1],f);
+  if(a===null||b===null||a>b)return null;
+  return[a,b];
+}
+function parseCron(expr){
+  var segs=expr.trim().split(/\s+/);
+  if(segs.length<5||segs.length>6)return{err:"需要 5 段（分 时 日 月 周），当前 "+segs.length+" 段"};
+  if(segs.length===6)return{err:"暂不支持 6 段（含秒）表达式，请使用 5 段格式"};
+  var out=[];
+  for(var i=0;i<5;i++){
+    var v=parseField(FIELDS[i],segs[i]);
+    if(v===null)return{err:"第 "+(i+1)+" 段「"+segs[i]+"」不是合法的"+FIELDS[i][1]+"字段"};
+    out.push(v);
+  }
+  // dom 与 dow 同时受限时按标准 cron 语义：其一为 * 即可
+  if(segs[2]!=="*"&&segs[2]!=="?"&&segs[4]!=="*"&&segs[4]!=="?"){
+    return{err:"日 与 星期 不能同时为具体值（标准 cron 语义冲突）"};
+  }
+  return{fields:out,segs:segs};
+}
+function describe(expr){
+  var r=parseCron(expr);
+  if(r.err)return r;
+  var segs=r.segs,html=[];
+  for(var i=0;i<5;i++){
+    var f=FIELDS[i],vals=r.fields[i],s=segs[i],txt;
+    if(s==="*"||s==="?")txt="每个"+f[1];
+    else if(s.indexOf("*/")===0)txt="每隔 "+s.slice(2)+" 个"+f[1]+"单位";
+    else if(vals.length>18)txt=f[1]+"（多值）";
+    else if(f[0]==="month")txt=vals.map(function(v){return MONTHS[v-1]}).join("、");
+    else if(f[0]==="dow")txt=vals.map(function(v){return DOWS[v]}).join("、");
+    else txt=vals.join("、");
+    html.push("<b>"+f[1]+"</b> <span class='seg'>"+s+"</span> → "+txt);
+  }
+  return{html:html.join("<br>")};
+}
+function nextRuns(r,n){
+  var out=[],d=new Date(),base=new Date(d.getTime());
+  base.setSeconds(0,0);base.setMinutes(base.getMinutes()+1);
+  var cur=new Date(base.getTime()),guard=0;
+  var min=r.fields[0],hr=r.fields[1],dom=r.fields[2],mon=r.fields[3],dow=r.fields[4];
+  var domAny=r.segs[2]==="*"||r.segs[2]==="?",dowAny=r.segs[4]==="*"||r.segs[4]==="?";
+  while(out.length<n&&guard<600000){
+    guard++;
+    var m=cur.getMinutes();
+    if(min.indexOf(m)<0){cur.setMinutes(m+1);continue}
+    var h=cur.getHours();
+    if(hr.indexOf(h)<0){cur.setMinutes(60);continue}
+    var mo=cur.getMonth()+1;
+    if(mon.indexOf(mo)<0){cur.setMinutes(0);cur.setHours(0);cur.setDate(cur.getDate()+1);continue}
+    var dd=cur.getDate(),dw=cur.getDay();
+    var domOk=dom.indexOf(dd)>=0,dowOk=dow.indexOf(dw)>=0;
+    var dayOk=domAny&&dowAny?true:(domAny?dowOk:(dowAny?domOk:(domOk&&dowOk)));
+    if(!dayOk){cur.setMinutes(0);cur.setHours(0);cur.setDate(cur.getDate()+1);continue}
+    out.push(new Date(cur.getTime()));
+    cur.setMinutes(cur.getMinutes()+1);
+  }
+  return out;
+}
+function fmt(d){
+  var w=DOWS[d.getDay()];
+  return d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate())+" "+pad(d.getHours())+":"+pad(d.getMinutes())+"（"+w+"）";
+}
+function render(){
+  var expr=document.getElementById("expr").value;
+  var st=document.getElementById("status"),ex=document.getElementById("explain"),nx=document.getElementById("next");
+  var d=describe(expr);
+  if(d.err){st.className="status err";st.textContent="✗ "+d.err;ex.innerHTML="";nx.innerHTML="";return}
+  st.className="status ok";st.textContent="✓ 合法表达式";
+  ex.innerHTML=d.html;
+  var r=parseCron(expr);
+  var runs=nextRuns(r,10);
+  nx.innerHTML=runs.map(function(d2,i){return "<li><span class='idx'>#"+(i+1)+"</span><span>"+fmt(d2)+"</span></li>"}).join("");
+}
+function useTemplate(e){
+  var code=e.target.getAttribute("data-code")||e.target.parentNode.getAttribute("data-code");
+  if(code){document.getElementById("expr").value=code;render()}
+}
+function init(){
+  var chips=document.getElementById("chips");
+  TEMPLATES.slice(0,6).forEach(function(t){
+    var c=document.createElement("span");c.className="chip";c.textContent=t[1];c.setAttribute("data-code",t[0]);
+    c.addEventListener("click",useTemplate);chips.appendChild(c);
+  });
+  var tb=document.getElementById("tpl");
+  TEMPLATES.forEach(function(t){
+    var tr=document.createElement("tr");
+    tr.innerHTML="<td><code>"+t[0]+"</code></td><td>"+t[1]+"</td><td><span class='use' data-code='"+t[0]+"'>使用</span></td>";
+    tr.querySelector(".use").addEventListener("click",useTemplate);
+    tb.appendChild(tr);
+  });
+  document.getElementById("expr").addEventListener("input",render);
+  render();
+}
+init();
+</script>
+</body>
+</html>
