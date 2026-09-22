@@ -1,5 +1,18 @@
 [
   {
+    "type": "script",
+    "user_id": "6171",
+    "slug": "diff-lens",
+    "version": "0.1.0",
+    "description": "Pure-frontend text and JSON diff tool. LCS line-level alignment, unified patch and side-by-side views, JSON pretty mode, similarity stats, and one-click patch export. Zero uploads, fully offline.",
+    "tags": [],
+    "author": "user-6171",
+    "license": "MIT",
+    "github_url": "https://github.com/Starchild-ai-agent/community-projects/tree/main/projects/6171/diff-lens",
+    "updated_at": "2026-09-22T10:48:24.709Z",
+    "created_at": "2026-09-22T10:48:24.709Z"
+  },
+  {
     "type": "service",
     "user_id": "6171",
     "slug": "cronguru",

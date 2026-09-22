@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Diff Lens — Text &amp; JSON Diff</title>
+<style>
+:root{--bg:#070b14;--panel:#0e1524;--panel2:#111c30;--line:#20304a;--text:#e8eef8;--muted:#8b9ab2;--blue:#55a7ff;--cyan:#55e6d0;--green:#4ade80;--red:#ff718b;--amber:#ffc477;--shadow:0 24px 70px #0008}*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 80% 0,#12315b55,transparent 34rem),var(--bg);color:var(--text);font:14px/1.5 Inter,ui-sans-serif,system-ui,sans-serif;min-height:100vh}button,textarea,select{font:inherit}button{cursor:pointer}.shell{max-width:1420px;margin:auto;padding:28px clamp(16px,4vw,56px) 48px}.top{display:flex;justify-content:space-between;align-items:flex-start;gap:24px;margin-bottom:25px}.brand{display:flex;gap:14px;align-items:center}.mark{width:42px;height:42px;border:1px solid #55a7ff88;border-radius:12px;display:grid;place-items:center;background:#55a7ff14;box-shadow:0 0 28px #55a7ff2b;color:var(--blue);font-size:20px}.eyebrow{color:var(--cyan);font-size:11px;letter-spacing:.18em;text-transform:uppercase;font-weight:700}.title{margin:3px 0 0;font-size:clamp(24px,4vw,36px);letter-spacing:-.04em}.intro{color:var(--muted);margin:6px 0 0;max-width:620px}.layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px}.panel{background:linear-gradient(145deg,#111b2cdd,#0b1220e8);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);overflow:hidden}.panel-head{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:16px 18px;border-bottom:1px solid var(--line)}.panel-title{font-weight:700;letter-spacing:.01em}.sub{color:var(--muted);font-size:12px}.actions{display:flex;gap:8px;flex-wrap:wrap}.btn{border:1px solid var(--line);background:#ffffff08;color:var(--text);padding:8px 12px;border-radius:8px;font-weight:650;transition:.18s}.btn:hover{border-color:#55a7ff99;background:#55a7ff18}.btn.primary{background:var(--blue);border-color:var(--blue);color:#031120}.btn.primary:hover{filter:brightness(1.12)}.input-wrap{padding:18px}.codebox{width:100%;height:340px;resize:vertical;min-height:200px;background:#060b15;border:1px solid #1e3658;border-radius:10px;color:#d9e8fb;padding:16px;font:13px/1.7 ui-monospace,SFMono-Regular,Consolas,monospace;outline:none;tab-size:2}.codebox:focus{border-color:var(--blue);box-shadow:0 0 0 3px #55a7ff1a}.hint{display:flex;justify-content:space-between;color:var(--muted);font-size:12px;margin-top:10px;gap:8px}.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;padding:16px 18px;border-bottom:1px solid var(--line)}.stat{background:#05ffffff;border:1px solid #ffffff0b;border-radius:10px;padding:11px}.stat b{display:block;color:#fff;font-size:18px}.stat span{color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.08em}.stat.add b{color:var(--green)}.stat.del b{color:var(--red)}.stat.same b{color:var(--cyan)}.stat.sim b{color:var(--amber)}.diff{padding:14px 18px 20px;min-height:420px;max-height:560px;overflow:auto;font:13px/1.7 ui-monospace,SFMono-Regular,Consolas,monospace}.empty{color:var(--muted);padding:45px 12px;text-align:center}.row{display:flex;gap:0;min-height:25px;border-radius:6px;overflow:hidden}.gutter{flex:0 0 44px;text-align:right;padding:0 8px;color:#4a5c78;user-select:none;background:#ffffff05;border-right:1px solid #ffffff0a}.body{flex:1;padding:0 12px;white-space:pre-wrap;word-break:break-word}.row.add{background:#4ade8014}.row.add .gutter{background:#4ade8022;color:#4ade80}.row.add .body{color:#b6f5cf}.row.del{background:#ff718b14}.row.del .gutter{background:#ff718b22;color:#ff718b}.row.del .body{color:#ffc4cf}.row.ctx{color:#c3cee0}.row hunk{background:#55a7ff1a;color:#8fc4ff;padding:6px 12px;font-weight:700;letter-spacing:.02em;border-top:1px solid #55a7ff33;border-bottom:1px solid #55a7ff33}.tag{display:inline-block;width:16px;font-weight:700;color:#8b9ab2}.row.add .tag{color:var(--green)}.row.del .tag{color:var(--red)}.status{padding:13px 18px;border-top:1px solid var(--line);display:flex;gap:10px;align-items:center;color:var(--muted)}.dot{width:8px;height:8px;border-radius:50%;background:var(--cyan);box-shadow:0 0 12px var(--cyan)}.status.error{color:#ffb0bc}.status.error .dot{background:var(--red);box-shadow:0 0 12px var(--red)}.footer{color:#64738a;text-align:center;margin-top:22px;font-size:12px}@media(max-width:900px){.layout{grid-template-columns:1fr}.codebox{height:260px}.top{flex-direction:column}.top .sub{display:none}}@media(max-width:500px){.stats{grid-template-columns:repeat(2,1fr)}.panel-head{align-items:flex-start;flex-direction:column}.actions{width:100%}.actions .btn{flex:1}}
+</style>
+</head>
+<body>
+<main class="shell">
+<header class="top"><div><div class="brand"><div class="mark">&#916;</div><div><div class="eyebrow">Developer utility &middot; local only</div><h1 class="title">Diff Lens</h1></div></div><p class="intro">Compare two texts side by side or as a unified patch. Line-level diff with LCS alignment, JSON pretty-print mode, and inline change tags.</p></div><div class="sub">Run diff <span class="kbd" style="border:1px solid var(--line);background:#ffffff08;border-radius:6px;padding:2px 7px;color:#c8d8ed;font-size:12px">&#8984;</span><span class="kbd" style="border:1px solid var(--line);background:#ffffff08;border-radius:6px;padding:2px 7px;color:#c8d8ed;font-size:12px">&#9166;</span></div></header>
+<section class="layout">
+<div class="panel"><div class="panel-head"><div><div class="panel-title">Left &middot; original</div><div class="sub">Baseline text</div></div><div class="actions"><button class="btn" id="sampleA">Load sample</button><button class="btn danger" id="clearA">Clear</button></div></div><div class="input-wrap"><label class="sub" for="left">Original</label><textarea id="left" class="codebox" spellcheck="false" aria-label="Original text"></textarea><div class="hint"><span>Everything stays in this browser.</span><span id="charsA">0 chars</span></div></div></div>
+<div class="panel"><div class="panel-head"><div><div class="panel-title">Right &middot; modified</div><div class="sub">Revised text</div></div><div class="actions"><button class="btn" id="sampleB">Load sample</button><button class="btn danger" id="clearB">Clear</button></div></div><div class="input-wrap"><label class="sub" for="right">Modified</label><textarea id="right" class="codebox" spellcheck="false" aria-label="Modified text"></textarea><div class="hint"><span>Everything stays in this browser.</span><span id="charsB">0 chars</span></div></div></div>
+</section>
+<section class="panel" style="margin-top:16px">
+<div class="panel-head"><div><div class="panel-title">Diff output</div><div class="sub" id="modeLabel">Unified view</div></div><div class="actions"><select id="mode" class="btn"><option value="unified">Unified</option><option value="side">Side by side</option></select><button class="btn" id="jsonMode">JSON pretty mode</button><button class="btn" id="swap">Swap sides</button><button class="btn" id="copy">Copy patch</button><button class="btn" id="download">Download</button><button class="btn primary" id="run">Run diff</button></div></div>
+<div class="stats"><div class="stat add"><b id="sAdd">0</b><span>added lines</span></div><div class="stat del"><b id="sDel">0</b><span>removed lines</span></div><div class="stat same"><b id="sSame">0</b><span>unchanged</span></div><div class="stat sim"><b id="sSim">&mdash;</b><span>similarity</span></div></div>
+<div id="diff" class="diff"><div class="empty">Load a sample and run the diff.</div></div>
+<div id="status" class="status"><i class="dot"></i><span>Ready</span></div>
+</section>
+<div class="footer">Diff Lens <span aria-hidden="true">&middot;</span> zero uploads, zero tracking, instant feedback</div>
+</main>
+<script>
+const SAMPLE_A=[
+"function greet(name) {",
+"  const msg = 'Hello, ' + name;",
+"  console.log(msg);",
+"  return msg;",
+"}",
+"",
+"module.exports = greet;"
+].join("\n");
+const SAMPLE_B=[
+"function greet(name, greeting = 'Hello') {",
+"  const msg = `${greeting}, ${name}!`;",
+"  console.log(msg);",
+"  if (msg.length > 64) throw new Error('too long');",
+"  return msg;",
+"}",
+"",
+"module.exports = { greet };",
+""
+].join("\n");
+const $=id=>document.getElementById(id);
+const left=$("left"),right=$("right");
+let patchText="";
+function setStatus(message,error=false){$("status").className="status"+(error?" error":"");$("status").innerHTML='<i class="dot"></i><span>'+esc(message)+'</span>';}
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+function splitLines(t){return t.length?t.split("\n"):[""];}
+function lcsDiff(a,b){
+  const n=a.length,m=b.length;
+  if(n*m>4000000){
+    const setB=new Set(b);const rows=[];
+    a.forEach((x,i)=>{if(!setB.has(x))rows.push({type:'del',old:i+1,text:x});});
+    b.forEach((x,j)=>{if(!new Set(a).has(x))rows.push({type:'add',new:j+1,text:x});});
+    return rows;
+  }
+  const dp=Array.from({length:n+1},()=>new Uint32Array(m+1));
+  for(let i=n-1;i>=0;i--)for(let j=m-1;j>=0;j--)dp[i][j]=a[i]===b[j]?dp[i+1][j+1]+1:Math.max(dp[i+1][j],dp[i][j+1]);
+  const rows=[];let i=0,j=0;
+  while(i<n&&j<m){
+    if(a[i]===b[j]){rows.push({type:'ctx',old:i+1,new:j+1,text:a[i]});i++;j++;}
+    else if(dp[i+1][j]>=dp[i][j+1]){rows.push({type:'del',old:i+1,text:a[i]});i++;}
+    else{rows.push({type:'add',new:j+1,text:b[j]});j++;}
+  }
+  while(i<n){rows.push({type:'del',old:i+1,text:a[i]});i++;}
+  while(j<m){rows.push({type:'add',new:j+1,text:b[j]});j++;}
+  return rows;
+}
+function similarity(rows){
+  const same=rows.filter(r=>r.type==='ctx').length;
+  const total=rows.length;
+  return total?Math.round(same/total*100):100;
+}
+function toPatch(rows){
+  const out=[];let oldN=0,newN=0;
+  rows.forEach(r=>{
+    if(r.type==='ctx'){out.push(' '+r.text);oldN++;newN++;}
+    else if(r.type==='del'){out.push('-'+r.text);oldN++;}
+    else{out.push('+'+r.text);newN++;}
+  });
+  return '--- original\n+++ modified\n@@ -1,'+oldN+' +1,'+newN+' @@\n'+out.join("\n");
+}
+function render(rows){
+  const mode=$("mode").value;
+  const box=$("diff");
+  if(mode==='unified'){
+    const frag=document.createDocumentFragment();
+    let ctxCount=0,hunkStarted=false;
+    rows.forEach(r=>{
+      if(r.type==='ctx'){ctxCount++;if(ctxCount>6&&!hunkStarted){if(!hunkStarted){hunkStarted=true;}}if(ctxCount===7&&!hunkStarted){hunkStarted=true;const h=document.createElement('div');h.className='row hunk';h.textContent='... '+ctxCount+' unchanged lines ...';frag.append(h);}ctxCount=0;}
+      const row=document.createElement('div');row.className='row '+r.type;
+      const g=document.createElement('span');g.className='gutter';g.textContent=r.old||r.new||'';
+      const b=document.createElement('span');b.className='body';
+      b.innerHTML='<span class="tag">'+(r.type==='add'?'+':r.type==='del'?'-':' ')+'</span>'+esc(r.text);
+      row.append(g,b);frag.append(row);
+    });
+    box.replaceChildren(frag);
+  }else{
+    const frag=document.createDocumentFragment();
+    const leftRows=[],rightRows=[];
+    rows.forEach(r=>{
+      if(r.type==='ctx'){leftRows.push({t:'ctx',o:r.old,x:r.text});rightRows.push({t:'ctx',n:r.new,x:r.text});}
+      else if(r.type==='del'){leftRows.push({t:'del',o:r.old,x:r.text});rightRows.push({t:'gap',x:''});}
+      else{leftRows.push({t:'gap',x:''});rightRows.push({t:'add',n:r.new,x:r.text});}
+    });
+    const len=Math.max(leftRows.length,rightRows.length);
+    for(let k=0;k<len;k++){
+      const L=leftRows[k]||{t:'gap',x:''},R=rightRows[k]||{t:'gap',x:''};
+      const wrap=document.createElement('div');wrap.style.display='grid';wrap.style.gridTemplateColumns='1fr 1fr';wrap.style.gap='1px';wrap.style.marginBottom='1px';
+      wrap.append(cell(L),cell(R));frag.append(wrap);
+    }
+    box.replaceChildren(frag);
+  }
+  function cell(c){
+    const row=document.createElement('div');row.className='row '+(c.t==='gap'?'ctx':c.t);
+    if(c.t==='gap'){row.style.background='#ffffff03';}
+    const g=document.createElement('span');g.className='gutter';g.textContent=c.o||c.n||'';
+    const b=document.createElement('span');b.className='body';
+    b.innerHTML='<span class="tag">'+(c.t==='add'?'+':c.t==='del'?'-':' ')+'</span>'+esc(c.x);
+    row.append(g,b);return row;
+  }
+}
+function runDiff(){
+  let a=left.value,b=right.value;
+  try{
+    if($("jsonMode").classList.contains('primary')){
+      const ja=JSON.parse(a),jb=JSON.parse(b);
+      a=JSON.stringify(ja,null,2);b=JSON.stringify(jb,null,2);
+    }
+  }catch(e){return setStatus('JSON pretty mode failed: '+e.message,true);}
+  const rows=lcsDiff(splitLines(a),splitLines(b));
+  const add=rows.filter(r=>r.type==='add').length;
+  const del=rows.filter(r=>r.type==='del').length;
+  const same=rows.filter(r=>r.type==='ctx').length;
+  $("sAdd").textContent=add;$("sDel").textContent=del;$("sSame").textContent=same;
+  $("sSim").textContent=similarity(rows)+'%';
+  $("modeLabel").textContent=$("mode").value==='unified'?'Unified view':'Side by side view';
+  patchText=toPatch(rows);
+  render(rows);
+  setStatus('Diff complete · '+add+' added, '+del+' removed');
+}
+function updateChars(){
+  $("charsA").textContent=left.value.length.toLocaleString()+' chars';
+  $("charsB").textContent=right.value.length.toLocaleString()+' chars';
+}
+left.addEventListener('input',updateChars);right.addEventListener('input',updateChars);
+$("run").onclick=runDiff;
+$("mode").onchange=()=>{if(patchText)runDiff();};
+$("swap").onclick=()=>{const t=left.value;left.value=right.value;right.value=t;updateChars();runDiff();};
+$("sampleA").onclick=()=>{left.value=SAMPLE_A;updateChars();};
+$("sampleB").onclick=()=>{right.value=SAMPLE_B;updateChars();};
+$("clearA").onclick=()=>{left.value='';updateChars();};
+$("clearB").onclick=()=>{right.value='';updateChars();};
+$("jsonMode").onclick=function(){this.classList.toggle('primary');runDiff();};
+$("copy").onclick=async()=>{
+  if(!patchText)return setStatus('Run a diff first',true);
+  try{await navigator.clipboard.writeText(patchText);setStatus('Copied unified patch to clipboard');}
+  catch(e){setStatus('Clipboard permission was not available',true);}
+};
+$("download").onclick=()=>{
+  if(!patchText)return setStatus('Run a diff first',true);
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(new Blob([patchText],{type:'text/plain'}));
+  a.download='diff.patch';a.click();URL.revokeObjectURL(a.href);
+  setStatus('Downloaded diff.patch');
+};
+left.value=SAMPLE_A;right.value=SAMPLE_B;updateChars();runDiff();
+document.addEventListener('keydown',e=>{if((e.metaKey||e.ctrlKey)&&e.key==='Enter'){e.preventDefault();runDiff();}});
+</script>
+</body>
+</html>

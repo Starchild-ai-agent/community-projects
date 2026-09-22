@@ -1,0 +1,10 @@
+name: diff-lens
+version: 0.1.0
+type: script
+description: Pure-frontend text and JSON diff tool. LCS line-level alignment, unified
+  patch and side-by-side views, JSON pretty mode, similarity stats, and one-click
+  patch export. Zero uploads, fully offline.
+license: MIT
+entry: src/index.html
+env_required: []
+author: user-6171
