@@ -7,4 +7,6 @@ description: Pure-frontend text and JSON diff tool. LCS line-level alignment, un
 license: MIT
 entry: src/index.html
 env_required: []
+publisher:
+  public_slug: diff-lens
 author: user-6171
