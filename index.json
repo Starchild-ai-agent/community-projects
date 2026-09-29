@@ -1,5 +1,18 @@
 [
   {
+    "type": "service",
+    "user_id": "3182",
+    "slug": "market-board",
+    "version": "0.1.0",
+    "description": "Live top-10 crypto market snapshot with 24h/7d moves and ATH context.",
+    "tags": [],
+    "author": "user-3182",
+    "license": "MIT",
+    "github_url": "https://github.com/Starchild-ai-agent/community-projects/tree/main/projects/3182/market-board",
+    "updated_at": "2026-09-29T13:47:20.788Z",
+    "created_at": "2026-09-29T13:47:20.788Z"
+  },
+  {
     "type": "script",
     "user_id": "6171",
     "slug": "diff-lens",

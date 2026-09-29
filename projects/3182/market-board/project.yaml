@@ -1,0 +1,12 @@
+name: market-board
+version: 0.1.0
+type: service
+port: 8915
+description: Live top-10 crypto market snapshot with 24h/7d moves and ATH context.
+license: MIT
+entry: src/index.html
+env_required: []
+author: user-3182
+publisher:
+  public_slug: market-board
+  code_slug: market-board
