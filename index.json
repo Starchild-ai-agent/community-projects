@@ -2,6 +2,19 @@
   {
     "type": "service",
     "user_id": "3182",
+    "slug": "hormuz-watch",
+    "version": "0.1.1",
+    "description": "Global oil-shock and chokepoint monitor — Hormuz closure status, live crude benchmarks, G7 reserve release tracker, escalation ladder and timeline.",
+    "tags": [],
+    "author": "user-3182",
+    "license": "MIT",
+    "github_url": "https://github.com/Starchild-ai-agent/community-projects/tree/main/projects/3182/hormuz-watch",
+    "updated_at": "2026-10-05T03:43:33.613Z",
+    "created_at": "2026-10-05T03:43:33.613Z"
+  },
+  {
+    "type": "service",
+    "user_id": "3182",
     "slug": "market-board",
     "version": "0.1.0",
     "description": "Live top-10 crypto market snapshot with 24h/7d moves and ATH context.",

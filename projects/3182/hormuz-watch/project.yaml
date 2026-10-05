@@ -1,0 +1,13 @@
+name: hormuz-watch
+version: 0.1.1
+type: service
+port: 8917
+description: Global oil-shock and chokepoint monitor — Hormuz closure status, live
+  crude benchmarks, G7 reserve release tracker, escalation ladder and timeline.
+license: MIT
+entry: src/index.html
+env_required: []
+author: user-3182
+publisher:
+  public_slug: hormuz-watch
+  code_slug: hormuz-watch
