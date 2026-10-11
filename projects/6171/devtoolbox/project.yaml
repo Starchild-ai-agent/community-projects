@@ -1,0 +1,9 @@
+name: devtoolbox
+title: DevToolbox — 开发者多合一工具箱
+description: 纯前端、零依赖的开发者工具集合：JSON 格式化/排序、YAML 互转、时间戳、Base64/URL 编解码、UUID、SHA 哈希、JWT 解析、命名转换、正则测试、文本 Diff、二维码。深色科技风单页应用，所有处理在浏览器本地完成，数据不出设备。
+type: script
+version: 1.0.0
+author: user-6171
+license: MIT
+entry: index.html
+tags: [developer-tools, json, yaml, converter, utility]

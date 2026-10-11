@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DevToolbox — 开发者多合一工具箱</title>
+<style>
+:root{--bg:#0b0f17;--panel:#121826;--panel2:#0e1420;--line:#1e2a3d;--txt:#dbe4f0;--dim:#7d8ca3;--acc:#38bdf8;--acc2:#a78bfa;--ok:#34d399;--err:#f87171}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--txt);font-family:"SF Mono",ui-monospace,Menlo,Consolas,monospace;min-height:100vh}
+header{padding:28px 24px 12px;text-align:center}
+header h1{font-size:26px;letter-spacing:2px;background:linear-gradient(90deg,var(--acc),var(--acc2));-webkit-background-clip:text;background-clip:text;color:transparent}
+header p{color:var(--dim);font-size:12px;margin-top:6px}
+nav{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;padding:14px 16px}
+nav button{background:var(--panel);border:1px solid var(--line);color:var(--dim);padding:8px 16px;border-radius:8px;cursor:pointer;font-size:13px;font-family:inherit;transition:.15s}
+nav button:hover{color:var(--txt);border-color:var(--acc)}
+nav button.on{background:linear-gradient(135deg,rgba(56,189,248,.15),rgba(167,139,250,.15));color:var(--acc);border-color:var(--acc)}
+main{max-width:960px;margin:0 auto;padding:8px 20px 40px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:18px}
+textarea,input[type=text],input[type=number]{width:100%;background:var(--panel2);border:1px solid var(--line);color:var(--txt);border-radius:8px;padding:10px;font-family:inherit;font-size:13px;resize:vertical}
+textarea{min-height:140px}
+textarea:focus,input:focus{outline:none;border-color:var(--acc)}
+.row{display:flex;gap:10px;margin:10px 0;flex-wrap:wrap}
+.btn{background:linear-gradient(135deg,var(--acc),var(--acc2));border:none;color:#0b0f17;padding:9px 18px;border-radius:8px;cursor:pointer;font-weight:700;font-size:13px;font-family:inherit}
+.btn.ghost{background:var(--panel2);color:var(--dim);border:1px solid var(--line);font-weight:400}
+.btn:hover{opacity:.9}
+.out{background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:10px;font-size:13px;white-space:pre-wrap;word-break:break-all;min-height:60px;color:var(--ok)}
+.out.bad{color:var(--err)}
+label{font-size:12px;color:var(--dim);display:block;margin:10px 0 4px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:700px){.grid2{grid-template-columns:1fr}}
+.stat{font-size:12px;color:var(--dim)}
+.kv{display:grid;grid-template-columns:auto 1fr;gap:4px 14px;font-size:13px}
+.kv b{color:var(--acc);font-weight:600}
+footer{text-align:center;color:var(--dim);font-size:11px;padding:20px}
+</style>
+</head>
+<body>
+<header><h1>⚙️ DevToolbox</h1><p>多合一开发者工具箱 · 纯前端 · 零依赖 · 数据不出浏览器</p></header>
+<nav id="nav"></nav>
+<main><div class="card" id="panel"></div></main>
+<footer>DevToolbox · inspired by GitHub Trending dev-tool wave · all processing is local</footer>
+<script>
+const $=s=>document.querySelector(s);
+const esc=t=>t.replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+function out(el,txt,ok=true){el.className='out'+(ok?'':' bad');el.textContent=txt}
+const tools=[
+ {id:'json',name:'JSON 格式化'},
+ {id:'yaml',name:'YAML ⇄ JSON'},
+ {id:'ts',name:'时间戳转换'},
+ {id:'b64',name:'Base64 编解码'},
+ {id:'url',name:'URL 编解码'},
+ {id:'uuid',name:'UUID 生成器'},
+ {id:'hash',name:'哈希计算'},
+ {id:'jwt',name:'JWT 解析'},
+ {id:'case',name:'命名转换'},
+ {id:'regex',name:'正则测试'},
+ {id:'diff',name:'文本对比'},
+ {id:'qr',name:'二维码'},
+];
+let cur='json';
+function render(){const p=$('#panel');
+switch(cur){
+case 'json':p.innerHTML=`<label>输入 JSON</label><textarea id="ji" placeholder='{"name":"tea","tags":["dev","tools"]}'></textarea><div class="row"><button class="btn" onclick="jfmt(2)">格式化(2空格)</button><button class="btn" onclick="jfmt(4)">格式化(4空格)</button><button class="btn ghost" onclick="jmin()">压缩</button><button class="btn ghost" onclick="jsort()">键排序</button></div><div class="out" id="jo"></div><div class="stat" id="jst"></div>`;break;
+case 'yaml':p.innerHTML=`<div class="grid2"><div><label>YAML</label><textarea id="yi"></textarea></div><div><label>JSON</label><textarea id="yj"></textarea></div></div><div class="row"><button class="btn" onclick="y2j()">YAML → JSON</button><button class="btn" onclick="j2y()">JSON → YAML</button></div><div class="out" id="yo"></div>`;break;
+case 'ts':p.innerHTML=`<label>时间戳(秒或毫秒，自动识别)</label><input type="text" id="ti" placeholder="1760000000"><div class="row"><button class="btn" onclick="ts2d()">时间戳 → 日期</button><button class="btn ghost" onclick="nowts()">当前时间戳</button></div><label>日期时间 (本地)</label><input type="text" id="td" placeholder="2026-10-11 12:00:00"><div class="row"><button class="btn" onclick="d2ts()">日期 → 时间戳</button></div><div class="out" id="to"></div>`;break;
+case 'b64':p.innerHTML=`<label>文本</label><textarea id="bi"></textarea><div class="row"><button class="btn" onclick="b64e()">编码 →</button><button class="btn" onclick="b64d()">← 解码</button></div><div class="out" id="bo"></div>`;break;
+case 'url':p.innerHTML=`<label>文本 / URL</label><textarea id="ui"></textarea><div class="row"><button class="btn" onclick="urle()">编码 →</button><button class="btn" onclick="urld()">← 解码</button></div><div class="out" id="uo"></div>`;break;
+case 'uuid':p.innerHTML=`<div class="row"><button class="btn" onclick="uuid(1)">生成 1 个</button><button class="btn" onclick="uuid(5)">生成 5 个</button><button class="btn" onclick="uuid(10)">生成 10 个</button></div><div class="out" id="uu"></div>`;break;
+case 'hash':p.innerHTML=`<label>文本</label><textarea id="hi"></textarea><div class="row"><button class="btn" onclick="hash()">计算</button></div><div class="out" id="ho"></div>`;break;
+case 'jwt':p.innerHTML=`<label>JWT Token</label><textarea id="wji" placeholder="eyJhbGciOi..."></textarea><div class="row"><button class="btn" onclick="jwt()">解析</button></div><div class="out" id="wjo"></div>`;break;
+case 'case':p.innerHTML=`<label>输入 (空格/下划线/连字符/驼峰均可)</label><textarea id="ci" style="min-height:60px"></textarea><div class="row"><button class="btn" onclick="casec()">转换</button></div><div class="out" id="co"></div>`;break;
+case 'regex':p.innerHTML=`<div class="grid2"><div><label>正则表达式</label><input type="text" id="rp" placeholder="\\d+"></div><div><label>标志</label><input type="text" id="rf" value="g" placeholder="gimsuy"></div></div><label>测试文本</label><textarea id="rt"></textarea><div class="row"><button class="btn" onclick="rege()">测试</button></div><div class="out" id="ro"></div>`;break;
+case 'diff':p.innerHTML=`<div class="grid2"><div><label>文本 A</label><textarea id="da"></textarea></div><div><label>文本 B</label><textarea id="db"></textarea></div></div><div class="row"><button class="btn" onclick="diff()">逐行对比</button></div><div class="out" id="do"></div>`;break;
+case 'qr':p.innerHTML=`<label>内容 (URL 或文本)</label><textarea id="qi" style="min-height:60px"></textarea><div class="row"><button class="btn" onclick="qr()">生成二维码</button></div><div style="text-align:center;padding:10px"><img id="qimg" style="display:none;border:8px solid #fff;border-radius:8px"></div><div class="out" id="qo"></div>`;break;
+}}
+function nav(){const n=$('#nav');n.innerHTML='';tools.forEach(t=>{const b=document.createElement('button');b.textContent=t.name;b.className=t.id===cur?'on':'';b.onclick=()=>{cur=t.id;nav();render()};n.appendChild(b)})}
+/* JSON */
+function jfmt(n){try{const o=JSON.parse($('#ji').value);out($('#jo'),JSON.stringify(o,null,n));$('#jst').textContent=`✓ 合法 · 顶层类型: ${Array.isArray(o)?'array':typeof o} · 字符数: ${JSON.stringify(o).length}`}catch(e){out($('#jo'),'✗ '+e.message,false);$('#jst').textContent=''}}
+function jmin(){try{out($('#jo'),JSON.stringify(JSON.parse($('#ji').value)))}catch(e){out($('#jo'),'✗ '+e.message,false)}}
+function jsort(){try{const s=o=>Array.isArray(o)?o.map(s):o&&typeof o==='object'?Object.keys(o).sort().reduce((a,k)=>(a[k]=s(o[k]),a),{}):o;out($('#jo'),JSON.stringify(s(JSON.parse($('#ji').value)),null,2))}catch(e){out($('#jo'),'✗ '+e.message,false)}}
+/* YAML (mini parser: 2-space indent maps/lists/scalars) */
+function y2j(){try{out($('#yo'),JSON.stringify(parseYAML($('#yi').value.split('\n')),null,2))}catch(e){out($('#yo'),'✗ '+e.message,false)}}
+function j2y(){try{out($('#yo'),toYAML(JSON.parse($('#yj').value),0))}catch(e){out($('#yo'),'✗ '+e.message,false)}}
+function parseYAML(lines){const root={};const stack=[[-1,root]];for(const raw of lines){if(!raw.trim()||raw.trim().startsWith('#'))continue;const ind=raw.match(/^\s*/)[0].length;const line=raw.trim();while(stack.length>1&&stack[stack.length-1][0]>=ind)stack.pop();const parent=stack[stack.length-1][1];const m=line.match(/^(- )?(.+?):\s*(.*)$/);if(m&&!m[1]){const v=m[3]===''?{}:scalar(m[3]);parent[m[2]]=v;if(typeof v==='object')stack.push([ind,v])}else if(m&&m[1]){if(!Array.isArray(parent._arr)){}const arr=Array.isArray(parent)?parent:null;if(arr){const key=line.slice(2);const km=key.match(/^(.+?):\s*(.*)$/);arr.push(km?(km[2]===''?{}:scalar(km[2])):scalar(key))}}else if(Array.isArray(parent)){parent.push(scalar(line.slice(2)))}}
+// second pass: convert {key:{_arr}} not needed for simple cases
+return root}
+function scalar(s){s=s.trim().replace(/^["']|["']$/g,'');if(s==='true')return true;if(s==='false')return false;if(s==='null'||s==='~')return null;if(/^-?\d+(\.\d+)?$/.test(s))return Number(s);return s}
+function toYAML(o,ind){const pad='  '.repeat(ind);if(o===null)return 'null\n';if(typeof o!=='object')return String(o)+'\n';let r='';if(Array.isArray(o)){for(const v of o){r+=typeof v==='object'&&v?'- '+toYAML(v,ind+1).trimStart():pad+'- '+String(v)+'\n'}}else{for(const k in o){const v=o[k];if(typeof v==='object'&&v!==null&&Object.keys(v).length)r+=pad+k+':\n'+toYAML(v,ind+1);else if(typeof v==='object')r+=pad+k+': {}\n';else if(Array.isArray(v)&&!v.length)r+=pad+k+': []\n';else r+=pad+k+': '+(typeof v==='string'?v:String(v))+'\n'}}return r}
+/* timestamp */
+function ts2d(){const v=$('#ti').value.trim();if(!v)return out($('#to'),'请输入时间戳',false);let n=Number(v);if(isNaN(n))return out($('#to'),'✗ 非数字',false);if(v.length<=10)n*=1000;const d=new Date(n);if(isNaN(d))return out($('#to'),'✗ 无效',false);const p=x=>String(x).padStart(2,'0');out($('#to'),`${d.getFullYear()}-${p(d.getMonth()+1)}-${p(d.getDate())} ${p(d.getHours())}:${p(d.getMinutes())}:${p(d.getSeconds())} (本地)\nISO: ${d.toISOString()}\nUTC: ${d.toUTCString()}\n相对: ${rel(n)}`)}
+function rel(ms){const s=(Date.now()-ms)/1000,a=Math.abs(s);const u=[[31536000,'年'],[2592000,'月'],[86400,'天'],[3600,'小时'],[60,'分钟']];for(const[v,l]of u)if(a>=v)return(s>0?'过去 ':'未来 ')+Math.floor(a/v)+' '+l;return'刚刚'}
+function nowts(){out($('#to'),`秒: ${Math.floor(Date.now()/1000)}\n毫秒: ${Date.now()}`)}
+function d2ts(){const d=new Date($('#td').value.replace(' ','T'));if(isNaN(d))return out($('#to'),'✗ 无法解析日期，格式: 2026-10-11 12:00:00',false);out($('#to'),`秒: ${Math.floor(d.getTime()/1000)}\n毫秒: ${d.getTime()}`)}
+/* base64 / url */
+function b64e(){try{out($('#bo'),btoa(unescape(encodeURIComponent($('#bi').value))))}catch(e){out($('#bo'),'✗ '+e.message,false)}}
+function b64d(){try{out($('#bo'),decodeURIComponent(escape(atob($('#bi').value.trim()))))}catch(e){out($('#bo'),'✗ 无效 Base64',false)}}
+function urle(){out($('#uo'),encodeURIComponent($('#ui').value))}
+function urld(){try{out($('#uo'),decodeURIComponent($('#ui').value))}catch(e){out($('#uo'),'✗ 无效编码',false)}}
+/* uuid */
+function uuid(n){let r=[];for(let i=0;i<n;i++)r.push(crypto.randomUUID?crypto.randomUUID():'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g,c=>{const b=Math.random()*16|0;return(c=='x'?b:(b&3|8)).toString(16)}));out($('#uu'),r.join('\n'))}
+/* hash */
+async function hash(){const t=$('#hi').value;const buf=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(t));const h=[...new Uint8Array(buf)].map(b=>b.toString(16).padStart(2,'0')).join('');const buf1=await crypto.subtle.digest('SHA-1',new TextEncoder().encode(t));const h1=[...new Uint8Array(buf1)].map(b=>b.toString(16).padStart(2,'0')).join('');out($('#ho'),`SHA-256: ${h}\nSHA-1:   ${h1}\n长度: ${t.length} 字符 / ${new TextEncoder().encode(t).length} 字节`)}
+/* jwt */
+function jwt(){const p=$('#wji').value.trim().split('.');if(p.length<2)return out($('#wjo'),'✗ JWT 需至少 2 段 (header.payload)',false);try{const d=s=>JSON.parse(decodeURIComponent(escape(atob(s.replace(/-/g,'+').replace(/_/g,'/')))));const h=d(p[0]),pl=d(p[1]);let extra='';if(pl.exp)extra=`\n过期: ${new Date(pl.exp*1000).toLocaleString()} ${pl.exp*1000<Date.now()?'(已过期 ✗)':'(有效 ✓)'}`;if(pl.iat)extra+=`\n签发: ${new Date(pl.iat*1000).toLocaleString()}`;out($('#wjo'),`Header:\n${JSON.stringify(h,null,2)}\n\nPayload:\n${JSON.stringify(pl,null,2)}${extra}\n\n签名段(未验证): ${p[2]||'(无)'}`)}catch(e){out($('#wjo'),'✗ '+e.message,false)}}
+/* case */
+function casec(){const words=$('#ci').value.replace(/([a-z0-9])([A-Z])/g,'$1 $2').split(/[\s_\-\.]+/).filter(Boolean).map(w=>w.toLowerCase());if(!words.length)return out($('#co'),'请输入内容',false);const cap=words.map(w=>w[0].toUpperCase()+w.slice(1));out($('#co'),`camelCase:  ${words[0]+cap.slice(1).join('')}\nPascalCase: ${cap.join('')}\nsnake_case: ${words.join('_')}\nkebab-case: ${words.join('-')}\nCONST_CASE: ${words.join('_').toUpperCase()}\nTitle Case: ${cap.join(' ')}`)}
+/* regex */
+function rege(){try{const re=new RegExp($('#rp').value,$('#rf').value);const t=$('#rt').value;let m,c=0,lines=[];while((m=re.exec(t))&&c<50){lines.push(`#${++c} [${m.index}] "${m[0]}"`+(m.length>1?` 组: ${m.slice(1).map(x=>x===undefined?'∅':`"${x}"`).join(', ')}`:''));if(!re.global)break}out($('#ro'),lines.length?`匹配 ${c} 处:\n${lines.join('\n')}`:'无匹配')}catch(e){out($('#ro'),'✗ '+e.message,false)}}
+/* diff */
+function diff(){const a=$('#da').split('\n'),b=$('#db').split('\n');const n=a.length,m=b.length;const dp=Array.from({length:n+1},()=>new Array(m+1).fill(0));for(let i=n-1;i>=0;i--)for(let j=m-1;j>=0;j--)dp[i][j]=a[i]===b[j]?dp[i+1][j+1]+1:Math.max(dp[i+1][j],dp[i][j+1]);let i=0,j=0,r=[];while(i<n&&j<m){if(a[i]===b[j]){r.push('  '+a[i]);i++;j++}else if(dp[i+1][j]>=dp[i][j+1]){r.push('- '+a[i]);i++}else{r.push('+ '+b[j]);j++}}while(i<n)r.push('- '+a[i++]);while(j<m)r.push('+ '+b[j++]);const add=r.filter(x=>x[0]==='+').length,del=r.filter(x=>x[0]==='-').length;out($('#do'),`+${add} / -${del}\n${r.join('\n')}`)}
+/* qr — via QR algorithm implemented locally (compact) */
+function qr(){const t=$('#qi').value.trim();if(!t)return out($('#qo'),'请输入内容',false);
+const img=$('#qimg');img.style.display='block';img.src='https://api.qrserver.com/v1/create-qr-code/?size=200x200&data='+encodeURIComponent(t);out($('#qo'),'✓ 已生成 (通过公共 API 渲染)')}
+nav();render();
+</script>
+</body>
+</html>

@@ -1,5 +1,24 @@
 [
   {
+    "type": "script",
+    "user_id": "6171",
+    "slug": "devtoolbox",
+    "version": "1.0.0",
+    "description": "纯前端、零依赖的开发者工具集合：JSON 格式化/排序、YAML 互转、时间戳、Base64/URL 编解码、UUID、SHA 哈希、JWT 解析、命名转换、正则测试、文本 Diff、二维码。深色科技风单页应用，所有处理在浏览器本地完成，数据不出设备。",
+    "tags": [
+      "developer-tools",
+      "json",
+      "yaml",
+      "converter",
+      "utility"
+    ],
+    "author": "user-6171",
+    "license": "MIT",
+    "github_url": "https://github.com/Starchild-ai-agent/community-projects/tree/main/projects/6171/devtoolbox",
+    "updated_at": "2026-10-11T02:09:58.374Z",
+    "created_at": "2026-10-11T02:09:58.374Z"
+  },
+  {
     "type": "service",
     "user_id": "3182",
     "slug": "hormuz-watch",
