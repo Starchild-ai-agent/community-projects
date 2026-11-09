@@ -1,5 +1,24 @@
 [
   {
+    "type": "service",
+    "user_id": "6171",
+    "slug": "skillaudit",
+    "version": "1.0.3",
+    "description": "Browser-only SKILL.md linter for agent skills — validates frontmatter, scores discoverability and token budget, and flags prompt-injection, hardcoded secrets, and dangerous shell commands before you publish.",
+    "tags": [
+      "devtools",
+      "agent",
+      "skills",
+      "linter",
+      "security"
+    ],
+    "author": "user-6171",
+    "license": "MIT",
+    "github_url": "https://github.com/Starchild-ai-agent/community-projects/tree/main/projects/6171/skillaudit",
+    "updated_at": "2026-11-09T01:03:45.209Z",
+    "created_at": "2026-11-09T01:03:45.209Z"
+  },
+  {
     "type": "script",
     "user_id": "6171",
     "slug": "devtoolbox",

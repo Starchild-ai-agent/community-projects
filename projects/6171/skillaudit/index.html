@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>SkillAudit — Agent 技能体检台</title>
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="brand">
+      <div class="logo">SA</div>
+      <div>
+        <h1>Skill<span>Audit</span></h1>
+        <div class="sub">Agent 技能体检台 · frontmatter / 结构 / 注入风险 / token 预算</div>
+      </div>
+    </div>
+    <div class="badges">
+      <span class="badge">纯前端</span>
+      <span class="badge">零依赖</span>
+      <span class="badge">不上传数据</span>
+    </div>
+  </header>
+
+  <div class="grid">
+    <section class="card">
+      <h2>粘贴 SKILL.md</h2>
+      <div class="drop" id="drop">
+        <textarea id="src" spellcheck="false" placeholder="---&#10;name: my-skill&#10;description: 一句话说明何时使用…&#10;---&#10;&#10;## When to use&#10;…"></textarea>
+      </div>
+      <div class="filetag" id="filetag"></div>
+      <div class="toolbar">
+        <button class="primary" id="run">开始体检</button>
+        <button class="ghost" id="loadSample">载入示例</button>
+        <button class="ghost" id="pick">选择文件</button>
+        <button class="ghost" id="clear">清空</button>
+        <span class="hint" id="hint">⌘/Ctrl + Enter</span>
+      </div>
+      <input type="file" id="file" accept=".md,.markdown,.txt,.yaml,.yml" hidden />
+      <div class="sep"></div>
+      <h2>技能画像</h2>
+      <div class="row2">
+        <div class="stat"><div class="n" id="sTok">—</div><div class="k">估算 token</div></div>
+        <div class="stat"><div class="n" id="sLine">—</div><div class="k">行数</div></div>
+        <div class="stat"><div class="n" id="sStep">—</div><div class="k">可执行步骤</div></div>
+        <div class="stat"><div class="n" id="sRef">—</div><div class="k">引用/脚本</div></div>
+      </div>
+      <div class="sep"></div>
+      <h2>Token 预算</h2>
+      <div class="meters">
+        <div class="meter">
+          <div class="lab"><span>SKILL.md 体积</span><b id="tokLbl">—</b></div>
+          <div class="bar"><i id="tokBar" class="fill-acc"></i></div>
+        </div>
+        <div class="meter">
+          <div class="lab"><span>描述可检索性（触发词密度）</span><b id="trigLbl">—</b></div>
+          <div class="bar"><i id="trigBar" class="fill-acc"></i></div>
+        </div>
+      </div>
+      <div class="empty" style="padding-top:14px">建议：SKILL.md 主文件 ≤ 5000 token，细节放进 <code class="inline">references/</code> 按需读取。</div>
+    </section>
+
+    <section class="card">
+      <h2>体检报告</h2>
+      <div class="scorewrap">
+        <div class="ring">
+          <svg width="104" height="104" viewBox="0 0 104 104">
+            <circle cx="52" cy="52" r="45" fill="none" stroke="rgba(120,180,255,.12)" stroke-width="9"/>
+            <circle id="ringArc" cx="52" cy="52" r="45" fill="none" stroke="url(#g1)" stroke-width="9"
+                    stroke-linecap="round" stroke-dasharray="283" stroke-dashoffset="283"/>
+            <defs><linearGradient id="g1" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#22d3ee"/><stop offset="100%" stop-color="#6366f1"/>
+            </linearGradient></defs>
+          </svg>
+          <div class="val" id="scoreVal">–<small>分</small></div>
+        </div>
+        <div class="verdict">
+          <div class="grade" id="grade">等待体检</div>
+          <p id="verdictTxt">载入一个 SKILL.md，检查 frontmatter 合规、结构完整度、提示注入与密钥泄露风险。</p>
+        </div>
+      </div>
+      <div class="sep"></div>
+      <h2>规则检查</h2>
+      <div class="checks" id="checks"><div class="empty">尚无数据。</div></div>
+      <div class="sep"></div>
+      <h2>风险与建议 <span id="fCount" class="fcount"></span></h2>
+      <div class="findings" id="findings"><div class="empty">尚无发现。</div></div>
+      <div class="toolbar" style="margin-top:14px">
+        <button class="ghost" id="copy">复制 Markdown 报告</button>
+        <button class="ghost" id="dl">下载报告</button>
+      </div>
+    </section>
+  </div>
+
+  <footer>SkillAudit · 本地静态分析，内容不离开浏览器 · 规则：12 项检查 + 风险扣分</footer>
+</div>
+<script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,19 @@
+name: skillaudit
+version: 1.0.3
+type: service
+description: Browser-only SKILL.md linter for agent skills — validates frontmatter,
+  scores discoverability and token budget, and flags prompt-injection, hardcoded secrets,
+  and dangerous shell commands before you publish.
+license: MIT
+entry: index.html
+port: 9137
+env_required: []
+tags:
+- devtools
+- agent
+- skills
+- linter
+- security
+publisher:
+  public_slug: skillaudit
+author: user-6171
